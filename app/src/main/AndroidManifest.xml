@@ -4,14 +4,14 @@
 
     <application
             android:allowBackup="true"
-            android:icon="@mipmap/logo"
+            android:icon="@drawable/icon"
             android:label="@string/app_name"
             android:supportsRtl="true"
             android:name="pl.szczeliniak.kitchenassistant.android.KitchenAssistantApplication"
             android:fullBackupContent="true"
             android:theme="@style/Theme.KitchenAssistant">
         <activity
-                android:name=".MainActivity"
+                android:name=".ui.MainActivity"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
