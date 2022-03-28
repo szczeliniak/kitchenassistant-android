@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Kitchen Assistant</string>
+    <string name="app_description">Receipts management</string>
+
+    <string name="login_activity_input_label_email">Email</string>
+    <string name="login_activity_input_label_password">Password</string>
+    <string name="login_activity_input_button_login">Login</string>
+</resources>
