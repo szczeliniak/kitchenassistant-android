@@ -31,7 +31,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        viewBinding true
+        viewBinding = true
     }
 }
 
@@ -47,6 +47,10 @@ dependencies {
     implementation "org.greenrobot:eventbus:$eventbus_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+    implementation "joda-time:joda-time:$joda_version"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$http3_logging_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 

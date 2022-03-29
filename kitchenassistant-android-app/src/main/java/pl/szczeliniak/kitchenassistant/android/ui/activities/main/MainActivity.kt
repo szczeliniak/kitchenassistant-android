@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.main
+package pl.szczeliniak.kitchenassistant.android.ui.activities.main
 
 import android.content.Context
 import android.content.Intent
