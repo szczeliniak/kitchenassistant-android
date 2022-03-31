@@ -10,7 +10,7 @@
             android:layout_width="@dimen/logo_size_big"
             android:layout_height="@dimen/logo_size_big"
             android:layout_gravity="center"
-            android:src="@drawable/icon"/>
+            android:src="@drawable/logo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             style="@style/Header"

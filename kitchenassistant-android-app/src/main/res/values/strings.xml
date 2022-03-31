@@ -13,5 +13,8 @@
 
     <string name="message_error_no_internet_connection">No Internet connection. Try again later.</string>
     <string name="message_error_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
+    <string name="activity_main_nav_drawer_label_section_others">Others</string>
+    <string name="activity_main_nav_drawer_label_item_logout">Log out</string>
+    <string name="navigation_view_logo_desc">Application logo</string>
 
 </resources>

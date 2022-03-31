@@ -80,4 +80,23 @@
         <item name="android:textSize">@dimen/text_size_big</item>
     </style>
 
+    <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:colorControlNormal">@color/white</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
+    <style name="AppNameNavigationView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
+        <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
 </resources>

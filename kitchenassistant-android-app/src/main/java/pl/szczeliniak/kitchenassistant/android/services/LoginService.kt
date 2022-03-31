@@ -18,7 +18,7 @@ class LoginService constructor(
             emit(LoadingState.InProgress)
             try {
                 val response = repository.login(request)
-                localStorageService.save(response.token)
+                localStorageService.login(response.token)
                 emit(LoadingState.Success(true))
             } catch (e: ReceiptsStorageNetworkException) {
                 emit(LoadingState.NoInternetException)

@@ -45,21 +45,20 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         if (localStorageService.isLoggedIn()) {
             handleLoginSuccess()
+            finish()
+            return
         }
-        initLayout()
-    }
 
-    private fun handleLoginSuccess() {
-        MainActivity.start(this)
-        finish()
-    }
-
-    private fun initLayout() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         binding.loginFromLayout.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
         setContentView(binding.root)
 
         loginStateHandler = prepareLoginStateHandler()
+    }
+
+    private fun handleLoginSuccess() {
+        MainActivity.start(this)
+        finish()
     }
 
     private fun handleLoginButtonClick() {
