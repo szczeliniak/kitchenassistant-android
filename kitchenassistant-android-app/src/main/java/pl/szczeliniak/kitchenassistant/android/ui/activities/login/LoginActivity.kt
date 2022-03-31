@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        binding.loginFromLayout.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
+        binding.activityLoginForm.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
         setContentView(binding.root)
 
         loginStateHandler = prepareLoginStateHandler()
@@ -62,8 +62,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginButtonClick() {
-        val email = binding.loginFromLayout.activityLoginInputEmail.text.toString()
-        val password = binding.loginFromLayout.activityLoginInputPassword.text.toString()
+        val email = binding.activityLoginForm.activityLoginEdittextEmail.text.toString()
+        val password = binding.activityLoginForm.activityLoginEdittextPassword.text.toString()
 
         if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
             toast(R.string.activity_login_error_wrong_email)
@@ -78,8 +78,8 @@ class LoginActivity : AppCompatActivity() {
     private fun prepareLoginStateHandler(): LoadingStateHandler<Boolean> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Boolean> {
             override fun onException(th: Throwable) {
-                (binding.root as ViewGroup).hideProgressSpinner(this@LoginActivity)
-                binding.loginFromLayout.activityLoginButtonLogin.enable(true)
+                (binding.activityLoginLayout as ViewGroup).hideProgressSpinner(this@LoginActivity)
+                binding.activityLoginForm.activityLoginButtonLogin.enable(true)
             }
 
             override fun onSuccess(data: Boolean) {
@@ -87,8 +87,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onInProgress() {
-                (binding.root as ViewGroup).showProgressSpinner(this@LoginActivity)
-                binding.loginFromLayout.activityLoginButtonLogin.enable(false)
+                (binding.activityLoginLayout as ViewGroup).showProgressSpinner(this@LoginActivity)
+                binding.activityLoginForm.activityLoginButtonLogin.enable(false)
 
             }
 
@@ -96,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.activity_login_error_login_data_does_not_match)
                 }
-                binding.loginFromLayout.activityLoginInputPassword.setText("")
+                binding.activityLoginForm.activityLoginEdittextPassword.setText("")
                 onException(exception)
             }
         }

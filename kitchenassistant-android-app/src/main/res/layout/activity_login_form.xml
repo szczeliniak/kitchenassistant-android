@@ -11,11 +11,11 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/activity_login_input_email_label"
+                android:hint="@string/activity_login_label_edittext_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:id="@+id/activity_login_input_email"/>
+                android:id="@+id/activity_login_edittext_email"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -25,11 +25,11 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/activity_login_input_password_label"
+                android:hint="@string/activity_login_label_edittext_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:id="@+id/activity_login_input_password"/>
+                android:id="@+id/activity_login_edittext_password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -37,7 +37,7 @@
             style="@style/Button"
             android:id="@+id/activity_login_button_login"
             android:layout_marginVertical="@dimen/padding_margin_medium"
-            android:text="@string/activity_login_input_button_login_label"
+            android:text="@string/activity_login_label_button_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

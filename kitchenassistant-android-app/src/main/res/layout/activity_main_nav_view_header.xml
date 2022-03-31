@@ -12,9 +12,9 @@
             android:layout_width="@dimen/logo_size_medium"
             android:layout_height="@dimen/logo_size_medium"
             app:srcCompat="@drawable/logo"
-            android:id="@+id/image_view_app_logo"
-            android:contentDescription="@string/navigation_view_logo_desc"
-            app:layout_constraintBottom_toTopOf="@+id/text_view_app_name"
+            android:id="@+id/activity_main_nav_view_logo"
+            android:contentDescription="@string/activity_main_nav_view_logo_description"
+            app:layout_constraintBottom_toTopOf="@+id/activity_main_nav_view_app_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -22,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/AppNameNavigationView"
-            android:id="@+id/text_view_app_name"
-            app:layout_constraintTop_toBottomOf="@id/image_view_app_logo"
+            android:id="@+id/activity_main_nav_view_app_name"
+            app:layout_constraintTop_toBottomOf="@id/activity_main_nav_view_logo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 

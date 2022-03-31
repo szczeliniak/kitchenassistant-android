@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:showIn="navigation_view">
+
+    <group>
+        <item
+                android:id="@+id/menu_nav_view_item_receipts"
+                android:title="@string/fragment_receipts_title"/>
+    </group>
+
+    <item android:title="@string/menu_nav_view_label_section_others">
+        <menu>
+            <item android:id="@+id/menu_nav_view_item_logout"
+                  android:title="@string/menu_nav_view_label_item_logout"/>
+        </menu>
+    </item>
+
+</menu>

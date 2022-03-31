@@ -99,4 +99,39 @@
         <item name="android:letterSpacing">0.1</item>
     </style>
 
+    <style name="ListItemOverLineText">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/secondary_dark</item>
+        <item name="android:textSize">@dimen/text_size_tiny</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ListItemTextPrimary">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
+        <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="ListItemTextSecondary">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:fontFamily">@font/roboto_light</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="TransparentImageButton">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
+        <item name="android:padding">@dimen/padding_margin_tiny</item>
+    </style>
+
+    <style name="MoreMenuButton" parent="TransparentImageButton">
+        <item name="android:tint">@color/black</item>
+        <item name="android:src">@drawable/icon_more</item>
+    </style>
+
 </resources>

@@ -1,20 +1,25 @@
 <resources>
     <string name="app_name">Kitchen Assistant</string>
     <string name="app_description">Receipts management</string>
+    <string name="app_api_host">https://www.api.kitchenassistant.szczeliniak.pl</string>
 
-    <string name="activity_login_input_email_label">Email</string>
-    <string name="activity_login_input_password_label">Password</string>
-    <string name="activity_login_input_button_login_label">Login</string>
+    <string name="activity_login_label_edittext_email">Email</string>
+    <string name="activity_login_label_edittext_password">Password</string>
+    <string name="activity_login_label_button_login">Login</string>
     <string name="activity_login_error_login_data_does_not_match">User and password does not match</string>
     <string name="activity_login_error_wrong_password">Invalid password</string>
     <string name="activity_login_error_wrong_email">Invalid email</string>
 
-    <string name="app_api_host">https://www.api.kitchenassistant.szczeliniak.pl</string>
-
     <string name="message_error_no_internet_connection">No Internet connection. Try again later.</string>
     <string name="message_error_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
-    <string name="activity_main_nav_drawer_label_section_others">Others</string>
-    <string name="activity_main_nav_drawer_label_item_logout">Log out</string>
-    <string name="navigation_view_logo_desc">Application logo</string>
+
+    <string name="menu_nav_view_label_section_others">Others</string>
+    <string name="menu_nav_view_label_item_logout">Log out</string>
+
+    <string name="activity_main_nav_view_logo_description">Application logo</string>
+
+    <string name="fragment_receipts_title">Receipts</string>
+    <string name="fragment_receipts_message_empty_list">Receipts list is empty</string>
+    <string name="fragment_receipts_menu_item_label_delete">Delete</string>
 
 </resources>
