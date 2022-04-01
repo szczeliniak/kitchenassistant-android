@@ -98,7 +98,7 @@ class ReceiptsFragment : Fragment() {
                     adapter.clear()
                     data.forEach { receipt ->
                         adapter.add(ReceiptItem(requireContext(), receipt, {
-                            ReceiptActivity.start(requireContext())
+                            ReceiptActivity.start(requireContext(), it.id)
                         }, {
                             viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                 deleteReceiptLoadingStateHandler.handle(r)

@@ -22,6 +22,19 @@ class ReceiptService constructor(private val repository: ReceiptRepository) {
         }
     }
 
+    suspend fun findById(receiptId: Int): Flow<LoadingState<Receipt>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.findById(receiptId).receipt))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun delete(id: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

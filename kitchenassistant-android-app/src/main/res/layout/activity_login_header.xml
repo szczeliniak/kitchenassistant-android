@@ -13,12 +13,12 @@
             android:src="@drawable/logo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Header"
+            style="@style/ApplicationHeaderName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Description"
+            style="@style/ApplicationHeaderDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

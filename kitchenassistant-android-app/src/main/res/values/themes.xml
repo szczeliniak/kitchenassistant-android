@@ -9,7 +9,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="Header">
+    <style name="ApplicationHeaderName">
         <item name="android:paddingTop">@dimen/padding_margin_medium</item>
         <item name="android:paddingBottom">@dimen/padding_margin_medium</item>
         <item name="android:textSize">@dimen/text_size_big</item>
@@ -22,7 +22,7 @@
         <item name="android:text">@string/app_name</item>
     </style>
 
-    <style name="Description">
+    <style name="ApplicationHeaderDescription">
         <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
         <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
         <item name="android:textSize">@dimen/text_size_small</item>
@@ -40,13 +40,9 @@
         <item name="android:paddingLeft">@dimen/padding_margin_medium</item>
         <item name="android:paddingRight">@dimen/padding_margin_medium</item>
         <item name="errorEnabled">true</item>
-        <item name="counterEnabled">true</item>
+        <item name="counterEnabled">false</item>
         <item name="endIconMode">clear_text</item>
         <item name="counterTextColor">@color/secondary_dark</item>
-    </style>
-
-    <style name="InputNoCounter" parent="Input">
-        <item name="counterEnabled">false</item>
     </style>
 
     <style name="Button">
@@ -88,7 +84,7 @@
         <item name="android:textColorHint">@color/white</item>
     </style>
 
-    <style name="AppNameNavigationView">
+    <style name="NavigationViewApplicationName">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
@@ -116,6 +112,12 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <style name="ListItemTextPrimaryCentered" parent="ListItemTextPrimary">
+        <item name="android:textColor">@color/secondary_dark</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
     <style name="ListItemTextSecondary">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_size_small</item>
@@ -123,15 +125,29 @@
         <item name="android:maxLines">1</item>
     </style>
 
+    <style name="ListItemTextSecondaryCentered" parent="ListItemTextSecondary">
+        <item name="android:gravity">center</item>
+    </style>
+
     <style name="TransparentImageButton">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:padding">@dimen/padding_margin_tiny</item>
+        <item name="android:tint">@color/black</item>
     </style>
 
-    <style name="MoreMenuButton" parent="TransparentImageButton">
-        <item name="android:tint">@color/black</item>
-        <item name="android:src">@drawable/icon_more</item>
+    <style name="FieldLabel">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/secondary_dark</item>
+        <item name="android:textSize">@dimen/text_size_tiny</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="FieldValue">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
 </resources>

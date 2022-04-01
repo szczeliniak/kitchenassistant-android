@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:padding="@dimen/padding_margin_tiny"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:paddingVertical="@dimen/padding_margin_tiny"
+            tools:text="Name"
+            style="@style/ListItemTextSecondaryCentered"
+            android:layout_width="0dp"
+            android:textColor="@color/secondary_dark"
+            android:layout_weight="2"
+            android:id="@+id/list_item_ingredient_textview_name"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:paddingVertical="@dimen/padding_margin_tiny"
+            tools:text="Quantity"
+            style="@style/ListItemTextSecondaryCentered"
+            android:id="@+id/list_item_ingredient_textview_quantity"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:paddingVertical="@dimen/padding_margin_tiny"
+            tools:text="Unit"
+            style="@style/ListItemTextSecondaryCentered"
+            android:layout_width="0dp"
+            android:id="@+id/list_item_ingredient_textview_unit"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

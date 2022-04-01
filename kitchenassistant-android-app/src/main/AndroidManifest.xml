@@ -25,6 +25,10 @@
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity"
                 android:exported="false">
         </activity>
+        <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity"
+                android:exported="false">
+        </activity>
     </application>
 
 </manifest>

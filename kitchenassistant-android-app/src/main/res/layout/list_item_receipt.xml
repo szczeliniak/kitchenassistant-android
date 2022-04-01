@@ -14,7 +14,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/receipt_item_button_more"
             android:padding="@dimen/padding_margin_small"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
@@ -46,7 +46,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            style="@style/MoreMenuButton"
+            style="@style/TransparentImageButton"
+            android:src="@drawable/icon_more"
             android:id="@+id/receipt_item_button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

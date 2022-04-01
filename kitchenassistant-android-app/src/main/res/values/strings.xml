@@ -21,5 +21,12 @@
     <string name="fragment_receipts_title">Receipts</string>
     <string name="fragment_receipts_message_empty_list">Receipts list is empty</string>
     <string name="fragment_receipts_menu_item_label_delete">Delete</string>
+    <string name="fragment_receipt_info_title">Info</string>
+    <string name="fragment_receipt_ingredients_title">Ingredients</string>
+    <string name="fragment_receipt_steps_title">Steps</string>
+    <string name="fragment_receipt_info_label_name">Receipt name</string>
+    <string name="fragment_receipt_info_label_author">Author</string>
+    <string name="fragment_receipt_info_label_url">URL</string>
+    <string name="fragment_receipt_info_label_description">Description</string>
 
 </resources>
