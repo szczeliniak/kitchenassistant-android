@@ -20,6 +20,16 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fragment_receipts_fab_add_receipt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_add"
+                android:contentDescription="@string/description_add_receipt"
+                style="@style/FloatingActionButton"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

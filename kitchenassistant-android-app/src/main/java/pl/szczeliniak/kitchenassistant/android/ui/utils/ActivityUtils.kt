@@ -7,14 +7,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.MessageViewBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.EmptyMessageViewBinding
 
-fun ViewGroup.showMessage(activity: Activity, stringId: Int) {
-    val binding = MessageViewBinding.inflate(LayoutInflater.from(activity), this, true)
-    binding.messageView.text = activity.getString(stringId)
+fun ViewGroup.showEmptyIcon(activity: Activity) {
+    EmptyMessageViewBinding.inflate(LayoutInflater.from(activity), this, true)
 }
 
-fun ViewGroup.hideMessage() {
+fun ViewGroup.hideEmptyIcon() {
     this.findViewById<ConstraintLayout>(R.id.message_view_layout)?.let { this.removeView(it) }
 }
 

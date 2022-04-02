@@ -17,8 +17,7 @@ class ServiceModule {
     fun localStorageService(@ApplicationContext context: Context): LocalStorageService = LocalStorageService(context)
 
     @Provides
-    fun loginService(loginRepository: LoginRepository, localStorageService: LocalStorageService): LoginService =
-        LoginService(loginRepository, localStorageService)
+    fun loginService(loginRepository: LoginRepository): LoginService = LoginService(loginRepository)
 
     @Provides
     fun receiptService(receiptRepository: ReceiptRepository): ReceiptService = ReceiptService(receiptRepository)

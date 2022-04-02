@@ -150,4 +150,12 @@
         <item name="android:fontFamily">@font/roboto_regular</item>
     </style>
 
+    <style name="FloatingActionButton">
+        <item name="backgroundTint">@color/secondary</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:layout_marginBottom">@dimen/padding_margin_medium</item>
+        <item name="android:layout_marginEnd">@dimen/padding_margin_medium</item>
+    </style>
+
 </resources>

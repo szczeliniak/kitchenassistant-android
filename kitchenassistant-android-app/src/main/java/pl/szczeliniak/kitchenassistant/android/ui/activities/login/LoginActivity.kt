@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.login
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -12,6 +11,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.enable
@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginStateHandler: LoadingStateHandler<Boolean>
+    private lateinit var loginStateHandler: LoadingStateHandler<LoginResponse>
 
     private val viewModel: LoginActivityViewModel by viewModels()
 
@@ -44,7 +44,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (localStorageService.isLoggedIn()) {
-            handleLoginSuccess()
+            goToMainActivity()
             finish()
             return
         }
@@ -56,7 +56,7 @@ class LoginActivity : AppCompatActivity() {
         loginStateHandler = prepareLoginStateHandler()
     }
 
-    private fun handleLoginSuccess() {
+    private fun goToMainActivity() {
         MainActivity.start(this)
         finish()
     }
@@ -75,19 +75,19 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareLoginStateHandler(): LoadingStateHandler<Boolean> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Boolean> {
+    private fun prepareLoginStateHandler(): LoadingStateHandler<LoginResponse> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
-                (binding.activityLoginLayout as ViewGroup).hideProgressSpinner(this@LoginActivity)
+                binding.activityLoginLayout!!.hideProgressSpinner(this@LoginActivity)
                 binding.activityLoginForm.activityLoginButtonLogin.enable(true)
             }
 
-            override fun onSuccess(data: Boolean) {
-                handleLoginSuccess()
+            override fun onSuccess(data: LoginResponse) {
+                handleLoginSuccess(data)
             }
 
             override fun onInProgress() {
-                (binding.activityLoginLayout as ViewGroup).showProgressSpinner(this@LoginActivity)
+                binding.activityLoginLayout!!.showProgressSpinner(this@LoginActivity)
                 binding.activityLoginForm.activityLoginButtonLogin.enable(false)
 
             }
@@ -101,6 +101,11 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         )
+    }
+
+    private fun handleLoginSuccess(response: LoginResponse) {
+        localStorageService.login(response.token, response.id)
+        goToMainActivity()
     }
 
 }

@@ -11,17 +11,21 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import pl.szczeliniak.kitchenassistant.android.R
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
+import pl.szczeliniak.kitchenassistant.android.events.NewReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideMessage
+import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showMessage
+import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.receipts.storage.android.ui.activities.main.fragements.receipts.ReceiptsFragmentViewModel
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -29,6 +33,9 @@ class ReceiptsFragment : Fragment() {
 
     private val viewModel: ReceiptsFragmentViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
+
+    @Inject
+    lateinit var eventBus: EventBus
 
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<List<Receipt>>
@@ -43,11 +50,16 @@ class ReceiptsFragment : Fragment() {
             DividerItemDecoration(binding.fragmentReceiptsRecyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
+        binding.fragmentReceiptsFabAddReceipt.setOnClickListener { onAddReceiptButtonClicked() }
         return binding.root
     }
 
     private fun reloadReceipts() {
         viewModel.reloadReceipts()
+    }
+
+    private fun onAddReceiptButtonClicked() {
+        AddEditReceiptActivity.start(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -79,21 +91,18 @@ class ReceiptsFragment : Fragment() {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<Receipt>> {
             override fun onInProgress() {
                 binding.root.isRefreshing = true
-                (binding.fragmentReceiptsLayout as ViewGroup).hideMessage()
-                (binding.fragmentReceiptsLayout as ViewGroup).showProgressSpinner(requireActivity())
+                binding.fragmentReceiptsLayout.hideEmptyIcon()
+                binding.fragmentReceiptsLayout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                (binding.fragmentReceiptsLayout as ViewGroup).hideProgressSpinner(requireActivity())
+                binding.fragmentReceiptsLayout.hideProgressSpinner(requireActivity())
             }
 
             override fun onSuccess(data: List<Receipt>) {
                 if (data.isEmpty()) {
-                    (binding.fragmentReceiptsLayout as ViewGroup).showMessage(
-                        requireActivity(),
-                        R.string.fragment_receipts_message_empty_list
-                    )
+                    binding.fragmentReceiptsLayout.showEmptyIcon(requireActivity())
                 } else {
                     adapter.clear()
                     data.forEach { receipt ->
@@ -109,4 +118,20 @@ class ReceiptsFragment : Fragment() {
             }
         })
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        eventBus.register(this)
+    }
+
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
+    }
+
+    @Subscribe
+    fun newReceiptSuccessEvent(event: NewReceiptEvent) {
+        reloadReceipts()
+    }
+
 }

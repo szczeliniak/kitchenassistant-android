@@ -13,7 +13,7 @@
             android:layout_height="@dimen/logo_size_medium"
             app:srcCompat="@drawable/logo"
             android:id="@+id/activity_main_nav_view_logo"
-            android:contentDescription="@string/activity_main_nav_view_logo_description"
+            android:contentDescription="@string/description_logo"
             app:layout_constraintBottom_toTopOf="@+id/activity_main_nav_view_app_name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>

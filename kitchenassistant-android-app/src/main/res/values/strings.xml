@@ -16,7 +16,8 @@
     <string name="menu_nav_view_label_section_others">Others</string>
     <string name="menu_nav_view_label_item_logout">Log out</string>
 
-    <string name="activity_main_nav_view_logo_description">Application logo</string>
+    <string name="description_logo">Application logo</string>
+    <string name="description_add_receipt">Add receipt</string>
 
     <string name="fragment_receipts_title">Receipts</string>
     <string name="fragment_receipts_message_empty_list">Receipts list is empty</string>
@@ -28,5 +29,14 @@
     <string name="fragment_receipt_info_label_author">Author</string>
     <string name="fragment_receipt_info_label_url">URL</string>
     <string name="fragment_receipt_info_label_description">Description</string>
+    <string name="activity_add_edit_receipt_edittext_receipt_name_label">Receipt name</string>
+    <string name="activity_add_edit_receipt_edittext_author_label">Author</string>
+    <string name="activity_add_edit_receipt_edittext_url_label">URL</string>
+    <string name="activity_add_edit_receipt_edittext_description_label">Description</string>
+    <string name="activity_new_receipt_title">New receipt</string>
+    <string name="activity_edit_receipt_title">Edit receipt</string>
+    <string name="activity_add_edit_receipt_menu_item_save_label">Save</string>
+    <string name="activity_add_edit_receipt_error_name_is_empty">Receipt name cannot be empty</string>
+    <string name="message_empty_list">Empty list</string>
 
 </resources>

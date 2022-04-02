@@ -9,16 +9,18 @@ class LocalStorageService constructor(private val context: Context) {
     companion object {
         private const val SHARED_PREFS_NAME = "kitchenassistant-shared-prefs"
         private const val TOKEN = "TOKEN"
+        private const val ID = "ID"
     }
 
     fun isLoggedIn(): Boolean {
         return openSharedPrefs().contains(TOKEN)
     }
 
-    fun login(token: String) {
+    fun login(token: String, id: Int) {
         val editor = openSharedPrefs().edit()
         editor.clear()
         editor.putString(TOKEN, token)
+        editor.putInt(ID, id)
         editor.apply()
     }
 
@@ -31,6 +33,10 @@ class LocalStorageService constructor(private val context: Context) {
 
     fun getToken(): String? {
         return openSharedPrefs().getString(TOKEN, null)
+    }
+
+    fun getId(): Int {
+        return openSharedPrefs().getInt(ID, -1)
     }
 
     private fun openSharedPrefs(): SharedPreferences {

@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -29,8 +30,12 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     private fun loadData() {
         receipt?.let { r ->
             ingredientsAdapter.clear()
-            r.ingredients.forEach {
-                ingredientsAdapter.add(IngredientItem(it))
+            if(r.ingredients.isEmpty()) {
+                binding.root.showEmptyIcon(requireActivity())
+            } else {
+                r.ingredients.forEach {
+                    ingredientsAdapter.add(IngredientItem(it))
+                }
             }
         }
     }

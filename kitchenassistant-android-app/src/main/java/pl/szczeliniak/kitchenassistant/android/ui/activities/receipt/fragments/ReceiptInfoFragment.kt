@@ -23,25 +23,17 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     private fun loadData() {
         receipt?.let { r ->
             binding.fragmentReceiptInfoTextviewName.text = r.name
-
-            r.description?.let {
-                binding.fragmentReceiptInfoTextviewDescription.text = r.description
-            } ?: run {
-                binding.fragmentReceiptInfoDescriptionLayout.visibility = View.GONE
-            }
-
-            r.author?.let {
-                binding.fragmentReceiptInfoTextviewAuthor.text = r.author
-            } ?: run {
-                binding.fragmentReceiptInfoAuthorLayout.visibility = View.GONE
-            }
-
-            r.source?.let {
-                binding.fragmentReceiptInfoTextviewUrl.text = r.source
-            } ?: run {
-                binding.fragmentReceiptInfoUrlLayout.visibility = View.GONE
-            }
+            binding.fragmentReceiptInfoTextviewDescription.text = getOrDefault(r.description)
+            binding.fragmentReceiptInfoTextviewAuthor.text = getOrDefault(r.author)
+            binding.fragmentReceiptInfoTextviewUrl.text = getOrDefault(r.source)
         }
+    }
+
+    private fun getOrDefault(text: String?): CharSequence {
+        if (text.isNullOrEmpty()) {
+            return "---"
+        }
+        return text
     }
 
     override fun onReceiptChanged() {

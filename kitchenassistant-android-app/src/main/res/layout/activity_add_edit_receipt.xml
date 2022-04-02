@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/toolbar"
+             android:id="@+id/activity_add_edit_receipt_toolbar"
+             app:layout_constraintTop_toBottomOf="parent"
+             app:layout_constraintLeft_toLeftOf="parent"
+             app:layout_constraintRight_toRightOf="parent"/>
+
+    <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/activity_add_edit_receipt_toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:paddingHorizontal="@dimen/padding_margin_medium"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_add_edit_receipt_edittext_receipt_name_layout"
+                    android:layout_width="match_parent"
+                    app:counterMaxLength="@integer/activity_add_edit_receipt_edittext_receipt_name_max_length"
+                    app:counterEnabled="true"
+                    style="@style/Input"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/activity_add_edit_receipt_edittext_receipt_name_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="@integer/activity_add_edit_receipt_edittext_receipt_name_max_length"
+                        android:inputType="text"
+                        android:id="@+id/activity_add_edit_receipt_edittext_receipt_name"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_add_edit_receipt_edittext_author_layout"
+                    android:layout_width="match_parent"
+                    app:counterMaxLength="@integer/activity_add_edit_receipt_edittext_author_max_length"
+                    app:counterEnabled="true"
+                    style="@style/Input"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                        android:hint="@string/activity_add_edit_receipt_edittext_author_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="@integer/activity_add_edit_receipt_edittext_author_max_length"
+                        android:inputType="text"
+                        android:id="@+id/activity_add_edit_receipt_edittext_author"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_add_edit_receipt_edittext_url_layout"
+                    android:layout_width="match_parent"
+                    app:counterMaxLength="@integer/activity_add_edit_receipt_edittext_url_max_length"
+                    style="@style/Input"
+                    app:counterEnabled="true"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/activity_add_edit_receipt_edittext_url_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="@integer/activity_add_edit_receipt_edittext_url_max_length"
+                        android:inputType="textUri"
+                        android:id="@+id/activity_add_edit_receipt_edittext_url"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/activity_add_edit_receipt_edittext_description_layout"
+                    android:layout_width="match_parent"
+                    app:counterMaxLength="@integer/activity_add_edit_receipt_edittext_description_max_length"
+                    style="@style/Input"
+                    app:counterEnabled="true"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:hint="@string/activity_add_edit_receipt_edittext_description_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minLines="4"
+                        android:maxLength="@integer/activity_add_edit_receipt_edittext_description_max_length"
+                        android:inputType="textMultiLine"
+                        android:id="@+id/activity_add_edit_receipt_edittext_description"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

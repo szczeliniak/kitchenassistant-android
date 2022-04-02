@@ -10,6 +10,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -29,8 +30,12 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     private fun loadData() {
         receipt?.let { r ->
             stepsAdapter.clear()
-            r.steps.forEach {
-                stepsAdapter.add(StepItem(it))
+            if (r.steps.isEmpty()) {
+                binding.root.showEmptyIcon(requireActivity())
+            } else {
+                r.steps.forEach {
+                    stepsAdapter.add(StepItem(it))
+                }
             }
         }
     }

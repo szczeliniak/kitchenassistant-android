@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
@@ -63,11 +62,11 @@ class ReceiptActivity : AppCompatActivity() {
     private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Receipt> {
             override fun onInProgress() {
-                (binding.root as ViewGroup).showProgressSpinner(this@ReceiptActivity)
+                binding.root.showProgressSpinner(this@ReceiptActivity)
             }
 
             override fun onFinish() {
-                (binding.root as ViewGroup).hideProgressSpinner(this@ReceiptActivity)
+                binding.root.hideProgressSpinner(this@ReceiptActivity)
             }
 
             override fun onSuccess(data: Receipt) {

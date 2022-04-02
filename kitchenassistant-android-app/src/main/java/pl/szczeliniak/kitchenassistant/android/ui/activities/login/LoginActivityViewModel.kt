@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LoginService
 import javax.inject.Inject
 
@@ -20,8 +21,8 @@ class LoginActivityViewModel @Inject constructor(
     private val loginService: LoginService,
 ) : ViewModel() {
 
-    fun login(request: LoginRequest): LiveData<LoadingState<Boolean>> {
-        val liveData = MutableLiveData<LoadingState<Boolean>>()
+    fun login(request: LoginRequest): LiveData<LoadingState<LoginResponse>> {
+        val liveData = MutableLiveData<LoadingState<LoginResponse>>()
         viewModelScope.launch {
             loginService.login(request)
                 .onEach { liveData.value = it }

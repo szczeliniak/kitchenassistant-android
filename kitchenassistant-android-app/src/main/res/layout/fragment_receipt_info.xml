@@ -13,7 +13,6 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/fragment_receipt_info_name_layout"
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
@@ -37,7 +36,6 @@
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
                 android:paddingVertical="@dimen/padding_margin_tiny"
-                android:id="@+id/fragment_receipt_info_author_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -58,7 +56,6 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:id="@+id/fragment_receipt_info_url_layout"
                 android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -81,7 +78,6 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:id="@+id/fragment_receipt_info_description_layout"
                 android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
