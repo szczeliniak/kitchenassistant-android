@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
+package pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt
 
 import android.content.Context
 import android.content.Intent
@@ -38,7 +38,7 @@ class AddReceiptActivity : AppCompatActivity() {
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddEditReceiptActivityViewModel by viewModels()
+    private val viewModel: AddReceiptActivityViewModel by viewModels()
 
     private lateinit var binding: ActivityAddReceiptBinding
 
@@ -56,12 +56,12 @@ class AddReceiptActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_add_edit_receipt, menu)
+        menuInflater.inflate(R.menu.activity_add_receipt, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.activity_add_edit_receipt_menu_item_save) {
+        if (item.itemId == R.id.activity_add_receipt_menu_item_save) {
             saveReceipt()
             return true
         }

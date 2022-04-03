@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentShoppingLists
 import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -46,7 +46,7 @@ class ShoppingListsFragment : Fragment() {
             DividerItemDecoration(binding.fragmentShoppingListsRecyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.fragmentShoppingListsFabAddReceipt.setOnClickListener { AddReceiptActivity.start(requireContext()) }
+        binding.fragmentShoppingListsFabAddReceipt.setOnClickListener { AddShoppingListActivity.start(requireContext()) }
         return binding.root
     }
 

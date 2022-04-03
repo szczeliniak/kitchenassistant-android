@@ -30,7 +30,11 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddReceiptActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddReceiptActivity"
+                android:exported="false">
+        </activity>
+        <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity"
                 android:exported="false">
         </activity>
     </application>

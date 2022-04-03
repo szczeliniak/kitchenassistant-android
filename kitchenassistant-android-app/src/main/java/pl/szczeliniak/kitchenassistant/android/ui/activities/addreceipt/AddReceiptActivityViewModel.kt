@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
+package pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditReceiptActivityViewModel @Inject constructor(
+class AddReceiptActivityViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
