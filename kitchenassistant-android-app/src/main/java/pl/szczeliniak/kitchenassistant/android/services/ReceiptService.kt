@@ -7,7 +7,6 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 
@@ -52,11 +51,11 @@ class ReceiptService constructor(private val repository: ReceiptRepository) {
         }
     }
 
-    suspend fun add(request: AddReceiptRequest): Flow<LoadingState<Int>> {
+    suspend fun deleteIngredient(receiptId: Int, ingredientId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.add(request).id))
+                emit(LoadingState.Success(repository.deleteIngredient(receiptId, ingredientId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -65,11 +64,24 @@ class ReceiptService constructor(private val repository: ReceiptRepository) {
         }
     }
 
-    suspend fun update(receiptId: Int, request: UpdateReceiptRequest): Flow<LoadingState<Int>> {
+    suspend fun deleteStep(receiptId: Int, stepId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.update(receiptId, request).id))
+                emit(LoadingState.Success(repository.deleteStep(receiptId, stepId).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun add(request: AddReceiptRequest): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.add(request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments
+package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.info
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -16,8 +17,11 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptInfoBinding.inflate(inflater)
-        loadData()
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        loadData()
     }
 
     private fun loadData() {

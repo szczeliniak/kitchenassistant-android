@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/fragment_receipts_menu_item_delete"
+            android:id="@+id/ingredient_item_menu_item_delete"
             android:title="@string/button_label_delete"/>
 
 </menu>

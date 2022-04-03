@@ -12,14 +12,16 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.events.DeleteIngredientEvent
+import pl.szczeliniak.kitchenassistant.android.events.DeleteStepEvent
 import pl.szczeliniak.kitchenassistant.android.events.NewIngredientEvent
 import pl.szczeliniak.kitchenassistant.android.events.NewStepEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptInfoFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptIngredientsFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptStepsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.info.ReceiptInfoFragment
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ingredients.ReceiptIngredientsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.steps.ReceiptStepsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -139,6 +141,16 @@ class ReceiptActivity : AppCompatActivity() {
 
     @Subscribe
     fun newStepEvent(event: NewStepEvent) {
+        reload()
+    }
+
+    @Subscribe
+    fun deleteIngredientEvent(event: DeleteIngredientEvent) {
+        reload()
+    }
+
+    @Subscribe
+    fun deleteStepEvent(event: DeleteStepEvent) {
         reload()
     }
 

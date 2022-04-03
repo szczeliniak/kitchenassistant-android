@@ -3,7 +3,6 @@ package pl.szczeliniak.kitchenassistant.android.network.retrofit
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
@@ -20,6 +19,12 @@ interface ReceiptRepository {
     @DELETE("/receipts/{id}")
     suspend fun delete(@Path("id") receiptId: Int): SuccessResponse
 
+    @DELETE("/receipts/{id}/ingredients/{ingredientId}")
+    suspend fun deleteIngredient(@Path("id") receiptId: Int, @Path("ingredientId") ingredientId: Int): SuccessResponse
+
+    @DELETE("/receipts/{id}/steps/{stepId}")
+    suspend fun deleteStep(@Path("id") receiptId: Int, @Path("stepId") stepId: Int): SuccessResponse
+
     @POST("/receipts")
     suspend fun add(@Body request: AddReceiptRequest): SuccessResponse
 
@@ -28,9 +33,5 @@ interface ReceiptRepository {
 
     @POST("/receipts/{id}/steps")
     suspend fun addStep(@Path("id") receiptId: Int, @Body request: AddStepRequest): SuccessResponse
-
-    @PUT("/receipts/{id}")
-    suspend fun update(@Path("id") receiptId: Int, @Body request: UpdateReceiptRequest): SuccessResponse
-
 
 }

@@ -11,12 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.events.NewReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -27,19 +25,11 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class AddEditReceiptActivity : AppCompatActivity() {
+class AddReceiptActivity : AppCompatActivity() {
 
     companion object {
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
-
         fun start(context: Context) {
-            val intent = Intent(context, AddEditReceiptActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, receiptId: Int) {
-            val intent = Intent(context, AddEditReceiptActivity::class.java)
-            intent.putExtra(RECEIPT_ID_EXTRA, receiptId)
+            val intent = Intent(context, AddReceiptActivity::class.java)
             context.startActivity(intent)
         }
     }
@@ -52,36 +42,19 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private val viewModel: AddEditReceiptActivityViewModel by viewModels()
 
-    private lateinit var binding: ActivityAddEditReceiptBinding
+    private lateinit var binding: ActivityAddReceiptBinding
 
     private val saveReceiptLoadingStateHandler = prepareSaveReceiptLoadingStateHandler()
-    private val loadReceiptLoadingStateHandler = prepareLoadReceiptLoadingStateHandler()
-
-    private val receiptId: Int
-        get() {
-            return intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
-        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
-
-        if (receiptId > 0) {
-            loadReceipt(receiptId)
-        }
     }
 
     private fun initLayout() {
-        binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
+        binding = ActivityAddReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val titleId: Int = if (receiptId > 0) {
-            R.string.activity_edit_receipt_title
-        } else {
-            R.string.activity_new_receipt_title
-        }
-        binding.activityAddEditReceiptToolbar.toolbar.init(this, titleId)
-
+        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.activity_new_receipt_title)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -97,44 +70,20 @@ class AddEditReceiptActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun loadReceipt(receiptId: Int) {
-        viewModel.receipt.observe(this) { loadReceiptLoadingStateHandler.handle(it) }
-        viewModel.reloadReceipt(receiptId)
-    }
-
     private fun prepareSaveReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
-                binding.root.showProgressSpinner(this@AddEditReceiptActivity)
+                binding.root.showProgressSpinner(this@AddReceiptActivity)
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddEditReceiptActivity)
+                binding.root.hideProgressSpinner(this@AddReceiptActivity)
             }
 
             override fun onSuccess(data: Int) {
                 eventBus.post(NewReceiptEvent())
-                ReceiptActivity.start(this@AddEditReceiptActivity, data)
+                ReceiptActivity.start(this@AddReceiptActivity, data)
                 finish()
-            }
-        })
-    }
-
-    private fun prepareLoadReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Receipt> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@AddEditReceiptActivity)
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddEditReceiptActivity)
-            }
-
-            override fun onSuccess(data: Receipt) {
-                binding.activityAddEditReceiptEdittextReceiptName.setText(data.name)
-                binding.activityAddEditReceiptEdittextAuthor.setText(data.author)
-                binding.activityAddEditReceiptEdittextUrl.setText(data.source)
-                binding.activityAddEditReceiptEdittextDescription.setText(data.description)
             }
         })
     }
@@ -143,11 +92,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
         if (!validateData()) {
             return
         }
-        if (receiptId > 0) {
-            updateReceipt()
-        } else {
-            addNewReceipt()
-        }
+        addNewReceipt()
     }
 
     private fun validateData(): Boolean {
@@ -182,13 +127,5 @@ class AddEditReceiptActivity : AppCompatActivity() {
         get() {
             return binding.activityAddEditReceiptEdittextDescription.text.toString()
         }
-
-    private fun updateReceipt() {
-        viewModel.updateReceipt(
-            receiptId,
-            UpdateReceiptRequest(name, author, url, description, localStorageService.getId())
-        )
-            .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
-    }
 
 }

@@ -12,15 +12,15 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.fillOrHide
 class ReceiptItem constructor(
     private val context: Context,
     private val receipt: Receipt,
-    private val onClick: OnClick?,
-    private val onDeleteClick: OnClick?,
+    private val onClick: OnClick,
+    private val onDeleteClick: OnClick
 ) : BindableItem<ListItemReceiptBinding>() {
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
         binding.receiptItemTextviewName.text = receipt.name
         binding.receiptItemTextviewAuthor.fillOrHide(receipt.author, binding.receiptItemTextviewAuthor)
         binding.receiptItemTextviewDescription.fillOrHide(receipt.description, binding.receiptItemTextviewDescription)
-        onClick.let { onClick -> binding.root.setOnClickListener { onClick?.onClick(receipt) } }
+        binding.root.setOnClickListener { onClick.onClick(receipt) }
         binding.receiptItemButtonMore.setOnClickListener { showPopupMenu(it) }
     }
 
@@ -34,11 +34,11 @@ class ReceiptItem constructor(
 
     private fun showPopupMenu(view: View): Boolean {
         val popupMenu = PopupMenu(context, view)
-        popupMenu.inflate(R.menu.fragment_receipt_item)
+        popupMenu.inflate(R.menu.receipt_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.fragment_receipts_menu_item_delete -> {
-                    onDeleteClick?.onClick(receipt)
+                R.id.receipt_item_menu_item_delete -> {
+                    onDeleteClick.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
             }

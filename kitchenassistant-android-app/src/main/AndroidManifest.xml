@@ -30,7 +30,7 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddReceiptActivity"
                 android:exported="false">
         </activity>
     </application>

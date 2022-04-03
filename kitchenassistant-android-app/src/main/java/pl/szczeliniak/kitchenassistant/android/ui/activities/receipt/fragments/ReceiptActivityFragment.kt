@@ -43,5 +43,4 @@ abstract class ReceiptActivityFragment : Fragment() {
 
     abstract fun onReceiptChanged()
 
-
 }

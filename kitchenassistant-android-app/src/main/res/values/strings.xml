@@ -32,7 +32,6 @@
     <string name="description_add_step">Add step</string>
 
     <string name="activity_new_receipt_title">New receipt</string>
-    <string name="activity_edit_receipt_title">Edit receipt</string>
 
     <string name="fragment_receipts_title">Receipts</string>
     <string name="fragment_receipt_info_title">Info</string>

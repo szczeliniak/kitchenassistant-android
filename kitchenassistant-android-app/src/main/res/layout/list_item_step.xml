@@ -2,25 +2,41 @@
 <androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="@dimen/padding_margin_tiny"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-            tools:text="Step name"
-            style="@style/ListItemTextPrimaryCentered"
-            android:gravity="center"
-            android:id="@+id/list_item_step_textview_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
-            tools:text="Step description"
-            android:paddingVertical="@dimen/padding_margin_small"
-            style="@style/ListItemTextSecondaryCentered"
-            android:id="@+id/list_item_step_textview_description"
-            android:layout_width="match_parent"
+        <androidx.appcompat.widget.AppCompatTextView
+                tools:text="Step name"
+                style="@style/ListItemTextPrimaryCentered"
+                android:gravity="center"
+                android:id="@+id/list_item_step_textview_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                tools:text="Step description"
+                android:paddingVertical="@dimen/padding_margin_small"
+                style="@style/ListItemTextSecondaryCentered"
+                android:id="@+id/list_item_step_textview_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_gravity="center"
+            style="@style/TransparentImageButton"
+            android:src="@drawable/icon_more"
+            android:id="@+id/step_item_button_more"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
