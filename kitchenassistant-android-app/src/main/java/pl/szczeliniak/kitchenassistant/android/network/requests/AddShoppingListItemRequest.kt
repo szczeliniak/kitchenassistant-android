@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.network.requests
 
-data class AddIngredientRequest(
+data class AddShoppingListItemRequest(
     val name: String,
-    val quantity: String
+    val quantity: String,
+    val sequence: Int?
 )

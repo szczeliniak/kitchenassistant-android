@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
@@ -19,5 +20,8 @@ interface ShoppingListRepository {
 
     @POST("/shoppinglists")
     suspend fun add(@Body request: AddShoppingListRequest): SuccessResponse
+
+    @POST("/shoppinglists/{id}/items")
+    suspend fun addShoppingListItem(@Path("id") id: Int, @Body request: AddShoppingListItemRequest): SuccessResponse
 
 }

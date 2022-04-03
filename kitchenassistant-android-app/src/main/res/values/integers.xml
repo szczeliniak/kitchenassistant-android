@@ -11,4 +11,7 @@
     <integer name="step_sequence_max_length">10</integer>
     <integer name="shipping_list_description_max_length">1000</integer>
     <integer name="shipping_list_name_max_length">100</integer>
+    <integer name="shopping_list_item_name_max_length">50</integer>
+    <integer name="shopping_list_item_quantity_max_length">20</integer>
+    <integer name="shopping_list_item_sequence_max_length">10</integer>
 </resources>

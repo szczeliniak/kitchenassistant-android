@@ -19,7 +19,6 @@ class IngredientItem constructor(
     override fun bind(binding: ListItemIngredientBinding, position: Int) {
         binding.listItemIngredientTextviewName.text = ingredient.name
         binding.listItemIngredientTextviewQuantity.text = ingredient.quantity
-        binding.listItemIngredientTextviewUnit.text = ingredient.unit.name
         binding.ingredientItemButtonMore.setOnClickListener { showPopupMenu(it) }
     }
 

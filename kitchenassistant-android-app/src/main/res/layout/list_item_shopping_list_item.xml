@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:textColor="@color/secondary_dark"
             android:layout_weight="1"
-            android:id="@+id/list_item_ingredient_textview_name"
+            android:id="@+id/list_item_shopping_list_item_textview_name"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -23,7 +23,7 @@
             android:paddingVertical="@dimen/padding_margin_tiny"
             tools:text="Quantity"
             style="@style/ListItemTextSecondaryCentered"
-            android:id="@+id/list_item_ingredient_textview_quantity"
+            android:id="@+id/list_item_shopping_list_item_textview_quantity"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
@@ -32,7 +32,7 @@
             android:layout_gravity="center"
             style="@style/TransparentImageButton"
             android:src="@drawable/icon_more"
-            android:id="@+id/ingredient_item_button_more"
+            android:id="@+id/list_item_shopping_list_item_button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

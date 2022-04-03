@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient
+package pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,55 +8,55 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddIngredientBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewIngredientEvent
+import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddShoppingListItemBinding
+import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListItemEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddIngredientDialog private constructor() : DialogFragment() {
+class AddShoppingListItemDialog private constructor() : DialogFragment() {
 
     companion object {
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val SHOPPING_LIST_ITEM_ID_EXTRA = "SHOPPING_LIST_ITEM_ID_EXTRA"
 
-        const val TAG = "AddIngredientDialog"
+        const val TAG = "AddShoppingListItemDialog"
 
-        fun newInstance(receiptId: Int): AddIngredientDialog {
+        fun newInstance(shoppingListId: Int): AddShoppingListItemDialog {
             val bundle = Bundle()
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            val dialog = AddIngredientDialog()
+            bundle.putInt(SHOPPING_LIST_ITEM_ID_EXTRA, shoppingListId)
+            val dialog = AddShoppingListItemDialog()
             dialog.arguments = bundle
             return dialog
         }
     }
 
-    private lateinit var binding: DialogAddIngredientBinding
+    private lateinit var binding: DialogAddShoppingListItemBinding
 
-    private lateinit var addIngredientLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var addShoppingListItemLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddIngredientDialogViewModel by viewModels()
+    private val viewModel: AddShoppingListItemDialogViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogAddIngredientBinding.inflate(layoutInflater)
+        binding = DialogAddShoppingListItemBinding.inflate(layoutInflater)
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.button_label_add) { _, _ -> }
         builder.setNegativeButton(R.string.button_label_cancel) { _, _ -> }
 
-        addIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
+        addShoppingListItemLoadingStateHandler = prepareAddShoppingListItemLoadingStateHandler()
 
         return builder.create()
     }
 
-    private fun prepareAddIngredientLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareAddShoppingListItemLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(requireActivity())
@@ -67,7 +67,7 @@ class AddIngredientDialog private constructor() : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(NewIngredientEvent())
+                eventBus.post(NewShoppingListItemEvent())
                 dismiss()
             }
         })
@@ -80,8 +80,8 @@ class AddIngredientDialog private constructor() : DialogFragment() {
             if (!validate()) {
                 return@setOnClickListener
             }
-            viewModel.addIngredient(receiptId, AddIngredientRequest(name, quantity))
-                .observe(this) { addIngredientLoadingStateHandler.handle(it) }
+            viewModel.addShoppingListItem(shoppingListId, AddShoppingListItemRequest(name, quantity, sequence))
+                .observe(this) { addShoppingListItemLoadingStateHandler.handle(it) }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
@@ -99,17 +99,26 @@ class AddIngredientDialog private constructor() : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.dialogAddIngredientEdittextName.text.toString()
+            return binding.dialogAddShoppingListItemEdittextName.text.toString()
         }
 
     private val quantity: String
         get() {
-            return binding.dialogAddIngredientEdittextQuantity.text.toString()
+            return binding.dialogAddShoppingListItemEdittextQuantity.text.toString()
         }
 
-    private val receiptId: Int
+    private val sequence: Int?
         get() {
-            return requireArguments().getInt(RECEIPT_ID_EXTRA)
+            val asString = binding.dialogAddShoppingListItemEdittextSequence.text.toString()
+            if (asString.isEmpty()) {
+                return null
+            }
+            return asString.toInt()
+        }
+
+    private val shoppingListId: Int
+        get() {
+            return requireArguments().getInt(SHOPPING_LIST_ITEM_ID_EXTRA)
         }
 
 }

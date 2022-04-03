@@ -5,20 +5,18 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.DeleteIngredientEvent
-import pl.szczeliniak.kitchenassistant.android.events.DeleteStepEvent
-import pl.szczeliniak.kitchenassistant.android.events.NewIngredientEvent
-import pl.szczeliniak.kitchenassistant.android.events.NewStepEvent
+import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListItemEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.init
-import pl.szczeliniak.kitchenassistant.android.ui.utils.setTextOrDefault
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem.AddShoppingListItemDialog
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,6 +31,8 @@ class ShoppingListActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
+    private val itemsAdapter = GroupAdapter<GroupieViewHolder>()
 
     @Inject
     lateinit var eventBus: EventBus
@@ -51,7 +51,13 @@ class ShoppingListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
+        binding.activityShoppingListRecyclerViewItems.adapter = itemsAdapter
         setContentView(binding.root)
+
+        binding.fragmentReceiptsFabAddShoppingListItem.setOnClickListener {
+            AddShoppingListItemDialog.newInstance(shoppingListId)
+                .show(supportFragmentManager, AddShoppingListItemDialog.TAG)
+        }
 
         viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
         viewModel.load(shoppingListId)
@@ -70,6 +76,21 @@ class ShoppingListActivity : AppCompatActivity() {
             override fun onSuccess(data: ShoppingList) {
                 binding.activityShoppingListToolbarLayout.toolbar.init(this@ShoppingListActivity, data.title)
                 binding.activityShoppingListTextviewDescription.setTextOrDefault(data.description)
+
+                itemsAdapter.clear()
+                if (data.items.isEmpty()) {
+                    binding.activityShoppingListLayoutItems.showEmptyIcon(this@ShoppingListActivity)
+                } else {
+                    binding.activityShoppingListLayoutItems.hideEmptyIcon()
+                    data.items.forEach {
+                        itemsAdapter.add(
+                            ShoppingListItemItem(
+                                this@ShoppingListActivity, shoppingListId, it
+                            ) { shoppingListId, shoppingListItem ->
+                                //TODO delete
+                            })
+                    }
+                }
             }
         })
     }
@@ -85,22 +106,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun newIngredientEvent(event: NewIngredientEvent) {
-        viewModel.load(shoppingListId)
-    }
-
-    @Subscribe
-    fun newStepEvent(event: NewStepEvent) {
-        viewModel.load(shoppingListId)
-    }
-
-    @Subscribe
-    fun deleteIngredientEvent(event: DeleteIngredientEvent) {
-        viewModel.load(shoppingListId)
-    }
-
-    @Subscribe
-    fun deleteStepEvent(event: DeleteStepEvent) {
+    fun newShoppingListItemEvent(event: NewShoppingListItemEvent) {
         viewModel.load(shoppingListId)
     }
 

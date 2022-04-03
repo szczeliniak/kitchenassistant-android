@@ -33,6 +33,7 @@
     <string name="description_add_ingredient">Add ingredient</string>
     <string name="description_add_step">Add step</string>
     <string name="description_add_shopping_list">Add shopping list</string>
+    <string name="description_add_shopping_list_item">Add shopping list item</string>
 
     <string name="activity_new_receipt_title">New receipt</string>
     <string name="activity_new_shopping_list_title">Add shopping list</string>
@@ -60,5 +61,10 @@
 
     <string name="shopping_list_title_label">Title</string>
     <string name="shipping_list_description_label">Description</string>
+    <string name="shipping_list_items_label">Items</string>
+    <string name="dialog_add_shopping_list_item_title">Add shopping list item</string>
+    <string name="shopping_list_item_name_label">Name</string>
+    <string name="shopping_list_item_quantity_label">Quantity</string>
+    <string name="shopping_list_item_sequence_label">Sequence</string>
 
 </resources>

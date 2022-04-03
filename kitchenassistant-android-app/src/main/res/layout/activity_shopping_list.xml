@@ -12,18 +12,19 @@
             app:layout_constraintRight_toRightOf="parent"
             layout="@layout/toolbar"/>
 
-    <androidx.core.widget.NestedScrollView
-            android:orientation="vertical"
+    <androidx.appcompat.widget.LinearLayoutCompat
             app:layout_constraintTop_toBottomOf="@id/activity_shopping_list_toolbar_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_margin_medium"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:padding="@dimen/padding_margin_medium"
+                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -42,6 +43,47 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    </androidx.core.widget.NestedScrollView>
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:paddingVertical="@dimen/padding_margin_tiny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/shipping_list_items_label"
+                    style="@style/FieldLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activity_shopping_list_layout_items"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_width="match_parent"
+                        android:id="@+id/activity_shopping_list_recycler_view_items"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fragment_receipts_fab_add_shopping_list_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_add"
+            android:contentDescription="@string/description_add_shopping_list_item"
+            style="@style/FloatingActionButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
