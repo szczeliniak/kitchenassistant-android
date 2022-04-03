@@ -15,6 +15,7 @@ import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -79,7 +80,7 @@ class AddShoppingListActivity : AppCompatActivity() {
 
             override fun onSuccess(data: Int) {
                 eventBus.post(NewShoppingListEvent())
-                //TODO: open activity
+                ShoppingListActivity.start(this@AddShoppingListActivity, data)
                 finish()
             }
         })

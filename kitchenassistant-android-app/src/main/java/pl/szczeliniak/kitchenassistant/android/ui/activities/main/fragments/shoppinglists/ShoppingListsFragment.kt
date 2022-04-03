@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -93,9 +94,9 @@ class ShoppingListsFragment : Fragment() {
                     binding.fragmentShoppingListsLayout.showEmptyIcon(requireActivity())
                 } else {
                     adapter.clear()
-                    data.forEach { receipt ->
-                        adapter.add(ShoppingListItem(requireContext(), receipt, {
-
+                    data.forEach { shoppingList ->
+                        adapter.add(ShoppingListItem(requireContext(), shoppingList, {
+                            ShoppingListActivity.start(requireContext(), shoppingList.id)
                         }, {
                             viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                 deleteShoppingListLoadingStateHandler.handle(r)

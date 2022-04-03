@@ -37,6 +37,10 @@
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity"
                 android:exported="false">
         </activity>
+        <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity"
+                android:exported="false">
+        </activity>
     </application>
 
 </manifest>

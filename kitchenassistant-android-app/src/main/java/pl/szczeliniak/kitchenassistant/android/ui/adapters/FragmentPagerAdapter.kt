@@ -1,11 +1,11 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt
+package pl.szczeliniak.kitchenassistant.android.ui.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class MainActivityPagerAdapter(
+class FragmentPagerAdapter(
     private val fragments: Array<Fragment>,
     supportFragmentManager: FragmentManager,
     lifecycle: Lifecycle

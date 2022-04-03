@@ -19,27 +19,6 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/receipt_name_label"
-                    style="@style/FieldLabel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fragment_receipt_info_textview_name"
-                    tools:text="Receipt name"
-                    style="@style/FieldValue"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-        </androidx.appcompat.widget.LinearLayoutCompat>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/receipt_author_label"
                     style="@style/FieldLabel"
                     android:layout_width="match_parent"

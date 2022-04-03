@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
+import pl.szczeliniak.kitchenassistant.android.ui.utils.setTextOrDefault
 
 @AndroidEntryPoint
 class ReceiptInfoFragment : ReceiptActivityFragment() {
@@ -24,18 +25,10 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
 
     private fun loadData() {
         receipt?.let { r ->
-            binding.fragmentReceiptInfoTextviewName.text = r.name
-            binding.fragmentReceiptInfoTextviewDescription.text = getOrDefault(r.description)
-            binding.fragmentReceiptInfoTextviewAuthor.text = getOrDefault(r.author)
-            binding.fragmentReceiptInfoTextviewUrl.text = getOrDefault(r.source)
+            binding.fragmentReceiptInfoTextviewDescription.setTextOrDefault(r.description)
+            binding.fragmentReceiptInfoTextviewAuthor.setTextOrDefault(r.author)
+            binding.fragmentReceiptInfoTextviewUrl.setTextOrDefault(r.source)
         }
-    }
-
-    private fun getOrDefault(text: String?): CharSequence {
-        if (text.isNullOrEmpty()) {
-            return "---"
-        }
-        return text
     }
 
     override fun onReceiptChanged() {

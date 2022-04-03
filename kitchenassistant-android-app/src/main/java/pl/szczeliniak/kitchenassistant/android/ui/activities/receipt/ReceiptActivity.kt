@@ -21,6 +21,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.R
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.info.ReceiptInfoFragment
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ingredients.ReceiptIngredientsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.steps.ReceiptStepsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -58,7 +59,6 @@ class ReceiptActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReceiptBinding.inflate(layoutInflater)
-        binding.activityReceiptToolbarLayout.toolbar.init(this, "qwerty")
         initPager()
         setContentView(binding.root)
 
@@ -89,7 +89,7 @@ class ReceiptActivity : AppCompatActivity() {
     }
 
     private fun initPager() {
-        binding.activityReceiptViewPager.adapter = MainActivityPagerAdapter(
+        binding.activityReceiptViewPager.adapter = FragmentPagerAdapter(
             arrayOf(
                 ReceiptInfoFragment(), ReceiptIngredientsFragment(), ReceiptStepsFragment()
             ), supportFragmentManager, lifecycle
