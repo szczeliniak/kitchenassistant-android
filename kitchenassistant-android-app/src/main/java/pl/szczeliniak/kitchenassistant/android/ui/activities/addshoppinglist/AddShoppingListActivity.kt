@@ -52,7 +52,7 @@ class AddShoppingListActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddShoppingListToolbar.toolbar.init(this, R.string.activity_new_shopping_list_title)
+        binding.activityAddShoppingListToolbar.toolbar.init(this, R.string.activity_new_shopping_list_name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -90,21 +90,21 @@ class AddShoppingListActivity : AppCompatActivity() {
         if (!validateData()) {
             return
         }
-        viewModel.addShoppingList(AddShoppingListRequest(title, description, localStorageService.getId()))
+        viewModel.addShoppingList(AddShoppingListRequest(name, description, localStorageService.getId()))
             .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
     }
 
     private fun validateData(): Boolean {
-        if (title.isEmpty()) {
-            toast(R.string.toast_shopping_list_title_is_empty)
+        if (name.isEmpty()) {
+            toast(R.string.toast_shopping_list_name_is_empty)
             return false
         }
         return true
     }
 
-    private val title: String
+    private val name: String
         get() {
-            return binding.activityAddShoppingEdittextTitle.text.toString()
+            return binding.activityAddShoppingEdittextName.text.toString()
         }
 
     private val description: String

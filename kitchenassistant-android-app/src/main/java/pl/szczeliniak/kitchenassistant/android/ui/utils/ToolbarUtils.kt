@@ -11,15 +11,15 @@ fun Toolbar.init(activity: AppCompatActivity, navigationIconId: Int, onNavigatio
     setNavigationOnClickListener { onNavigationClickListener.onClick(this) }
 }
 
-fun Toolbar.init(activity: AppCompatActivity, titleId: Int) {
-    this.title = activity.getString(titleId)
+fun Toolbar.init(activity: AppCompatActivity, resId: Int) {
+    this.title = activity.getString(resId)
     init(activity, R.drawable.icon_arrow_back) {
         activity.onBackPressed()
     }
 }
 
-fun Toolbar.init(activity: AppCompatActivity, title: String) {
-    this.title = title
+fun Toolbar.init(activity: AppCompatActivity, name: String) {
+    this.title = name
     init(activity, R.drawable.icon_arrow_back) {
         activity.onBackPressed()
     }

@@ -12,7 +12,7 @@
     <string name="toast_no_internet_connection">No Internet connection. Try again later.</string>
     <string name="toast_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
     <string name="toast_step_name_is_empty">Step name cannot be empty</string>
-    <string name="toast_shopping_list_title_is_empty">Shopping list title cannot be empty</string>
+    <string name="toast_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
 
     <string name="message_empty_list">Empty list</string>
 
@@ -35,17 +35,17 @@
     <string name="description_add_shopping_list">Add shopping list</string>
     <string name="description_add_shopping_list_item">Add shopping list item</string>
 
-    <string name="activity_new_receipt_title">New receipt</string>
-    <string name="activity_new_shopping_list_title">Add shopping list</string>
+    <string name="activity_new_receipt_name">New receipt</string>
+    <string name="activity_new_shopping_list_name">Add shopping list</string>
 
-    <string name="fragment_receipts_title">Receipts</string>
-    <string name="fragment_receipt_info_title">Info</string>
-    <string name="fragment_receipt_ingredients_title">Ingredients</string>
-    <string name="fragment_receipt_steps_title">Steps</string>
-    <string name="fragment_shopping_lists_title">Shopping lists</string>
+    <string name="fragment_receipts_name">Receipts</string>
+    <string name="fragment_receipt_info_name">Info</string>
+    <string name="fragment_receipt_ingredients_name">Ingredients</string>
+    <string name="fragment_receipt_steps_name">Steps</string>
+    <string name="fragment_shopping_lists_name">Shopping lists</string>
 
-    <string name="dialog_add_ingredient_title">Add ingredient</string>
-    <string name="dialog_add_step_title">Add step</string>
+    <string name="dialog_add_ingredient_name">Add ingredient</string>
+    <string name="dialog_add_step_name">Add step</string>
 
     <string name="receipt_name_label">Receipt name</string>
     <string name="receipt_author_label">Author</string>
@@ -55,14 +55,14 @@
     <string name="ingredient_name_label">Name</string>
     <string name="ingredient_quantity_label">Quantity</string>
 
-    <string name="step_title_label">Title</string>
+    <string name="step_name_label">Name</string>
     <string name="step_description_label">Description</string>
     <string name="step_sequence_label">Sequence</string>
 
-    <string name="shopping_list_title_label">Title</string>
+    <string name="shopping_list_name_label">Name</string>
     <string name="shipping_list_description_label">Description</string>
     <string name="shipping_list_items_label">Items</string>
-    <string name="dialog_add_shopping_list_item_title">Add shopping list item</string>
+    <string name="dialog_add_shopping_list_item_name">Add shopping list item</string>
     <string name="shopping_list_item_name_label">Name</string>
     <string name="shopping_list_item_quantity_label">Quantity</string>
     <string name="shopping_list_item_sequence_label">Sequence</string>

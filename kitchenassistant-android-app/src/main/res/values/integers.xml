@@ -6,7 +6,7 @@
     <integer name="receipt_description_max_length">1000</integer>
     <integer name="ingredient_name_max_length">100</integer>
     <integer name="ingredient_quantity_max_length">10</integer>
-    <integer name="step_title_max_length">100</integer>
+    <integer name="step_name_max_length">100</integer>
     <integer name="step_description_max_length">1000</integer>
     <integer name="step_sequence_max_length">10</integer>
     <integer name="shipping_list_description_max_length">1000</integer>

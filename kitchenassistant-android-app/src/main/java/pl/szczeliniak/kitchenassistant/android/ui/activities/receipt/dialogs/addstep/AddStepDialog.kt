@@ -80,23 +80,23 @@ class AddStepDialog private constructor() : DialogFragment() {
             if (!validate()) {
                 return@setOnClickListener
             }
-            viewModel.addStep(receiptId, AddStepRequest(title, description, sequence))
+            viewModel.addStep(receiptId, AddStepRequest(name, description, sequence))
                 .observe(this) { addStepLoadingStateHandler.handle(it) }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
 
     private fun validate(): Boolean {
-        if (title.isEmpty()) {
+        if (name.isEmpty()) {
             requireActivity().toast(R.string.toast_step_name_is_empty)
             return false
         }
         return true
     }
 
-    private val title: String
+    private val name: String
         get() {
-            return binding.dialogAddStepEdittextTitle.text.toString()
+            return binding.dialogAddStepEdittextName.text.toString()
         }
 
     private val description: String

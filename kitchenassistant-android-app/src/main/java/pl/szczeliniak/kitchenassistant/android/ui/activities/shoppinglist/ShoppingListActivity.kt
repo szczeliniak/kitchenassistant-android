@@ -74,7 +74,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: ShoppingList) {
-                binding.activityShoppingListToolbarLayout.toolbar.init(this@ShoppingListActivity, data.title)
+                binding.activityShoppingListToolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
                 binding.activityShoppingListTextviewDescription.setTextOrDefault(data.description)
 
                 itemsAdapter.clear()

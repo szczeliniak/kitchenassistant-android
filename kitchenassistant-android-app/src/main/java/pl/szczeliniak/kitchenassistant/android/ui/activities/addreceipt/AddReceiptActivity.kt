@@ -52,7 +52,7 @@ class AddReceiptActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.activity_new_receipt_title)
+        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.activity_new_receipt_name)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

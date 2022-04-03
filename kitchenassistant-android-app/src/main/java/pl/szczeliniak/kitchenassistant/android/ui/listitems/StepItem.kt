@@ -18,7 +18,7 @@ class StepItem constructor(
     BindableItem<ListItemStepBinding>() {
 
     override fun bind(binding: ListItemStepBinding, position: Int) {
-        binding.listItemStepTextviewName.text = String.format("%s. %s", position + 1, step.title)
+        binding.listItemStepTextviewName.text = String.format("%s. %s", position + 1, step.name)
         binding.listItemStepTextviewDescription.fillOrHide(step.description, binding.listItemStepTextviewDescription)
         binding.stepItemButtonMore.setOnClickListener { showPopupMenu(it) }
     }

@@ -26,7 +26,7 @@
                 android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/activity_add_shopping_layout_title"
+                    android:id="@+id/activity_add_shopping_layout_name"
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/shipping_list_name_max_length"
                     app:counterEnabled="true"
@@ -34,12 +34,12 @@
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/shopping_list_title_label"
+                        android:hint="@string/shopping_list_name_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/shipping_list_name_max_length"
                         android:inputType="text"
-                        android:id="@+id/activity_add_shopping_edittext_title"/>
+                        android:id="@+id/activity_add_shopping_edittext_name"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

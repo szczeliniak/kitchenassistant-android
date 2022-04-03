@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/dialog_add_step_title"
+            android:text="@string/dialog_add_step_name"
             style="@style/DialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -16,17 +16,17 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/step_title_max_length"
+            app:counterMaxLength="@integer/step_name_max_length"
             style="@style/Input"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/step_title_label"
+                android:hint="@string/step_name_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/step_title_max_length"
+                android:maxLength="@integer/step_name_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_step_edittext_title"/>
+                android:id="@+id/dialog_add_step_edittext_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

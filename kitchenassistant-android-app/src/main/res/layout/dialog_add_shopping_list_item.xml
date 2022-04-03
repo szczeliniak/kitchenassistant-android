@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/dialog_add_shopping_list_item_title"
+            android:text="@string/dialog_add_shopping_list_item_name"
             style="@style/DialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>

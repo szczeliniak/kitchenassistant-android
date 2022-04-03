@@ -17,7 +17,7 @@ class ShoppingListItem constructor(
 ) : BindableItem<ListItemShoppingListBinding>() {
 
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
-        binding.shoppingListItemTextviewName.text = shoppingList.title
+        binding.shoppingListItemTextviewName.text = shoppingList.name
         binding.shoppingListItemTextviewDescription.fillOrHide(
             shoppingList.description,
             binding.shoppingListItemTextviewDescription

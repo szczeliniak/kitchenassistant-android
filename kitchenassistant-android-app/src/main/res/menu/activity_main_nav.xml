@@ -6,10 +6,10 @@
     <group>
         <item
                 android:id="@+id/menu_nav_view_item_receipts"
-                android:title="@string/fragment_receipts_title"/>
+                android:title="@string/fragment_receipts_name"/>
         <item
                 android:id="@+id/menu_nav_view_item_shopping_lists"
-                android:title="@string/fragment_shopping_lists_title"/>
+                android:title="@string/fragment_shopping_lists_name"/>
     </group>
 
     <item android:title="@string/menu_nav_view_label_section_others">
