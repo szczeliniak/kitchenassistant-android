@@ -1,11 +1,9 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments
 
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 
-@ExperimentalCoroutinesApi
 abstract class ReceiptActivityFragment : Fragment() {
 
     val receipt: Receipt?

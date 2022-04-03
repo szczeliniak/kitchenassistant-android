@@ -11,6 +11,7 @@
     <string name="toast_ingredient_quantity_is_empty">Ingredient quantity cannot be empty</string>
     <string name="toast_no_internet_connection">No Internet connection. Try again later.</string>
     <string name="toast_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
+    <string name="toast_step_name_is_empty">Step name cannot be empty</string>
 
     <string name="message_empty_list">Empty list</string>
 
@@ -30,6 +31,7 @@
     <string name="description_add_receipt">Add receipt</string>
     <string name="description_add_ingredient">Add ingredient</string>
     <string name="description_add_step">Add step</string>
+    <string name="description_add_shopping_list">Add shopping list</string>
 
     <string name="activity_new_receipt_title">New receipt</string>
 
@@ -37,6 +39,7 @@
     <string name="fragment_receipt_info_title">Info</string>
     <string name="fragment_receipt_ingredients_title">Ingredients</string>
     <string name="fragment_receipt_steps_title">Steps</string>
+    <string name="fragment_shopping_lists_title">Shopping lists</string>
 
     <string name="dialog_add_ingredient_title">Add ingredient</string>
     <string name="dialog_add_step_title">Add step</string>
@@ -52,6 +55,5 @@
     <string name="step_title_label">Title</string>
     <string name="step_description_label">Description</string>
     <string name="step_sequence_label">Sequence</string>
-    <string name="toast_step_name_is_empty">Step name cannot be empty</string>
 
 </resources>

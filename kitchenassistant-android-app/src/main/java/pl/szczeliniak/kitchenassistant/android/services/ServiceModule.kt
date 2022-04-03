@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.LoginRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -21,5 +22,9 @@ class ServiceModule {
 
     @Provides
     fun receiptService(receiptRepository: ReceiptRepository): ReceiptService = ReceiptService(receiptRepository)
+
+    @Provides
+    fun shoppingListService(shoppingListRepository: ShoppingListRepository): ShoppingListService =
+        ShoppingListService(shoppingListRepository)
 
 }

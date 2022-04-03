@@ -8,7 +8,6 @@ import androidx.fragment.app.viewModels
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
 import pl.szczeliniak.kitchenassistant.android.events.DeleteStepEvent
@@ -22,7 +21,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ReceiptStepsFragment : ReceiptActivityFragment() {
 

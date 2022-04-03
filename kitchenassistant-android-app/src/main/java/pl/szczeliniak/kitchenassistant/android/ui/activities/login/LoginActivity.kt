@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
@@ -23,7 +22,6 @@ import retrofit2.HttpException
 import javax.inject.Inject
 
 @AndroidEntryPoint
-@ExperimentalCoroutinesApi
 class LoginActivity : AppCompatActivity() {
 
     companion object {

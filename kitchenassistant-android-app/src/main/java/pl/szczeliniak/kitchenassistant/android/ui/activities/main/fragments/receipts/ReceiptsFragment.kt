@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments
+package pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
@@ -24,10 +23,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
-import pl.szczeliniak.receipts.storage.android.ui.activities.main.fragements.receipts.ReceiptsFragmentViewModel
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ReceiptsFragment : Fragment() {
 
@@ -44,22 +41,14 @@ class ReceiptsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptsBinding.inflate(inflater)
 
-        binding.root.setOnRefreshListener { reloadReceipts() }
+        binding.root.setOnRefreshListener { viewModel.reloadReceipts() }
         binding.fragmentReceiptsRecyclerView.adapter = adapter
         binding.fragmentReceiptsRecyclerView.addItemDecoration(
             DividerItemDecoration(binding.fragmentReceiptsRecyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.fragmentReceiptsFabAddReceipt.setOnClickListener { onAddReceiptButtonClicked() }
+        binding.fragmentReceiptsFabAddReceipt.setOnClickListener { AddReceiptActivity.start(requireContext()) }
         return binding.root
-    }
-
-    private fun reloadReceipts() {
-        viewModel.reloadReceipts()
-    }
-
-    private fun onAddReceiptButtonClicked() {
-        AddReceiptActivity.start(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +56,7 @@ class ReceiptsFragment : Fragment() {
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
-        reloadReceipts()
+        viewModel.reloadReceipts()
     }
 
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -82,7 +71,7 @@ class ReceiptsFragment : Fragment() {
 
             override fun onSuccess(data: Int) {
                 adapter.clear()
-                reloadReceipts()
+                viewModel.reloadReceipts()
             }
         })
     }
@@ -131,7 +120,7 @@ class ReceiptsFragment : Fragment() {
 
     @Subscribe
     fun newReceiptEvent(event: NewReceiptEvent) {
-        reloadReceipts()
+        viewModel.reloadReceipts()
     }
 
 }

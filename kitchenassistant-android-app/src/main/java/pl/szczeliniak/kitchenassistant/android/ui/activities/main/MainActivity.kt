@@ -6,16 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
-import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.ReceiptsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts.ReceiptsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.shoppinglists.ShoppingListsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import javax.inject.Inject
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
@@ -33,8 +32,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val receiptsFragment = ReceiptsFragment()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,13 +44,17 @@ class MainActivity : AppCompatActivity() {
         binding.activityMainBottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
         binding.activityMainNavView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
-        setInitialFragment(savedInstanceState)
+        setFragment(savedInstanceState)
     }
 
     private fun onNavigationItemChanged(itemId: Int): Boolean {
         when (itemId) {
             R.id.nav_bottom_item_receipts -> {
-                setCurrentFragment(receiptsFragment)
+                setCurrentFragment(ReceiptsFragment())
+                return true
+            }
+            R.id.nav_bottom_item_shopping_lists -> {
+                setCurrentFragment(ShoppingListsFragment())
                 return true
             }
         }
@@ -68,6 +69,14 @@ class MainActivity : AppCompatActivity() {
     private fun onDrawerItemClicked(itemId: Int): Boolean {
         binding.root.closeDrawers()
         when (itemId) {
+            R.id.menu_nav_view_item_receipts -> {
+                binding.activityMainBottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
+                return true
+            }
+            R.id.menu_nav_view_item_shopping_lists -> {
+                binding.activityMainBottomNavView.selectedItemId = R.id.nav_bottom_item_shopping_lists
+                return true
+            }
             R.id.menu_nav_view_item_logout -> {
                 logout()
                 return true
@@ -83,14 +92,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setInitialFragment(savedInstanceState: Bundle?) {
+    private fun setFragment(savedInstanceState: Bundle?) {
         val fragmentClassName = savedInstanceState?.getString(SAVED_FRAGMENT_NAME)
         if (fragmentClassName == null) {
-            setCurrentFragment(receiptsFragment)
+            setCurrentFragment(ReceiptsFragment())
         }
         when (fragmentClassName) {
             ReceiptsFragment::class.java.simpleName -> {
-                setCurrentFragment(receiptsFragment)
+                setCurrentFragment(ReceiptsFragment())
+            }
+            ShoppingListsFragment::class.java.simpleName -> {
+                setCurrentFragment(ShoppingListsFragment())
             }
         }
     }

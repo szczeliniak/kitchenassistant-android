@@ -5,11 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 
-@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ReceiptInfoFragment : ReceiptActivityFragment() {
 
