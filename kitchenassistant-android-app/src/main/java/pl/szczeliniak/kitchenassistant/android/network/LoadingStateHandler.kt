@@ -21,11 +21,11 @@ class LoadingStateHandler<T>(
                 onStateChanged?.onSuccess(state.data)
             }
             is LoadingState.Exception -> {
-                context.toast(R.string.message_error_cannot_execute_operation)
+                context.toast(R.string.toast_cannot_execute_operation)
                 handleError(state.exception)
             }
             is LoadingState.NoInternetException -> {
-                context.toast(R.string.message_error_no_internet_connection)
+                context.toast(R.string.toast_no_internet_connection)
                 onStateChanged?.onFinish()
                 onStateChanged?.onNoInternetException()
             }

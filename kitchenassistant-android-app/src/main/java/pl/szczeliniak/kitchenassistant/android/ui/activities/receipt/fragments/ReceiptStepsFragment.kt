@@ -9,6 +9,8 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddIngredientDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep.AddStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 
@@ -23,8 +25,16 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptStepsBinding.inflate(inflater)
         binding.fragmentReceiptStepsRecyclerView.adapter = stepsAdapter
+        binding.fragmentReceiptStepsFabAddStep.setOnClickListener { showAddStepDialog() }
         loadData()
         return binding.root
+    }
+
+    private fun showAddStepDialog() {
+        receipt?.let {
+            AddStepDialog.newInstance(it.id)
+                .show(requireActivity().supportFragmentManager, AddIngredientDialog.TAG)
+        }
     }
 
     private fun loadData() {

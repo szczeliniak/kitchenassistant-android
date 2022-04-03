@@ -1,8 +1,8 @@
-package pl.szczeliniak.kitchenassistant.android.network.requests.dto
+package pl.szczeliniak.kitchenassistant.android.network.requests
 
 import pl.szczeliniak.kitchenassistant.android.network.enums.IngredientUnit
 
-data class NewIngredient(
+data class AddIngredientRequest(
     val name: String,
     val quantity: String,
     val unit: IngredientUnit

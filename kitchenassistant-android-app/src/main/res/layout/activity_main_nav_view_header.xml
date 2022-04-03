@@ -9,8 +9,8 @@
         android:backgroundTint="@color/secondary_dark">
 
     <ImageView
-            android:layout_width="@dimen/logo_size_medium"
-            android:layout_height="@dimen/logo_size_medium"
+            android:layout_width="@dimen/image_size_medium"
+            android:layout_height="@dimen/image_size_medium"
             app:srcCompat="@drawable/logo"
             android:id="@+id/activity_main_nav_view_logo"
             android:contentDescription="@string/description_logo"

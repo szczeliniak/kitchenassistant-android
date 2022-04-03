@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:paddingHorizontal="@dimen/padding_margin_big"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:text="@string/dialog_add_step_title"
+            style="@style/DialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/step_title_max_length"
+            style="@style/Input"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/step_title_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/step_title_max_length"
+                android:inputType="text"
+                android:id="@+id/dialog_add_step_edittext_title"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/step_description_max_length"
+            style="@style/Input"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/step_description_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/step_description_max_length"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:id="@+id/dialog_add_step_edittext_description"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/step_sequence_max_length"
+            style="@style/Input"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/step_sequence_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/step_sequence_max_length"
+                android:inputType="numberDecimal"
+                android:id="@+id/dialog_add_step_edittext_sequence"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

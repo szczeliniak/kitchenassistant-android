@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="activity_add_edit_receipt_edittext_receipt_name_max_length">100</integer>
-    <integer name="activity_add_edit_receipt_edittext_author_max_length">50</integer>
-    <integer name="activity_add_edit_receipt_edittext_url_max_length">500</integer>
-    <integer name="activity_add_edit_receipt_edittext_description_max_length">1000</integer>
+    <integer name="receipt_name_max_length">100</integer>
+    <integer name="receipt_author_max_length">50</integer>
+    <integer name="receipt_url_max_length">500</integer>
+    <integer name="receipt_description_max_length">1000</integer>
+    <integer name="ingredient_name_max_length">100</integer>
+    <integer name="ingredient_quantity_max_length">10</integer>
+    <integer name="step_title_max_length">100</integer>
+    <integer name="step_description_max_length">1000</integer>
+    <integer name="step_sequence_max_length">10</integer>
 </resources>

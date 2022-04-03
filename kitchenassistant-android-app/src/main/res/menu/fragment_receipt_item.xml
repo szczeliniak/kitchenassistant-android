@@ -3,6 +3,6 @@
 
     <item
             android:id="@+id/fragment_receipts_menu_item_delete"
-            android:title="@string/fragment_receipts_menu_item_label_delete"/>
+            android:title="@string/button_label_delete"/>
 
 </menu>

@@ -1,6 +1,8 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
@@ -20,6 +22,12 @@ interface ReceiptRepository {
 
     @POST("/receipts")
     suspend fun add(@Body request: AddReceiptRequest): SuccessResponse
+
+    @POST("/receipts/{id}/ingredients")
+    suspend fun addIngredient(@Path("id") receiptId: Int, @Body request: AddIngredientRequest): SuccessResponse
+
+    @POST("/receipts/{id}/steps")
+    suspend fun addStep(@Path("id") receiptId: Int, @Body request: AddStepRequest): SuccessResponse
 
     @PUT("/receipts/{id}")
     suspend fun update(@Path("id") receiptId: Int, @Body request: UpdateReceiptRequest): SuccessResponse

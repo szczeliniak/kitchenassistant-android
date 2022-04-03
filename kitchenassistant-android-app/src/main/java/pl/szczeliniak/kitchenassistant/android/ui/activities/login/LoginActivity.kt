@@ -34,7 +34,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var loginStateHandler: LoadingStateHandler<LoginResponse>
+    private val loginStateHandler: LoadingStateHandler<LoginResponse> = prepareLoginStateHandler()
 
     private val viewModel: LoginActivityViewModel by viewModels()
 
@@ -52,8 +52,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         binding.activityLoginForm.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
         setContentView(binding.root)
-
-        loginStateHandler = prepareLoginStateHandler()
     }
 
     private fun goToMainActivity() {
@@ -66,9 +64,9 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.activityLoginForm.activityLoginEdittextPassword.text.toString()
 
         if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
-            toast(R.string.activity_login_error_wrong_email)
+            toast(R.string.toast_wrong_email)
         } else if (password.isEmpty()) {
-            toast(R.string.activity_login_error_wrong_password)
+            toast(R.string.toast_wrong_password)
         } else {
             viewModel.login(LoginRequest(email, password))
                 .observe(this@LoginActivity) { loginStateHandler.handle(it) }
@@ -94,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
-                    this@LoginActivity.toast(R.string.activity_login_error_login_data_does_not_match)
+                    this@LoginActivity.toast(R.string.toast_login_data_does_not_match)
                 }
                 binding.activityLoginForm.activityLoginEdittextPassword.setText("")
                 onException(exception)

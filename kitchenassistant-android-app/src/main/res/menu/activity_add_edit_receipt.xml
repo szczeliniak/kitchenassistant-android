@@ -5,6 +5,6 @@
             android:id="@+id/activity_add_edit_receipt_menu_item_save"
             android:icon="@drawable/icon_done"
             app:showAsAction="always"
-            android:title="@string/activity_add_edit_receipt_menu_item_save_label"/>
+            android:title="@string/button_label_save"/>
 
 </menu>

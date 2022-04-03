@@ -8,8 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.events.NewIngredientEvent
+import pl.szczeliniak.kitchenassistant.android.events.NewStepEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
@@ -19,6 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.R
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -34,8 +39,11 @@ class ReceiptActivity : AppCompatActivity() {
         }
     }
 
+    @Inject
+    lateinit var eventBus: EventBus
+
     private lateinit var binding: ActivityReceiptBinding
-    private lateinit var receiptLoadingStateHandler: LoadingStateHandler<Receipt>
+    private val receiptLoadingStateHandler: LoadingStateHandler<Receipt> = prepareReceiptLoadingStateHandler()
     private val observers = mutableListOf<ReceiptActivityFragment>()
 
     private val viewModel: ReceiptActivityViewModel by viewModels()
@@ -54,7 +62,6 @@ class ReceiptActivity : AppCompatActivity() {
         initPager()
         setContentView(binding.root)
 
-        receiptLoadingStateHandler = prepareReceiptLoadingStateHandler()
         viewModel.receipt.observe(this) { receiptLoadingStateHandler.handle(it) }
         reload()
     }
@@ -113,6 +120,26 @@ class ReceiptActivity : AppCompatActivity() {
 
     fun removeChangesObserver(fragment: ReceiptActivityFragment) {
         observers.remove(fragment)
+    }
+
+    override fun onStart() {
+        eventBus.register(this)
+        super.onStart()
+    }
+
+    override fun onStop() {
+        eventBus.unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe
+    fun newIngredientEvent(event: NewIngredientEvent) {
+        reload()
+    }
+
+    @Subscribe
+    fun newStepEvent(event: NewStepEvent) {
+        reload()
     }
 
 }

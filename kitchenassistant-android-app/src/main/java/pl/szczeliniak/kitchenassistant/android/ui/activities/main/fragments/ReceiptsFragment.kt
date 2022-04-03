@@ -130,7 +130,7 @@ class ReceiptsFragment : Fragment() {
     }
 
     @Subscribe
-    fun newReceiptSuccessEvent(event: NewReceiptEvent) {
+    fun newReceiptEvent(event: NewReceiptEvent) {
         reloadReceipts()
     }
 

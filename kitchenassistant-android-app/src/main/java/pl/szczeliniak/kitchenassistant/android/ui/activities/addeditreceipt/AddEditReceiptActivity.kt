@@ -152,7 +152,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private fun validateData(): Boolean {
         if (name.isEmpty()) {
-            toast(R.string.activity_add_edit_receipt_error_name_is_empty)
+            toast(R.string.toast_receipt_name_is_empty)
             return false
         }
         return true
