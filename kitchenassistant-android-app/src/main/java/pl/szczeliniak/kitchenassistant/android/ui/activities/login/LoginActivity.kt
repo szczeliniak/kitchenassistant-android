@@ -74,7 +74,7 @@ class LoginActivity : AppCompatActivity() {
     private fun prepareLoginStateHandler(): LoadingStateHandler<LoginResponse> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
-                binding.activityLoginLayout!!.hideProgressSpinner(this@LoginActivity)
+                binding.root.hideProgressSpinner(this@LoginActivity)
                 binding.activityLoginForm.activityLoginButtonLogin.enable(true)
             }
 
@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onInProgress() {
-                binding.activityLoginLayout!!.showProgressSpinner(this@LoginActivity)
+                binding.root.showProgressSpinner(this@LoginActivity)
                 binding.activityLoginForm.activityLoginButtonLogin.enable(false)
 
             }

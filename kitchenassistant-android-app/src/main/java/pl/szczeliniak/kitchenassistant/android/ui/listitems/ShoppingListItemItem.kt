@@ -27,7 +27,7 @@ class ShoppingListItemItem constructor(
         popupMenu.inflate(R.menu.shopping_list_item_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.ingredient_item_menu_item_delete -> {
+                R.id.shopping_list_item_item_menu_item_delete -> {
                     onDeleteClick.onClick(shoppingListId, shoppingListItem)
                     return@setOnMenuItemClickListener true
                 }

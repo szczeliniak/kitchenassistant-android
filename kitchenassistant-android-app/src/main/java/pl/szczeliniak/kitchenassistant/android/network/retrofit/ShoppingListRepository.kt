@@ -18,6 +18,12 @@ interface ShoppingListRepository {
     @DELETE("/shoppinglists/{id}")
     suspend fun delete(@Path("id") id: Int): SuccessResponse
 
+    @DELETE("/shoppinglists/{id}/items/{itemId}")
+    suspend fun deleteShoppingListItem(
+        @Path("id") shoppingListId: Int,
+        @Path("itemId") shoppingListItemId: Int
+    ): SuccessResponse
+
     @POST("/shoppinglists")
     suspend fun add(@Body request: AddShoppingListRequest): SuccessResponse
 

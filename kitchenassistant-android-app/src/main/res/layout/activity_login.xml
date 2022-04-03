@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/activity_login_layout"
+    <androidx.core.widget.NestedScrollView
+            android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_login_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-            <include layout="@layout/activity_login_header"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <include
-                    android:id="@+id/activity_login_form"
-                    layout="@layout/activity_login_form"/>
+                <include layout="@layout/activity_login_header"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                <include
+                        android:id="@+id/activity_login_form"
+                        layout="@layout/activity_login_form"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
 
-</androidx.core.widget.NestedScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 

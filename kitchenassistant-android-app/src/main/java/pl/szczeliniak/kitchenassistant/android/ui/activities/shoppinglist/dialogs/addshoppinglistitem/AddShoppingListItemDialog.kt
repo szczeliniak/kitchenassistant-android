@@ -88,10 +88,10 @@ class AddShoppingListItemDialog private constructor() : DialogFragment() {
 
     private fun validate(): Boolean {
         if (name.isEmpty()) {
-            requireActivity().toast(R.string.toast_ingredient_name_is_empty)
+            requireActivity().toast(R.string.toast_shopping_list_item_name_is_empty)
             return false
         } else if (quantity.isEmpty()) {
-            requireActivity().toast(R.string.toast_ingredient_quantity_is_empty)
+            requireActivity().toast(R.string.toast_shopping_list_item_quantity_is_empty)
             return false
         }
         return true

@@ -13,6 +13,8 @@
     <string name="toast_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
     <string name="toast_step_name_is_empty">Step name cannot be empty</string>
     <string name="toast_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
+    <string name="toast_shopping_list_item_name_is_empty">Item name cannot be empty</string>
+    <string name="toast_shopping_list_item_quantity_is_empty">Quantity cannot be empty</string>
 
     <string name="message_empty_list">Empty list</string>
 
@@ -46,6 +48,7 @@
 
     <string name="dialog_add_ingredient_name">Add ingredient</string>
     <string name="dialog_add_step_name">Add step</string>
+    <string name="dialog_add_shopping_list_item_name">Add shopping list item</string>
 
     <string name="receipt_name_label">Receipt name</string>
     <string name="receipt_author_label">Author</string>
@@ -62,7 +65,7 @@
     <string name="shopping_list_name_label">Name</string>
     <string name="shipping_list_description_label">Description</string>
     <string name="shipping_list_items_label">Items</string>
-    <string name="dialog_add_shopping_list_item_name">Add shopping list item</string>
+
     <string name="shopping_list_item_name_label">Name</string>
     <string name="shopping_list_item_quantity_label">Quantity</string>
     <string name="shopping_list_item_sequence_label">Sequence</string>

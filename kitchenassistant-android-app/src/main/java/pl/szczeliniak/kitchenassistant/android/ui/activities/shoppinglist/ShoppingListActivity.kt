@@ -40,6 +40,8 @@ class ShoppingListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityShoppingListBinding
     private val shoppingListLoadingStateHandler: LoadingStateHandler<ShoppingList> =
         prepareShoppingListLoadingStateHandler()
+    private val deleteShoppingListItemStateHandler: LoadingStateHandler<Int> =
+        prepareDeleteShoppingListItemStateHandler()
 
     private val viewModel: ShoppingListActivityViewModel by viewModels()
 
@@ -82,15 +84,34 @@ class ShoppingListActivity : AppCompatActivity() {
                     binding.activityShoppingListLayoutItems.showEmptyIcon(this@ShoppingListActivity)
                 } else {
                     binding.activityShoppingListLayoutItems.hideEmptyIcon()
-                    data.items.forEach {
+                    data.items.forEach { item ->
                         itemsAdapter.add(
                             ShoppingListItemItem(
-                                this@ShoppingListActivity, shoppingListId, it
+                                this@ShoppingListActivity, shoppingListId, item
                             ) { shoppingListId, shoppingListItem ->
-                                //TODO delete
+                                viewModel.deleteShoppingListItem(shoppingListId, shoppingListItem.id)
+                                    .observe(this@ShoppingListActivity) {
+                                        deleteShoppingListItemStateHandler.handle(it)
+                                    }
                             })
                     }
                 }
+            }
+        })
+    }
+
+    private fun prepareDeleteShoppingListItemStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onSuccess(data: Int) {
+                viewModel.load(shoppingListId)
             }
         })
     }

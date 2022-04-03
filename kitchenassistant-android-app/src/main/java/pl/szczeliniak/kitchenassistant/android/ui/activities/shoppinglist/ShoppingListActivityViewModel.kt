@@ -31,4 +31,14 @@ class ShoppingListActivityViewModel @Inject constructor(
         }
     }
 
+    fun deleteShoppingListItem(shoppingListId: Int, shoppingListItemId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            shoppingListService.deleteShoppingListItem(shoppingListId, shoppingListItemId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
 }
