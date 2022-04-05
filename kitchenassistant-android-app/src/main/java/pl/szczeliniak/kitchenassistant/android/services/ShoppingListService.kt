@@ -9,13 +9,16 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListR
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 
-class ShoppingListService constructor(private val repository: ShoppingListRepository) {
+class ShoppingListService constructor(
+    private val repository: ShoppingListRepository,
+    private val localStorageService: LocalStorageService
+) {
 
-    suspend fun findAll(): Flow<LoadingState<List<ShoppingList>>> {
+    suspend fun findAll(archived: Boolean): Flow<LoadingState<List<ShoppingList>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAll().shoppingLists))
+                emit(LoadingState.Success(repository.findAll(localStorageService.getId(), archived).shoppingLists))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

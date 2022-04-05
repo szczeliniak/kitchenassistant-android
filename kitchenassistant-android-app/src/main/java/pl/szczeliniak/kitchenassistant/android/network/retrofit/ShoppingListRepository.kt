@@ -10,7 +10,10 @@ import retrofit2.http.*
 interface ShoppingListRepository {
 
     @GET("/shoppinglists")
-    suspend fun findAll(): ShoppingListsResponse
+    suspend fun findAll(
+        @Query("userId") userId: Int? = null,
+        @Query("archived") archived: Boolean? = null
+    ): ShoppingListsResponse
 
     @GET("/shoppinglists/{id}")
     suspend fun findById(@Path("id") id: Int): ShoppingListResponse

@@ -90,10 +90,11 @@ class ReceiptsFragment : Fragment() {
             }
 
             override fun onSuccess(data: List<Receipt>) {
+                adapter.clear()
                 if (data.isEmpty()) {
                     binding.fragmentReceiptsLayout.showEmptyIcon(requireActivity())
                 } else {
-                    adapter.clear()
+                    binding.fragmentReceiptsLayout.hideEmptyIcon()
                     data.forEach { receipt ->
                         adapter.add(ReceiptItem(requireContext(), receipt, {
                             ReceiptActivity.start(requireContext(), it.id)

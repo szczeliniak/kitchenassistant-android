@@ -25,7 +25,7 @@ class ShoppingListsFragmentViewModel @Inject constructor(
 
     fun reloadShoppingLists() {
         viewModelScope.launch {
-            shoppingListService.findAll()
+            shoppingListService.findAll(false)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

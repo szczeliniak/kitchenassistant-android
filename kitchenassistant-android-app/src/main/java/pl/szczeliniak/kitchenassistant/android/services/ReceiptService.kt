@@ -10,13 +10,16 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 
-class ReceiptService constructor(private val repository: ReceiptRepository) {
+class ReceiptService constructor(
+    private val repository: ReceiptRepository,
+    private val localStorageService: LocalStorageService
+) {
 
     suspend fun findAll(): Flow<LoadingState<List<Receipt>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAll().receipts))
+                emit(LoadingState.Success(repository.findAll(localStorageService.getId()).receipts))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

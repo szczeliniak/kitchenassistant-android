@@ -16,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.add
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep.AddStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -74,6 +75,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
             if (r.steps.isEmpty()) {
                 binding.root.showEmptyIcon(requireActivity())
             } else {
+                binding.root.hideEmptyIcon()
                 r.steps.forEach { step ->
                     stepsAdapter.add(StepItem(requireContext(), r.id, step) { receiptId, s ->
                         viewModel.delete(receiptId, s.id).observe(viewLifecycleOwner) {

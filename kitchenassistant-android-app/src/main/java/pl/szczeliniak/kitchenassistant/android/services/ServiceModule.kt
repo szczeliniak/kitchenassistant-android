@@ -21,10 +21,14 @@ class ServiceModule {
     fun loginService(loginRepository: LoginRepository): LoginService = LoginService(loginRepository)
 
     @Provides
-    fun receiptService(receiptRepository: ReceiptRepository): ReceiptService = ReceiptService(receiptRepository)
+    fun receiptService(receiptRepository: ReceiptRepository, localStorageService: LocalStorageService): ReceiptService =
+        ReceiptService(receiptRepository, localStorageService)
 
     @Provides
-    fun shoppingListService(shoppingListRepository: ShoppingListRepository): ShoppingListService =
-        ShoppingListService(shoppingListRepository)
+    fun shoppingListService(
+        shoppingListRepository: ShoppingListRepository,
+        localStorageService: LocalStorageService
+    ): ShoppingListService =
+        ShoppingListService(shoppingListRepository, localStorageService)
 
 }

@@ -90,10 +90,11 @@ class ShoppingListsFragment : Fragment() {
             }
 
             override fun onSuccess(data: List<ShoppingList>) {
+                adapter.clear()
                 if (data.isEmpty()) {
                     binding.fragmentShoppingListsLayout.showEmptyIcon(requireActivity())
                 } else {
-                    adapter.clear()
+                    binding.fragmentShoppingListsLayout.hideEmptyIcon()
                     data.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(requireContext(), shoppingList, {
                             ShoppingListActivity.start(requireContext(), shoppingList.id)
