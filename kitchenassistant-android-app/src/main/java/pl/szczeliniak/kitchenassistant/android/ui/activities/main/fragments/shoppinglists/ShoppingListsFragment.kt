@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentShoppingListsBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity
@@ -119,7 +119,7 @@ class ShoppingListsFragment : Fragment() {
     }
 
     @Subscribe
-    fun newShoppingListEvent(event: NewShoppingListEvent) {
+    fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
         viewModel.reloadShoppingLists()
     }
 

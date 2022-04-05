@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddStepBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewStepEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -67,7 +67,7 @@ class AddStepDialog private constructor() : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(NewStepEvent())
+                eventBus.post(ReloadReceiptEvent())
                 dismiss()
             }
         })

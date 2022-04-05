@@ -27,6 +27,9 @@ interface ShoppingListRepository {
     @POST("/shoppinglists")
     suspend fun add(@Body request: AddShoppingListRequest): SuccessResponse
 
+    @POST("/shoppinglists/{id}/archived/{isArchived}")
+    suspend fun archive(@Path("id") id: Int, @Path("isArchived") isArchived: Boolean): SuccessResponse
+
     @POST("/shoppinglists/{id}/items")
     suspend fun addShoppingListItem(@Path("id") id: Int, @Body request: AddShoppingListItemRequest): SuccessResponse
 

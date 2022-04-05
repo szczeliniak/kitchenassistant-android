@@ -9,7 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddShoppingListItemBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListItemEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -67,7 +67,7 @@ class AddShoppingListItemDialog private constructor() : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(NewShoppingListItemEvent())
+                eventBus.post(ReloadShoppingListEvent())
                 dismiss()
             }
         })

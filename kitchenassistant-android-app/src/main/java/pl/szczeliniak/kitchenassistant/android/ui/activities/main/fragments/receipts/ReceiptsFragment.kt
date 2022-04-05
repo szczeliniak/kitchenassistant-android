@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewReceiptEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddReceiptActivity
@@ -119,7 +119,7 @@ class ReceiptsFragment : Fragment() {
     }
 
     @Subscribe
-    fun newReceiptEvent(event: NewReceiptEvent) {
+    fun reloadReceiptsEvent(event: ReloadReceiptsEvent) {
         viewModel.reloadReceipts()
     }
 

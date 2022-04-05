@@ -1,4 +1,0 @@
-package pl.szczeliniak.kitchenassistant.android.events
-
-class NewShoppingListItemEvent {
-}

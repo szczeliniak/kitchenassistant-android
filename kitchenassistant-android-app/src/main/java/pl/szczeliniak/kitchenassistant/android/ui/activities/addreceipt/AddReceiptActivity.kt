@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddReceiptBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewReceiptEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
@@ -79,7 +79,7 @@ class AddReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(NewReceiptEvent())
+                eventBus.post(ReloadReceiptsEvent())
                 ReceiptActivity.start(this@AddReceiptActivity, data)
                 finish()
             }

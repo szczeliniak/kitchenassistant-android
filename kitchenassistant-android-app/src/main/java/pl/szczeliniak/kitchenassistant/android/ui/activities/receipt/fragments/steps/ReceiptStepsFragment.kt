@@ -10,7 +10,7 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
-import pl.szczeliniak.kitchenassistant.android.events.DeleteStepEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep.AddStepDialog
@@ -56,7 +56,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(DeleteStepEvent())
+                eventBus.post(ReloadReceiptEvent())
             }
         })
     }

@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
@@ -79,7 +79,7 @@ class AddShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(NewShoppingListEvent())
+                eventBus.post(ReloadShoppingListsEvent())
                 ShoppingListActivity.start(this@AddShoppingListActivity, data)
                 finish()
             }

@@ -50,6 +50,19 @@ class ShoppingListService constructor(private val repository: ShoppingListReposi
         }
     }
 
+    suspend fun archive(id: Int, isArchived: Boolean): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.archive(id, isArchived).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun deleteShoppingListItem(shoppingListId: Int, shoppingListItemId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

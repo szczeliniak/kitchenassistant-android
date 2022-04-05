@@ -69,5 +69,6 @@
     <string name="shopping_list_item_name_label">Name</string>
     <string name="shopping_list_item_quantity_label">Quantity</string>
     <string name="shopping_list_item_sequence_label">Sequence</string>
+    <string name="button_label_archive">Archive</string>
 
 </resources>

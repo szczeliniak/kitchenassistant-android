@@ -3,6 +3,8 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.xwray.groupie.GroupAdapter
@@ -10,8 +12,10 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.NewShoppingListItemEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem.AddShoppingListItemDialog
@@ -42,6 +46,8 @@ class ShoppingListActivity : AppCompatActivity() {
         prepareShoppingListLoadingStateHandler()
     private val deleteShoppingListItemStateHandler: LoadingStateHandler<Int> =
         prepareDeleteShoppingListItemStateHandler()
+    private val archiveShoppingListStateHandler: LoadingStateHandler<Int> =
+        prepareArchiveShoppingListStateHandler()
 
     private val viewModel: ShoppingListActivityViewModel by viewModels()
 
@@ -89,7 +95,7 @@ class ShoppingListActivity : AppCompatActivity() {
                             ShoppingListItemItem(
                                 this@ShoppingListActivity, shoppingListId, item
                             ) { shoppingListId, shoppingListItem ->
-                                viewModel.deleteShoppingListItem(shoppingListId, shoppingListItem.id)
+                                viewModel.deleteItem(shoppingListId, shoppingListItem.id)
                                     .observe(this@ShoppingListActivity) {
                                         deleteShoppingListItemStateHandler.handle(it)
                                     }
@@ -116,6 +122,23 @@ class ShoppingListActivity : AppCompatActivity() {
         })
     }
 
+    private fun prepareArchiveShoppingListStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onSuccess(data: Int) {
+                eventBus.post(ReloadShoppingListsEvent())
+                finish()
+            }
+        })
+    }
+
     override fun onStart() {
         eventBus.register(this)
         super.onStart()
@@ -126,8 +149,21 @@ class ShoppingListActivity : AppCompatActivity() {
         super.onStop()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_shopping_list, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.activity_shopping_list_menu_item_archive) {
+            viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     @Subscribe
-    fun newShoppingListItemEvent(event: NewShoppingListItemEvent) {
+    fun reloadShoppingListEvent(event: ReloadShoppingListEvent) {
         viewModel.load(shoppingListId)
     }
 
