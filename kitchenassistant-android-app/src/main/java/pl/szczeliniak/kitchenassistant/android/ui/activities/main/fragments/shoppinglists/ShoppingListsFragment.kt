@@ -54,12 +54,12 @@ class ShoppingListsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         shoppingListsLoadingStateHandler = prepareShoppingListsLoadingStateHandler()
-        deleteShoppingListLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
+        deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
         viewModel.shoppingLists.observe(viewLifecycleOwner) { shoppingListsLoadingStateHandler.handle(it) }
         viewModel.reloadShoppingLists()
     }
 
-    private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.fragmentShoppingListsLayout.showProgressSpinner(requireActivity())

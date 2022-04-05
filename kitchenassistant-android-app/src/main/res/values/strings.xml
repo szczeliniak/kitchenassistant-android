@@ -22,6 +22,7 @@
     <string name="button_label_cancel">Cancel</string>
     <string name="button_label_save">Save</string>
     <string name="button_label_delete">Delete</string>
+    <string name="button_label_archive">Archive</string>
 
     <string name="activity_login_label_edittext_email">Email</string>
     <string name="activity_login_label_edittext_password">Password</string>
@@ -39,6 +40,7 @@
 
     <string name="activity_new_receipt_name">New receipt</string>
     <string name="activity_new_shopping_list_name">Add shopping list</string>
+    <string name="activity_archived_shopping_lists_name">Archived shopping lists</string>
 
     <string name="fragment_receipts_name">Receipts</string>
     <string name="fragment_receipt_info_name">Info</string>
@@ -69,6 +71,5 @@
     <string name="shopping_list_item_name_label">Name</string>
     <string name="shopping_list_item_quantity_label">Quantity</string>
     <string name="shopping_list_item_sequence_label">Sequence</string>
-    <string name="button_label_archive">Archive</string>
 
 </resources>
