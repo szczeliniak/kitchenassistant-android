@@ -11,9 +11,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.joda.time.DateTime
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.network.converters.DateTimeConverter
+import pl.szczeliniak.kitchenassistant.android.network.converters.LocalDateConverter
+import pl.szczeliniak.kitchenassistant.android.network.converters.LocalDateTimeConverter
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkCheckInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConnectionChecker
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
@@ -23,6 +23,8 @@ import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepo
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Singleton
 
 @Module
@@ -30,13 +32,20 @@ import javax.inject.Singleton
 class NetworkModule {
 
     @Provides
-    fun dateTimeConverter(): DateTimeConverter = DateTimeConverter()
+    fun localDateConverter(): LocalDateConverter = LocalDateConverter()
+
+    @Provides
+    fun localDateTimeConverter(): LocalDateTimeConverter = LocalDateTimeConverter()
 
     @Provides
     @Singleton
-    fun gson(dateTimeConverter: DateTimeConverter): Gson {
+    fun gson(
+        localDateConverter: LocalDateConverter,
+        localDateTimeConverter: LocalDateTimeConverter
+    ): Gson {
         return GsonBuilder()
-            .registerTypeAdapter(DateTime::class.java, dateTimeConverter)
+            .registerTypeAdapter(LocalDate::class.java, localDateConverter)
+            .registerTypeAdapter(LocalDateTime::class.java, localDateTimeConverter)
             .create()
     }
 

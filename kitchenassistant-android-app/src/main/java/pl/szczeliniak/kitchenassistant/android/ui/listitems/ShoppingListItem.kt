@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.utils.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class ShoppingListItem constructor(
     private val context: Context,
@@ -24,6 +25,11 @@ class ShoppingListItem constructor(
         )
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
         binding.shoppingListItemButtonMore.setOnClickListener { showPopupMenu(it) }
+        shoppingList.date?.let {
+            binding.shoppingListItemTextviewDate.text = LocalDateUtils.stringify(it)
+        } ?: run {
+            binding.shoppingListItemTextviewDate.visibility = View.GONE
+        }
     }
 
     override fun getLayout(): Int {

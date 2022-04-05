@@ -20,6 +20,13 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/shopping_list_item_textview_date"
+                tools:text="Adam Malysz"
+                style="@style/ListItemOverLineText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/shopping_list_item_textview_name"
                 tools:text="Shopping list name"
                 style="@style/ListItemTextPrimary"
