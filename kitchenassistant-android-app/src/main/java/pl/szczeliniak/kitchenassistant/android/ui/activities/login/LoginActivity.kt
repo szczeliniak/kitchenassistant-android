@@ -66,9 +66,9 @@ class LoginActivity : AppCompatActivity() {
         val password = binding.activityLoginForm.activityLoginEdittextPassword.text.toString()
 
         if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
-            toast(R.string.toast_wrong_email)
+            toast(R.string.message_wrong_email)
         } else if (password.isEmpty()) {
-            toast(R.string.toast_wrong_password)
+            toast(R.string.message_wrong_password)
         } else {
             viewModel.login(LoginRequest(email, password))
                 .observe(this@LoginActivity) { loginStateHandler.handle(it) }
@@ -94,7 +94,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
-                    this@LoginActivity.toast(R.string.toast_login_data_does_not_match)
+                    this@LoginActivity.toast(R.string.message_login_data_does_not_match)
                     binding.activityLoginForm.activityLoginEdittextPassword.setText("")
                 } else {
                     super.onHttpException(exception)

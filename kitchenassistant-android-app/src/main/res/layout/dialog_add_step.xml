@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/dialog_add_step_name"
+            android:text="@string/title_dialog_add_step"
             style="@style/DialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/step_name_label"
+                android:hint="@string/label_step_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/step_name_max_length"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/step_description_label"
+                android:hint="@string/label_step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/step_description_max_length"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/step_sequence_label"
+                android:hint="@string/label_step_sequence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/step_sequence_max_length"

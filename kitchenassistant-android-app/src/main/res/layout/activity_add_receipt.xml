@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/receipt_name_label"
+                        android:hint="@string/label_receipt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/receipt_name_max_length"
@@ -53,7 +53,7 @@
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
                         style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
-                        android:hint="@string/receipt_author_label"
+                        android:hint="@string/label_receipt_author"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/receipt_author_max_length"
@@ -71,7 +71,7 @@
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/receipt_url_label"
+                        android:hint="@string/label_receipt_url"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/receipt_url_max_length"
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/receipt_description_label"
+                        android:hint="@string/label_receipt_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minLines="4"

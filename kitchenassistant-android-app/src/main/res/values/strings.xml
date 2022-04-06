@@ -3,33 +3,31 @@
     <string name="app_description">Receipts management</string>
     <string name="app_api_host">https://www.api.kitchenassistant.szczeliniak.pl</string>
 
-    <string name="toast_login_data_does_not_match">User and password does not match</string>
-    <string name="toast_wrong_password">Invalid password</string>
-    <string name="toast_wrong_email">Invalid email</string>
-    <string name="toast_receipt_name_is_empty">Receipt name cannot be empty</string>
-    <string name="toast_ingredient_name_is_empty">Ingredient name cannot be empty</string>
-    <string name="toast_ingredient_quantity_is_empty">Ingredient quantity cannot be empty</string>
-    <string name="toast_no_internet_connection">No Internet connection. Try again later.</string>
-    <string name="toast_cannot_execute_operation">Operation cannot be executed. Try again later.</string>
-    <string name="toast_step_name_is_empty">Step name cannot be empty</string>
-    <string name="toast_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
-    <string name="toast_shopping_list_item_name_is_empty">Item name cannot be empty</string>
-    <string name="toast_shopping_list_item_quantity_is_empty">Quantity cannot be empty</string>
-
+    <string name="message_login_data_does_not_match">User and password does not match</string>
+    <string name="message_wrong_password">Invalid password</string>
+    <string name="message_wrong_email">Invalid email</string>
+    <string name="message_receipt_name_is_empty">Receipt name cannot be empty</string>
+    <string name="message_ingredient_name_is_empty">Ingredient name cannot be empty</string>
+    <string name="message_ingredient_quantity_is_empty">Ingredient quantity cannot be empty</string>
+    <string name="message_no_internet_connection">No Internet connection. Try again later</string>
+    <string name="message_cannot_execute_operation">Operation cannot be executed. Try again later</string>
+    <string name="message_step_name_is_empty">Step name cannot be empty</string>
+    <string name="message_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
+    <string name="message_shopping_list_item_name_is_empty">Item name cannot be empty</string>
+    <string name="message_shopping_list_item_quantity_is_empty">Quantity cannot be empty</string>
+    <string name="message_empty_name">Name cannot be empty</string>
+    <string name="message_register_email_exists">Email exists</string>
     <string name="message_empty_list">Empty list</string>
 
-    <string name="button_label_add">Add</string>
-    <string name="button_label_cancel">Cancel</string>
-    <string name="button_label_save">Save</string>
-    <string name="button_label_delete">Delete</string>
-    <string name="button_label_archive">Archive</string>
+    <string name="form_login_email">Email</string>
+    <string name="form_login_password">Password</string>
+    <string name="form_register_email">Email</string>
+    <string name="form_register_name">Name</string>
+    <string name="from_register_password">Password</string>
+    <string name="form_register_password2">Repeat password</string>
 
-    <string name="activity_login_label_edittext_email">Email</string>
-    <string name="activity_login_label_edittext_password">Password</string>
-    <string name="button_label_login">Login</string>
-
-    <string name="menu_nav_view_label_section_others">Others</string>
-    <string name="menu_nav_view_label_item_logout">Log out</string>
+    <string name="label_nav_view_section_others">Others</string>
+    <string name="label_nav_view_item_logout">Log out</string>
 
     <string name="description_logo">Application logo</string>
     <string name="description_add_receipt">Add receipt</string>
@@ -38,46 +36,40 @@
     <string name="description_add_shopping_list">Add shopping list</string>
     <string name="description_add_shopping_list_item">Add shopping list item</string>
 
-    <string name="activity_new_receipt_name">New receipt</string>
-    <string name="activity_new_shopping_list_name">Add shopping list</string>
-    <string name="activity_archived_shopping_lists_name">Archived shopping lists</string>
+    <string name="title_activity_new_receipt">New receipt</string>
+    <string name="title_activity_new_shopping_list">Add shopping list</string>
+    <string name="title_activity_archived_shopping_lists">Archived shopping lists</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_fragment_receipts">Receipts</string>
+    <string name="title_fragment_receipt_info">Info</string>
+    <string name="title_fragment_receipt_ingredients">Ingredients</string>
+    <string name="title_fragment_receipt_steps">Steps</string>
+    <string name="title_fragment_shopping_lists">Shopping lists</string>
+    <string name="title_dialog_add_ingredient">Add ingredient</string>
+    <string name="title_dialog_add_step">Add step</string>
+    <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
 
-    <string name="fragment_receipts_name">Receipts</string>
-    <string name="fragment_receipt_info_name">Info</string>
-    <string name="fragment_receipt_ingredients_name">Ingredients</string>
-    <string name="fragment_receipt_steps_name">Steps</string>
-    <string name="fragment_shopping_lists_name">Shopping lists</string>
-
-    <string name="dialog_add_ingredient_name">Add ingredient</string>
-    <string name="dialog_add_step_name">Add step</string>
-    <string name="dialog_add_shopping_list_item_name">Add shopping list item</string>
-
-    <string name="receipt_name_label">Receipt name</string>
-    <string name="receipt_author_label">Author</string>
-    <string name="receipt_url_label">URL</string>
-    <string name="receipt_description_label">Description</string>
-
-    <string name="ingredient_name_label">Name</string>
-    <string name="ingredient_quantity_label">Quantity</string>
-
-    <string name="step_name_label">Name</string>
-    <string name="step_description_label">Description</string>
-    <string name="step_sequence_label">Sequence</string>
-
-    <string name="shopping_list_name_label">Name</string>
-    <string name="shipping_list_description_label">Description</string>
-    <string name="shipping_list_items_label">Items</string>
-
-    <string name="shopping_list_item_name_label">Name</string>
-    <string name="shopping_list_item_quantity_label">Quantity</string>
-    <string name="shopping_list_item_sequence_label">Sequence</string>
-    <string name="activity_register_label_edittext_email">Email</string>
-    <string name="activity_register_label_edittext_password">Password</string>
-    <string name="button_label_register">Register</string>
-    <string name="activity_register_label_edittext_name">Name</string>
-    <string name="activity_register_label_edittext_password2">Repeat password</string>
-    <string name="activity_register_name">Register</string>
-    <string name="toast_wrong_name">Name cannot be empty</string>
-    <string name="toast_register_email_exists">Email exists</string>
+    <string name="label_button_add">Add</string>
+    <string name="label_button_cancel">Cancel</string>
+    <string name="label_button_save">Save</string>
+    <string name="label_button_delete">Delete</string>
+    <string name="label_button_archive">Archive</string>
+    <string name="label_button_register">Register</string>
+    <string name="label_button_login">Login</string>
+    <string name="label_receipt_name">Receipt name</string>
+    <string name="label_receipt_author">Author</string>
+    <string name="label_receipt_url">URL</string>
+    <string name="label_receipt_description">Description</string>
+    <string name="label_ingredient_name">Name</string>
+    <string name="label_ingredient_quantity">Quantity</string>
+    <string name="label_step_name">Name</string>
+    <string name="label_step_description">Description</string>
+    <string name="label_step_sequence">Sequence</string>
+    <string name="label_shopping_list_name">Name</string>
+    <string name="label_shopping_list_description">Description</string>
+    <string name="label_shopping_list_items">Items</string>
+    <string name="label_shopping_list_item_name">Name</string>
+    <string name="label_shopping_list_item_quantity">Quantity</string>
+    <string name="label_shopping_list_item_sequence">Sequence</string>
 
 </resources>

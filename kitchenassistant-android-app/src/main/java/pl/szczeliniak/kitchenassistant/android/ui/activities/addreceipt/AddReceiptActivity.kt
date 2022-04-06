@@ -52,7 +52,7 @@ class AddReceiptActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.activity_new_receipt_name)
+        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.title_activity_new_receipt)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -95,7 +95,7 @@ class AddReceiptActivity : AppCompatActivity() {
 
     private fun validateData(): Boolean {
         if (name.isEmpty()) {
-            toast(R.string.toast_receipt_name_is_empty)
+            toast(R.string.message_receipt_name_is_empty)
             return false
         }
         return true

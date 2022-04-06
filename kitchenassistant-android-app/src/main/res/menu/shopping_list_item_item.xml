@@ -3,6 +3,6 @@
 
     <item
             android:id="@+id/shopping_list_item_item_menu_item_delete"
-            android:title="@string/button_label_delete"/>
+            android:title="@string/label_button_delete"/>
 
 </menu>

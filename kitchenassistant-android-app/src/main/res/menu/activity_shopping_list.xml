@@ -5,6 +5,6 @@
             android:id="@+id/activity_shopping_list_menu_item_archive"
             android:icon="@drawable/icon_archive"
             app:showAsAction="always"
-            android:title="@string/button_label_archive"/>
+            android:title="@string/label_button_archive"/>
 
 </menu>

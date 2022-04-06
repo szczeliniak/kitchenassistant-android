@@ -95,13 +95,13 @@ class ReceiptActivity : AppCompatActivity() {
         TabLayoutMediator(binding.activityReceiptTabLayout, binding.activityReceiptViewPager) { tab, position ->
             val nameId = when (position) {
                 0 -> {
-                    R.string.fragment_receipt_info_name
+                    R.string.title_fragment_receipt_info
                 }
                 1 -> {
-                    R.string.fragment_receipt_ingredients_name
+                    R.string.title_fragment_receipt_ingredients
                 }
                 2 -> {
-                    R.string.fragment_receipt_steps_name
+                    R.string.title_fragment_receipt_steps
                 }
                 else -> {
                     throw UnsupportedOperationException()

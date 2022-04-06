@@ -48,8 +48,8 @@ class AddIngredientDialog private constructor() : DialogFragment() {
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
-        builder.setPositiveButton(R.string.button_label_add) { _, _ -> }
-        builder.setNegativeButton(R.string.button_label_cancel) { _, _ -> }
+        builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
+        builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
 
         addIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
 
@@ -88,10 +88,10 @@ class AddIngredientDialog private constructor() : DialogFragment() {
 
     private fun validate(): Boolean {
         if (name.isEmpty()) {
-            requireActivity().toast(R.string.toast_ingredient_name_is_empty)
+            requireActivity().toast(R.string.message_ingredient_name_is_empty)
             return false
         } else if (quantity.isEmpty()) {
-            requireActivity().toast(R.string.toast_ingredient_quantity_is_empty)
+            requireActivity().toast(R.string.message_ingredient_quantity_is_empty)
             return false
         }
         return true

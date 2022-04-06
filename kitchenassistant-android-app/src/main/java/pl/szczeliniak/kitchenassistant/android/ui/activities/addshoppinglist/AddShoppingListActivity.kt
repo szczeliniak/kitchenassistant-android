@@ -52,7 +52,7 @@ class AddShoppingListActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddShoppingListToolbar.toolbar.init(this, R.string.activity_new_shopping_list_name)
+        binding.activityAddShoppingListToolbar.toolbar.init(this, R.string.title_activity_new_shopping_list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -96,7 +96,7 @@ class AddShoppingListActivity : AppCompatActivity() {
 
     private fun validateData(): Boolean {
         if (name.isEmpty()) {
-            toast(R.string.toast_shopping_list_name_is_empty)
+            toast(R.string.message_shopping_list_name_is_empty)
             return false
         }
         return true

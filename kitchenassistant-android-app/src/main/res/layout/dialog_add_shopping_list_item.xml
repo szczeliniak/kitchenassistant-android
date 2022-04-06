@@ -8,7 +8,7 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/dialog_add_shopping_list_item_name"
+            android:text="@string/title_dialog_add_shopping_list_item"
             style="@style/DialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/shopping_list_item_name_label"
+                android:hint="@string/label_shopping_list_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_name_max_length"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/shopping_list_item_quantity_label"
+                android:hint="@string/label_shopping_list_item_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_quantity_max_length"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/shopping_list_item_sequence_label"
+                android:hint="@string/label_shopping_list_item_sequence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_sequence_max_length"

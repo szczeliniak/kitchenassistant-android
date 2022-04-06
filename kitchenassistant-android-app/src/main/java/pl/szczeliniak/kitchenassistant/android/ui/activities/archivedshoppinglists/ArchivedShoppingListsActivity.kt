@@ -54,7 +54,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.activityArchivedShoppingListsToolbarLayout.toolbar.init(
             this,
-            R.string.activity_archived_shopping_lists_name
+            R.string.title_activity_archived_shopping_lists
         )
         binding.activityArchivedShoppingListsRecyclerView.adapter = adapter
     }

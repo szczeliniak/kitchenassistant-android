@@ -39,7 +39,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
-        binding.activityRegisterToolbarLayout.toolbar.init(this, R.string.activity_register_name)
+        binding.activityRegisterToolbarLayout.toolbar.init(this, R.string.title_activity_register)
         binding.activityRegisterButtonRegister.setOnClickListener { handleRegisterButtonClick() }
         setContentView(binding.root)
     }
@@ -51,11 +51,11 @@ class RegisterActivity : AppCompatActivity() {
         val password2 = binding.activityRegisterEdittextPassword2.text.toString()
 
         if (name.isEmpty()) {
-            toast(R.string.toast_wrong_name)
+            toast(R.string.message_empty_name)
         } else if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
-            toast(R.string.toast_wrong_email)
+            toast(R.string.message_wrong_email)
         } else if (password.isEmpty() || password2.isEmpty() || password != password2) {
-            toast(R.string.toast_wrong_password)
+            toast(R.string.message_wrong_password)
         } else {
             viewModel.login(RegisterRequest(email, name, password, password2))
                 .observe(this@RegisterActivity) { registerStateHandler.handle(it) }
@@ -83,7 +83,7 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 409) {
-                    this@RegisterActivity.toast(R.string.toast_register_email_exists)
+                    this@RegisterActivity.toast(R.string.message_register_email_exists)
                 } else {
                     super.onHttpException(exception)
                 }
