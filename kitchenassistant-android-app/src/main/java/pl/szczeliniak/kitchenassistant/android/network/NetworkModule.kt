@@ -19,6 +19,7 @@ import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConne
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.LoginRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.RegisterRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import retrofit2.Retrofit
@@ -95,6 +96,11 @@ class NetworkModule {
     @Provides
     fun loginRepository(retrofitBuilder: Retrofit.Builder): LoginRepository {
         return retrofitBuilder.build().create(LoginRepository::class.java)
+    }
+
+    @Provides
+    fun registerRepository(retrofitBuilder: Retrofit.Builder): RegisterRepository {
+        return retrofitBuilder.build().create(RegisterRepository::class.java)
     }
 
     @Provides

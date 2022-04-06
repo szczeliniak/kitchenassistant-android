@@ -15,6 +15,7 @@
             android:theme="@style/Theme.KitchenAssistant">
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,26 +24,37 @@
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddReceiptActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppinglists.ArchivedShoppingListsActivity"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="false">
+        </activity>
+        <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity"
+                android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>
     </application>

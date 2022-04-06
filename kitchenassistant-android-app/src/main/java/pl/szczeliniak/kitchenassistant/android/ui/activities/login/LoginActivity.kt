@@ -13,6 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -49,6 +50,9 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         binding.activityLoginForm.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
+        binding.activityLoginForm.activityLoginButtonRegister.setOnClickListener {
+            RegisterActivity.start(this@LoginActivity)
+        }
         setContentView(binding.root)
     }
 
@@ -91,9 +95,10 @@ class LoginActivity : AppCompatActivity() {
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.toast_login_data_does_not_match)
+                    binding.activityLoginForm.activityLoginEdittextPassword.setText("")
+                } else {
+                    super.onHttpException(exception)
                 }
-                binding.activityLoginForm.activityLoginEdittextPassword.setText("")
-                onException(exception)
             }
         }
         )

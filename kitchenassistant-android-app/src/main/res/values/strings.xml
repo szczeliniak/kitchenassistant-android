@@ -26,7 +26,7 @@
 
     <string name="activity_login_label_edittext_email">Email</string>
     <string name="activity_login_label_edittext_password">Password</string>
-    <string name="activity_login_label_button_login">Login</string>
+    <string name="button_label_login">Login</string>
 
     <string name="menu_nav_view_label_section_others">Others</string>
     <string name="menu_nav_view_label_item_logout">Log out</string>
@@ -71,5 +71,13 @@
     <string name="shopping_list_item_name_label">Name</string>
     <string name="shopping_list_item_quantity_label">Quantity</string>
     <string name="shopping_list_item_sequence_label">Sequence</string>
+    <string name="activity_register_label_edittext_email">Email</string>
+    <string name="activity_register_label_edittext_password">Password</string>
+    <string name="button_label_register">Register</string>
+    <string name="activity_register_label_edittext_name">Name</string>
+    <string name="activity_register_label_edittext_password2">Repeat password</string>
+    <string name="activity_register_name">Register</string>
+    <string name="toast_wrong_name">Name cannot be empty</string>
+    <string name="toast_register_email_exists">Email exists</string>
 
 </resources>

@@ -33,12 +33,28 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-            style="@style/Button"
-            android:id="@+id/activity_login_button_login"
-            android:layout_marginVertical="@dimen/padding_margin_medium"
-            android:text="@string/activity_login_label_button_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:orientation="horizontal"
+            android:padding="@dimen/padding_margin_tiny"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+                style="@style/ButtonPrimary"
+                android:id="@+id/activity_login_button_login"
+                android:text="@string/button_label_login"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+                style="@style/ButtonSecondary"
+                android:id="@+id/activity_login_button_register"
+                android:text="@string/button_label_register"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

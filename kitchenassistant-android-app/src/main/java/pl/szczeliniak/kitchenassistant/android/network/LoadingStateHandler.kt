@@ -54,7 +54,9 @@ class LoadingStateHandler<T>(
 
         fun onFinish() {}
 
-        fun onHttpException(exception: HttpException) {}
+        fun onHttpException(exception: HttpException) {
+            onException(exception)
+        }
 
     }
 

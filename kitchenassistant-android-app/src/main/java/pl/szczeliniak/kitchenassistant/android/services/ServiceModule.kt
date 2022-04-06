@@ -8,6 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.LoginRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.RegisterRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 
 @Module
@@ -19,6 +20,9 @@ class ServiceModule {
 
     @Provides
     fun loginService(loginRepository: LoginRepository): LoginService = LoginService(loginRepository)
+
+    @Provides
+    fun registerService(registerRepository: RegisterRepository): RegisterService = RegisterService(registerRepository)
 
     @Provides
     fun receiptService(receiptRepository: ReceiptRepository, localStorageService: LocalStorageService): ReceiptService =
