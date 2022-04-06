@@ -96,17 +96,17 @@ class AddStepDialog private constructor() : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.dialogAddStepEdittextName.text.toString()
+            return binding.stepName.text.toString()
         }
 
     private val description: String
         get() {
-            return binding.dialogAddStepEdittextDescription.text.toString()
+            return binding.stepDescription.text.toString()
         }
 
     private val sequence: Int?
         get() {
-            val asString = binding.dialogAddStepEdittextSequence.text.toString()
+            val asString = binding.stepSequence.text.toString()
             if (asString.isEmpty()) {
                 return null
             }

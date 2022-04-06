@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/ingredient_name_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_ingredient_edittext_name"/>
+                android:id="@+id/ingredient_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/ingredient_quantity_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_ingredient_edittext_quantity"/>
+                android:id="@+id/ingredient_quantity"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

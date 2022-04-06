@@ -99,12 +99,12 @@ class AddIngredientDialog private constructor() : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.dialogAddIngredientEdittextName.text.toString()
+            return binding.ingredientName.text.toString()
         }
 
     private val quantity: String
         get() {
-            return binding.dialogAddIngredientEdittextQuantity.text.toString()
+            return binding.ingredientQuantity.text.toString()
         }
 
     private val receiptId: Int

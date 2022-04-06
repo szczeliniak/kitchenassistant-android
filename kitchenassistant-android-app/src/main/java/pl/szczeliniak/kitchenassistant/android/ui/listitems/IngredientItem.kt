@@ -17,9 +17,9 @@ class IngredientItem constructor(
     BindableItem<ListItemIngredientBinding>() {
 
     override fun bind(binding: ListItemIngredientBinding, position: Int) {
-        binding.listItemIngredientTextviewName.text = ingredient.name
-        binding.listItemIngredientTextviewQuantity.text = ingredient.quantity
-        binding.ingredientItemButtonMore.setOnClickListener { showPopupMenu(it) }
+        binding.ingredientName.text = ingredient.name
+        binding.ingredientQuantity.text = ingredient.quantity
+        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

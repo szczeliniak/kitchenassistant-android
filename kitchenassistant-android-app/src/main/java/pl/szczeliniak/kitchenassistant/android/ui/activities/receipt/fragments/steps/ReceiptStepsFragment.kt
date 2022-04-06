@@ -36,8 +36,8 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptStepsBinding.inflate(inflater)
-        binding.fragmentReceiptStepsRecyclerView.adapter = stepsAdapter
-        binding.fragmentReceiptStepsFabAddStep.setOnClickListener { showAddStepDialog() }
+        binding.recyclerView.adapter = stepsAdapter
+        binding.buttonAddStep.setOnClickListener { showAddStepDialog() }
         return binding.root
     }
 

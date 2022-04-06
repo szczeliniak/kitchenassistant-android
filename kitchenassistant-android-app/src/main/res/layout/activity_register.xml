@@ -6,14 +6,14 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <include
-            android:id="@+id/activity_register_toolbar_layout"
+            android:id="@+id/toolbar_layout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             layout="@layout/toolbar"/>
 
     <androidx.core.widget.NestedScrollView
-            app:layout_constraintTop_toBottomOf="@id/activity_register_toolbar_layout"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="0dp">
@@ -34,7 +34,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:id="@+id/activity_register_edittext_email"/>
+                        android:id="@+id/register_email"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -48,7 +48,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:id="@+id/activity_register_edittext_name"/>
+                        android:id="@+id/register_name"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,7 +62,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:id="@+id/activity_register_edittext_password"/>
+                        android:id="@+id/register_password"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,13 +76,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:id="@+id/activity_register_edittext_password2"/>
+                        android:id="@+id/register_password2"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatButton
                     style="@style/ButtonPrimary"
-                    android:id="@+id/activity_register_button_register"
+                    android:id="@+id/button_register"
                     android:layout_marginVertical="@dimen/padding_margin_medium"
                     android:text="@string/label_button_register"
                     android:layout_width="match_parent"

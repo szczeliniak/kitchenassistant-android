@@ -25,9 +25,9 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
 
     private fun loadData() {
         receipt?.let { r ->
-            binding.fragmentReceiptInfoTextviewDescription.setTextOrDefault(r.description)
-            binding.fragmentReceiptInfoTextviewAuthor.setTextOrDefault(r.author)
-            binding.fragmentReceiptInfoTextviewUrl.setTextOrDefault(r.source)
+            binding.receiptDescription.setTextOrDefault(r.description)
+            binding.receiptAuthor.setTextOrDefault(r.author)
+            binding.receiptUrl.setTextOrDefault(r.source)
         }
     }
 

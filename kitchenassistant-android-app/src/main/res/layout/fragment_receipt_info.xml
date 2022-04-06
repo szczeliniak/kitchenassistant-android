@@ -7,7 +7,7 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
-            android:id="@+id/fragment_receipt_info_layout"
+            android:id="@+id/receipt_info_layout"
             android:padding="@dimen/padding_margin_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -25,7 +25,7 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fragment_receipt_info_textview_author"
+                    android:id="@+id/receipt_author"
                     tools:text="Adam Malysz"
                     style="@style/FieldValue"
                     android:layout_width="match_parent"
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fragment_receipt_info_textview_url"
+                    android:id="@+id/receipt_url"
                     tools:text="https://www.google.pl"
                     style="@style/FieldValue"
                     android:autoLink="web"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/fragment_receipt_info_textview_description"
+                    android:id="@+id/receipt_description"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum convallis imperdiet sollicitudin. Nulla maximus, velit non mollis ornare, dui sem lobortis mauris, vitae auctor nulla odio nec nulla. Nulla rutrum felis orci, quis tristique diam auctor non. Aliquam erat volutpat. Sed blandit est neque, id viverra orci luctus vel."
                     style="@style/FieldValue"
                     android:inputType="textMultiLine"

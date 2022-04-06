@@ -52,11 +52,11 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityArchviedShoppingListsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityArchivedShoppingListsToolbarLayout.toolbar.init(
+        binding.toolbarLayout.toolbar.init(
             this,
             R.string.title_activity_archived_shopping_lists
         )
-        binding.activityArchivedShoppingListsRecyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
@@ -72,9 +72,9 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
             override fun onSuccess(data: List<ShoppingList>) {
                 adapter.clear()
                 if (data.isEmpty()) {
-                    binding.activityArchivedShoppingListsLayout.showEmptyIcon(this@ArchivedShoppingListsActivity)
+                    binding.layout.showEmptyIcon(this@ArchivedShoppingListsActivity)
                 } else {
-                    binding.activityArchivedShoppingListsLayout.hideEmptyIcon()
+                    binding.layout.hideEmptyIcon()
                     data.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(this@ArchivedShoppingListsActivity, shoppingList, {
                             ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id)
@@ -94,11 +94,11 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
             this@ArchivedShoppingListsActivity,
             object : LoadingStateHandler.OnStateChanged<Int> {
                 override fun onInProgress() {
-                    binding.activityArchivedShoppingListsLayout.showProgressSpinner(this@ArchivedShoppingListsActivity)
+                    binding.layout.showProgressSpinner(this@ArchivedShoppingListsActivity)
                 }
 
                 override fun onFinish() {
-                    binding.activityArchivedShoppingListsLayout.hideProgressSpinner(this@ArchivedShoppingListsActivity)
+                    binding.layout.hideProgressSpinner(this@ArchivedShoppingListsActivity)
                 }
 
                 override fun onSuccess(data: Int) {

@@ -17,7 +17,7 @@
                 tools:text="Step name"
                 style="@style/ListItemTextPrimaryCentered"
                 android:gravity="center"
-                android:id="@+id/list_item_step_textview_name"
+                android:id="@+id/step_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -25,7 +25,7 @@
                 tools:text="Step description"
                 android:paddingVertical="@dimen/padding_margin_small"
                 style="@style/ListItemTextSecondaryCentered"
-                android:id="@+id/list_item_step_textview_description"
+                android:id="@+id/step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             style="@style/TransparentImageButton"
             android:src="@drawable/icon_more"
-            android:id="@+id/step_item_button_more"
+            android:id="@+id/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

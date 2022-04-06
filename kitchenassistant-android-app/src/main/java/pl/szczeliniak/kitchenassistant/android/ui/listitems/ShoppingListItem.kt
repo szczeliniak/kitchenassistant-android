@@ -18,17 +18,17 @@ class ShoppingListItem constructor(
 ) : BindableItem<ListItemShoppingListBinding>() {
 
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
-        binding.shoppingListItemTextviewName.text = shoppingList.name
-        binding.shoppingListItemTextviewDescription.fillOrHide(
+        binding.shoppingListName.text = shoppingList.name
+        binding.shoppingListDescription.fillOrHide(
             shoppingList.description,
-            binding.shoppingListItemTextviewDescription
+            binding.shoppingListDescription
         )
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
-        binding.shoppingListItemButtonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
         shoppingList.date?.let {
-            binding.shoppingListItemTextviewDate.text = LocalDateUtils.stringify(it)
+            binding.shoppingListDate.text = LocalDateUtils.stringify(it)
         } ?: run {
-            binding.shoppingListItemTextviewDate.visibility = View.GONE
+            binding.shoppingListDate.visibility = View.GONE
         }
     }
 

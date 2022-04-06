@@ -17,11 +17,11 @@ class ReceiptItem constructor(
 ) : BindableItem<ListItemReceiptBinding>() {
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
-        binding.receiptItemTextviewName.text = receipt.name
-        binding.receiptItemTextviewAuthor.fillOrHide(receipt.author, binding.receiptItemTextviewAuthor)
-        binding.receiptItemTextviewDescription.fillOrHide(receipt.description, binding.receiptItemTextviewDescription)
+        binding.receiptName.text = receipt.name
+        binding.receiptAuthor.fillOrHide(receipt.author, binding.receiptAuthor)
+        binding.receiptDescription.fillOrHide(receipt.description, binding.receiptDescription)
         binding.root.setOnClickListener { onClick.onClick(receipt) }
-        binding.receiptItemButtonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 
     override fun getLayout(): Int {

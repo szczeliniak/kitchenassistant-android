@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_name_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_shopping_list_item_edittext_name"/>
+                android:id="@+id/shopping_list_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_quantity_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_shopping_list_item_edittext_quantity"/>
+                android:id="@+id/shopping_list_item_quantity"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/shopping_list_item_sequence_max_length"
                 android:inputType="numberDecimal"
-                android:id="@+id/dialog_add_shopping_list_item_edittext_sequence"/>
+                android:id="@+id/shopping_list_item_sequence"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

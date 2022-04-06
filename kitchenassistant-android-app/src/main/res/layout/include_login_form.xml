@@ -15,7 +15,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:id="@+id/activity_login_edittext_email"/>
+                android:id="@+id/login_email"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:id="@+id/activity_login_edittext_password"/>
+                android:id="@+id/login_password"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -41,7 +41,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
                 style="@style/ButtonPrimary"
-                android:id="@+id/activity_login_button_login"
+                android:id="@+id/button_login"
                 android:text="@string/label_button_login"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -49,7 +49,7 @@
 
         <androidx.appcompat.widget.AppCompatButton
                 style="@style/ButtonSecondary"
-                android:id="@+id/activity_login_button_register"
+                android:id="@+id/button_register"
                 android:text="@string/label_button_register"
                 android:layout_width="0dp"
                 android:layout_weight="1"

@@ -10,15 +10,15 @@
             android:layout_width="match_parent">
 
         <include
-                android:id="@+id/activity_archived_shopping_lists_toolbar_layout"
+                android:id="@id/toolbar_layout"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 layout="@layout/toolbar"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/activity_archived_shopping_lists_layout"
-                app:layout_constraintTop_toBottomOf="@id/activity_archived_shopping_lists_toolbar_layout"
+                android:id="@+id/layout"
+                app:layout_constraintTop_toBottomOf="@id/toolbar_layout"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -27,7 +27,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
-                    android:id="@+id/activity_archived_shopping_lists_recycler_view"
+                    android:id="@+id/recycler_view"
                     android:layout_height="match_parent"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 

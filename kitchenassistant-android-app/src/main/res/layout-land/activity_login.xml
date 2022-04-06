@@ -10,7 +10,7 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-        <include layout="@layout/activity_login_header"
+        <include layout="@layout/include_login_header"
                  android:layout_height="match_parent"
                  android:layout_weight="1"
                  android:layout_width="0dp"/>
@@ -28,8 +28,8 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                 <include
-                        android:id="@+id/activity_login_form"
-                        layout="@layout/activity_login_form"/>
+                        android:id="@+id/login_form_layout"
+                        layout="@layout/include_login_form"/>
 
             </FrameLayout>
 

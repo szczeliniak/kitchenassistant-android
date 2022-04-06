@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/step_name_max_length"
                 android:inputType="text"
-                android:id="@+id/dialog_add_step_edittext_name"/>
+                android:id="@+id/step_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -44,7 +44,7 @@
                 android:maxLength="@integer/step_description_max_length"
                 android:inputType="textMultiLine"
                 android:minLines="2"
-                android:id="@+id/dialog_add_step_edittext_description"/>
+                android:id="@+id/step_description"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -61,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/step_sequence_max_length"
                 android:inputType="numberDecimal"
-                android:id="@+id/dialog_add_step_edittext_sequence"/>
+                android:id="@+id/step_sequence"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

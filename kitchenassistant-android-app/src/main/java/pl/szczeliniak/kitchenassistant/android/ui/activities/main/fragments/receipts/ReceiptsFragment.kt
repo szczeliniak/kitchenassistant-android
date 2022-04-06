@@ -42,12 +42,12 @@ class ReceiptsFragment : Fragment() {
         binding = FragmentReceiptsBinding.inflate(inflater)
 
         binding.root.setOnRefreshListener { viewModel.reloadReceipts() }
-        binding.fragmentReceiptsRecyclerView.adapter = adapter
-        binding.fragmentReceiptsRecyclerView.addItemDecoration(
-            DividerItemDecoration(binding.fragmentReceiptsRecyclerView.context, DividerItemDecoration.VERTICAL)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.fragmentReceiptsFabAddReceipt.setOnClickListener { AddReceiptActivity.start(requireContext()) }
+        binding.buttonAddReceipt.setOnClickListener { AddReceiptActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -62,11 +62,11 @@ class ReceiptsFragment : Fragment() {
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
-                binding.fragmentReceiptsLayout.showProgressSpinner(requireActivity())
+                binding.layout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
-                binding.fragmentReceiptsLayout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner(requireActivity())
             }
 
             override fun onSuccess(data: Int) {
@@ -80,21 +80,21 @@ class ReceiptsFragment : Fragment() {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<Receipt>> {
             override fun onInProgress() {
                 binding.root.isRefreshing = true
-                binding.fragmentReceiptsLayout.hideEmptyIcon()
-                binding.fragmentReceiptsLayout.showProgressSpinner(requireActivity())
+                binding.layout.hideEmptyIcon()
+                binding.layout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.fragmentReceiptsLayout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner(requireActivity())
             }
 
             override fun onSuccess(data: List<Receipt>) {
                 adapter.clear()
                 if (data.isEmpty()) {
-                    binding.fragmentReceiptsLayout.showEmptyIcon(requireActivity())
+                    binding.layout.showEmptyIcon(requireActivity())
                 } else {
-                    binding.fragmentReceiptsLayout.hideEmptyIcon()
+                    binding.layout.hideEmptyIcon()
                     data.forEach { receipt ->
                         adapter.add(ReceiptItem(requireContext(), receipt, {
                             ReceiptActivity.start(requireContext(), it.id)

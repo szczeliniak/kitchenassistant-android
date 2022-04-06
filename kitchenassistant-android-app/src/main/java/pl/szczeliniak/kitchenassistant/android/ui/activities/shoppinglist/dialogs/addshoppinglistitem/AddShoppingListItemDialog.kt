@@ -99,17 +99,17 @@ class AddShoppingListItemDialog private constructor() : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.dialogAddShoppingListItemEdittextName.text.toString()
+            return binding.shoppingListName.text.toString()
         }
 
     private val quantity: String
         get() {
-            return binding.dialogAddShoppingListItemEdittextQuantity.text.toString()
+            return binding.shoppingListItemQuantity.text.toString()
         }
 
     private val sequence: Int?
         get() {
-            val asString = binding.dialogAddShoppingListItemEdittextSequence.text.toString()
+            val asString = binding.shoppingListItemSequence.text.toString()
             if (asString.isEmpty()) {
                 return null
             }

@@ -42,12 +42,12 @@ class ShoppingListsFragment : Fragment() {
         binding = FragmentShoppingListsBinding.inflate(inflater)
 
         binding.root.setOnRefreshListener { viewModel.reloadShoppingLists() }
-        binding.fragmentShoppingListsRecyclerView.adapter = adapter
-        binding.fragmentShoppingListsRecyclerView.addItemDecoration(
-            DividerItemDecoration(binding.fragmentShoppingListsRecyclerView.context, DividerItemDecoration.VERTICAL)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.fragmentShoppingListsFabAddReceipt.setOnClickListener { AddShoppingListActivity.start(requireContext()) }
+        binding.buttonAddShoppingList.setOnClickListener { AddShoppingListActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -62,11 +62,11 @@ class ShoppingListsFragment : Fragment() {
     private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
-                binding.fragmentShoppingListsLayout.showProgressSpinner(requireActivity())
+                binding.layout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
-                binding.fragmentShoppingListsLayout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner(requireActivity())
             }
 
             override fun onSuccess(data: Int) {
@@ -80,21 +80,21 @@ class ShoppingListsFragment : Fragment() {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<ShoppingList>> {
             override fun onInProgress() {
                 binding.root.isRefreshing = true
-                binding.fragmentShoppingListsLayout.hideEmptyIcon()
-                binding.fragmentShoppingListsLayout.showProgressSpinner(requireActivity())
+                binding.layout.hideEmptyIcon()
+                binding.layout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.fragmentShoppingListsLayout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner(requireActivity())
             }
 
             override fun onSuccess(data: List<ShoppingList>) {
                 adapter.clear()
                 if (data.isEmpty()) {
-                    binding.fragmentShoppingListsLayout.showEmptyIcon(requireActivity())
+                    binding.layout.showEmptyIcon(requireActivity())
                 } else {
-                    binding.fragmentShoppingListsLayout.hideEmptyIcon()
+                    binding.layout.hideEmptyIcon()
                     data.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(requireContext(), shoppingList, {
                             ShoppingListActivity.start(requireContext(), shoppingList.id)

@@ -17,9 +17,9 @@ class ShoppingListItemItem constructor(
     BindableItem<ListItemShoppingListItemBinding>() {
 
     override fun bind(binding: ListItemShoppingListItemBinding, position: Int) {
-        binding.listItemShoppingListItemTextviewName.text = shoppingListItem.name
-        binding.listItemShoppingListItemTextviewQuantity.text = shoppingListItem.quantity
-        binding.listItemShoppingListItemButtonMore.setOnClickListener { showPopupMenu(it) }
+        binding.shoppingListName.text = shoppingListItem.name
+        binding.shoppingListItemQuantity.text = shoppingListItem.quantity
+        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

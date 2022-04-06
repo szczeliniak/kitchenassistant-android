@@ -11,23 +11,23 @@
             android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/activity_login_layout"
+                android:id="@+id/login_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <include
-                    android:id="@+id/activity_login_logo_layout"
-                    layout="@layout/activity_login_header"
+                    android:id="@+id/login_logo_layout"
+                    layout="@layout/include_login_header"
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <include
-                    app:layout_constraintTop_toBottomOf="@id/activity_login_logo_layout"
+                    app:layout_constraintTop_toBottomOf="@id/login_logo_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/activity_login_form"
-                    layout="@layout/activity_login_form"/>
+                    android:id="@+id/login_form_layout"
+                    layout="@layout/include_login_form"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

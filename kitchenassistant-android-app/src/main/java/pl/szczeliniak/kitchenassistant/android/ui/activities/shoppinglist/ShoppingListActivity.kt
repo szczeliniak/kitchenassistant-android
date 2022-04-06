@@ -59,10 +59,10 @@ class ShoppingListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
-        binding.activityShoppingListRecyclerViewItems.adapter = itemsAdapter
+        binding.recyclerView.adapter = itemsAdapter
         setContentView(binding.root)
 
-        binding.fragmentReceiptsFabAddShoppingListItem.setOnClickListener {
+        binding.buttonAddShoppingListItem.setOnClickListener {
             AddShoppingListItemDialog.newInstance(shoppingListId)
                 .show(supportFragmentManager, AddShoppingListItemDialog.TAG)
         }
@@ -82,14 +82,14 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: ShoppingList) {
-                binding.activityShoppingListToolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
-                binding.activityShoppingListTextviewDescription.setTextOrDefault(data.description)
+                binding.toolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
+                binding.shoppingListDescription.setTextOrDefault(data.description)
 
                 itemsAdapter.clear()
                 if (data.items.isEmpty()) {
-                    binding.activityShoppingListLayoutItems.showEmptyIcon(this@ShoppingListActivity)
+                    binding.recyclerView.showEmptyIcon(this@ShoppingListActivity)
                 } else {
-                    binding.activityShoppingListLayoutItems.hideEmptyIcon()
+                    binding.shoppingListItemsLayout.hideEmptyIcon()
                     data.items.forEach { item ->
                         itemsAdapter.add(
                             ShoppingListItemItem(

@@ -14,7 +14,6 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
-import pl.szczeliniak.kitchenassistant.android.ui.utils.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
@@ -49,8 +48,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        binding.activityLoginForm.activityLoginButtonLogin.setOnClickListener { handleLoginButtonClick() }
-        binding.activityLoginForm.activityLoginButtonRegister.setOnClickListener {
+        binding.loginFormLayout.buttonLogin.setOnClickListener { handleLoginButtonClick() }
+        binding.loginFormLayout.buttonRegister.setOnClickListener {
             RegisterActivity.start(this@LoginActivity)
         }
         setContentView(binding.root)
@@ -62,8 +61,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginButtonClick() {
-        val email = binding.activityLoginForm.activityLoginEdittextEmail.text.toString()
-        val password = binding.activityLoginForm.activityLoginEdittextPassword.text.toString()
+        val email = binding.loginFormLayout.loginEmail.text.toString()
+        val password = binding.loginFormLayout.loginPassword.text.toString()
 
         if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
             toast(R.string.message_wrong_email)
@@ -79,7 +78,6 @@ class LoginActivity : AppCompatActivity() {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
                 binding.root.hideProgressSpinner(this@LoginActivity)
-                binding.activityLoginForm.activityLoginButtonLogin.enable(true)
             }
 
             override fun onSuccess(data: LoginResponse) {
@@ -88,14 +86,12 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@LoginActivity)
-                binding.activityLoginForm.activityLoginButtonLogin.enable(false)
-
             }
 
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.message_login_data_does_not_match)
-                    binding.activityLoginForm.activityLoginEdittextPassword.setText("")
+                    binding.loginFormLayout.loginPassword.setText("")
                 } else {
                     super.onHttpException(exception)
                 }

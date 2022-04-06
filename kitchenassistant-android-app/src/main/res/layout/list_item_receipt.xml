@@ -14,27 +14,27 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/receipt_item_button_more"
+            app:layout_constraintRight_toLeftOf="@id/button_more"
             android:padding="@dimen/padding_margin_small"
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_item_textview_author"
+                android:id="@+id/receipt_author"
                 tools:text="Adam Malysz"
                 style="@style/ListItemOverLineText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_item_textview_name"
+                android:id="@+id/receipt_name"
                 tools:text="Receipt name"
                 style="@style/ListItemTextPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_item_textview_description"
+                android:id="@+id/receipt_description"
                 tools:text="Description"
                 style="@style/ListItemTextSecondary"
                 android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             app:layout_constraintRight_toRightOf="parent"
             style="@style/TransparentImageButton"
             android:src="@drawable/icon_more"
-            android:id="@+id/receipt_item_button_more"
+            android:id="@+id/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

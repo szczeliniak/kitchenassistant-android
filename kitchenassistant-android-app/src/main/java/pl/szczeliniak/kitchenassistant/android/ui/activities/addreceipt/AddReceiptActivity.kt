@@ -52,7 +52,7 @@ class AddReceiptActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddEditReceiptToolbar.toolbar.init(this, R.string.title_activity_new_receipt)
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_receipt)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -108,22 +108,22 @@ class AddReceiptActivity : AppCompatActivity() {
 
     private val name: String
         get() {
-            return binding.activityAddEditReceiptEdittextReceiptName.text.toString()
+            return binding.receiptName.text.toString()
         }
 
     private val author: String
         get() {
-            return binding.activityAddEditReceiptEdittextAuthor.text.toString()
+            return binding.receiptAuthor.text.toString()
         }
 
     private val url: String
         get() {
-            return binding.activityAddEditReceiptEdittextUrl.text.toString()
+            return binding.receiptUrl.text.toString()
         }
 
     private val description: String
         get() {
-            return binding.activityAddEditReceiptEdittextDescription.text.toString()
+            return binding.receiptDescription.text.toString()
         }
 
 }

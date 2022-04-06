@@ -74,7 +74,7 @@ class ReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Receipt) {
-                binding.activityReceiptToolbarLayout.toolbar.init(this@ReceiptActivity, data.name)
+                binding.toolbarLayout.toolbar.init(this@ReceiptActivity, data.name)
                 receipt = data
                 observers.forEach { it.onReceiptChanged() }
             }
@@ -86,13 +86,13 @@ class ReceiptActivity : AppCompatActivity() {
     }
 
     private fun initPager() {
-        binding.activityReceiptViewPager.adapter = FragmentPagerAdapter(
+        binding.viewPager.adapter = FragmentPagerAdapter(
             arrayOf(
                 ReceiptInfoFragment(), ReceiptIngredientsFragment(), ReceiptStepsFragment()
             ), supportFragmentManager, lifecycle
         )
 
-        TabLayoutMediator(binding.activityReceiptTabLayout, binding.activityReceiptViewPager) { tab, position ->
+        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             val nameId = when (position) {
                 0 -> {
                     R.string.title_fragment_receipt_info

@@ -7,7 +7,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:id="@+id/toolbar_appbar_layout">
+        android:id="@+id/progress_spinner_layout">
 
     <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"

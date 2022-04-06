@@ -14,7 +14,7 @@ fun ViewGroup.showEmptyIcon(activity: Activity) {
 }
 
 fun ViewGroup.hideEmptyIcon() {
-    this.findViewById<ConstraintLayout>(R.id.message_view_layout)?.let { this.removeView(it) }
+    this.findViewById<ConstraintLayout>(R.id.message_layout)?.let { this.removeView(it) }
 }
 
 fun Activity.lockOrientation() {

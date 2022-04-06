@@ -38,12 +38,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.activityMainToolbarLayout.toolbar.init(this, R.drawable.icon_menu) {
-            binding.activityMainDrawerLayout.open()
+        binding.toolbarLayout.toolbar.init(this, R.drawable.icon_menu) {
+            binding.drawerLayout.open()
         }
 
-        binding.activityMainBottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
-        binding.activityMainNavView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
+        binding.bottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
+        binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
         setFragment(savedInstanceState)
     }
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
-        replace(R.id.activity_main_fragment_container, fragment)
+        replace(R.id.fragment_container, fragment)
         commit()
     }
 
@@ -71,11 +71,11 @@ class MainActivity : AppCompatActivity() {
         binding.root.closeDrawers()
         when (itemId) {
             R.id.menu_nav_view_item_receipts -> {
-                binding.activityMainBottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
+                binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
                 return true
             }
             R.id.menu_nav_view_item_shopping_lists -> {
-                binding.activityMainBottomNavView.selectedItemId = R.id.nav_bottom_item_shopping_lists
+                binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_shopping_lists
                 return true
             }
             R.id.menu_nav_view_item_archived_shopping_lists -> {

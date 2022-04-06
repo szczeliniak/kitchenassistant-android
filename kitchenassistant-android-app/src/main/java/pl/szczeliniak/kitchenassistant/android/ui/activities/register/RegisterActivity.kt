@@ -13,7 +13,10 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.RegisterRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
-import pl.szczeliniak.kitchenassistant.android.ui.utils.*
+import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.init
+import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import pl.szczeliniak.kitchenassistant.android.utils.ValidationUtils
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -39,16 +42,16 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
-        binding.activityRegisterToolbarLayout.toolbar.init(this, R.string.title_activity_register)
-        binding.activityRegisterButtonRegister.setOnClickListener { handleRegisterButtonClick() }
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_register)
+        binding.buttonRegister.setOnClickListener { handleRegisterButtonClick() }
         setContentView(binding.root)
     }
 
     private fun handleRegisterButtonClick() {
-        val email = binding.activityRegisterEdittextEmail.text.toString()
-        val name = binding.activityRegisterEdittextName.text.toString()
-        val password = binding.activityRegisterEdittextPassword.text.toString()
-        val password2 = binding.activityRegisterEdittextPassword2.text.toString()
+        val email = binding.registerEmail.text.toString()
+        val name = binding.registerName.text.toString()
+        val password = binding.registerPassword.text.toString()
+        val password2 = binding.registerPassword2.text.toString()
 
         if (name.isEmpty()) {
             toast(R.string.message_empty_name)
@@ -66,7 +69,6 @@ class RegisterActivity : AppCompatActivity() {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
                 binding.root.hideProgressSpinner(this@RegisterActivity)
-                binding.activityRegisterButtonRegister.enable(true)
             }
 
             override fun onSuccess(data: LoginResponse) {
@@ -77,8 +79,6 @@ class RegisterActivity : AppCompatActivity() {
 
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@RegisterActivity)
-                binding.activityRegisterButtonRegister.enable(false)
-
             }
 
             override fun onHttpException(exception: HttpException) {

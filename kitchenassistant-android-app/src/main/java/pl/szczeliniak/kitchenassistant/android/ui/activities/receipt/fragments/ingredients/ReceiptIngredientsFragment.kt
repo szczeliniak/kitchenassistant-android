@@ -35,8 +35,8 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptIngredientsBinding.inflate(inflater)
-        binding.fragmentReceiptIngredientsRecyclerView.adapter = ingredientsAdapter
-        binding.fragmentReceiptIngredientsFabAddIngredient.setOnClickListener { showAddIngredientDialog() }
+        binding.recyclerView.adapter = ingredientsAdapter
+        binding.buttonAddIngredient.setOnClickListener { showAddIngredientDialog() }
         return binding.root
     }
 

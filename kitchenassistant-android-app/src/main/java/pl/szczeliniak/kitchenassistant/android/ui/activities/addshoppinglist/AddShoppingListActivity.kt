@@ -52,7 +52,7 @@ class AddShoppingListActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.activityAddShoppingListToolbar.toolbar.init(this, R.string.title_activity_new_shopping_list)
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -104,12 +104,12 @@ class AddShoppingListActivity : AppCompatActivity() {
 
     private val name: String
         get() {
-            return binding.activityAddShoppingEdittextName.text.toString()
+            return binding.shoppingListName.text.toString()
         }
 
     private val description: String
         get() {
-            return binding.activityAddShoppingListEdittextDescription.text.toString()
+            return binding.shoppingListDescription.text.toString()
         }
 
 }
