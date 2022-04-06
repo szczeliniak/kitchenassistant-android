@@ -101,11 +101,11 @@ class ShoppingListActivity : AppCompatActivity() {
                                         .observe(this@ShoppingListActivity) {
                                             deleteShoppingListItemStateHandler.handle(it)
                                         }
-                                }, { shoppingListId, shoppingListItem ->
+                                }, { shoppingListId, shoppingListItem, isChecked ->
                                     viewModel.changeItemState(
                                         shoppingListId,
                                         shoppingListItem.id,
-                                        !shoppingListItem.done
+                                        isChecked
                                     ).observe(this@ShoppingListActivity) {
                                         changeShoppingListItemStateStateHandler.handle(it)
                                     }

@@ -13,7 +13,7 @@ class ShoppingListItemItem constructor(
     private val shoppingListId: Int,
     private val shoppingListItem: ShoppingListItem,
     private val onDeleteClick: OnClick,
-    private val onCheckClick: OnClick
+    private val onCheckClick: OnCheckboxClick
 ) :
     BindableItem<ListItemShoppingListItemBinding>() {
 
@@ -22,7 +22,9 @@ class ShoppingListItemItem constructor(
         binding.shoppingListItemQuantity.text = shoppingListItem.quantity
         binding.shoppingListItemIsDone.isChecked = shoppingListItem.done
 
-        binding.shoppingListItemIsDone.setOnClickListener { onCheckClick.onClick(shoppingListId, shoppingListItem) }
+        binding.shoppingListItemIsDone.setOnCheckedChangeListener { _, isChecked ->
+            onCheckClick.onClick(shoppingListId, shoppingListItem, isChecked)
+        }
 
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
@@ -53,6 +55,10 @@ class ShoppingListItemItem constructor(
 
     fun interface OnClick {
         fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListItem)
+    }
+
+    fun interface OnCheckboxClick {
+        fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListItem, state: Boolean)
     }
 
 }
