@@ -4,27 +4,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:paddingHorizontal="@dimen/padding_margin_big"
+        style="@style/BaseLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/title_dialog_add_shopping_list_item"
-            style="@style/DialogTitle"
+            style="@style/TextDialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/shopping_list_item_name_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_shopping_list_item_name"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_shopping_list_item_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/shopping_list_item_name_max_length"
+                android:maxLength="@integer/max_length_shopping_list_item_name"
                 android:inputType="text"
                 android:id="@+id/shopping_list_name"/>
 
@@ -33,15 +33,15 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/shopping_list_item_quantity_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_shopping_list_item_quantity"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_shopping_list_item_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/shopping_list_item_quantity_max_length"
+                android:maxLength="@integer/max_length_shopping_list_item_quantity"
                 android:inputType="text"
                 android:id="@+id/shopping_list_item_quantity"/>
 
@@ -50,15 +50,15 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/shopping_list_item_sequence_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_shopping_list_item_sequence"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_shopping_list_item_sequence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/shopping_list_item_sequence_max_length"
+                android:maxLength="@integer/max_length_shopping_list_item_sequence"
                 android:inputType="numberDecimal"
                 android:id="@+id/shopping_list_item_sequence"/>
 

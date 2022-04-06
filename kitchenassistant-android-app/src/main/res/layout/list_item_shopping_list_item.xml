@@ -3,15 +3,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_margin_tiny"
+        style="@style/BaseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_gravity="center_vertical"
-            android:paddingVertical="@dimen/padding_margin_tiny"
             tools:text="Name"
-            style="@style/ListItemTextSecondaryCentered"
+            style="@style/TextSecondary"
+            android:gravity="center"
             android:layout_width="0dp"
             android:textColor="@color/secondary_dark"
             android:layout_weight="1"
@@ -20,9 +20,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_gravity="center_vertical"
-            android:paddingVertical="@dimen/padding_margin_tiny"
             tools:text="Quantity"
-            style="@style/ListItemTextSecondaryCentered"
+            android:gravity="center"
+            style="@style/TextSecondary"
             android:id="@+id/shopping_list_item_quantity"
             android:layout_width="0dp"
             android:layout_weight="1"

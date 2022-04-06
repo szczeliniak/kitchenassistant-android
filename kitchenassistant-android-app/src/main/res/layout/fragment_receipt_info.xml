@@ -8,26 +8,25 @@
     <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:id="@+id/receipt_info_layout"
-            android:padding="@dimen/padding_margin_medium"
+            style="@style/BaseLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_author"
-                    style="@style/FieldLabel"
+                    style="@style/TextOverLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_author"
                     tools:text="Adam Malysz"
-                    style="@style/FieldValue"
+                    style="@style/TextPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -35,20 +34,19 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_url"
-                    style="@style/FieldLabel"
+                    style="@style/TextOverLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_url"
                     tools:text="https://www.google.pl"
-                    style="@style/FieldValue"
+                    style="@style/TextPrimary"
                     android:autoLink="web"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -57,20 +55,19 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_description"
-                    style="@style/FieldLabel"
+                    style="@style/TextOverLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_description"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum convallis imperdiet sollicitudin. Nulla maximus, velit non mollis ornare, dui sem lobortis mauris, vitae auctor nulla odio nec nulla. Nulla rutrum felis orci, quis tristique diam auctor non. Aliquam erat volutpat. Sed blandit est neque, id viverra orci luctus vel."
-                    style="@style/FieldValue"
+                    style="@style/TextPrimary"
                     android:inputType="textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

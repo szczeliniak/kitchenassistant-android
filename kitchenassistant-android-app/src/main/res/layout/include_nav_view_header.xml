@@ -5,7 +5,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/secondary_dark"
-        android:padding="@dimen/padding_margin_medium"
+        style="@style/BaseLayout"
         android:backgroundTint="@color/secondary_dark">
 
     <ImageView
@@ -21,7 +21,7 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/NavigationViewApplicationName"
+            style="@style/TextNavigationViewApplicationName"
             android:id="@+id/nav_view_app_name"
             app:layout_constraintTop_toBottomOf="@id/nav_view_image"
             app:layout_constraintStart_toStartOf="parent"

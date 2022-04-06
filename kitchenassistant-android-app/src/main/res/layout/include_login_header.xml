@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_margin_super_big"
+        style="@style/BaseLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -13,12 +13,12 @@
             android:src="@drawable/logo"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            style="@style/ApplicationHeaderName"
+            style="@style/TextApplicationHeaderName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-            style="@style/ApplicationHeaderDescription"
+            style="@style/TextApplicationHeaderDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

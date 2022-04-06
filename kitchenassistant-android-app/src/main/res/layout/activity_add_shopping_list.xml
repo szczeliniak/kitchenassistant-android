@@ -20,23 +20,23 @@
             app:layout_constraintRight_toRightOf="parent">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+                style="@style/BaseLayout"
                 android:layout_width="match_parent"
-                android:paddingHorizontal="@dimen/padding_margin_medium"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/shipping_list_name_max_length"
+                    app:counterMaxLength="@integer/max_length_shipping_list_name"
                     app:counterEnabled="true"
-                    style="@style/Input"
+                    style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:hint="@string/label_shopping_list_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="@integer/shipping_list_name_max_length"
+                        android:maxLength="@integer/max_length_shipping_list_name"
                         android:inputType="text"
                         android:id="@+id/shopping_list_name"/>
 
@@ -44,8 +44,8 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/shipping_list_description_max_length"
-                    style="@style/Input"
+                    app:counterMaxLength="@integer/max_length_shipping_list_description"
+                    style="@style/InputLayout"
                     app:counterEnabled="true"
                     android:layout_height="wrap_content">
 
@@ -54,7 +54,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minLines="4"
-                        android:maxLength="@integer/shipping_list_description_max_length"
+                        android:maxLength="@integer/max_length_shipping_list_description"
                         android:inputType="textMultiLine"
                         android:id="@+id/shopping_list_description"/>
 

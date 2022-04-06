@@ -5,10 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:background="@color/white"
-        android:backgroundTint="@color/white"
-        android:focusable="true"
-        android:clickable="true">
+        style="@style/WhiteBackground">
 
     <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/message_image"
@@ -24,7 +21,7 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/MessageText"
+            style="@style/TextMessage"
             android:id="@+id/message_text"
             android:text="@string/message_empty_list"
             app:layout_constraintTop_toBottomOf="@id/message_image"

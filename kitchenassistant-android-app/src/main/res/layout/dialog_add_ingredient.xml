@@ -4,27 +4,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:paddingHorizontal="@dimen/padding_margin_big"
+        style="@style/BaseLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/title_dialog_add_ingredient"
-            style="@style/DialogTitle"
+            style="@style/TextDialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/ingredient_name_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_ingredient_name"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_ingredient_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/ingredient_name_max_length"
+                android:maxLength="@integer/max_length_ingredient_name"
                 android:inputType="text"
                 android:id="@+id/ingredient_name"/>
 
@@ -33,15 +33,15 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/ingredient_quantity_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_ingredient_quantity"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_ingredient_quantity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/ingredient_quantity_max_length"
+                android:maxLength="@integer/max_length_ingredient_quantity"
                 android:inputType="text"
                 android:id="@+id/ingredient_quantity"/>
 

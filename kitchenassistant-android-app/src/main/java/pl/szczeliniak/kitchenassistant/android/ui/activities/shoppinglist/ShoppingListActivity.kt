@@ -87,7 +87,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
                 itemsAdapter.clear()
                 if (data.items.isEmpty()) {
-                    binding.recyclerView.showEmptyIcon(this@ShoppingListActivity)
+                    binding.shoppingListItemsLayout.showEmptyIcon(this@ShoppingListActivity)
                 } else {
                     binding.shoppingListItemsLayout.hideEmptyIcon()
                     data.items.forEach { item ->

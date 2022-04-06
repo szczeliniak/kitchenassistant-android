@@ -19,26 +19,25 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:orientation="vertical"
-            android:padding="@dimen/padding_margin_medium"
+            style="@style/BaseLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_shopping_list_description"
-                    style="@style/FieldLabel"
+                    style="@style/TextOverLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/shopping_list_description"
                     tools:text="Shopping list description"
-                    style="@style/FieldValue"
+                    style="@style/TextPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -46,13 +45,12 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
-                android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_shopping_list_items"
-                    style="@style/FieldLabel"
+                    style="@style/TextOverLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="receipt_name_max_length">100</integer>
-    <integer name="receipt_author_max_length">50</integer>
-    <integer name="receipt_url_max_length">500</integer>
-    <integer name="receipt_description_max_length">1000</integer>
-    <integer name="ingredient_name_max_length">100</integer>
-    <integer name="ingredient_quantity_max_length">10</integer>
-    <integer name="step_name_max_length">100</integer>
-    <integer name="step_description_max_length">1000</integer>
-    <integer name="step_sequence_max_length">10</integer>
-    <integer name="shipping_list_description_max_length">1000</integer>
-    <integer name="shipping_list_name_max_length">100</integer>
-    <integer name="shopping_list_item_name_max_length">50</integer>
-    <integer name="shopping_list_item_quantity_max_length">20</integer>
-    <integer name="shopping_list_item_sequence_max_length">10</integer>
+    <integer name="max_length_receipt_name">100</integer>
+    <integer name="max_length_receipt_author">50</integer>
+    <integer name="max_length_receipt_url">500</integer>
+    <integer name="max_length_receipt_description">1000</integer>
+    <integer name="max_length_ingredient_name">100</integer>
+    <integer name="max_length_ingredient_quantity">10</integer>
+    <integer name="max_length_step_name">100</integer>
+    <integer name="max_length_step_description">1000</integer>
+    <integer name="max_length_step_sequence">10</integer>
+    <integer name="max_length_shipping_list_description">1000</integer>
+    <integer name="max_length_shipping_list_name">100</integer>
+    <integer name="max_length_shopping_list_item_name">50</integer>
+    <integer name="max_length_shopping_list_item_quantity">20</integer>
+    <integer name="max_length_shopping_list_item_sequence">10</integer>
 </resources>

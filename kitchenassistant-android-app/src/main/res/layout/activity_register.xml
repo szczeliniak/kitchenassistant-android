@@ -19,14 +19,14 @@
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-                android:padding="@dimen/padding_margin_tiny"
+                style="@style/BaseLayout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    style="@style/Input"
+                    style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -40,7 +40,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    style="@style/Input"
+                    style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -54,7 +54,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    style="@style/Input"
+                    style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -68,7 +68,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    style="@style/Input"
+                    style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -83,7 +83,6 @@
             <androidx.appcompat.widget.AppCompatButton
                     style="@style/ButtonPrimary"
                     android:id="@+id/button_register"
-                    android:layout_marginVertical="@dimen/padding_margin_medium"
                     android:text="@string/label_button_register"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

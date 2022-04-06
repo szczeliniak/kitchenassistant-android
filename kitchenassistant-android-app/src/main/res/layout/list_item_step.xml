@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
-        android:padding="@dimen/padding_margin_tiny"
+        style="@style/BaseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,7 +15,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 tools:text="Step name"
-                style="@style/ListItemTextPrimaryCentered"
+                style="@style/TextPrimary"
                 android:gravity="center"
                 android:id="@+id/step_name"
                 android:layout_width="match_parent"
@@ -23,8 +23,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 tools:text="Step description"
-                android:paddingVertical="@dimen/padding_margin_small"
-                style="@style/ListItemTextSecondaryCentered"
+                style="@style/TextSecondary"
+                android:gravity="center"
                 android:id="@+id/step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

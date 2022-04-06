@@ -4,27 +4,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:paddingHorizontal="@dimen/padding_margin_big"
+        style="@style/BaseLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/title_dialog_add_step"
-            style="@style/DialogTitle"
+            style="@style/TextDialogTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/step_name_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_step_name"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_step_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/step_name_max_length"
+                android:maxLength="@integer/max_length_step_name"
                 android:inputType="text"
                 android:id="@+id/step_name"/>
 
@@ -33,15 +33,15 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/step_description_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_step_description"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_step_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/step_description_max_length"
+                android:maxLength="@integer/max_length_step_description"
                 android:inputType="textMultiLine"
                 android:minLines="2"
                 android:id="@+id/step_description"/>
@@ -51,15 +51,15 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/step_sequence_max_length"
-            style="@style/Input"
+            app:counterMaxLength="@integer/max_length_step_sequence"
+            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/label_step_sequence"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/step_sequence_max_length"
+                android:maxLength="@integer/max_length_step_sequence"
                 android:inputType="numberDecimal"
                 android:id="@+id/step_sequence"/>
 
