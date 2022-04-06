@@ -21,6 +21,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem.AddShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.*
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import javax.inject.Inject
 
 @AndroidEntryPoint

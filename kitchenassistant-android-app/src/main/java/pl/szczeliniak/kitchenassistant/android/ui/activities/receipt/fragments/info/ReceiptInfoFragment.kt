@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
-import pl.szczeliniak.kitchenassistant.android.ui.utils.setTextOrDefault
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 
 @AndroidEntryPoint
 class ReceiptInfoFragment : ReceiptActivityFragment() {

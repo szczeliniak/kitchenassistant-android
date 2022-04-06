@@ -37,6 +37,7 @@
     <string name="description_add_shopping_list_item">Add shopping list item</string>
 
     <string name="title_activity_new_receipt">New receipt</string>
+    <string name="title_activity_edit_receipt">Edit receipt</string>
     <string name="title_activity_new_shopping_list">Add shopping list</string>
     <string name="title_activity_archived_shopping_lists">Archived shopping lists</string>
     <string name="title_activity_register">Register</string>
@@ -71,5 +72,6 @@
     <string name="label_shopping_list_item_name">Name</string>
     <string name="label_shopping_list_item_quantity">Quantity</string>
     <string name="label_shopping_list_item_sequence">Sequence</string>
+    <string name="label_button_edit">Edit</string>
 
 </resources>

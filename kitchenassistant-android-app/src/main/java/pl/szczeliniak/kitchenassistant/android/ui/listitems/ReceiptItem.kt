@@ -7,13 +7,14 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
-import pl.szczeliniak.kitchenassistant.android.ui.utils.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
 class ReceiptItem constructor(
     private val context: Context,
     private val receipt: Receipt,
     private val onClick: OnClick,
-    private val onDeleteClick: OnClick
+    private val onDeleteClick: OnClick,
+    private val onEditClick: OnClick,
 ) : BindableItem<ListItemReceiptBinding>() {
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
@@ -39,6 +40,10 @@ class ReceiptItem constructor(
             when (it.itemId) {
                 R.id.receipt_item_menu_item_delete -> {
                     onDeleteClick.onClick(receipt)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.receipt_item_menu_item_edit -> {
+                    onEditClick.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
             }

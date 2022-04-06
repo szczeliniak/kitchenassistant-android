@@ -7,7 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemStepBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
-import pl.szczeliniak.kitchenassistant.android.ui.utils.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
 class StepItem constructor(
     private val context: Context,

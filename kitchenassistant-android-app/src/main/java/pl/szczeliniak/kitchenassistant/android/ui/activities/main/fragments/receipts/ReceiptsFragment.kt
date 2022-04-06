@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBindi
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
@@ -47,7 +47,7 @@ class ReceiptsFragment : Fragment() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.buttonAddReceipt.setOnClickListener { AddReceiptActivity.start(requireContext()) }
+        binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -102,6 +102,8 @@ class ReceiptsFragment : Fragment() {
                             viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                 deleteReceiptLoadingStateHandler.handle(r)
                             }
+                        }, {
+                            AddEditReceiptActivity.start(requireContext(), it.id)
                         }))
                     }
                 }

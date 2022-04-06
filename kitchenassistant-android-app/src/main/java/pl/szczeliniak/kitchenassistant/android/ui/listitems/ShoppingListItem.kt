@@ -7,7 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.utils.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class ShoppingListItem constructor(

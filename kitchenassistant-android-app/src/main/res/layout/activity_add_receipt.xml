@@ -49,7 +49,7 @@
                     style="@style/InputLayout"
                     android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                <com.google.android.material.textfield.TextInputEditText
                         style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
                         android:hint="@string/label_receipt_author"
                         android:layout_width="match_parent"
