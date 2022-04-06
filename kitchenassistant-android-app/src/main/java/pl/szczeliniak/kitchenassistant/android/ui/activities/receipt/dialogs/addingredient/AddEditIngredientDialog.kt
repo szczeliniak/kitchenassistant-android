@@ -8,51 +8,66 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddIngredientBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditIngredientBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddIngredientDialog private constructor() : DialogFragment() {
+class AddEditIngredientDialog private constructor() : DialogFragment() {
 
     companion object {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
 
         const val TAG = "AddIngredientDialog"
 
-        fun newInstance(receiptId: Int): AddIngredientDialog {
+        fun newInstance(receiptId: Int): AddEditIngredientDialog {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            val dialog = AddIngredientDialog()
+            val dialog = AddEditIngredientDialog()
+            dialog.arguments = bundle
+            return dialog
+        }
+
+        fun newInstance(receiptId: Int, ingredient: Ingredient): AddEditIngredientDialog {
+            val bundle = Bundle()
+            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
+            bundle.putParcelable(INGREDIENT_EXTRA, ingredient)
+            val dialog = AddEditIngredientDialog()
             dialog.arguments = bundle
             return dialog
         }
     }
 
-    private lateinit var binding: DialogAddIngredientBinding
+    private lateinit var binding: DialogAddEditIngredientBinding
 
-    private lateinit var addIngredientLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var saveIngredientLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddIngredientDialogViewModel by viewModels()
+    private val viewModel: AddEditIngredientDialogViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogAddIngredientBinding.inflate(layoutInflater)
+        binding = DialogAddEditIngredientBinding.inflate(layoutInflater)
+        ingredient?.let {
+            binding.ingredientName.setText(it.name)
+            binding.ingredientQuantity.setText(it.quantity)
+        }
+
+        saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
-
-        addIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
-
         return builder.create()
     }
 
@@ -80,8 +95,15 @@ class AddIngredientDialog private constructor() : DialogFragment() {
             if (!validate()) {
                 return@setOnClickListener
             }
-            viewModel.addIngredient(receiptId, AddIngredientRequest(name, quantity))
-                .observe(this) { addIngredientLoadingStateHandler.handle(it) }
+
+            ingredient?.let { ingredient ->
+                viewModel.updateIngredient(receiptId, ingredient.id, UpdateIngredientRequest(name, quantity))
+                    .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
+            } ?: kotlin.run {
+                viewModel.addIngredient(receiptId, AddIngredientRequest(name, quantity))
+                    .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
+            }
+
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
@@ -110,6 +132,11 @@ class AddIngredientDialog private constructor() : DialogFragment() {
     private val receiptId: Int
         get() {
             return requireArguments().getInt(RECEIPT_ID_EXTRA)
+        }
+
+    private val ingredient: Ingredient?
+        get() {
+            return requireArguments().getParcelable(INGREDIENT_EXTRA)
         }
 
 }

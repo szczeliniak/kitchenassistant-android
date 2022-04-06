@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddIngredientDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep.AddStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
@@ -65,7 +65,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     private fun showAddStepDialog() {
         receipt?.let {
             AddStepDialog.newInstance(it.id)
-                .show(requireActivity().supportFragmentManager, AddIngredientDialog.TAG)
+                .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
         }
     }
 

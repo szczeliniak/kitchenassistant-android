@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddIngredientDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
@@ -42,8 +42,8 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
 
     private fun showAddIngredientDialog() {
         receipt?.let {
-            AddIngredientDialog.newInstance(it.id)
-                .show(requireActivity().supportFragmentManager, AddIngredientDialog.TAG)
+            AddEditIngredientDialog.newInstance(it.id)
+                .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
         }
     }
 
@@ -76,11 +76,14 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
             } else {
                 binding.root.hideEmptyIcon()
                 r.ingredients.forEach { ingredient ->
-                    ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient) { receiptId, i ->
+                    ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { receiptId, i ->
                         viewModel.delete(receiptId, i.id).observe(viewLifecycleOwner) {
                             deleteIngredientStateHandler.handle(it)
                         }
-                    })
+                    }, { receiptId, i ->
+                        AddEditIngredientDialog.newInstance(receiptId, i)
+                            .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
+                    }))
                 }
             }
         }

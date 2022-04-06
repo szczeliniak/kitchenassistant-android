@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
 @HiltViewModel
-class AddIngredientDialogViewModel @Inject constructor(
+class AddEditIngredientDialogViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
@@ -22,6 +23,20 @@ class AddIngredientDialogViewModel @Inject constructor(
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
             receiptService.addIngredient(receiptId, request)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun updateIngredient(
+        receiptId: Int,
+        ingredientId: Int,
+        request: UpdateIngredientRequest
+    ): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            receiptService.updateIngredient(receiptId, ingredientId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

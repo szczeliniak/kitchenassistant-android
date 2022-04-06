@@ -4,10 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 
@@ -112,6 +109,23 @@ class ReceiptService constructor(
             emit(LoadingState.InProgress)
             try {
                 emit(LoadingState.Success(repository.addIngredient(receiptId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun updateIngredient(
+        receiptId: Int,
+        ingredientId: Int,
+        request: UpdateIngredientRequest
+    ): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.updateIngredient(receiptId, ingredientId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
