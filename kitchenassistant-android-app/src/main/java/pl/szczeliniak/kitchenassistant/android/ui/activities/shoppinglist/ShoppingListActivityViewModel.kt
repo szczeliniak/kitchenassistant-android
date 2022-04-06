@@ -41,6 +41,16 @@ class ShoppingListActivityViewModel @Inject constructor(
         return liveData
     }
 
+    fun changeItemState(shoppingListId: Int, shoppingListItemId: Int, state: Boolean): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            shoppingListService.changeItemState(shoppingListId, shoppingListItemId, state)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
     fun archive(shoppingListId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {

@@ -36,4 +36,11 @@ interface ShoppingListRepository {
     @POST("/shoppinglists/{id}/items")
     suspend fun addShoppingListItem(@Path("id") id: Int, @Body request: AddShoppingListItemRequest): SuccessResponse
 
+    @POST("/shoppinglists/{id}/items/{itemId}/done/{isDone}")
+    suspend fun changeItemState(
+        @Path("id") shoppingListId: Int,
+        @Path("itemId") shoppingListItemId: Int,
+        @Path("isDone") state: Boolean
+    ): SuccessResponse
+
 }

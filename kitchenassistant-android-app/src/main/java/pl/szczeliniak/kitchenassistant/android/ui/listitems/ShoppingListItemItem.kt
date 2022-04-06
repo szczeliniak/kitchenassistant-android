@@ -12,13 +12,18 @@ class ShoppingListItemItem constructor(
     private val context: Context,
     private val shoppingListId: Int,
     private val shoppingListItem: ShoppingListItem,
-    private val onDeleteClick: OnClick
+    private val onDeleteClick: OnClick,
+    private val onCheckClick: OnClick
 ) :
     BindableItem<ListItemShoppingListItemBinding>() {
 
     override fun bind(binding: ListItemShoppingListItemBinding, position: Int) {
-        binding.shoppingListName.text = shoppingListItem.name
+        binding.shoppingListItemName.text = shoppingListItem.name
         binding.shoppingListItemQuantity.text = shoppingListItem.quantity
+        binding.shoppingListItemIsDone.isChecked = shoppingListItem.done
+
+        binding.shoppingListItemIsDone.setOnClickListener { onCheckClick.onClick(shoppingListId, shoppingListItem) }
+
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 

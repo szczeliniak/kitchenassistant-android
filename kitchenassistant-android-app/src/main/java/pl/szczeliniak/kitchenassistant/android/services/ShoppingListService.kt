@@ -53,6 +53,19 @@ class ShoppingListService constructor(
         }
     }
 
+    suspend fun changeItemState(shoppingListId: Int, shoppingListItemId: Int, state: Boolean): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.changeItemState(shoppingListId, shoppingListItemId, state).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun archive(id: Int, isArchived: Boolean): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

@@ -48,6 +48,8 @@ class ShoppingListActivity : AppCompatActivity() {
         prepareDeleteShoppingListItemStateHandler()
     private val archiveShoppingListStateHandler: LoadingStateHandler<Int> =
         prepareArchiveShoppingListStateHandler()
+    private val changeShoppingListItemStateStateHandler: LoadingStateHandler<Int> =
+        prepareChangeShoppingListItemStateStateHandler()
 
     private val viewModel: ShoppingListActivityViewModel by viewModels()
 
@@ -93,13 +95,21 @@ class ShoppingListActivity : AppCompatActivity() {
                     data.items.forEach { item ->
                         itemsAdapter.add(
                             ShoppingListItemItem(
-                                this@ShoppingListActivity, shoppingListId, item
-                            ) { shoppingListId, shoppingListItem ->
-                                viewModel.deleteItem(shoppingListId, shoppingListItem.id)
-                                    .observe(this@ShoppingListActivity) {
-                                        deleteShoppingListItemStateHandler.handle(it)
+                                this@ShoppingListActivity, shoppingListId, item, { shoppingListId, shoppingListItem ->
+                                    viewModel.deleteItem(shoppingListId, shoppingListItem.id)
+                                        .observe(this@ShoppingListActivity) {
+                                            deleteShoppingListItemStateHandler.handle(it)
+                                        }
+                                }, { shoppingListId, shoppingListItem ->
+                                    viewModel.changeItemState(
+                                        shoppingListId,
+                                        shoppingListItem.id,
+                                        !shoppingListItem.done
+                                    ).observe(this@ShoppingListActivity) {
+                                        changeShoppingListItemStateStateHandler.handle(it)
                                     }
-                            })
+                                }
+                            ))
                     }
                 }
             }
@@ -107,6 +117,22 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     private fun prepareDeleteShoppingListItemStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onSuccess(data: Int) {
+                viewModel.load(shoppingListId)
+            }
+        })
+    }
+
+    private fun prepareChangeShoppingListItemStateStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
