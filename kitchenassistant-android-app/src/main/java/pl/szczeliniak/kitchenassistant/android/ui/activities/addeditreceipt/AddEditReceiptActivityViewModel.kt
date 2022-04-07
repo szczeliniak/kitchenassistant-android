@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient
+package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,38 +9,48 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
 @HiltViewModel
-class AddEditIngredientDialogViewModel @Inject constructor(
+class AddEditReceiptActivityViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
-    fun addIngredient(receiptId: Int, request: AddIngredientRequest): LiveData<LoadingState<Int>> {
+    private val _receipt = MutableLiveData<LoadingState<Receipt>>()
+
+    val receipt: LiveData<LoadingState<Receipt>>
+        get() = _receipt
+
+    fun addReceipt(request: AddReceiptRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.addIngredient(receiptId, request)
+            receiptService.add(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
         return liveData
     }
 
-    fun updateIngredient(
-        receiptId: Int,
-        ingredientId: Int,
-        request: UpdateIngredientRequest
-    ): LiveData<LoadingState<Int>> {
+    fun updateReceipt(receiptId: Int, request: UpdateReceiptRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.updateIngredient(receiptId, ingredientId, request)
+            receiptService.update(receiptId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
         return liveData
+    }
+
+    fun load(receiptId: Int) {
+        viewModelScope.launch {
+            receiptService.findById(receiptId)
+                .onEach { _receipt.value = it }
+                .launchIn(viewModelScope)
+        }
     }
 
 }

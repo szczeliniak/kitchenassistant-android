@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt
+package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
 
 import android.content.Context
 import android.content.Intent
@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
@@ -53,7 +53,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val saveReceiptLoadingStateHandler = prepareSaveReceiptLoadingStateHandler()
     private val loadReceiptLoadingStateHandler = prepareLoadReceiptLoadingStateHandler()
 
-    private lateinit var binding: ActivityAddReceiptBinding
+    private lateinit var binding: ActivityAddEditReceiptBinding
 
     private var userId: Int? = null
     private val receiptId: Int?
@@ -75,7 +75,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     private fun initLayout() {
-        binding = ActivityAddReceiptBinding.inflate(layoutInflater)
+        binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_receipt)
     }

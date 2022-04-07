@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBindi
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddEditReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon

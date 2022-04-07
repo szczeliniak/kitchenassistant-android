@@ -33,7 +33,7 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addreceipt.AddEditReceiptActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>

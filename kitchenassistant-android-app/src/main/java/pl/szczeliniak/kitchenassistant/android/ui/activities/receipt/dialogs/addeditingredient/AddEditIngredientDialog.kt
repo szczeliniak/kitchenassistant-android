@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient
+package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditingredient
 
 import android.app.Dialog
 import android.os.Bundle

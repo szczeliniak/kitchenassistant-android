@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addingredient.AddEditIngredientDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
