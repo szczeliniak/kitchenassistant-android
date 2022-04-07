@@ -60,6 +60,7 @@ class AddEditIngredientDialog private constructor() : DialogFragment() {
         ingredient?.let {
             binding.ingredientName.setText(it.name)
             binding.ingredientQuantity.setText(it.quantity)
+            binding.title.text = getString(R.string.title_dialog_edit_ingredient)
         }
 
         saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()

@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep
+package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditstep
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,44 +8,65 @@ import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddStepBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditStepBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddStepDialog private constructor() : DialogFragment() {
+class AddEditStepDialog private constructor() : DialogFragment() {
 
     companion object {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val STEP_EXTRA = "STEP_EXTRA"
 
         const val TAG = "AddStepDialog"
 
-        fun newInstance(receiptId: Int): AddStepDialog {
+        fun newInstance(receiptId: Int): AddEditStepDialog {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            val dialog = AddStepDialog()
+            val dialog = AddEditStepDialog()
+            dialog.arguments = bundle
+            return dialog
+        }
+
+        fun newInstance(receiptId: Int, step: Step): AddEditStepDialog {
+            val bundle = Bundle()
+            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
+            bundle.putParcelable(STEP_EXTRA, step)
+            val dialog = AddEditStepDialog()
             dialog.arguments = bundle
             return dialog
         }
     }
 
-    private lateinit var binding: DialogAddStepBinding
+    private lateinit var binding: DialogAddEditStepBinding
 
     private lateinit var addStepLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddStepDialogViewModel by viewModels()
+    private val viewModel: AddEditStepDialogViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        binding = DialogAddStepBinding.inflate(layoutInflater)
-
+        binding = DialogAddEditStepBinding.inflate(layoutInflater)
+        step?.let { step ->
+            binding.stepName.setText(step.name)
+            step.description?.let {
+                binding.stepDescription.setText(it)
+            }
+            step.sequence?.let {
+                binding.stepSequence.setText(it.toString())
+            }
+            binding.title.text = getString(R.string.title_dialog_edit_step)
+        }
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
@@ -80,8 +101,13 @@ class AddStepDialog private constructor() : DialogFragment() {
             if (!validate()) {
                 return@setOnClickListener
             }
-            viewModel.addStep(receiptId, AddStepRequest(name, description, sequence))
-                .observe(this) { addStepLoadingStateHandler.handle(it) }
+            step?.let { step ->
+                viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))
+                    .observe(this) { addStepLoadingStateHandler.handle(it) }
+            } ?: kotlin.run {
+                viewModel.addStep(receiptId, AddStepRequest(name, description, sequence))
+                    .observe(this) { addStepLoadingStateHandler.handle(it) }
+            }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
@@ -116,6 +142,11 @@ class AddStepDialog private constructor() : DialogFragment() {
     private val receiptId: Int
         get() {
             return requireArguments().getInt(RECEIPT_ID_EXTRA)
+        }
+
+    private val step: Step?
+        get() {
+            return requireArguments().getParcelable(STEP_EXTRA)
         }
 
 }

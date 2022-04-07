@@ -42,4 +42,11 @@ interface ReceiptRepository {
     @POST("/receipts/{id}/steps")
     suspend fun addStep(@Path("id") receiptId: Int, @Body request: AddStepRequest): SuccessResponse
 
+    @PUT("/receipts/{id}/steps/{stepId}")
+    suspend fun updateStep(
+        @Path("id") receiptId: Int,
+        @Path("stepId") stepId: Int,
+        @Body request: UpdateStepRequest
+    ): SuccessResponse
+
 }

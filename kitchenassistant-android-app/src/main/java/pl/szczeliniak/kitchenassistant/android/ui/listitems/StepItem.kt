@@ -13,7 +13,8 @@ class StepItem constructor(
     private val context: Context,
     private val receiptId: Int,
     private val step: Step,
-    private val onDeleteClick: OnClick
+    private val onDeleteClick: OnClick,
+    private val onEditClick: OnClick
 ) :
     BindableItem<ListItemStepBinding>() {
 
@@ -30,6 +31,10 @@ class StepItem constructor(
             when (it.itemId) {
                 R.id.step_item_menu_item_delete -> {
                     onDeleteClick.onClick(receiptId, step)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.step_item_menu_item_edit -> {
+                    onEditClick.onClick(receiptId, step)
                     return@setOnMenuItemClickListener true
                 }
             }

@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class Step(
     val id: Int,
     val name: String,
-    val description: String?
+    val description: String?,
+    val sequence: Int?
 ) : Parcelable

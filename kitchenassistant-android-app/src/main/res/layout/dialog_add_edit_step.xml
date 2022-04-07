@@ -8,6 +8,7 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
             android:text="@string/title_dialog_add_step"
             style="@style/TextDialogTitle"
             android:layout_width="match_parent"

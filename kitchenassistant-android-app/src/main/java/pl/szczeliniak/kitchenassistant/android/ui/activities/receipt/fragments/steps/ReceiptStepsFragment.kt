@@ -13,7 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsB
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditingredient.AddEditIngredientDialog
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep.AddStepDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditstep.AddEditStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
@@ -64,7 +64,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
 
     private fun showAddStepDialog() {
         receipt?.let {
-            AddStepDialog.newInstance(it.id)
+            AddEditStepDialog.newInstance(it.id)
                 .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
         }
     }
@@ -77,11 +77,14 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
             } else {
                 binding.root.hideEmptyIcon()
                 r.steps.forEach { step ->
-                    stepsAdapter.add(StepItem(requireContext(), r.id, step) { receiptId, s ->
+                    stepsAdapter.add(StepItem(requireContext(), r.id, step, { receiptId, s ->
                         viewModel.delete(receiptId, s.id).observe(viewLifecycleOwner) {
                             deleteStepStateHandler.handle(it)
                         }
-                    })
+                    }, { receiptId, s ->
+                        AddEditStepDialog.newInstance(receiptId, s)
+                            .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
+                    }))
                 }
             }
         }

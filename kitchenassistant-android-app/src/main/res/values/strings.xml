@@ -47,7 +47,9 @@
     <string name="title_fragment_receipt_steps">Steps</string>
     <string name="title_fragment_shopping_lists">Shopping lists</string>
     <string name="title_dialog_add_ingredient">Add ingredient</string>
+    <string name="title_dialog_edit_ingredient">Edit ingredient</string>
     <string name="title_dialog_add_step">Add step</string>
+    <string name="title_dialog_edit_step">Edit step</string>
     <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
 
     <string name="label_button_add">Add</string>

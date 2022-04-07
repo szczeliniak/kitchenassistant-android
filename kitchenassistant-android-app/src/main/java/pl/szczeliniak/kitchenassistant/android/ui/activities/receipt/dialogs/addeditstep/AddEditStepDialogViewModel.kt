@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addstep
+package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditstep
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,11 +10,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
 @HiltViewModel
-class AddStepDialogViewModel @Inject constructor(
+class AddEditStepDialogViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
@@ -22,6 +23,16 @@ class AddStepDialogViewModel @Inject constructor(
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
             receiptService.addStep(receiptId, request)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun updateStep(receiptId: Int, stepId: Int, request: UpdateStepRequest): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            receiptService.updateStep(receiptId, stepId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

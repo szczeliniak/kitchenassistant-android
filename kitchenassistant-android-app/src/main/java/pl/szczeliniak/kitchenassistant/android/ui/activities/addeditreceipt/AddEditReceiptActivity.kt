@@ -55,7 +55,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddEditReceiptBinding
 
-    private var userId: Int? = null
     private val receiptId: Int?
         get() {
             val id = intent.getIntExtra(RECEIPT_ID_EXTRA, -1)

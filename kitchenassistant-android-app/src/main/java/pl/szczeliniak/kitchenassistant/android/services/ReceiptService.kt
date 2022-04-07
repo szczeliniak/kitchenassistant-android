@@ -147,4 +147,17 @@ class ReceiptService constructor(
         }
     }
 
+    suspend fun updateStep(receiptId: Int, stepId: Int, request: UpdateStepRequest): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.updateStep(receiptId, stepId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
 }
