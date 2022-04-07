@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 
@@ -152,6 +153,32 @@ class ReceiptService constructor(
             emit(LoadingState.InProgress)
             try {
                 emit(LoadingState.Success(repository.updateStep(receiptId, stepId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun findAllCategories(): Flow<LoadingState<List<Category>>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.findAllCategories(localStorageService.getId()).categories))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun deleteCategory(id: Int): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.deleteCategory(id).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

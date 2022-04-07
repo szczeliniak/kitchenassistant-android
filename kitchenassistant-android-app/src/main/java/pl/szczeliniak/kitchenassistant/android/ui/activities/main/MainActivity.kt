@@ -10,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppinglists.ArchivedShoppingListsActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts.ReceiptsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.shoppinglists.ShoppingListsFragment
@@ -80,6 +81,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_nav_view_item_archived_shopping_lists -> {
                 ArchivedShoppingListsActivity.start(this@MainActivity)
+                return true
+            }
+            R.id.menu_nav_view_item_categories -> {
+                CategoriesActivity.start(this@MainActivity)
                 return true
             }
             R.id.menu_nav_view_item_logout -> {

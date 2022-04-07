@@ -42,6 +42,7 @@
     <string name="title_activity_edit_shopping_list">Edit shopping list</string>
     <string name="title_activity_archived_shopping_lists">Archived shopping lists</string>
     <string name="title_activity_register">Register</string>
+    <string name="title_activity_categories">Categories</string>
     <string name="title_fragment_receipts">Receipts</string>
     <string name="title_fragment_receipt_info">Info</string>
     <string name="title_fragment_receipt_ingredients">Ingredients</string>

@@ -53,6 +53,11 @@
                 android:exported="false">
         </activity>
         <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity"
+                android:windowSoftInputMode="adjustResize"
+                android:exported="false">
+        </activity>
+        <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:exported="false">
