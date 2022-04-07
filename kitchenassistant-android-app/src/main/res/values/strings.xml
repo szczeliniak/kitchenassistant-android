@@ -35,6 +35,7 @@
     <string name="description_add_step">Add step</string>
     <string name="description_add_shopping_list">Add shopping list</string>
     <string name="description_add_shopping_list_item">Add shopping list item</string>
+    <string name="description_add_category">Add category</string>
 
     <string name="title_activity_new_receipt">New receipt</string>
     <string name="title_activity_edit_receipt">Edit receipt</string>
@@ -78,5 +79,9 @@
     <string name="label_shopping_list_item_quantity">Quantity</string>
     <string name="label_shopping_list_item_sequence">Sequence</string>
     <string name="label_button_edit">Edit</string>
+    <string name="title_dialog_add_category">Add category</string>
+    <string name="label_category_name">Name</string>
+    <string name="title_dialog_edit_category">Edit category</string>
+    <string name="message_category_name_is_empty">Category name cannot be empty</string>
 
 </resources>

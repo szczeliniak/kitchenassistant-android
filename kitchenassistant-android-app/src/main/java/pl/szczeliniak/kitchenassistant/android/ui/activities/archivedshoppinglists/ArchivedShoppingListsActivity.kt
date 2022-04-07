@@ -54,14 +54,12 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityArchviedShoppingListsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarLayout.toolbar.init(
-            this,
-            R.string.title_activity_archived_shopping_lists
-        )
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_archived_shopping_lists)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
+        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists() }
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
@@ -71,6 +69,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+                binding.root.isRefreshing = false
                 binding.root.hideProgressSpinner(this@ArchivedShoppingListsActivity)
             }
 

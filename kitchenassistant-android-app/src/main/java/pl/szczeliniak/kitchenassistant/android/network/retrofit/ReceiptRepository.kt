@@ -56,4 +56,10 @@ interface ReceiptRepository {
     @DELETE("/receipts/categories/{id}")
     suspend fun deleteCategory(@Path("id") id: Int): SuccessResponse
 
+    @POST("/receipts/categories")
+    suspend fun addCategory(@Body request: AddCategoryRequest): SuccessResponse
+
+    @PUT("/receipts/categories/{id}")
+    suspend fun updateCategory(@Path("id") id: Int, @Body request: UpdateCategoryRequest): SuccessResponse
+
 }

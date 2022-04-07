@@ -13,9 +13,10 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityCategoriesBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.dialogs.addeditcategory.AddEditCategoryDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.CategoryItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.*
 import javax.inject.Inject
@@ -52,14 +53,15 @@ class CategoriesActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityCategoriesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarLayout.toolbar.init(
-            this,
-            R.string.title_activity_categories
-        )
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_categories)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
+        binding.root.setOnRefreshListener { viewModel.reloadCategories() }
+        binding.buttonAddCategory.setOnClickListener {
+            AddEditCategoryDialog.newInstance().show(supportFragmentManager, AddEditCategoryDialog.TAG)
+        }
     }
 
     private fun prepareLoadCategoriesStateHandler(): LoadingStateHandler<List<Category>> {
@@ -69,6 +71,7 @@ class CategoriesActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
+                binding.root.isRefreshing = false
                 binding.root.hideProgressSpinner(this@CategoriesActivity)
             }
 
@@ -84,7 +87,8 @@ class CategoriesActivity : AppCompatActivity() {
                                 deleteCategoryLoadingStateHandler.handle(r)
                             }
                         }, {
-
+                            AddEditCategoryDialog.newInstance(it)
+                                .show(supportFragmentManager, AddEditCategoryDialog.TAG)
                         }))
                     }
                 }
@@ -122,7 +126,7 @@ class CategoriesActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun reloadReceiptEvent(event: ReloadShoppingListsEvent) {
+    fun reloadCategoriesEvent(event: ReloadCategoriesEvent) {
         viewModel.reloadCategories()
     }
 

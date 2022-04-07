@@ -14,4 +14,5 @@
     <integer name="max_length_shopping_list_item_name">50</integer>
     <integer name="max_length_shopping_list_item_quantity">20</integer>
     <integer name="max_length_shopping_list_item_sequence">10</integer>
+    <integer name="max_length_category_name">100</integer>
 </resources>
