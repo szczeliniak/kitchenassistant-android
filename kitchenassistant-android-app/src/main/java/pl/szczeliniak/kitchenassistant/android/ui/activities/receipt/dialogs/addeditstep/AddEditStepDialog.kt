@@ -28,18 +28,10 @@ class AddEditStepDialog private constructor() : DialogFragment() {
 
         const val TAG = "AddStepDialog"
 
-        fun newInstance(receiptId: Int): AddEditStepDialog {
+        fun newInstance(receiptId: Int, step: Step? = null): AddEditStepDialog {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            val dialog = AddEditStepDialog()
-            dialog.arguments = bundle
-            return dialog
-        }
-
-        fun newInstance(receiptId: Int, step: Step): AddEditStepDialog {
-            val bundle = Bundle()
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            bundle.putParcelable(STEP_EXTRA, step)
+            step?.let { bundle.putParcelable(STEP_EXTRA, it) }
             val dialog = AddEditStepDialog()
             dialog.arguments = bundle
             return dialog

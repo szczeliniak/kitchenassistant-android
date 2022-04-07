@@ -31,14 +31,9 @@ class AddEditReceiptActivity : AppCompatActivity() {
     companion object {
         private const val RECEIPT_EXTRA = "RECEIPT_EXTRA"
 
-        fun start(context: Context) {
+        fun start(context: Context, receipt: Receipt? = null) {
             val intent = Intent(context, AddEditReceiptActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, receipt: Receipt) {
-            val intent = Intent(context, AddEditReceiptActivity::class.java)
-            intent.putExtra(RECEIPT_EXTRA, receipt)
+            receipt?.let { intent.putExtra(RECEIPT_EXTRA, it) }
             context.startActivity(intent)
         }
     }

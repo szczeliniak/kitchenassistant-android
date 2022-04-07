@@ -28,18 +28,13 @@ class AddEditShoppingListItemDialog private constructor() : DialogFragment() {
 
         const val TAG = "AddShoppingListItemDialog"
 
-        fun newInstance(shoppingListId: Int): AddEditShoppingListItemDialog {
+        fun newInstance(
+            shoppingListId: Int,
+            shoppingListItem: ShoppingListItem? = null
+        ): AddEditShoppingListItemDialog {
             val bundle = Bundle()
             bundle.putInt(SHOPPING_LIST_ID_EXTRA, shoppingListId)
-            val dialog = AddEditShoppingListItemDialog()
-            dialog.arguments = bundle
-            return dialog
-        }
-
-        fun newInstance(shoppingListId: Int, shoppingListItem: ShoppingListItem): AddEditShoppingListItemDialog {
-            val bundle = Bundle()
-            bundle.putInt(SHOPPING_LIST_ID_EXTRA, shoppingListId)
-            bundle.putParcelable(SHOPPING_LIST_ITEM_EXTRA, shoppingListItem)
+            shoppingListItem?.let { bundle.putParcelable(SHOPPING_LIST_ITEM_EXTRA, it) }
             val dialog = AddEditShoppingListItemDialog()
             dialog.arguments = bundle
             return dialog

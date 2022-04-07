@@ -51,11 +51,11 @@ class MainActivity : AppCompatActivity() {
     private fun onNavigationItemChanged(itemId: Int): Boolean {
         when (itemId) {
             R.id.nav_bottom_item_receipts -> {
-                setCurrentFragment(ReceiptsFragment())
+                setCurrentFragment(ReceiptsFragment.create())
                 return true
             }
             R.id.nav_bottom_item_shopping_lists -> {
-                setCurrentFragment(ShoppingListsFragment())
+                setCurrentFragment(ShoppingListsFragment.create())
                 return true
             }
         }
@@ -100,14 +100,14 @@ class MainActivity : AppCompatActivity() {
     private fun setFragment(savedInstanceState: Bundle?) {
         val fragmentClassName = savedInstanceState?.getString(SAVED_FRAGMENT_NAME)
         if (fragmentClassName == null) {
-            setCurrentFragment(ReceiptsFragment())
+            setCurrentFragment(ReceiptsFragment.create())
         }
         when (fragmentClassName) {
             ReceiptsFragment::class.java.simpleName -> {
-                setCurrentFragment(ReceiptsFragment())
+                setCurrentFragment(ReceiptsFragment.create())
             }
             ShoppingListsFragment::class.java.simpleName -> {
-                setCurrentFragment(ShoppingListsFragment())
+                setCurrentFragment(ShoppingListsFragment.create())
             }
         }
     }

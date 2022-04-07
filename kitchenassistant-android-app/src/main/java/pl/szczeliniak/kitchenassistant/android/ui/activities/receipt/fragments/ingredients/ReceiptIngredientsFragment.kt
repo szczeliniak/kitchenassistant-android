@@ -22,7 +22,13 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ReceiptIngredientsFragment : ReceiptActivityFragment() {
+class ReceiptIngredientsFragment private constructor() : ReceiptActivityFragment() {
+
+    companion object {
+        fun create(): ReceiptIngredientsFragment {
+            return ReceiptIngredientsFragment()
+        }
+    }
 
     private lateinit var binding: FragmentReceiptIngredientsBinding
     private lateinit var deleteIngredientStateHandler: LoadingStateHandler<Int>

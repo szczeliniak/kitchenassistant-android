@@ -88,7 +88,7 @@ class ReceiptActivity : AppCompatActivity() {
     private fun initPager() {
         binding.viewPager.adapter = FragmentPagerAdapter(
             arrayOf(
-                ReceiptInfoFragment(), ReceiptIngredientsFragment(), ReceiptStepsFragment()
+                ReceiptInfoFragment.create(), ReceiptIngredientsFragment.create(), ReceiptStepsFragment.create()
             ), supportFragmentManager, lifecycle
         )
 

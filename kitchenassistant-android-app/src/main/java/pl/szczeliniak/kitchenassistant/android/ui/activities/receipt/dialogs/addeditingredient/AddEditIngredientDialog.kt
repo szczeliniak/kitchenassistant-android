@@ -28,18 +28,10 @@ class AddEditIngredientDialog private constructor() : DialogFragment() {
 
         const val TAG = "AddIngredientDialog"
 
-        fun newInstance(receiptId: Int): AddEditIngredientDialog {
+        fun newInstance(receiptId: Int, ingredient: Ingredient? = null): AddEditIngredientDialog {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            val dialog = AddEditIngredientDialog()
-            dialog.arguments = bundle
-            return dialog
-        }
-
-        fun newInstance(receiptId: Int, ingredient: Ingredient): AddEditIngredientDialog {
-            val bundle = Bundle()
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
-            bundle.putParcelable(INGREDIENT_EXTRA, ingredient)
+            ingredient?.let { bundle.putParcelable(INGREDIENT_EXTRA, it) }
             val dialog = AddEditIngredientDialog()
             dialog.arguments = bundle
             return dialog

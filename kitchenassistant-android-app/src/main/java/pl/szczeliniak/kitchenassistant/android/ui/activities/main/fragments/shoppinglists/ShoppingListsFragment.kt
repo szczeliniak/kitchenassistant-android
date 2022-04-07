@@ -26,7 +26,13 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShoppingListsFragment : Fragment() {
+class ShoppingListsFragment private constructor() : Fragment() {
+
+    companion object {
+        fun create(): ShoppingListsFragment {
+            return ShoppingListsFragment()
+        }
+    }
 
     private val viewModel: ShoppingListsFragmentViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()

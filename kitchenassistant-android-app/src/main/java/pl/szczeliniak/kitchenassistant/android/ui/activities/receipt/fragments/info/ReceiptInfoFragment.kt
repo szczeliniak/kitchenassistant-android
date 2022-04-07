@@ -10,7 +10,13 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.R
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 
 @AndroidEntryPoint
-class ReceiptInfoFragment : ReceiptActivityFragment() {
+class ReceiptInfoFragment private constructor() : ReceiptActivityFragment() {
+
+    companion object {
+        fun create(): ReceiptInfoFragment {
+            return ReceiptInfoFragment()
+        }
+    }
 
     private lateinit var binding: FragmentReceiptInfoBinding
 

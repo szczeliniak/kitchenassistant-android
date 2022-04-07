@@ -31,14 +31,9 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     companion object {
         private const val SHOPPING_LIST_EXTRA = "SHOPPING_LIST_EXTRA"
 
-        fun start(context: Context) {
+        fun start(context: Context, shoppingList: ShoppingList? = null) {
             val intent = Intent(context, AddEditShoppingListActivity::class.java)
-            context.startActivity(intent)
-        }
-
-        fun start(context: Context, shoppingList: ShoppingList) {
-            val intent = Intent(context, AddEditShoppingListActivity::class.java)
-            intent.putExtra(SHOPPING_LIST_EXTRA, shoppingList)
+            shoppingList?.let { intent.putExtra(SHOPPING_LIST_EXTRA, it) }
             context.startActivity(intent)
         }
     }
