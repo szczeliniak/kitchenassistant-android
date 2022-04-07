@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
@@ -19,11 +18,6 @@ import javax.inject.Inject
 class AddEditReceiptActivityViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
-
-    private val _receipt = MutableLiveData<LoadingState<Receipt>>()
-
-    val receipt: LiveData<LoadingState<Receipt>>
-        get() = _receipt
 
     fun addReceipt(request: AddReceiptRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
@@ -43,14 +37,6 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
-    }
-
-    fun load(receiptId: Int) {
-        viewModelScope.launch {
-            receiptService.findById(receiptId)
-                .onEach { _receipt.value = it }
-                .launchIn(viewModelScope)
-        }
     }
 
 }

@@ -16,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityArchviedShopp
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.*
@@ -86,6 +87,8 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
                             viewModel.delete(it.id).observe(this@ArchivedShoppingListsActivity) { r ->
                                 deleteShoppingListLoadingStateHandler.handle(r)
                             }
+                        }, {
+                            AddEditShoppingListActivity.start(this@ArchivedShoppingListsActivity, it)
                         }))
                     }
                 }

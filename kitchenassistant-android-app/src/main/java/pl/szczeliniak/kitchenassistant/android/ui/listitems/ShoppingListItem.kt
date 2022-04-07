@@ -14,7 +14,8 @@ class ShoppingListItem constructor(
     private val context: Context,
     private val shoppingList: ShoppingList,
     private val onClick: OnClick,
-    private val onDeleteClick: OnClick
+    private val onDeleteClick: OnClick,
+    private val onEditClick: OnClick
 ) : BindableItem<ListItemShoppingListBinding>() {
 
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
@@ -47,6 +48,10 @@ class ShoppingListItem constructor(
             when (it.itemId) {
                 R.id.shopping_list_item_menu_item_delete -> {
                     onDeleteClick.onClick(shoppingList)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.shopping_list_item_menu_item_edit -> {
+                    onEditClick.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
             }

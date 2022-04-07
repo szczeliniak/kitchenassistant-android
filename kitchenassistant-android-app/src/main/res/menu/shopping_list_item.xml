@@ -4,5 +4,8 @@
     <item
             android:id="@+id/shopping_list_item_menu_item_delete"
             android:title="@string/label_button_delete"/>
+    <item
+            android:id="@+id/shopping_list_item_menu_item_edit"
+            android:title="@string/label_button_edit"/>
 
 </menu>

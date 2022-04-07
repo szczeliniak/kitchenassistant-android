@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentShoppingLists
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
@@ -47,7 +47,7 @@ class ShoppingListsFragment : Fragment() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        binding.buttonAddShoppingList.setOnClickListener { AddShoppingListActivity.start(requireContext()) }
+        binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -102,6 +102,8 @@ class ShoppingListsFragment : Fragment() {
                             viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                 deleteShoppingListLoadingStateHandler.handle(r)
                             }
+                        }, {
+                            AddEditShoppingListActivity.start(requireActivity(), it)
                         }))
                     }
                 }

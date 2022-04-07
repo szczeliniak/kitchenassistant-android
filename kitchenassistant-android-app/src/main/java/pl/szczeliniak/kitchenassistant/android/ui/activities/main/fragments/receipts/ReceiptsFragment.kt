@@ -103,7 +103,7 @@ class ReceiptsFragment : Fragment() {
                                 deleteReceiptLoadingStateHandler.handle(r)
                             }
                         }, {
-                            AddEditReceiptActivity.start(requireContext(), it.id)
+                            AddEditReceiptActivity.start(requireContext(), it)
                         }))
                     }
                 }

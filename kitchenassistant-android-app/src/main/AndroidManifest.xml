@@ -38,7 +38,7 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddShoppingListActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:exported="false">
         </activity>

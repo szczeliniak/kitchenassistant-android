@@ -10,12 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddShoppingListBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
@@ -23,11 +26,19 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddShoppingListActivity : AppCompatActivity() {
+class AddEditShoppingListActivity : AppCompatActivity() {
 
     companion object {
+        private const val SHOPPING_LIST_EXTRA = "SHOPPING_LIST_EXTRA"
+
         fun start(context: Context) {
-            val intent = Intent(context, AddShoppingListActivity::class.java)
+            val intent = Intent(context, AddEditShoppingListActivity::class.java)
+            context.startActivity(intent)
+        }
+
+        fun start(context: Context, shoppingList: ShoppingList) {
+            val intent = Intent(context, AddEditShoppingListActivity::class.java)
+            intent.putExtra(SHOPPING_LIST_EXTRA, shoppingList)
             context.startActivity(intent)
         }
     }
@@ -38,11 +49,16 @@ class AddShoppingListActivity : AppCompatActivity() {
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddShoppingListActivityViewModel by viewModels()
+    private val viewModel: AddEditShoppingListActivityViewModel by viewModels()
 
-    private lateinit var binding: ActivityAddShoppingListBinding
+    private lateinit var binding: ActivityAddEditShoppingListBinding
 
     private val saveShoppingListLoadingStateHandler = prepareSaveShoppingListLoadingStateHandler()
+
+    private val shoppingList: ShoppingList?
+        get() {
+            return intent.getParcelableExtra(SHOPPING_LIST_EXTRA)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,9 +66,15 @@ class AddShoppingListActivity : AppCompatActivity() {
     }
 
     private fun initLayout() {
-        binding = ActivityAddShoppingListBinding.inflate(layoutInflater)
+        binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
+        shoppingList?.let {
+            binding.shoppingListName.setText(it.name)
+            binding.shoppingListDescription.setText(it.description)
+            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_edit_shopping_list)
+        } ?: kotlin.run {
+            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -71,16 +93,18 @@ class AddShoppingListActivity : AppCompatActivity() {
     private fun prepareSaveShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
-                binding.root.showProgressSpinner(this@AddShoppingListActivity)
+                binding.root.showProgressSpinner(this@AddEditShoppingListActivity)
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddShoppingListActivity)
+                binding.root.hideProgressSpinner(this@AddEditShoppingListActivity)
             }
 
             override fun onSuccess(data: Int) {
                 eventBus.post(ReloadShoppingListsEvent())
-                ShoppingListActivity.start(this@AddShoppingListActivity, data)
+                if (shoppingList == null) {
+                    ShoppingListActivity.start(this@AddEditShoppingListActivity, data)
+                }
                 finish()
             }
         })
@@ -90,26 +114,31 @@ class AddShoppingListActivity : AppCompatActivity() {
         if (!validateData()) {
             return
         }
-        viewModel.addShoppingList(AddShoppingListRequest(name, description, localStorageService.getId()))
-            .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
+        shoppingList?.let { list ->
+            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name!!, description))
+                .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
+        } ?: kotlin.run {
+            viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId()))
+                .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
+        }
     }
 
     private fun validateData(): Boolean {
-        if (name.isEmpty()) {
+        if (name.isNullOrEmpty()) {
             toast(R.string.message_shopping_list_name_is_empty)
             return false
         }
         return true
     }
 
-    private val name: String
+    private val name: String?
         get() {
-            return binding.shoppingListName.text.toString()
+            return binding.shoppingListName.getTextOrNull()
         }
 
-    private val description: String
+    private val description: String?
         get() {
-            return binding.shoppingListDescription.text.toString()
+            return binding.shoppingListDescription.getTextOrNull()
         }
 
 }

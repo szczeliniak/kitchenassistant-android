@@ -29,16 +29,16 @@ import javax.inject.Inject
 class AddEditReceiptActivity : AppCompatActivity() {
 
     companion object {
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val RECEIPT_EXTRA = "RECEIPT_EXTRA"
 
         fun start(context: Context) {
             val intent = Intent(context, AddEditReceiptActivity::class.java)
             context.startActivity(intent)
         }
 
-        fun start(context: Context, receiptId: Int) {
+        fun start(context: Context, receipt: Receipt) {
             val intent = Intent(context, AddEditReceiptActivity::class.java)
-            intent.putExtra(RECEIPT_ID_EXTRA, receiptId)
+            intent.putExtra(RECEIPT_EXTRA, receipt)
             context.startActivity(intent)
         }
     }
@@ -51,32 +51,31 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private val viewModel: AddEditReceiptActivityViewModel by viewModels()
     private val saveReceiptLoadingStateHandler = prepareSaveReceiptLoadingStateHandler()
-    private val loadReceiptLoadingStateHandler = prepareLoadReceiptLoadingStateHandler()
 
     private lateinit var binding: ActivityAddEditReceiptBinding
 
-    private val receiptId: Int?
+    private val receipt: Receipt?
         get() {
-            val id = intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
-            if (id < 0) {
-                return null
-            }
-            return id
+            return intent.getParcelableExtra(RECEIPT_EXTRA)
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
-        receiptId?.let { id ->
-            viewModel.receipt.observe(this) { loadReceiptLoadingStateHandler.handle(it) }
-            viewModel.load(id)
-        }
     }
 
     private fun initLayout() {
         binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
+        receipt?.let { id ->
+            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
+            binding.receiptName.setText(id.name)
+            binding.receiptDescription.setText(id.description)
+            binding.receiptAuthor.setText(id.author)
+            binding.receiptUrl.setText(id.source)
+        } ?: kotlin.run {
+            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
+        }
         setContentView(binding.root)
-        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_receipt)
     }
 
     private fun prepareSaveReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -91,30 +90,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
             override fun onSuccess(data: Int) {
                 eventBus.post(ReloadReceiptsEvent())
-                if (receiptId == null) {
+                if (receipt == null) {
                     ReceiptActivity.start(this@AddEditReceiptActivity, data)
                 }
                 finish()
-            }
-        })
-    }
-
-    private fun prepareLoadReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Receipt> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@AddEditReceiptActivity)
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddEditReceiptActivity)
-            }
-
-            override fun onSuccess(data: Receipt) {
-                binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
-                binding.receiptName.setText(data.name)
-                binding.receiptDescription.setText(data.description)
-                binding.receiptAuthor.setText(data.author)
-                binding.receiptUrl.setText(data.source)
             }
         })
     }
@@ -124,8 +103,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
             return
         }
 
-        receiptId?.let { id ->
-            viewModel.updateReceipt(id, UpdateReceiptRequest(name!!, author, url, description))
+        receipt?.let { r ->
+            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description))
                 .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
             viewModel.addReceipt(AddReceiptRequest(name!!, author, url, description, localStorageService.getId()))

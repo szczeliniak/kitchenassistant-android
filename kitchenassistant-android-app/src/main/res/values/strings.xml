@@ -39,6 +39,7 @@
     <string name="title_activity_new_receipt">New receipt</string>
     <string name="title_activity_edit_receipt">Edit receipt</string>
     <string name="title_activity_new_shopping_list">Add shopping list</string>
+    <string name="title_activity_edit_shopping_list">Edit shopping list</string>
     <string name="title_activity_archived_shopping_lists">Archived shopping lists</string>
     <string name="title_activity_register">Register</string>
     <string name="title_fragment_receipts">Receipts</string>
