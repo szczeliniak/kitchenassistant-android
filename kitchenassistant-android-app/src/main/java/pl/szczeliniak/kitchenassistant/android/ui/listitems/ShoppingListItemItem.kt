@@ -13,6 +13,7 @@ class ShoppingListItemItem constructor(
     private val shoppingListId: Int,
     private val shoppingListItem: ShoppingListItem,
     private val onDeleteClick: OnClick,
+    private val onEditClick: OnClick,
     private val onCheckClick: OnCheckboxClick
 ) :
     BindableItem<ListItemShoppingListItemBinding>() {
@@ -36,6 +37,10 @@ class ShoppingListItemItem constructor(
             when (it.itemId) {
                 R.id.shopping_list_item_item_menu_item_delete -> {
                     onDeleteClick.onClick(shoppingListId, shoppingListItem)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.shopping_list_item_item_menu_item_edit -> {
+                    onEditClick.onClick(shoppingListId, shoppingListItem)
                     return@setOnMenuItemClickListener true
                 }
             }

@@ -18,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem.AddShoppingListItemDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialogs.addshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.*
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
@@ -66,8 +66,8 @@ class ShoppingListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonAddShoppingListItem.setOnClickListener {
-            AddShoppingListItemDialog.newInstance(shoppingListId)
-                .show(supportFragmentManager, AddShoppingListItemDialog.TAG)
+            AddEditShoppingListItemDialog.newInstance(shoppingListId)
+                .show(supportFragmentManager, AddEditShoppingListItemDialog.TAG)
         }
 
         viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
@@ -101,6 +101,9 @@ class ShoppingListActivity : AppCompatActivity() {
                                         .observe(this@ShoppingListActivity) {
                                             deleteShoppingListItemStateHandler.handle(it)
                                         }
+                                }, { shoppingListId, shoppingListItem ->
+                                    AddEditShoppingListItemDialog.newInstance(shoppingListId, shoppingListItem)
+                                        .show(supportFragmentManager, AddEditShoppingListItemDialog.TAG)
                                 }, { shoppingListId, shoppingListItem, isChecked ->
                                     viewModel.changeItemState(
                                         shoppingListId,

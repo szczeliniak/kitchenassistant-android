@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,6 +58,9 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
             R.string.title_activity_archived_shopping_lists
         )
         binding.recyclerView.adapter = adapter
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
+        )
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {

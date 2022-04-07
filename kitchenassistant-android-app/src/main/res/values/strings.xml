@@ -51,6 +51,7 @@
     <string name="title_dialog_add_step">Add step</string>
     <string name="title_dialog_edit_step">Edit step</string>
     <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
+    <string name="title_dialog_edit_shopping_list_item">Edit shopping list item</string>
 
     <string name="label_button_add">Add</string>
     <string name="label_button_cancel">Cancel</string>
