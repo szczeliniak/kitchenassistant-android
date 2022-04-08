@@ -24,6 +24,7 @@
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -37,6 +38,26 @@
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/shopping_list_description"
                     tools:text="Shopping list description"
+                    style="@style/TextPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_shopping_list_date"
+                    style="@style/TextOverLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/shopping_list_date"
+                    tools:text="2020-01-01"
                     style="@style/TextPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

@@ -18,6 +18,7 @@
     <string name="message_empty_name">Name cannot be empty</string>
     <string name="message_register_email_exists">Email exists</string>
     <string name="message_empty_list">Empty list</string>
+    <string name="message_category_name_is_empty">Category name cannot be empty</string>
 
     <string name="form_login_email">Email</string>
     <string name="form_login_password">Password</string>
@@ -55,6 +56,8 @@
     <string name="title_dialog_edit_step">Edit step</string>
     <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
     <string name="title_dialog_edit_shopping_list_item">Edit shopping list item</string>
+    <string name="title_dialog_edit_category">Edit category</string>
+    <string name="title_dialog_add_category">Add category</string>
 
     <string name="label_button_add">Add</string>
     <string name="label_button_cancel">Cancel</string>
@@ -63,6 +66,8 @@
     <string name="label_button_archive">Archive</string>
     <string name="label_button_register">Register</string>
     <string name="label_button_login">Login</string>
+    <string name="label_button_select_date">Select date</string>
+    <string name="label_button_edit">Edit</string>
     <string name="label_receipt_name">Receipt name</string>
     <string name="label_receipt_author">Author</string>
     <string name="label_receipt_url">URL</string>
@@ -74,14 +79,11 @@
     <string name="label_step_sequence">Sequence</string>
     <string name="label_shopping_list_name">Name</string>
     <string name="label_shopping_list_description">Description</string>
+    <string name="label_shopping_list_date">Date</string>
     <string name="label_shopping_list_items">Items</string>
     <string name="label_shopping_list_item_name">Name</string>
     <string name="label_shopping_list_item_quantity">Quantity</string>
     <string name="label_shopping_list_item_sequence">Sequence</string>
-    <string name="label_button_edit">Edit</string>
-    <string name="title_dialog_add_category">Add category</string>
     <string name="label_category_name">Name</string>
-    <string name="title_dialog_edit_category">Edit category</string>
-    <string name="message_category_name_is_empty">Category name cannot be empty</string>
 
 </resources>

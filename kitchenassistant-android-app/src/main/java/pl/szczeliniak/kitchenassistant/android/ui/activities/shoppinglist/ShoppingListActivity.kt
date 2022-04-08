@@ -22,6 +22,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.*
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
+import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -87,6 +88,7 @@ class ShoppingListActivity : AppCompatActivity() {
             override fun onSuccess(data: ShoppingList) {
                 binding.toolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
                 binding.shoppingListDescription.setTextOrDefault(data.description)
+                binding.shoppingListDate.setTextOrDefault(LocalDateUtils.stringify(data.date))
 
                 itemsAdapter.clear()
                 if (data.items.isEmpty()) {

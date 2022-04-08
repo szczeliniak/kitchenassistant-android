@@ -1,5 +1,6 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist
 
+import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -23,6 +24,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
+import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -62,10 +65,25 @@ class AddEditShoppingListActivity : AppCompatActivity() {
 
     private fun initLayout() {
         binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
+        binding.shoppingListDate.setOnClickListener {
+            val date = this.date ?: LocalDate.now()
+            DatePickerDialog(this@AddEditShoppingListActivity, { _, year, month, dayOfMonth ->
+                binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month, dayOfMonth))
+            }, date.year, date.monthValue, date.dayOfMonth).show()
+        }
         setContentView(binding.root)
         shoppingList?.let {
             binding.shoppingListName.setText(it.name)
             binding.shoppingListDescription.setText(it.description)
+            it.date?.let { date ->
+                binding.shoppingListDate.text = LocalDateUtils.stringify(
+                    LocalDate.of(
+                        date.year,
+                        date.monthValue,
+                        date.dayOfMonth
+                    )
+                )
+            }
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_edit_shopping_list)
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
@@ -110,10 +128,10 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             return
         }
         shoppingList?.let { list ->
-            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name!!, description))
+            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name!!, description, date))
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
-            viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId()))
+            viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId(), date))
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         }
     }
@@ -134,6 +152,15 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     private val description: String?
         get() {
             return binding.shoppingListDescription.getTextOrNull()
+        }
+
+    private val date: LocalDate?
+        get() {
+            val asString = binding.shoppingListDate.text.toString()
+            if (asString == getString(R.string.label_button_select_date)) {
+                return null
+            }
+            return LocalDateUtils.parse(asString)
         }
 
 }
