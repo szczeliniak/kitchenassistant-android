@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ProgressSpinnerBinding
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.lockOrientation
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.unlockOrientation
 
 fun ViewGroup.showProgressSpinner(activity: Activity?) {
     ProgressSpinnerBinding.inflate(LayoutInflater.from(activity), this, true)

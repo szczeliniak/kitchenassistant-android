@@ -38,6 +38,26 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_receipt_category"
+                    style="@style/TextOverLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/receipt_category"
+                    tools:text="Category name"
+                    style="@style/TextPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_url"
                     style="@style/TextOverLine"
                     android:layout_width="match_parent"

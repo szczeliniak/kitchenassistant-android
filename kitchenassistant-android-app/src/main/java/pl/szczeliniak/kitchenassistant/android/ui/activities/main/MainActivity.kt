@@ -14,7 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.Categori
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts.ReceiptsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.shoppinglists.ShoppingListsFragment
-import pl.szczeliniak.kitchenassistant.android.ui.utils.init
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import javax.inject.Inject
 
 @AndroidEntryPoint

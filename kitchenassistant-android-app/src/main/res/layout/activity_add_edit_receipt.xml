@@ -61,6 +61,25 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/author_input_layout"
+                    android:layout_width="match_parent"
+                    app:counterEnabled="true"
+                    app:counterMaxLength="@integer/max_length_receipt_category"
+                    style="@style/InputLayout"
+                    android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                        android:hint="@string/receipt_category_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:maxLength="@integer/max_length_receipt_category"
+                        android:inputType="text"
+                        android:id="@+id/receipt_category"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_receipt_url"
                     style="@style/InputLayout"

@@ -19,9 +19,9 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 

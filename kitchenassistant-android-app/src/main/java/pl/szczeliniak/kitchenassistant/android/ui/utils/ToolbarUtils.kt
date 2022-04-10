@@ -5,22 +5,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import pl.szczeliniak.kitchenassistant.android.R
 
-fun Toolbar.init(activity: AppCompatActivity, navigationIconId: Int, onNavigationClickListener: View.OnClickListener) {
-    setNavigationIcon(navigationIconId)
-    activity.setSupportActionBar(this)
-    setNavigationOnClickListener { onNavigationClickListener.onClick(this) }
-}
+class ToolbarUtils {
 
-fun Toolbar.init(activity: AppCompatActivity, resId: Int) {
-    this.title = activity.getString(resId)
-    init(activity, R.drawable.icon_arrow_back) {
-        activity.onBackPressed()
-    }
-}
+    companion object {
 
-fun Toolbar.init(activity: AppCompatActivity, name: String) {
-    this.title = name
-    init(activity, R.drawable.icon_arrow_back) {
-        activity.onBackPressed()
+        fun Toolbar.init(
+            activity: AppCompatActivity,
+            navigationIconId: Int,
+            onNavigationClickListener: View.OnClickListener
+        ) {
+            setNavigationIcon(navigationIconId)
+            activity.setSupportActionBar(this)
+            setNavigationOnClickListener { onNavigationClickListener.onClick(this) }
+        }
+
+        fun Toolbar.init(activity: AppCompatActivity, resId: Int) {
+            this.title = activity.getString(resId)
+            init(activity, R.drawable.icon_arrow_back) {
+                activity.onBackPressed()
+            }
+        }
+
+        fun Toolbar.init(activity: AppCompatActivity, name: String) {
+            this.title = name
+            init(activity, R.drawable.icon_arrow_back) {
+                activity.onBackPressed()
+            }
+        }
+
     }
+
 }

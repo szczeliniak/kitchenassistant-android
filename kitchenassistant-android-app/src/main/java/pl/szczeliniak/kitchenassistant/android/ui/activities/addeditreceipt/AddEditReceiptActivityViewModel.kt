@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
@@ -18,6 +19,24 @@ import javax.inject.Inject
 class AddEditReceiptActivityViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
+
+    private val _categories = MutableLiveData<LoadingState<List<Category>>>()
+
+    private val _selectedCategory = MutableLiveData<Category?>()
+
+    val selectedCategory: LiveData<Category?>
+        get() {
+            return _selectedCategory
+        }
+
+    val categories: LiveData<LoadingState<List<Category>>>
+        get() {
+            return _categories
+        }
+
+    init {
+        loadCategories()
+    }
 
     fun addReceipt(request: AddReceiptRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
@@ -37,6 +56,18 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
+    }
+
+    private fun loadCategories() {
+        viewModelScope.launch {
+            receiptService.findAllCategories()
+                .onEach { _categories.value = it }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    fun setCategory(category: Category?) {
+        _selectedCategory.value = category
     }
 
 }

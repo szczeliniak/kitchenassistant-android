@@ -14,9 +14,9 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import pl.szczeliniak.kitchenassistant.android.utils.ValidationUtils
 import retrofit2.HttpException
 import javax.inject.Inject

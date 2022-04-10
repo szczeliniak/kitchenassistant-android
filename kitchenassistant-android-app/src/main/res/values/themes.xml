@@ -44,7 +44,6 @@
 
     <style name="TextPrimary" parent="Text">
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
     </style>
 
     <style name="TextSecondary" parent="Text">
@@ -58,13 +57,10 @@
         <item name="android:fontFamily">@font/roboto_light</item>
         <item name="android:textAlignment">center</item>
         <item name="android:letterSpacing">0.1</item>
-        <item name="android:padding">@dimen/padding_margin_small</item>
         <item name="android:textSize">@dimen/text_size_big</item>
     </style>
 
     <style name="TextApplicationHeaderName" parent="Text">
-        <item name="android:paddingTop">@dimen/padding_margin_medium</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_medium</item>
         <item name="android:textSize">@dimen/text_size_big</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.1</item>
@@ -76,8 +72,6 @@
     </style>
 
     <style name="TextApplicationHeaderDescription" parent="Text">
-        <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:fontFamily">@font/roboto_thin</item>
@@ -90,8 +84,6 @@
     <style name="TextNavigationViewApplicationName" parent="Text">
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:paddingTop">@dimen/padding_margin_tiny</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_tiny</item>
         <item name="android:text">@string/app_name</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/roboto_light</item>
@@ -103,8 +95,6 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:textColor">@color/primary_dark</item>
-        <item name="android:paddingTop">@dimen/padding_margin_medium</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_medium</item>
     </style>
 
     <style name="Button">

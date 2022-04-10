@@ -15,9 +15,9 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryReque
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint

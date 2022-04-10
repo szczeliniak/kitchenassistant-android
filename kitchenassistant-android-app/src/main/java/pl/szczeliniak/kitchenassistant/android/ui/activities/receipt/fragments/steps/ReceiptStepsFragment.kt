@@ -16,9 +16,9 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.add
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.addeditstep.AddEditStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 

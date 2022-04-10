@@ -20,10 +20,10 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import java.time.LocalDate
 import javax.inject.Inject

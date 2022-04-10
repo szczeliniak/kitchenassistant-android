@@ -19,9 +19,9 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 

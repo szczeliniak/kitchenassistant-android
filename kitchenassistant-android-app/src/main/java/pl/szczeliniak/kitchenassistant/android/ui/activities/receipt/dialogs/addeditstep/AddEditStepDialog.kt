@@ -14,9 +14,9 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
 import javax.inject.Inject
 
 @AndroidEntryPoint

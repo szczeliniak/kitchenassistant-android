@@ -19,8 +19,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.i
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ingredients.ReceiptIngredientsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.steps.ReceiptStepsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 

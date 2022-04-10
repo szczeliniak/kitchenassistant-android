@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network
 
 import android.content.Context
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.ui.utils.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import retrofit2.HttpException
 import timber.log.Timber
 

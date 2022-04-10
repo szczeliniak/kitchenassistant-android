@@ -5,5 +5,6 @@ data class AddReceiptRequest(
     val author: String?,
     val source: String?,
     val description: String?,
-    val userId: Int
+    val userId: Int,
+    val categoryId: Int?
 )
