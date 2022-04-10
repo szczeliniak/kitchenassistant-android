@@ -23,7 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ReceiptStepsFragment private constructor() : ReceiptActivityFragment() {
+class ReceiptStepsFragment : ReceiptActivityFragment() {
 
     companion object {
         fun create(): ReceiptStepsFragment {

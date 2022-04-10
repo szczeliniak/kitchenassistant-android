@@ -20,7 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddEditShoppingListItemDialog private constructor() : DialogFragment() {
+class AddEditShoppingListItemDialog : DialogFragment() {
 
     companion object {
         private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"

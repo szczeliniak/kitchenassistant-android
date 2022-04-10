@@ -51,7 +51,6 @@ class CategoriesActivity : AppCompatActivity() {
         viewModel.categories.observe(this) {
             loadCategoriesLoadingStateHandler.handle(it)
         }
-        viewModel.reloadCategories()
     }
 
     private fun initLayout() {

@@ -26,7 +26,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShoppingListsFragment private constructor() : Fragment() {
+class ShoppingListsFragment : Fragment() {
 
     companion object {
         fun create(): ShoppingListsFragment {
@@ -62,7 +62,6 @@ class ShoppingListsFragment private constructor() : Fragment() {
         shoppingListsLoadingStateHandler = prepareShoppingListsLoadingStateHandler()
         deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
         viewModel.shoppingLists.observe(viewLifecycleOwner) { shoppingListsLoadingStateHandler.handle(it) }
-        viewModel.reloadShoppingLists()
     }
 
     private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {

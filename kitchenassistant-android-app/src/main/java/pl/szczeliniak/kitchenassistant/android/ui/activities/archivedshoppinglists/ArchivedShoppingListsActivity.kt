@@ -52,7 +52,6 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         viewModel.shoppingLists.observe(this) {
             saveShoppingListLoadingStateHandler.handle(it)
         }
-        viewModel.reloadShoppingLists()
     }
 
     private fun initLayout() {

@@ -23,6 +23,10 @@ class ShoppingListsFragmentViewModel @Inject constructor(
     val shoppingLists: LiveData<LoadingState<List<ShoppingList>>>
         get() = _shoppingLists
 
+    init {
+        reloadShoppingLists()
+    }
+
     fun reloadShoppingLists() {
         viewModelScope.launch {
             shoppingListService.findAll(false)

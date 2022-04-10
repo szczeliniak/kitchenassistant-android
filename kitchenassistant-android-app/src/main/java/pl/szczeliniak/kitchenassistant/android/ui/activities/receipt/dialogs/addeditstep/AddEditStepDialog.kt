@@ -20,7 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddEditStepDialog private constructor() : DialogFragment() {
+class AddEditStepDialog : DialogFragment() {
 
     companion object {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"

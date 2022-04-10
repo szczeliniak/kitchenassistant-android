@@ -21,7 +21,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AddEditCategoryDialog private constructor() : DialogFragment() {
+class AddEditCategoryDialog : DialogFragment() {
 
     companion object {
         private const val CATEGORY_EXTRA = "CATEGORY_EXTRA"

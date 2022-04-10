@@ -26,7 +26,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ReceiptsFragment private constructor() : Fragment() {
+class ReceiptsFragment : Fragment() {
 
     companion object {
         fun create(): ReceiptsFragment {
@@ -62,7 +62,6 @@ class ReceiptsFragment private constructor() : Fragment() {
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
-        viewModel.reloadReceipts()
     }
 
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {

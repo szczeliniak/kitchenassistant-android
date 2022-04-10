@@ -23,6 +23,10 @@ class ReceiptsFragmentViewModel @Inject constructor(
     val receipts: LiveData<LoadingState<List<Receipt>>>
         get() = _receipts
 
+    init {
+        reloadReceipts()
+    }
+
     fun reloadReceipts() {
         viewModelScope.launch {
             receiptService.findAll()
