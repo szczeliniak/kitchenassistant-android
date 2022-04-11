@@ -13,7 +13,8 @@ class IngredientItem constructor(
     private val receiptId: Int,
     private val ingredient: Ingredient,
     private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick
+    private val onEditClick: OnClick,
+    private val onAddToShoppingListItem: OnClick
 ) :
     BindableItem<ListItemIngredientBinding>() {
 
@@ -34,6 +35,10 @@ class IngredientItem constructor(
                 }
                 R.id.ingredient_item_menu_item_edit -> {
                     onEditClick.onClick(receiptId, ingredient)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.ingredient_item_menu_item_add_to_shopping_list -> {
+                    onAddToShoppingListItem.onClick(receiptId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
             }

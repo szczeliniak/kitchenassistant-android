@@ -21,7 +21,6 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ArrayAdapterUtils.Companion.getItems
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
@@ -56,7 +55,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     lateinit var eventBus: EventBus
     private lateinit var binding: ActivityAddEditReceiptBinding
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
-    private var selectedCategoryId: Int? = null
+    private var selectedCategory: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,10 +75,12 @@ class AddEditReceiptActivity : AppCompatActivity() {
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
         binding.receiptCategory.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus && categoriesDropdownAdapter.getItems()
-                    .none { it.name == binding.receiptCategory.text.toString() }
-            ) {
-                viewModel.setCategory(null)
+            if (!hasFocus) {
+                if (binding.receiptCategory.text.toString().isEmpty() || selectedCategory == null) {
+                    viewModel.setCategory(null)
+                } else  {
+                    viewModel.setCategory(selectedCategory)
+                }
             }
         }
 
@@ -91,7 +92,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
         viewModel.selectedCategory.observe(this) {
-            selectedCategoryId = it?.id
+            selectedCategory = it
             binding.receiptCategory.setText(it?.name ?: "")
         }
 
@@ -136,7 +137,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
         }
 
         receipt?.let { r ->
-            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, selectedCategoryId))
+            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id))
                 .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
             viewModel.addReceipt(
@@ -146,7 +147,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
                     url,
                     description,
                     localStorageService.getId(),
-                    selectedCategoryId
+                    selectedCategory?.id
                 )
             )
                 .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
