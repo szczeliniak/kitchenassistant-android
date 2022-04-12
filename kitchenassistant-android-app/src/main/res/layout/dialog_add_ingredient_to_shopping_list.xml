@@ -17,6 +17,7 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterEnabled="true"
+            android:id="@+id/shopping_list_item_name_layout"
             app:counterMaxLength="@integer/max_length_shipping_list_name"
             style="@style/InputLayout"
             android:layout_height="wrap_content">

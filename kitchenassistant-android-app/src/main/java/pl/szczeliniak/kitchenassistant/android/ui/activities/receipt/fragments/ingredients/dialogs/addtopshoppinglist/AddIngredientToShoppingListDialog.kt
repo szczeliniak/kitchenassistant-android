@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -15,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListI
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.ShoppingListDropdownArrayAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -42,6 +44,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
     private lateinit var addIngredientToShoppingListStateHandler: LoadingStateHandler<Int>
     private lateinit var loadShoppingListsStateHandler: LoadingStateHandler<List<ShoppingList>>
     private lateinit var shoppingListsDropdownAdapter: ShoppingListDropdownArrayAdapter
+    private lateinit var positiveButton: Button
 
     @Inject
     lateinit var eventBus: EventBus
@@ -56,6 +59,12 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         viewModel.selectedShoppingList.observe(this) {
             selectedShoppingList = it
             binding.shoppingListName.setText(it?.name ?: "")
+            if (it == null) {
+                binding.shoppingListItemNameLayout.error = getString(R.string.message_shopping_list_item_name_is_empty)
+            } else {
+                binding.shoppingListItemNameLayout.error = null
+            }
+            positiveButton.enable(binding.shoppingListItemNameLayout.error == null)
         }
 
         viewModel.shoppingLists.observe(this) { loadShoppingListsStateHandler.handle(it) }
@@ -118,24 +127,14 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (!validate()) {
-                return@setOnClickListener
-            }
-
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton.setOnClickListener {
             viewModel.addItem(
                 selectedShoppingList?.id!!,
                 AddShoppingListItemRequest(ingredient.name, ingredient.quantity, sequence)
             ).observe(this) { addIngredientToShoppingListStateHandler.handle(it) }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun validate(): Boolean {
-        if (selectedShoppingList == null) {
-            return false
-        }
-        return true
     }
 
     private val sequence: Int?
