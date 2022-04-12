@@ -30,6 +30,7 @@
                     app:counterMaxLength="@integer/max_length_receipt_name"
                     app:counterEnabled="true"
                     style="@style/InputLayout"
+                    android:id="@+id/receipt_name_layout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText

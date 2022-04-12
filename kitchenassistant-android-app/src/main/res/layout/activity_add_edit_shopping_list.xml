@@ -29,6 +29,7 @@
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_shipping_list_name"
                     app:counterEnabled="true"
+                    android:id="@+id/shopping_list_name_layout"
                     style="@style/InputLayout"
                     android:layout_height="wrap_content">
 

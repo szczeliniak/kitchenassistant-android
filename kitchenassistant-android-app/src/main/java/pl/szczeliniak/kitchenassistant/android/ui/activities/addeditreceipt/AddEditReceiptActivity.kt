@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
@@ -21,7 +22,6 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -99,6 +99,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
         categoriesDropdownAdapter = CategoryDropdownArrayAdapter(this)
         binding.receiptCategory.setAdapter(categoriesDropdownAdapter)
 
+        binding.receiptName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.receiptNameLayout.error = getString(R.string.message_receipt_name_is_empty)
+            } else {
+                binding.receiptNameLayout.error = null
+            }
+        }
+
         setContentView(binding.root)
     }
 
@@ -132,10 +140,9 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     private fun saveReceipt() {
-        if (!validateData()) {
+        if (binding.receiptNameLayout.error != null) {
             return
         }
-
         receipt?.let { r ->
             viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id))
                 .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
@@ -152,14 +159,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
             )
                 .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         }
-    }
-
-    private fun validateData(): Boolean {
-        if (name.isNullOrEmpty()) {
-            toast(R.string.message_receipt_name_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String?

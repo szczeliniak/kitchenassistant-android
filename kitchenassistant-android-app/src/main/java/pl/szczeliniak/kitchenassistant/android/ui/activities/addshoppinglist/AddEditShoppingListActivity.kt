@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
@@ -20,7 +21,6 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -60,10 +60,6 @@ class AddEditShoppingListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initLayout()
-    }
-
-    private fun initLayout() {
         binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
         binding.shoppingListDate.setOnClickListener {
             val date = this.date ?: LocalDate.now()
@@ -87,6 +83,13 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_edit_shopping_list)
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
+        }
+        binding.shoppingListName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
+            } else {
+                binding.shoppingListNameLayout.error = null
+            }
         }
     }
 
@@ -124,7 +127,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingList() {
-        if (!validateData()) {
+        if (binding.shoppingListNameLayout.error != null) {
             return
         }
         shoppingList?.let { list ->
@@ -134,14 +137,6 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId(), date))
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         }
-    }
-
-    private fun validateData(): Boolean {
-        if (name.isNullOrEmpty()) {
-            toast(R.string.message_shopping_list_name_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String?

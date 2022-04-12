@@ -57,10 +57,6 @@ class AddEditCategoryDialog : DialogFragment() {
             binding.categoryName.setText(step.name)
             binding.title.text = getString(R.string.title_dialog_edit_category)
         }
-        val builder = AlertDialog.Builder(requireContext())
-        builder.setView(binding.root)
-        builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
-        builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
 
         binding.categoryName.doOnTextChanged { text, _, _, _ ->
             if (text.isNullOrEmpty()) {
@@ -73,6 +69,10 @@ class AddEditCategoryDialog : DialogFragment() {
 
         addStepLoadingStateHandler = prepareSaveStepLoadingStateHandler()
 
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(binding.root)
+        builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
+        builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
     }
 
