@@ -2,7 +2,9 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.ad
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -39,8 +41,8 @@ class AddEditIngredientDialog : DialogFragment() {
     }
 
     private lateinit var binding: DialogAddEditIngredientBinding
-
     private lateinit var saveIngredientLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var positiveButton: Button
 
     @Inject
     lateinit var eventBus: EventBus
@@ -56,12 +58,33 @@ class AddEditIngredientDialog : DialogFragment() {
         }
 
         saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
+        binding.ingredientName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.ingredientNameLayout.error = getString(R.string.message_ingredient_name_is_empty)
+            } else {
+                binding.ingredientNameLayout.error = null
+            }
+            validateButtonState()
+        }
+
+        binding.ingredientQuantity.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.ingredientQuantityLayout.error = getString(R.string.message_ingredient_quantity_is_empty)
+            } else {
+                binding.ingredientQuantityLayout.error = null
+            }
+            validateButtonState()
+        }
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
+    }
+
+    private fun validateButtonState() {
+        positiveButton.enable(binding.ingredientNameLayout.error == null && binding.ingredientQuantityLayout.error == null)
     }
 
     private fun prepareAddIngredientLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -84,11 +107,9 @@ class AddEditIngredientDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (!validate()) {
-                return@setOnClickListener
-            }
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
 
+        positiveButton.setOnClickListener {
             ingredient?.let { ingredient ->
                 viewModel.updateIngredient(receiptId, ingredient.id, UpdateIngredientRequest(name, quantity))
                     .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
@@ -99,17 +120,6 @@ class AddEditIngredientDialog : DialogFragment() {
 
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun validate(): Boolean {
-        if (name.isEmpty()) {
-            requireActivity().toast(R.string.message_ingredient_name_is_empty)
-            return false
-        } else if (quantity.isEmpty()) {
-            requireActivity().toast(R.string.message_ingredient_quantity_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String

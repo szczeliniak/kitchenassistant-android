@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_ingredient_name"
+            android:id="@+id/ingredient_name_layout"
             style="@style/InputLayout"
             android:layout_height="wrap_content">
 
@@ -35,6 +36,7 @@
             android:layout_width="match_parent"
             app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_ingredient_quantity"
+            android:id="@+id/ingredient_quantity_layout"
             style="@style/InputLayout"
             android:layout_height="wrap_content">
 

@@ -18,7 +18,6 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRe
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -98,11 +97,7 @@ class AddEditCategoryDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-
         positiveButton.setOnClickListener {
-            if (!validate()) {
-                return@setOnClickListener
-            }
             category?.let { c ->
                 viewModel.updateCategory(c.id, UpdateCategoryRequest(name))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
@@ -112,14 +107,6 @@ class AddEditCategoryDialog : DialogFragment() {
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun validate(): Boolean {
-        if (name.isEmpty()) {
-            requireActivity().toast(R.string.message_category_name_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String
