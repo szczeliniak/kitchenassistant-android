@@ -2,7 +2,9 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.dialo
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -26,7 +28,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"
         private const val SHOPPING_LIST_ITEM_EXTRA = "SHOPPING_LIST_ITEM_EXTRA"
 
-        const val TAG = "AddShoppingListItemDialog"
+        const val TAG = "AddEditShoppingListItemDialog"
 
         fun newInstance(
             shoppingListId: Int,
@@ -42,8 +44,8 @@ class AddEditShoppingListItemDialog : DialogFragment() {
     }
 
     private lateinit var binding: DialogAddEditShoppingListItemBinding
-
     private lateinit var addShoppingListItemLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var positiveButton: Button
 
     @Inject
     lateinit var eventBus: EventBus
@@ -60,14 +62,39 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             binding.title.text = getString(R.string.title_dialog_edit_shopping_list_item)
         }
 
+        binding.shoppingListName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.shoppingListItemNameLayout.error = getString(R.string.message_shopping_list_item_name_is_empty)
+            } else {
+                binding.shoppingListItemNameLayout.error = null
+            }
+            checkButtonState()
+        }
+
+        binding.shoppingListItemQuantity.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.shoppingListItemQuantityLayout.error =
+                    getString(R.string.message_shopping_list_item_quantity_is_empty)
+            } else {
+                binding.shoppingListItemQuantityLayout.error = null
+            }
+            checkButtonState()
+        }
+
+        addShoppingListItemLoadingStateHandler = prepareAddShoppingListItemLoadingStateHandler()
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
-
-        addShoppingListItemLoadingStateHandler = prepareAddShoppingListItemLoadingStateHandler()
-
         return builder.create()
+    }
+
+    private fun checkButtonState() {
+        positiveButton.enable(
+            binding.shoppingListItemNameLayout.error == null &&
+                    binding.shoppingListItemQuantityLayout.error == null
+        )
     }
 
     private fun prepareAddShoppingListItemLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -90,10 +117,8 @@ class AddEditShoppingListItemDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (!validate()) {
-                return@setOnClickListener
-            }
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton.setOnClickListener {
             shoppingListItem?.let { item ->
                 viewModel.updateShoppingListItem(
                     shoppingListId,
@@ -106,17 +131,6 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun validate(): Boolean {
-        if (name.isEmpty()) {
-            requireActivity().toast(R.string.message_shopping_list_item_name_is_empty)
-            return false
-        } else if (quantity.isEmpty()) {
-            requireActivity().toast(R.string.message_shopping_list_item_quantity_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String

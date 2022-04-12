@@ -19,6 +19,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_shopping_list_item_name"
             style="@style/InputLayout"
+            android:id="@+id/shopping_list_item_name_layout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -36,6 +37,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_shopping_list_item_quantity"
             style="@style/InputLayout"
+            android:id="@+id/shopping_list_item_quantity_layout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
