@@ -63,8 +63,8 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             binding.title.text = getString(R.string.title_dialog_edit_shopping_list_item)
         }
 
-        binding.shoppingListName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.shoppingListItemNameLayout.error = getString(R.string.message_shopping_list_item_name_is_empty)
             } else {
                 binding.shoppingListItemNameLayout.error = null
@@ -72,8 +72,8 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             checkButtonState()
         }
 
-        binding.shoppingListItemQuantity.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.shoppingListItemQuantity.doOnTextChanged { _, _, _, _ ->
+            if (!isQuantityValid()) {
                 binding.shoppingListItemQuantityLayout.error =
                     getString(R.string.message_shopping_list_item_quantity_is_empty)
             } else {
@@ -91,11 +91,16 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         return builder.create()
     }
 
+    private fun isNameValid(): Boolean {
+        return name.isNotEmpty()
+    }
+
+    private fun isQuantityValid(): Boolean {
+        return quantity.isNotEmpty()
+    }
+
     private fun checkButtonState() {
-        positiveButton.enable(
-            binding.shoppingListItemNameLayout.error == null &&
-                    binding.shoppingListItemQuantityLayout.error == null
-        )
+        positiveButton.enable(isNameValid() && isQuantityValid())
     }
 
     private fun prepareAddShoppingListItemLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -119,6 +124,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        checkButtonState()
         positiveButton.setOnClickListener {
             shoppingListItem?.let { item ->
                 viewModel.updateShoppingListItem(

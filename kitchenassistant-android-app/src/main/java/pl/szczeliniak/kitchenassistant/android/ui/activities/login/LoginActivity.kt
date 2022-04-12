@@ -55,32 +55,37 @@ class LoginActivity : AppCompatActivity() {
             RegisterActivity.start(this@LoginActivity)
         }
 
-        binding.loginFormLayout.loginEmail.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrBlank() || !ValidationUtils.isEmail(text.toString())) {
+        binding.loginFormLayout.loginEmail.doOnTextChanged { _, _, _, _ ->
+            if (!isEmailValid()) {
                 binding.loginFormLayout.loginEmailLayout.error = getString(R.string.message_wrong_email)
             } else {
                 binding.loginFormLayout.loginEmailLayout.error = null
             }
-            reloadButtonState()
+            checkButtonState()
         }
 
-        binding.loginFormLayout.loginPassword.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.loginFormLayout.loginPassword.doOnTextChanged { _, _, _, _ ->
+            if (!isPasswordValid()) {
                 binding.loginFormLayout.loginPasswordLayout.error = getString(R.string.message_wrong_password)
             } else {
                 binding.loginFormLayout.loginPasswordLayout.error = null
             }
-            reloadButtonState()
+            checkButtonState()
         }
-
+        checkButtonState()
         setContentView(binding.root)
     }
 
-    private fun reloadButtonState() {
-        binding.loginFormLayout.buttonLogin.enable(
-            binding.loginFormLayout.loginEmailLayout.error == null &&
-                    binding.loginFormLayout.loginPasswordLayout.error == null
-        )
+    private fun isPasswordValid(): Boolean {
+        return password.isNotEmpty()
+    }
+
+    private fun isEmailValid(): Boolean {
+        return email.isNotEmpty() && ValidationUtils.isEmail(email)
+    }
+
+    private fun checkButtonState() {
+        binding.loginFormLayout.buttonLogin.enable(isEmailValid() && isPasswordValid())
     }
 
     private fun goToMainActivity() {
@@ -89,9 +94,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun handleLoginButtonClick() {
-        val email = binding.loginFormLayout.loginEmail.text.toString()
-        val password = binding.loginFormLayout.loginPassword.text.toString()
-
         viewModel.login(LoginRequest(email, password))
             .observe(this@LoginActivity) { loginStateHandler.handle(it) }
 
@@ -127,5 +129,15 @@ class LoginActivity : AppCompatActivity() {
         localStorageService.login(response.token, response.id)
         goToMainActivity()
     }
+
+    private val email: String
+        get() {
+            return binding.loginFormLayout.loginEmail.text.toString()
+        }
+
+    private val password: String
+        get() {
+            return binding.loginFormLayout.loginPassword.text.toString()
+        }
 
 }

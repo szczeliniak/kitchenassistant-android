@@ -46,47 +46,57 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_register)
         binding.buttonRegister.setOnClickListener { handleRegisterButtonClick() }
-        binding.registerEmail.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty() || !ValidationUtils.isEmail(text.toString())) {
+        binding.registerEmail.doOnTextChanged { _, _, _, _ ->
+            if (!isEmailValid()) {
                 binding.registerEmailLayout.error = getString(R.string.message_wrong_email)
             } else {
                 binding.registerEmailLayout.error = null
             }
             checkButtonState()
         }
-        binding.registerName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.registerName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.registerNameLayout.error = getString(R.string.message_empty_name)
             } else {
                 binding.registerNameLayout.error = null
             }
             checkButtonState()
         }
-        binding.registerPassword.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty() || text.toString() != password2) {
+        binding.registerPassword.doOnTextChanged { _, _, _, _ ->
+            if (!isPasswordValid()) {
                 binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
             } else {
                 binding.registerPasswordLayout.error = null
             }
             checkButtonState()
         }
-        binding.registerPassword2.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty() || text.toString() != password) {
+        binding.registerPassword2.doOnTextChanged { _, _, _, _ ->
+            if (!isPasswordValid()) {
                 binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
             } else {
                 binding.registerPasswordLayout.error = null
             }
             checkButtonState()
         }
+
+        checkButtonState()
         setContentView(binding.root)
     }
 
+    private fun isPasswordValid(): Boolean {
+        return password.isNotEmpty() && password == password2
+    }
+
+    private fun isNameValid(): Boolean {
+        return name.isNotEmpty()
+    }
+
+    private fun isEmailValid(): Boolean {
+        return email.isNotEmpty() && ValidationUtils.isEmail(email)
+    }
+
     private fun checkButtonState() {
-        binding.buttonRegister.enable(
-            binding.registerEmailLayout.error == null &&
-                    binding.registerNameLayout.error == null &&
-                    binding.registerPasswordLayout.error == null
-        )
+        binding.buttonRegister.enable(isEmailValid() && isNameValid() && isPasswordValid())
     }
 
     private fun handleRegisterButtonClick() {

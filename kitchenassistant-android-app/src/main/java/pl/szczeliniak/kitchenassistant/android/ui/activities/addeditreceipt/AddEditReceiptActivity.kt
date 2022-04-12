@@ -99,8 +99,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
         categoriesDropdownAdapter = CategoryDropdownArrayAdapter(this)
         binding.receiptCategory.setAdapter(categoriesDropdownAdapter)
 
-        binding.receiptName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.receiptName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.receiptNameLayout.error = getString(R.string.message_receipt_name_is_empty)
             } else {
                 binding.receiptNameLayout.error = null
@@ -108,6 +108,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun isNameValid(): Boolean {
+        return !name.isNullOrEmpty()
     }
 
     private fun prepareSaveReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -140,7 +144,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     private fun saveReceipt() {
-        if (binding.receiptNameLayout.error != null) {
+        if (!isNameValid()) {
             return
         }
         receipt?.let { r ->

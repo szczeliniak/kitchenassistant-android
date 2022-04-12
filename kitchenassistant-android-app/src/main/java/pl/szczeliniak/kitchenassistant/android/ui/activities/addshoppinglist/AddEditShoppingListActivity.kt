@@ -84,13 +84,17 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
         }
-        binding.shoppingListName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
             } else {
                 binding.shoppingListNameLayout.error = null
             }
         }
+    }
+
+    private fun isNameValid(): Boolean {
+        return !name.isNullOrEmpty()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -127,7 +131,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingList() {
-        if (binding.shoppingListNameLayout.error != null) {
+        if (!isNameValid()) {
             return
         }
         shoppingList?.let { list ->

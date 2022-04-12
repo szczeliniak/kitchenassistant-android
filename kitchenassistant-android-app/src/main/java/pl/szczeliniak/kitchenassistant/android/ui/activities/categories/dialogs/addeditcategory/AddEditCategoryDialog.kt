@@ -58,13 +58,13 @@ class AddEditCategoryDialog : DialogFragment() {
             binding.title.text = getString(R.string.title_dialog_edit_category)
         }
 
-        binding.categoryName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.categoryName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.categoryNameLayout.error = getString(R.string.message_category_name_is_empty)
             } else {
                 binding.categoryNameLayout.error = null
             }
-            positiveButton.enable(binding.categoryNameLayout.error == null)
+            checkButtonState()
         }
 
         addStepLoadingStateHandler = prepareSaveStepLoadingStateHandler()
@@ -74,6 +74,14 @@ class AddEditCategoryDialog : DialogFragment() {
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
+    }
+
+    private fun checkButtonState() {
+        positiveButton.enable(isNameValid())
+    }
+
+    private fun isNameValid(): Boolean {
+        return name.isNotEmpty()
     }
 
     private fun prepareSaveStepLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -97,6 +105,7 @@ class AddEditCategoryDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        checkButtonState()
         positiveButton.setOnClickListener {
             category?.let { c ->
                 viewModel.updateCategory(c.id, UpdateCategoryRequest(name))

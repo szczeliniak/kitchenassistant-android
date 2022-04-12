@@ -64,13 +64,13 @@ class AddEditStepDialog : DialogFragment() {
 
         addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
 
-        binding.stepName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.stepName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.stepNameLayout.error = getString(R.string.message_step_name_is_empty)
             } else {
                 binding.stepNameLayout.error = null
             }
-            positiveButton.enable(binding.stepNameLayout.error == null)
+            checkButtonState()
         }
 
         val builder = AlertDialog.Builder(requireContext())
@@ -78,6 +78,14 @@ class AddEditStepDialog : DialogFragment() {
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
+    }
+
+    private fun checkButtonState() {
+        positiveButton.enable(isNameValid())
+    }
+
+    private fun isNameValid(): Boolean {
+        return name.isNotEmpty()
     }
 
     private fun prepareAddStepLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -101,6 +109,7 @@ class AddEditStepDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        checkButtonState()
         positiveButton.setOnClickListener {
             step?.let { step ->
                 viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))

@@ -59,22 +59,22 @@ class AddEditIngredientDialog : DialogFragment() {
         }
 
         saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
-        binding.ingredientName.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.ingredientName.doOnTextChanged { _, _, _, _ ->
+            if (!isNameValid()) {
                 binding.ingredientNameLayout.error = getString(R.string.message_ingredient_name_is_empty)
             } else {
                 binding.ingredientNameLayout.error = null
             }
-            validateButtonState()
+            checkButtonState()
         }
 
-        binding.ingredientQuantity.doOnTextChanged { text, _, _, _ ->
-            if (text.isNullOrEmpty()) {
+        binding.ingredientQuantity.doOnTextChanged { _, _, _, _ ->
+            if (!isQuantityValid()) {
                 binding.ingredientQuantityLayout.error = getString(R.string.message_ingredient_quantity_is_empty)
             } else {
                 binding.ingredientQuantityLayout.error = null
             }
-            validateButtonState()
+            checkButtonState()
         }
 
         val builder = AlertDialog.Builder(requireContext())
@@ -84,8 +84,16 @@ class AddEditIngredientDialog : DialogFragment() {
         return builder.create()
     }
 
-    private fun validateButtonState() {
-        positiveButton.enable(binding.ingredientNameLayout.error == null && binding.ingredientQuantityLayout.error == null)
+    private fun isNameValid(): Boolean {
+        return name.isNotEmpty()
+    }
+
+    private fun isQuantityValid(): Boolean {
+        return quantity.isNotEmpty()
+    }
+
+    private fun checkButtonState() {
+        positiveButton.enable(isNameValid() && isQuantityValid())
     }
 
     private fun prepareAddIngredientLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -109,7 +117,7 @@ class AddEditIngredientDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-
+        checkButtonState()
         positiveButton.setOnClickListener {
             ingredient?.let { ingredient ->
                 viewModel.updateIngredient(receiptId, ingredient.id, UpdateIngredientRequest(name, quantity))
