@@ -2,7 +2,9 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.categories.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryReque
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -38,7 +41,7 @@ class AddEditCategoryDialog : DialogFragment() {
     }
 
     private lateinit var binding: DialogAddEditCategoryBinding
-
+    private lateinit var positiveButton: Button
     private lateinit var addStepLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
@@ -59,6 +62,15 @@ class AddEditCategoryDialog : DialogFragment() {
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
+
+        binding.categoryName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.categoryNameLayout.error = getString(R.string.message_category_name_is_empty)
+            } else {
+                binding.categoryNameLayout.error = null
+            }
+            positiveButton.enable(binding.categoryNameLayout.error == null)
+        }
 
         addStepLoadingStateHandler = prepareSaveStepLoadingStateHandler()
 
@@ -85,7 +97,9 @@ class AddEditCategoryDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+        positiveButton.setOnClickListener {
             if (!validate()) {
                 return@setOnClickListener
             }
