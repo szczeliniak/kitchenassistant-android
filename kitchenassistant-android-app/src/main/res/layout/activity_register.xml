@@ -27,6 +27,7 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     style="@style/InputLayout"
+                    android:id="@+id/register_email_layout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -41,6 +42,7 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     style="@style/InputLayout"
+                    android:id="@+id/register_name_layout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -55,6 +57,7 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     style="@style/InputLayout"
+                    android:id="@+id/register_password_layout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText

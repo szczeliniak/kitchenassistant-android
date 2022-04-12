@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRegisterBinding
@@ -13,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.RegisterRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -44,25 +46,52 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_register)
         binding.buttonRegister.setOnClickListener { handleRegisterButtonClick() }
+        binding.registerEmail.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty() || !ValidationUtils.isEmail(text.toString())) {
+                binding.registerEmailLayout.error = getString(R.string.message_wrong_email)
+            } else {
+                binding.registerEmailLayout.error = null
+            }
+            checkButtonState()
+        }
+        binding.registerName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.registerNameLayout.error = getString(R.string.message_empty_name)
+            } else {
+                binding.registerNameLayout.error = null
+            }
+            checkButtonState()
+        }
+        binding.registerPassword.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty() || text.toString() != password2) {
+                binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
+            } else {
+                binding.registerPasswordLayout.error = null
+            }
+            checkButtonState()
+        }
+        binding.registerPassword2.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty() || text.toString() != password) {
+                binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
+            } else {
+                binding.registerPasswordLayout.error = null
+            }
+            checkButtonState()
+        }
         setContentView(binding.root)
     }
 
-    private fun handleRegisterButtonClick() {
-        val email = binding.registerEmail.text.toString()
-        val name = binding.registerName.text.toString()
-        val password = binding.registerPassword.text.toString()
-        val password2 = binding.registerPassword2.text.toString()
+    private fun checkButtonState() {
+        binding.buttonRegister.enable(
+            binding.registerEmailLayout.error == null &&
+                    binding.registerNameLayout.error == null &&
+                    binding.registerPasswordLayout.error == null
+        )
+    }
 
-        if (name.isEmpty()) {
-            toast(R.string.message_empty_name)
-        } else if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
-            toast(R.string.message_wrong_email)
-        } else if (password.isEmpty() || password2.isEmpty() || password != password2) {
-            toast(R.string.message_wrong_password)
-        } else {
-            viewModel.login(RegisterRequest(email, name, password, password2))
-                .observe(this@RegisterActivity) { registerStateHandler.handle(it) }
-        }
+    private fun handleRegisterButtonClick() {
+        viewModel.login(RegisterRequest(email, name, password, password2))
+            .observe(this@RegisterActivity) { registerStateHandler.handle(it) }
     }
 
     private fun prepareRegisterStateHandler(): LoadingStateHandler<LoginResponse> {
@@ -91,5 +120,25 @@ class RegisterActivity : AppCompatActivity() {
         }
         )
     }
+
+    private val email: String
+        get() {
+            return binding.registerEmail.text.toString()
+        }
+
+    private val name: String
+        get() {
+            return binding.registerName.text.toString()
+        }
+
+    private val password: String
+        get() {
+            return binding.registerPassword.text.toString()
+        }
+
+    private val password2: String
+        get() {
+            return binding.registerPassword2.text.toString()
+        }
 
 }
