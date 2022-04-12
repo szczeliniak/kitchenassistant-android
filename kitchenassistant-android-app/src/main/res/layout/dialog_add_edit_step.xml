@@ -19,6 +19,7 @@
             app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_step_name"
             style="@style/InputLayout"
+            android:id="@+id/step_name_layout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText

@@ -28,7 +28,7 @@ class AddEditIngredientDialog : DialogFragment() {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
 
-        const val TAG = "AddIngredientDialog"
+        const val TAG = "AddEditIngredientDialog"
 
         fun newInstance(receiptId: Int, ingredient: Ingredient? = null): AddEditIngredientDialog {
             val bundle = Bundle()

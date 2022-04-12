@@ -2,7 +2,9 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.dialogs.ad
 
 import android.app.Dialog
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -14,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -26,7 +28,7 @@ class AddEditStepDialog : DialogFragment() {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
         private const val STEP_EXTRA = "STEP_EXTRA"
 
-        const val TAG = "AddStepDialog"
+        const val TAG = "AddEditStepDialog"
 
         fun newInstance(receiptId: Int, step: Step? = null): AddEditStepDialog {
             val bundle = Bundle()
@@ -39,8 +41,8 @@ class AddEditStepDialog : DialogFragment() {
     }
 
     private lateinit var binding: DialogAddEditStepBinding
-
     private lateinit var addStepLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var positiveButton: Button
 
     @Inject
     lateinit var eventBus: EventBus
@@ -59,13 +61,22 @@ class AddEditStepDialog : DialogFragment() {
             }
             binding.title.text = getString(R.string.title_dialog_edit_step)
         }
+
+        addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
+
+        binding.stepName.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.stepNameLayout.error = getString(R.string.message_step_name_is_empty)
+            } else {
+                binding.stepNameLayout.error = null
+            }
+            positiveButton.enable(binding.stepNameLayout.error == null)
+        }
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
-
-        addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
-
         return builder.create()
     }
 
@@ -89,10 +100,8 @@ class AddEditStepDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            if (!validate()) {
-                return@setOnClickListener
-            }
+        positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton.setOnClickListener {
             step?.let { step ->
                 viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
@@ -102,14 +111,6 @@ class AddEditStepDialog : DialogFragment() {
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun validate(): Boolean {
-        if (name.isEmpty()) {
-            requireActivity().toast(R.string.message_step_name_is_empty)
-            return false
-        }
-        return true
     }
 
     private val name: String
