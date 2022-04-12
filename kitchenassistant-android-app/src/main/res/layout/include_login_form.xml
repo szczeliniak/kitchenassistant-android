@@ -8,11 +8,13 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
+            android:id="@+id/login_email_layout"
             style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/form_login_email"
+                android:maxLength="@integer/max_length_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
@@ -23,12 +25,14 @@
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             style="@style/InputLayout"
+            android:id="@+id/login_password_layout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
                 android:hint="@string/form_login_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_password"
                 android:inputType="textPassword"
                 android:id="@+id/login_password"/>
 

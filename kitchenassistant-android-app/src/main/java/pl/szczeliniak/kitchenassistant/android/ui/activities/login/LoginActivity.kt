@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
@@ -14,6 +15,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -52,7 +54,33 @@ class LoginActivity : AppCompatActivity() {
         binding.loginFormLayout.buttonRegister.setOnClickListener {
             RegisterActivity.start(this@LoginActivity)
         }
+
+        binding.loginFormLayout.loginEmail.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrBlank() || !ValidationUtils.isEmail(text.toString())) {
+                binding.loginFormLayout.loginEmailLayout.error = getString(R.string.message_wrong_email)
+            } else {
+                binding.loginFormLayout.loginEmailLayout.error = null
+            }
+            reloadButtonState()
+        }
+
+        binding.loginFormLayout.loginPassword.doOnTextChanged { text, _, _, _ ->
+            if (text.isNullOrEmpty()) {
+                binding.loginFormLayout.loginPasswordLayout.error = getString(R.string.message_wrong_password)
+            } else {
+                binding.loginFormLayout.loginPasswordLayout.error = null
+            }
+            reloadButtonState()
+        }
+
         setContentView(binding.root)
+    }
+
+    private fun reloadButtonState() {
+        binding.loginFormLayout.buttonLogin.enable(
+            binding.loginFormLayout.loginEmailLayout.error == null &&
+                    binding.loginFormLayout.loginPasswordLayout.error == null
+        )
     }
 
     private fun goToMainActivity() {
@@ -64,14 +92,9 @@ class LoginActivity : AppCompatActivity() {
         val email = binding.loginFormLayout.loginEmail.text.toString()
         val password = binding.loginFormLayout.loginPassword.text.toString()
 
-        if (email.isEmpty() || !ValidationUtils.isEmail(email)) {
-            toast(R.string.message_wrong_email)
-        } else if (password.isEmpty()) {
-            toast(R.string.message_wrong_password)
-        } else {
-            viewModel.login(LoginRequest(email, password))
-                .observe(this@LoginActivity) { loginStateHandler.handle(it) }
-        }
+        viewModel.login(LoginRequest(email, password))
+            .observe(this@LoginActivity) { loginStateHandler.handle(it) }
+
     }
 
     private fun prepareLoginStateHandler(): LoadingStateHandler<LoginResponse> {
