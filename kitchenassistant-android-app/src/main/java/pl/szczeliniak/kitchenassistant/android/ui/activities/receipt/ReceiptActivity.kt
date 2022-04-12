@@ -40,16 +40,19 @@ class ReceiptActivity : AppCompatActivity() {
     @Inject
     lateinit var eventBus: EventBus
 
+    @Inject
+    lateinit var receiptActivityViewModelFactory: ReceiptActivityViewModel.Factory
+
     private lateinit var binding: ActivityReceiptBinding
     private val receiptLoadingStateHandler: LoadingStateHandler<Receipt> = prepareReceiptLoadingStateHandler()
     private val observers = mutableListOf<ReceiptActivityFragment>()
 
-    private val viewModel: ReceiptActivityViewModel by viewModels()
-
-    private val receiptId: Int
-        get() {
-            return intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
-        }
+    private val viewModel: ReceiptActivityViewModel by viewModels() {
+        ReceiptActivityViewModel.provideFactory(
+            receiptActivityViewModelFactory,
+            intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
+        )
+    }
 
     var receipt: Receipt? = null
 
@@ -60,7 +63,6 @@ class ReceiptActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         viewModel.receipt.observe(this) { receiptLoadingStateHandler.handle(it) }
-        reload()
     }
 
     private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {
@@ -79,10 +81,6 @@ class ReceiptActivity : AppCompatActivity() {
                 observers.forEach { it.onReceiptChanged() }
             }
         })
-    }
-
-    private fun reload() {
-        viewModel.load(receiptId)
     }
 
     private fun initPager() {
@@ -131,7 +129,7 @@ class ReceiptActivity : AppCompatActivity() {
 
     @Subscribe
     fun reloadReceiptEvent(event: ReloadReceiptEvent) {
-        reload()
+        viewModel.reload()
     }
 
 }

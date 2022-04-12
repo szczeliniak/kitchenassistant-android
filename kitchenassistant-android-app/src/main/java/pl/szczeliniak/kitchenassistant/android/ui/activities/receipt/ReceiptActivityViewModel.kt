@@ -1,21 +1,19 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.receipt
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.*
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
-import javax.inject.Inject
 
-@HiltViewModel
-class ReceiptActivityViewModel @Inject constructor(
+class ReceiptActivityViewModel @AssistedInject constructor(
     private val receiptService: ReceiptService,
+    @Assisted private val receiptId: Int
 ) : ViewModel() {
 
     private val _receipt = MutableLiveData<LoadingState<Receipt>>()
@@ -23,12 +21,30 @@ class ReceiptActivityViewModel @Inject constructor(
     val receipt: LiveData<LoadingState<Receipt>>
         get() = _receipt
 
-    fun load(receiptId: Int) {
+    fun reload() {
         viewModelScope.launch {
             receiptService.findById(receiptId)
                 .onEach { _receipt.value = it }
                 .launchIn(viewModelScope)
         }
+    }
+
+    init {
+        reload()
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(receiptId: Int) : ReceiptActivityViewModel
+    }
+
+    companion object {
+        fun provideFactory(factory: Factory, receiptId: Int): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return factory.create(receiptId) as T
+            }
+        }
+
     }
 
 }

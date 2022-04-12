@@ -21,7 +21,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val SAVED_FRAGMENT_NAME = "SAVED_FRAGMENT_NAME"
+        private const val SAVED_FRAGMENT_ID = "SAVED_FRAGMENT_ID"
 
         fun start(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
@@ -46,7 +46,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
         binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
-        setFragment(savedInstanceState)
+        savedInstanceState?.getInt(SAVED_FRAGMENT_ID)?.let {
+            binding.bottomNavView.selectedItemId = it
+        } ?: kotlin.run {
+            binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
+        }
     }
 
     private fun onNavigationItemChanged(itemId: Int): Boolean {
@@ -102,26 +106,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setFragment(savedInstanceState: Bundle?) {
-        val fragmentClassName = savedInstanceState?.getString(SAVED_FRAGMENT_NAME)
-        if (fragmentClassName == null) {
-            setCurrentFragment(ReceiptsFragment.create())
-        }
-        when (fragmentClassName) {
-            ReceiptsFragment::class.java.simpleName -> {
-                setCurrentFragment(ReceiptsFragment.create())
-            }
-            ShoppingListsFragment::class.java.simpleName -> {
-                setCurrentFragment(ShoppingListsFragment.create())
-            }
-        }
-    }
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        if (supportFragmentManager.fragments.size > 0) {
-            outState.putString(SAVED_FRAGMENT_NAME, supportFragmentManager.fragments[0]::class.java.simpleName)
-        }
+        outState.putInt(SAVED_FRAGMENT_ID, binding.bottomNavView.selectedItemId)
     }
 
 }

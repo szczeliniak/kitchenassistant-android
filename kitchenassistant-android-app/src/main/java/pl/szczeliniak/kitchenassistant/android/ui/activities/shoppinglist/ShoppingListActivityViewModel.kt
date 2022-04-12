@@ -1,21 +1,19 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.*
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
-import javax.inject.Inject
 
-@HiltViewModel
-class ShoppingListActivityViewModel @Inject constructor(
+class ShoppingListActivityViewModel @AssistedInject constructor(
     private val shoppingListService: ShoppingListService,
+    @Assisted private val shoppingListId: Int
 ) : ViewModel() {
 
     private val _shoppingList = MutableLiveData<LoadingState<ShoppingList>>()
@@ -23,7 +21,11 @@ class ShoppingListActivityViewModel @Inject constructor(
     val shoppingList: LiveData<LoadingState<ShoppingList>>
         get() = _shoppingList
 
-    fun load(shoppingListId: Int) {
+    init {
+        reload()
+    }
+
+    fun reload() {
         viewModelScope.launch {
             shoppingListService.findById(shoppingListId)
                 .onEach { _shoppingList.value = it }
@@ -62,5 +64,17 @@ class ShoppingListActivityViewModel @Inject constructor(
 
     }
 
+    @AssistedFactory
+    interface Factory {
+        fun create(shoppingListId: Int): ShoppingListActivityViewModel
+    }
+
+    companion object {
+        fun provideFactory(factory: ShoppingListActivityViewModel.Factory, shoppingListId: Int): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                return factory.create(shoppingListId) as T
+            }
+        }
+    }
 
 }

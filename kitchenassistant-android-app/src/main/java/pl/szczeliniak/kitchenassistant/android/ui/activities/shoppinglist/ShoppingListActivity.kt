@@ -47,6 +47,9 @@ class ShoppingListActivity : AppCompatActivity() {
     @Inject
     lateinit var eventBus: EventBus
 
+    @Inject
+    lateinit var shoppingListActivityViewModelFactory: ShoppingListActivityViewModel.Factory
+
     private lateinit var binding: ActivityShoppingListBinding
     private val shoppingListLoadingStateHandler: LoadingStateHandler<ShoppingList> =
         prepareShoppingListLoadingStateHandler()
@@ -57,7 +60,9 @@ class ShoppingListActivity : AppCompatActivity() {
     private val changeShoppingListItemStateStateHandler: LoadingStateHandler<Int> =
         prepareChangeShoppingListItemStateStateHandler()
 
-    private val viewModel: ShoppingListActivityViewModel by viewModels()
+    private val viewModel: ShoppingListActivityViewModel by viewModels() {
+        ShoppingListActivityViewModel.provideFactory(shoppingListActivityViewModelFactory, shoppingListId)
+    }
 
     private val shoppingListId: Int
         get() {
@@ -76,7 +81,6 @@ class ShoppingListActivity : AppCompatActivity() {
         }
 
         viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
-        viewModel.load(shoppingListId)
     }
 
     private fun prepareShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingList> {
@@ -137,7 +141,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                viewModel.load(shoppingListId)
+                viewModel.reload()
             }
         })
     }
@@ -153,7 +157,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                viewModel.load(shoppingListId)
+                viewModel.reload()
             }
         })
     }
@@ -200,7 +204,7 @@ class ShoppingListActivity : AppCompatActivity() {
 
     @Subscribe
     fun reloadShoppingListEvent(event: ReloadShoppingListEvent) {
-        viewModel.load(shoppingListId)
+        viewModel.reload()
     }
 
 }
