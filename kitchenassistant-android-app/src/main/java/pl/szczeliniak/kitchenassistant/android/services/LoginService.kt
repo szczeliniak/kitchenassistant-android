@@ -9,9 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.LoginRepository
 import retrofit2.HttpException
 
-class LoginService constructor(
-    private val repository: LoginRepository
-) {
+class LoginService constructor(private val repository: LoginRepository) {
 
     suspend fun login(request: LoginRequest): Flow<LoadingState<LoginResponse>> {
         return flow {

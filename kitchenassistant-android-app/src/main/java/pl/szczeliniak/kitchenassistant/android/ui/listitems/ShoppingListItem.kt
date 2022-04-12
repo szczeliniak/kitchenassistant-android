@@ -20,10 +20,7 @@ class ShoppingListItem constructor(
 
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
         binding.shoppingListName.text = shoppingList.name
-        binding.shoppingListDescription.fillOrHide(
-            shoppingList.description,
-            binding.shoppingListDescription
-        )
+        binding.shoppingListDescription.fillOrHide(shoppingList.description, binding.shoppingListDescription)
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
         shoppingList.date?.let {

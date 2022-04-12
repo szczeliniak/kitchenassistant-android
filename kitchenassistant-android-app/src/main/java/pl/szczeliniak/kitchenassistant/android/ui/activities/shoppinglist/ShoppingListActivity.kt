@@ -24,8 +24,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import javax.inject.Inject
 

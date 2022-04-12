@@ -23,8 +23,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArray
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -78,7 +78,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             if (!hasFocus) {
                 if (binding.receiptCategory.text.toString().isEmpty() || selectedCategory == null) {
                     viewModel.setCategory(null)
-                } else  {
+                } else {
                     viewModel.setCategory(selectedCategory)
                 }
             }

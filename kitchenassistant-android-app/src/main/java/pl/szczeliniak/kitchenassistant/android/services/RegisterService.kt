@@ -9,9 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.RegisterRepository
 import retrofit2.HttpException
 
-class RegisterService constructor(
-    private val repository: RegisterRepository
-) {
+class RegisterService constructor(private val repository: RegisterRepository) {
 
     suspend fun register(request: RegisterRequest): Flow<LoadingState<LoginResponse>> {
         return flow {

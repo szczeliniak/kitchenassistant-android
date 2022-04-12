@@ -8,17 +8,15 @@ import java.time.LocalDateTime
 class LocalDateTimeConverter : JsonDeserializer<LocalDateTime>, JsonSerializer<LocalDateTime> {
 
     override fun deserialize(json: JsonElement?, typeOfT: Type?, context: JsonDeserializationContext?): LocalDateTime? {
-        json?.asString?.let {
+        return json?.asString?.let {
             return LocalDateTimeUtils.parse(it)
         }
-        return null
     }
 
     override fun serialize(src: LocalDateTime?, typeOfSrc: Type?, context: JsonSerializationContext?): JsonElement? {
-        src?.let {
+        return src?.let {
             return JsonPrimitive(LocalDateTimeUtils.stringify(it))
         }
-        return null
     }
 
 }

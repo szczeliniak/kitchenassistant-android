@@ -16,6 +16,7 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
         val binding: DropdownCategoryBinding?
+
         if (convertView == null) {
             binding = DropdownCategoryBinding.inflate(LayoutInflater.from(context))
             viewHolder = ViewHolder(binding.root)

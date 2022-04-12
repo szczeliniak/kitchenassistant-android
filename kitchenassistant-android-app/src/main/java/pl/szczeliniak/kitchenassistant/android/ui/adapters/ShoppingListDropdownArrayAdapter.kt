@@ -17,6 +17,7 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
         val binding: DropdownShoppingListBinding?
+
         if (convertView == null) {
             binding = DropdownShoppingListBinding.inflate(LayoutInflater.from(context))
             viewHolder = ViewHolder(binding.shoppingListName, binding.shoppingListDate)

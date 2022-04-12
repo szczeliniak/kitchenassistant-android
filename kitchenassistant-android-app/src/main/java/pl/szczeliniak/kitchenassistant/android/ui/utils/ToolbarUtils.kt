@@ -8,7 +8,6 @@ import pl.szczeliniak.kitchenassistant.android.R
 class ToolbarUtils {
 
     companion object {
-
         fun Toolbar.init(
             activity: AppCompatActivity,
             navigationIconId: Int,
@@ -32,7 +31,6 @@ class ToolbarUtils {
                 activity.onBackPressed()
             }
         }
-
     }
 
 }

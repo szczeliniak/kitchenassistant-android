@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.android.utils
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 
 class LocalDateUtils {
 
@@ -22,6 +23,18 @@ class LocalDateUtils {
                 Timber.i(e, "Cannot parse local date: $dateTimeAsString")
             }
             return null
+        }
+
+        fun parsable(dateTimeAsString: String?): Boolean {
+            if (dateTimeAsString.isNullOrEmpty()) {
+                return false
+            }
+            try {
+                LocalDate.parse(dateTimeAsString, LOCAL_DATE_FORMATTER)
+                return true
+            } catch (_: DateTimeParseException) {
+            }
+            return false
         }
 
         fun stringify(dateTime: LocalDate?): String? {

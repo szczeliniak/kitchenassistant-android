@@ -22,8 +22,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.Shoppi
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import java.time.LocalDate
 import javax.inject.Inject
@@ -157,10 +157,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     private val date: LocalDate?
         get() {
             val asString = binding.shoppingListDate.text.toString()
-            if (asString == getString(R.string.label_button_select_date)) {
-                return null
-            }
-            return LocalDateUtils.parse(asString)
+            return if (LocalDateUtils.parsable(asString)) LocalDateUtils.parse(asString) else null
         }
 
 }

@@ -15,8 +15,8 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListI
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
-import pl.szczeliniak.kitchenassistant.android.ui.utils.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.showProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint

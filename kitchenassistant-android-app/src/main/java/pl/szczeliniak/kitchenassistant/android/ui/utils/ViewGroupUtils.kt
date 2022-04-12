@@ -9,12 +9,19 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ProgressSpinnerBindin
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.lockOrientation
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.unlockOrientation
 
-fun ViewGroup.showProgressSpinner(activity: Activity?) {
-    ProgressSpinnerBinding.inflate(LayoutInflater.from(activity), this, true)
-    activity?.lockOrientation()
+class ViewGroupUtils {
+
+    companion object {
+        fun ViewGroup.showProgressSpinner(activity: Activity?) {
+            ProgressSpinnerBinding.inflate(LayoutInflater.from(activity), this, true)
+            activity?.lockOrientation()
+        }
+
+        fun ViewGroup.hideProgressSpinner(activity: Activity?) {
+            this.findViewById<ConstraintLayout>(R.id.progress_spinner_layout)?.let { this.removeView(it) }
+            activity?.unlockOrientation()
+        }
+    }
+    
 }
 
-fun ViewGroup.hideProgressSpinner(activity: Activity?) {
-    this.findViewById<ConstraintLayout>(R.id.progress_spinner_layout)?.let { this.removeView(it) }
-    activity?.unlockOrientation()
-}

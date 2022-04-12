@@ -10,6 +10,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.EmptyMessageViewBinding
 
 class ActivityUtils {
+
     companion object {
         fun ViewGroup.showEmptyIcon(activity: Activity) {
             EmptyMessageViewBinding.inflate(LayoutInflater.from(activity), this, true)
@@ -32,5 +33,6 @@ class ActivityUtils {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
+
 }
 
