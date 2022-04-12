@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -27,15 +28,14 @@ class AddEditCategoryDialog : DialogFragment() {
 
     companion object {
         private const val CATEGORY_EXTRA = "CATEGORY_EXTRA"
+        private const val TAG = "AddEditCategoryDialog"
 
-        const val TAG = "AddEditCategoryDialog"
-
-        fun newInstance(category: Category? = null): AddEditCategoryDialog {
+        fun show(fragmentManager: FragmentManager, category: Category? = null) {
             val bundle = Bundle()
             category?.let { bundle.putParcelable(CATEGORY_EXTRA, it) }
             val dialog = AddEditCategoryDialog()
             dialog.arguments = bundle
-            return dialog
+            dialog.show(fragmentManager, TAG)
         }
     }
 

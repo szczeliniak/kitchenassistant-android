@@ -68,10 +68,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     }
 
     private fun showAddStepDialog() {
-        receipt?.let {
-            AddEditStepDialog.newInstance(it.id)
-                .show(requireActivity().supportFragmentManager, AddEditStepDialog.TAG)
-        }
+        receipt?.let { AddEditStepDialog.show(requireActivity().supportFragmentManager, it.id) }
     }
 
     private fun loadData() {
@@ -87,8 +84,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
                             deleteStepStateHandler.handle(it)
                         }
                     }, { receiptId, s ->
-                        AddEditStepDialog.newInstance(receiptId, s)
-                            .show(requireActivity().supportFragmentManager, AddEditStepDialog.TAG)
+                        AddEditStepDialog.show(requireActivity().supportFragmentManager, receiptId, s)
                     }))
                 }
             }

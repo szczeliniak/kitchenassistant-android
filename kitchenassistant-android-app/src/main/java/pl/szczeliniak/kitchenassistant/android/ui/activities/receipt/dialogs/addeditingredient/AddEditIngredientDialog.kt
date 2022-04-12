@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -28,15 +29,15 @@ class AddEditIngredientDialog : DialogFragment() {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
 
-        const val TAG = "AddEditIngredientDialog"
+        private const val TAG = "AddEditIngredientDialog"
 
-        fun newInstance(receiptId: Int, ingredient: Ingredient? = null): AddEditIngredientDialog {
+        fun show(fragmentManager: FragmentManager, receiptId: Int, ingredient: Ingredient? = null) {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
             ingredient?.let { bundle.putParcelable(INGREDIENT_EXTRA, it) }
             val dialog = AddEditIngredientDialog()
             dialog.arguments = bundle
-            return dialog
+            dialog.show(fragmentManager, TAG)
         }
     }
 

@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -27,16 +28,15 @@ class AddEditStepDialog : DialogFragment() {
     companion object {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
         private const val STEP_EXTRA = "STEP_EXTRA"
+        private const val TAG = "AddEditStepDialog"
 
-        const val TAG = "AddEditStepDialog"
-
-        fun newInstance(receiptId: Int, step: Step? = null): AddEditStepDialog {
+        fun show(fragmentManager: FragmentManager, receiptId: Int, step: Step? = null) {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
             step?.let { bundle.putParcelable(STEP_EXTRA, it) }
             val dialog = AddEditStepDialog()
             dialog.arguments = bundle
-            return dialog
+            dialog.show(fragmentManager, TAG)
         }
     }
 

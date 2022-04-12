@@ -63,7 +63,7 @@ class CategoriesActivity : AppCompatActivity() {
         )
         binding.root.setOnRefreshListener { viewModel.reloadCategories() }
         binding.buttonAddCategory.setOnClickListener {
-            AddEditCategoryDialog.newInstance().show(supportFragmentManager, AddEditCategoryDialog.TAG)
+            AddEditCategoryDialog.show(supportFragmentManager)
         }
     }
 
@@ -90,8 +90,7 @@ class CategoriesActivity : AppCompatActivity() {
                                 deleteCategoryLoadingStateHandler.handle(r)
                             }
                         }, {
-                            AddEditCategoryDialog.newInstance(it)
-                                .show(supportFragmentManager, AddEditCategoryDialog.TAG)
+                            AddEditCategoryDialog.show(supportFragmentManager, it)
                         }))
                     }
                 }

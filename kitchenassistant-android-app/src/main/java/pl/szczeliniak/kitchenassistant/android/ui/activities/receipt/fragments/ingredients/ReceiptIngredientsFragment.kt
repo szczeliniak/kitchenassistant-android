@@ -48,10 +48,7 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     }
 
     private fun showAddIngredientDialog() {
-        receipt?.let {
-            AddEditIngredientDialog.newInstance(it.id)
-                .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
-        }
+        receipt?.let { AddEditIngredientDialog.show(requireActivity().supportFragmentManager, it.id) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,11 +85,9 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
                             deleteIngredientStateHandler.handle(it)
                         }
                     }, { receiptId, i ->
-                        AddEditIngredientDialog.newInstance(receiptId, i)
-                            .show(requireActivity().supportFragmentManager, AddEditIngredientDialog.TAG)
+                        AddEditIngredientDialog.show(requireActivity().supportFragmentManager, receiptId, i)
                     }, { _, i ->
-                        AddIngredientToShoppingListDialog.newInstance(i)
-                            .show(requireActivity().supportFragmentManager, AddIngredientToShoppingListDialog.TAG)
+                        AddIngredientToShoppingListDialog.show(requireActivity().supportFragmentManager, i)
                     }))
                 }
             }

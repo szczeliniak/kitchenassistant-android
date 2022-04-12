@@ -76,8 +76,7 @@ class ShoppingListActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonAddShoppingListItem.setOnClickListener {
-            AddEditShoppingListItemDialog.newInstance(shoppingListId)
-                .show(supportFragmentManager, AddEditShoppingListItemDialog.TAG)
+            AddEditShoppingListItemDialog.show(supportFragmentManager, shoppingListId)
         }
 
         viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
@@ -112,8 +111,11 @@ class ShoppingListActivity : AppCompatActivity() {
                                             deleteShoppingListItemStateHandler.handle(it)
                                         }
                                 }, { shoppingListId, shoppingListItem ->
-                                    AddEditShoppingListItemDialog.newInstance(shoppingListId, shoppingListItem)
-                                        .show(supportFragmentManager, AddEditShoppingListItemDialog.TAG)
+                                    AddEditShoppingListItemDialog.show(
+                                        supportFragmentManager,
+                                        shoppingListId,
+                                        shoppingListItem
+                                    )
                                 }, { shoppingListId, shoppingListItem, isChecked ->
                                     viewModel.changeItemState(
                                         shoppingListId,

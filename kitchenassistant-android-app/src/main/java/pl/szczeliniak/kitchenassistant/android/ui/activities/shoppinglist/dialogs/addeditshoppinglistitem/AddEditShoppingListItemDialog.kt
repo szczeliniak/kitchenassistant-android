@@ -6,6 +6,7 @@ import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -27,19 +28,19 @@ class AddEditShoppingListItemDialog : DialogFragment() {
     companion object {
         private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"
         private const val SHOPPING_LIST_ITEM_EXTRA = "SHOPPING_LIST_ITEM_EXTRA"
+        private const val TAG = "AddEditShoppingListItemDialog"
 
-        const val TAG = "AddEditShoppingListItemDialog"
-
-        fun newInstance(
+        fun show(
+            fragmentManager: FragmentManager,
             shoppingListId: Int,
             shoppingListItem: ShoppingListItem? = null
-        ): AddEditShoppingListItemDialog {
+        ) {
             val bundle = Bundle()
             bundle.putInt(SHOPPING_LIST_ID_EXTRA, shoppingListId)
             shoppingListItem?.let { bundle.putParcelable(SHOPPING_LIST_ITEM_EXTRA, it) }
             val dialog = AddEditShoppingListItemDialog()
             dialog.arguments = bundle
-            return dialog
+            dialog.show(fragmentManager, TAG)
         }
     }
 
