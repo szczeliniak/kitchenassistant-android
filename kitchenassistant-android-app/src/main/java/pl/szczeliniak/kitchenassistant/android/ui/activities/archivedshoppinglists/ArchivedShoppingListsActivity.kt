@@ -3,6 +3,8 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppingli
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -18,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
@@ -45,12 +48,17 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     private val deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
 
     private lateinit var binding: ActivityArchviedShoppingListsBinding
+    private var filter: ShoppingListsFilterDialog.Filter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
         viewModel.shoppingLists.observe(this) {
             saveShoppingListLoadingStateHandler.handle(it)
+        }
+        viewModel.filter.observe(this) {
+            this.filter = it
+            viewModel.reloadShoppingLists(it.name)
         }
     }
 
@@ -62,7 +70,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
-        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists() }
+        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name) }
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
@@ -112,7 +120,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
                 override fun onSuccess(data: Int) {
                     adapter.clear()
-                    viewModel.reloadShoppingLists()
+                    viewModel.reloadShoppingLists(filter?.name)
                 }
             })
     }
@@ -127,9 +135,24 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         super.onStop()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_archived_shopping_lists, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.activity_archived_shopping_lists_menu_item_filter) {
+            ShoppingListsFilterDialog.show(supportFragmentManager,
+                ShoppingListsFilterDialog.Filter(filter?.name),
+                ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     @Subscribe
     fun reloadReceiptEvent(event: ReloadShoppingListsEvent) {
-        viewModel.reloadShoppingLists()
+        viewModel.reloadShoppingLists(filter?.name)
     }
 
 }
