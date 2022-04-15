@@ -10,13 +10,14 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingLi
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
+import java.time.LocalDate
 
 class ShoppingListService constructor(
     private val repository: ShoppingListRepository,
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun findAll(archived: Boolean, name: String?): Flow<LoadingState<List<ShoppingList>>> {
+    suspend fun findAll(archived: Boolean, name: String?, date: LocalDate?): Flow<LoadingState<List<ShoppingList>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -25,7 +26,8 @@ class ShoppingListService constructor(
                         repository.findAll(
                             localStorageService.getId(),
                             archived,
-                            name
+                            name,
+                            date
                         ).shoppingLists
                     )
                 )

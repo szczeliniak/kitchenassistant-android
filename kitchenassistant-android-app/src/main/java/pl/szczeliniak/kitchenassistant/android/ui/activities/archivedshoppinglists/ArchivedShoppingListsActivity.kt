@@ -58,7 +58,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         }
         viewModel.filter.observe(this) {
             this.filter = it
-            viewModel.reloadShoppingLists(it.name)
+            viewModel.reloadShoppingLists(it.name, it?.date)
         }
     }
 
@@ -70,7 +70,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
-        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name) }
+        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name, filter?.date) }
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
@@ -120,7 +120,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
                 override fun onSuccess(data: Int) {
                     adapter.clear()
-                    viewModel.reloadShoppingLists(filter?.name)
+                    viewModel.reloadShoppingLists(filter?.name, filter?.date)
                 }
             })
     }
@@ -143,7 +143,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.activity_archived_shopping_lists_menu_item_filter) {
             ShoppingListsFilterDialog.show(supportFragmentManager,
-                ShoppingListsFilterDialog.Filter(filter?.name),
+                ShoppingListsFilterDialog.Filter(filter?.name, filter?.date),
                 ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
             return true
         }
@@ -152,7 +152,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     @Subscribe
     fun reloadReceiptEvent(event: ReloadShoppingListsEvent) {
-        viewModel.reloadShoppingLists(filter?.name)
+        viewModel.reloadShoppingLists(filter?.name, filter?.date)
     }
 
 }

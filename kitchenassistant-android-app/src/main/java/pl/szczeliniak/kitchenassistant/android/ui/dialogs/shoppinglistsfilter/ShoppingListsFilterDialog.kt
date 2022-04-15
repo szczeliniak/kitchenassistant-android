@@ -1,6 +1,8 @@
 package pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter
 
+import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Parcelable
 import androidx.appcompat.app.AlertDialog
@@ -10,6 +12,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogShoppingListsFilterBinding
+import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
+import java.time.LocalDate
 
 @AndroidEntryPoint
 class ShoppingListsFilterDialog : DialogFragment() {
@@ -37,8 +41,19 @@ class ShoppingListsFilterDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogShoppingListsFilterBinding.inflate(layoutInflater)
+        binding.shoppingListDate.setOnClickListener {
+            val date = this.date ?: LocalDate.now()
+            val dialog = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
+                binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month + 1, dayOfMonth))
+            }, date.year, date.monthValue - 1, date.dayOfMonth)
+            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.label_button_cancel)) { _, _ ->
+                binding.shoppingListDate.text = getString(R.string.label_button_select_date)
+            }
+            dialog.show()
+        }
         filter?.let {
             it.name?.let { name -> binding.shoppingListName.setText(name) }
+            it.date?.let { date -> binding.shoppingListDate.text = LocalDateUtils.stringify(date) }
         }
 
         val builder = AlertDialog.Builder(requireContext())
@@ -52,7 +67,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val filter = Filter(name)
+            val filter = Filter(name, date)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -65,7 +80,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val name: String?) : Parcelable {}
+    data class Filter(val name: String?, val date: LocalDate?) : Parcelable {}
 
     private val onFilterChanged: OnFilterChanged
         get() {
@@ -80,6 +95,12 @@ class ShoppingListsFilterDialog : DialogFragment() {
     private val filter: Filter?
         get() {
             return requireArguments().getParcelable(FILTER_EXTRA)
+        }
+
+    private val date: LocalDate?
+        get() {
+            val asString = binding.shoppingListDate.text.toString()
+            return if (LocalDateUtils.parsable(asString)) LocalDateUtils.parse(asString) else null
         }
 
 }

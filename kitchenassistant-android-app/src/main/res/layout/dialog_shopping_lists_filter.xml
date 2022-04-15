@@ -31,4 +31,11 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:id="@+id/shopping_list_date"
+            android:text="@string/label_button_select_date"
+            android:layout_height="wrap_content"
+            style="@style/ButtonPrimary"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

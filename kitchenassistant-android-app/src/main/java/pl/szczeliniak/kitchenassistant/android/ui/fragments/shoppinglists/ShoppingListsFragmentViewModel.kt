@@ -12,6 +12,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,12 +27,12 @@ class ShoppingListsFragmentViewModel @Inject constructor(
     val filter: LiveData<ShoppingListsFilterDialog.Filter> get() = _filter
 
     init {
-        reloadShoppingLists(null)
+        reloadShoppingLists(null, null)
     }
 
-    fun reloadShoppingLists(name: String?) {
+    fun reloadShoppingLists(name: String?, date: LocalDate?) {
         viewModelScope.launch {
-            shoppingListService.findAll(false, name)
+            shoppingListService.findAll(false, name, date)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

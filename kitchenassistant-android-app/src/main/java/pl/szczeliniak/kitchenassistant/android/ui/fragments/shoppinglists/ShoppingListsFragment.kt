@@ -49,7 +49,7 @@ class ShoppingListsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShoppingListsBinding.inflate(inflater)
 
-        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name) }
+        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name, filter?.date) }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
@@ -66,7 +66,7 @@ class ShoppingListsFragment : Fragment() {
         viewModel.shoppingLists.observe(viewLifecycleOwner) { shoppingListsLoadingStateHandler.handle(it) }
         viewModel.filter.observe(viewLifecycleOwner) {
             this.filter = it
-            viewModel.reloadShoppingLists(it.name)
+            viewModel.reloadShoppingLists(it.name, it?.date)
         }
     }
 
@@ -82,7 +82,7 @@ class ShoppingListsFragment : Fragment() {
 
             override fun onSuccess(data: Int) {
                 adapter.clear()
-                viewModel.reloadShoppingLists(filter?.name)
+                viewModel.reloadShoppingLists(filter?.name, filter?.date)
             }
         })
     }
@@ -143,7 +143,7 @@ class ShoppingListsFragment : Fragment() {
             R.id.fragment_shopping_lists_menu_item_filter -> {
                 ShoppingListsFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    ShoppingListsFilterDialog.Filter(filter?.name),
+                    ShoppingListsFilterDialog.Filter(filter?.name, filter?.date),
                     ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
                 return true
             }
@@ -153,7 +153,7 @@ class ShoppingListsFragment : Fragment() {
 
     @Subscribe
     fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
-        viewModel.reloadShoppingLists(filter?.name)
+        viewModel.reloadShoppingLists(filter?.name, filter?.date)
     }
 
 }

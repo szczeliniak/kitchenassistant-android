@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -63,9 +64,13 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
         binding.shoppingListDate.setOnClickListener {
             val date = this.date ?: LocalDate.now()
-            DatePickerDialog(this@AddEditShoppingListActivity, { _, year, month, dayOfMonth ->
-                binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month, dayOfMonth))
-            }, date.year, date.monthValue, date.dayOfMonth).show()
+            val dialog = DatePickerDialog(this@AddEditShoppingListActivity, { _, year, month, dayOfMonth ->
+                binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month + 1, dayOfMonth))
+            }, date.year, date.monthValue - 1, date.dayOfMonth)
+            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.label_button_cancel)) { _, _ ->
+                binding.shoppingListDate.text = getString(R.string.label_button_select_date)
+            }
+            dialog.show()
         }
         setContentView(binding.root)
         shoppingList?.let {

@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListRes
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
 import retrofit2.http.*
+import java.time.LocalDate
 
 interface ShoppingListRepository {
 
@@ -15,7 +16,8 @@ interface ShoppingListRepository {
     suspend fun findAll(
         @Query("userId") userId: Int? = null,
         @Query("archived") archived: Boolean? = null,
-        @Query("name") name: String? = null
+        @Query("name") name: String? = null,
+        @Query("date") date: LocalDate? = null
     ): ShoppingListsResponse
 
     @GET("/shoppinglists/{id}")
