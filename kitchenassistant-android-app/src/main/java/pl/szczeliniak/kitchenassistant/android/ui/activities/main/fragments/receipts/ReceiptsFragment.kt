@@ -1,9 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,11 +10,13 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts.dialogs.ReceiptsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
@@ -43,11 +43,12 @@ class ReceiptsFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<List<Receipt>>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
+    private var filter: ReceiptsFilterDialog.ReceiptsFilter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptsBinding.inflate(inflater)
 
-        binding.root.setOnRefreshListener { viewModel.reloadReceipts() }
+        binding.root.setOnRefreshListener { viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName) }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
@@ -62,6 +63,10 @@ class ReceiptsFragment : Fragment() {
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
+        viewModel.filter.observe(viewLifecycleOwner) {
+            this.filter = it
+            viewModel.reloadReceipts(it.categoryId, it.receiptName)
+        }
     }
 
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -76,7 +81,7 @@ class ReceiptsFragment : Fragment() {
 
             override fun onSuccess(data: Int) {
                 adapter.clear()
-                viewModel.reloadReceipts()
+                viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName)
             }
         })
     }
@@ -118,7 +123,26 @@ class ReceiptsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         eventBus.register(this)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_receipts, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.fragment_receipts_menu_item_filter -> {
+                ReceiptsFilterDialog.show(
+                    requireActivity().supportFragmentManager,
+                    ReceiptsFilterDialog.ReceiptsFilter(filter?.categoryId, filter?.receiptName),
+                    ReceiptsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroy() {
@@ -128,7 +152,7 @@ class ReceiptsFragment : Fragment() {
 
     @Subscribe
     fun reloadReceiptsEvent(event: ReloadReceiptsEvent) {
-        viewModel.reloadReceipts()
+        viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName)
     }
 
 }

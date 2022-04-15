@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/BaseLayout"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:text="@string/title_dialog_receipts_filter"
+            android:id="@+id/title"
+            style="@style/TextDialogTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/max_length_category_name"
+            style="@style/InputLayout"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                android:hint="@string/label_category_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_category_name"
+                android:inputType="text"
+                android:id="@+id/category_name"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterEnabled="true"
+            app:counterMaxLength="@integer/max_length_receipt_name"
+            style="@style/InputLayout"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/label_receipt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_receipt_name"
+                android:inputType="text"
+                android:id="@+id/receipt_name"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

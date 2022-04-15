@@ -9,9 +9,10 @@ import android.widget.Filter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ArrayAdapterUtils.Companion.getItems
 
 class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(context, 0, ArrayList()) {
+
+    private val allCategories = ArrayList<Category>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
@@ -50,13 +51,9 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
             }
 
             private fun filterCategories(constraint: CharSequence): ArrayList<Category> {
-                val categories = ArrayList<Category>()
-                for (category in getItems()) {
-                    if (category.name.lowercase().contains(constraint.toString().lowercase())) {
-                        categories.add(category)
-                    }
-                }
-                return categories
+                return ArrayList(allCategories.filter { c ->
+                    c.name.lowercase().contains(constraint.toString().lowercase())
+                })
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
@@ -69,8 +66,12 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
                     }
                 }
             }
-
         }
+    }
+
+    fun refresh(categories: List<Category>) {
+        allCategories.clear()
+        allCategories.addAll(categories)
     }
 
 }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
+import pl.szczeliniak.kitchenassistant.android.ui.activities.main.fragments.receipts.dialogs.ReceiptsFilterDialog
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,17 +20,18 @@ class ReceiptsFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _receipts = MutableLiveData<LoadingState<List<Receipt>>>()
+    private val _filter = MutableLiveData<ReceiptsFilterDialog.ReceiptsFilter>()
 
-    val receipts: LiveData<LoadingState<List<Receipt>>>
-        get() = _receipts
+    val receipts: LiveData<LoadingState<List<Receipt>>> get() = _receipts
+    val filter: LiveData<ReceiptsFilterDialog.ReceiptsFilter> get() = _filter
 
     init {
-        reloadReceipts()
+        reloadReceipts(null, null)
     }
 
-    fun reloadReceipts() {
+    fun reloadReceipts(categoryId: Int?, receiptName: String?) {
         viewModelScope.launch {
-            receiptService.findAll()
+            receiptService.findAll(categoryId, receiptName)
                 .onEach { _receipts.value = it }
                 .launchIn(viewModelScope)
         }
@@ -43,6 +45,10 @@ class ReceiptsFragmentViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
+    }
+
+    fun changeFilter(filter: ReceiptsFilterDialog.ReceiptsFilter) {
+        _filter.value = filter
     }
 
 }

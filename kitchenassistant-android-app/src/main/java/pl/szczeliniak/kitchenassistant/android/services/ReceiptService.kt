@@ -14,11 +14,19 @@ class ReceiptService constructor(
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun findAll(): Flow<LoadingState<List<Receipt>>> {
+    suspend fun findAll(categoryId: Int?, receiptName: String?): Flow<LoadingState<List<Receipt>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAll(localStorageService.getId()).receipts))
+                emit(
+                    LoadingState.Success(
+                        repository.findAll(
+                            localStorageService.getId(),
+                            categoryId,
+                            receiptName
+                        ).receipts
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

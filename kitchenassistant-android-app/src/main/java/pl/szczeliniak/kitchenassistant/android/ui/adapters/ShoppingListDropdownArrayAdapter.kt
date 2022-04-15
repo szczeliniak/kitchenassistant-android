@@ -9,10 +9,11 @@ import android.widget.Filter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ArrayAdapterUtils.Companion.getItems
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
+
+    private val allShoppingLists = ArrayList<ShoppingList>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
@@ -58,13 +59,9 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
             }
 
             private fun filterCategories(constraint: CharSequence): ArrayList<ShoppingList> {
-                val shoppingLists = ArrayList<ShoppingList>()
-                for (shoppingList in getItems()) {
-                    if (shoppingList.name.lowercase().contains(constraint.toString().lowercase())) {
-                        shoppingLists.add(shoppingList)
-                    }
-                }
-                return shoppingLists
+                return ArrayList(allShoppingLists.filter { sl ->
+                    sl.name.lowercase().contains(constraint.toString().lowercase())
+                })
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
@@ -79,6 +76,11 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
             }
 
         }
+    }
+
+    fun refresh(shoppingLists: List<ShoppingList>) {
+        allShoppingLists.clear()
+        allShoppingLists.addAll(shoppingLists)
     }
 
 }

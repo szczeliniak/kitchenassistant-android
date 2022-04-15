@@ -59,6 +59,7 @@
     <string name="title_dialog_edit_category">Edit category</string>
     <string name="title_dialog_add_category">Add category</string>
     <string name="title_dialog_add_ingredient_to_shopping_list">Add to shopping list</string>
+    <string name="title_dialog_receipts_filter">Filter receipts</string>
 
     <string name="label_button_add">Add</string>
     <string name="label_button_cancel">Cancel</string>
@@ -70,22 +71,23 @@
     <string name="label_button_select_date">Select date</string>
     <string name="label_button_edit">Edit</string>
     <string name="label_button_add_to_shopping_list">Add to shopping list</string>
+    <string name="label_button_filter">Filter</string>
     <string name="label_receipt_name">Receipt name</string>
     <string name="label_receipt_author">Author</string>
     <string name="label_receipt_url">URL</string>
     <string name="label_receipt_description">Description</string>
     <string name="label_receipt_category">Category</string>
-    <string name="label_ingredient_name">Name</string>
+    <string name="label_ingredient_name">Ingredient name</string>
     <string name="label_ingredient_quantity">Quantity</string>
-    <string name="label_step_name">Name</string>
+    <string name="label_step_name">Step name</string>
     <string name="label_step_description">Description</string>
     <string name="label_step_sequence">Sequence</string>
-    <string name="label_shopping_list_name">Name</string>
+    <string name="label_shopping_list_name">List name</string>
     <string name="label_shopping_list_description">Description</string>
     <string name="label_shopping_list_date">Date</string>
     <string name="label_shopping_list_items">Items</string>
-    <string name="label_shopping_list_item_name">Name</string>
+    <string name="label_shopping_list_item_name">Item name</string>
     <string name="label_shopping_list_item_quantity">Quantity</string>
     <string name="label_shopping_list_item_sequence">Sequence</string>
-    <string name="label_category_name">Name</string>
+    <string name="label_category_name">Category name</string>
 </resources>

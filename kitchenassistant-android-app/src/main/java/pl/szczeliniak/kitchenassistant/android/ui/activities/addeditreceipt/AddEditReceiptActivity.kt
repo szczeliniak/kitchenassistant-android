@@ -85,9 +85,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
         }
 
         binding.receiptCategory.setOnItemClickListener { _, _, position, _ ->
-            categoriesDropdownAdapter.getItem(position)?.let {
-                viewModel.setCategory(it)
-            }
+            viewModel.setCategory(categoriesDropdownAdapter.getItem(position))
         }
 
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
@@ -137,8 +135,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<Category>> {
             override fun onSuccess(data: List<Category>) {
-                categoriesDropdownAdapter.clear()
-                categoriesDropdownAdapter.addAll(data)
+                categoriesDropdownAdapter.refresh(data)
             }
         })
     }

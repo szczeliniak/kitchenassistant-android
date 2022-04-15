@@ -10,7 +10,11 @@ import retrofit2.http.*
 interface ReceiptRepository {
 
     @GET("/receipts")
-    suspend fun findAll(@Query("userId") userId: Int?): ReceiptsResponse
+    suspend fun findAll(
+        @Query("userId") userId: Int?,
+        @Query("categoryId") categoryId: Int?,
+        @Query("name") name: String?
+    ): ReceiptsResponse
 
     @GET("/receipts/{id}")
     suspend fun findById(@Path("id") receiptId: Int): ReceiptResponse

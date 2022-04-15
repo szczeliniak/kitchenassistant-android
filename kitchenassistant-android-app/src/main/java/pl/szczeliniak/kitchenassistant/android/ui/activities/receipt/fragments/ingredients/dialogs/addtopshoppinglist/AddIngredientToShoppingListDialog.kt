@@ -119,8 +119,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: List<ShoppingList>) {
-                shoppingListsDropdownAdapter.clear()
-                shoppingListsDropdownAdapter.addAll(data)
+                shoppingListsDropdownAdapter.refresh(data)
             }
         })
     }
