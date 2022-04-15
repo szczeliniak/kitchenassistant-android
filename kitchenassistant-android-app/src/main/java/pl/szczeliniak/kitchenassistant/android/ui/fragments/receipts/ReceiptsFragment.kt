@@ -43,7 +43,7 @@ class ReceiptsFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<List<Receipt>>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
-    private var filter: ReceiptsFilterDialog.ReceiptsFilter? = null
+    private var filter: ReceiptsFilterDialog.Filter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptsBinding.inflate(inflater)
@@ -137,7 +137,7 @@ class ReceiptsFragment : Fragment() {
             R.id.fragment_receipts_menu_item_filter -> {
                 ReceiptsFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    ReceiptsFilterDialog.ReceiptsFilter(filter?.categoryId, filter?.receiptName),
+                    ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptName),
                     ReceiptsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
                 return true
             }

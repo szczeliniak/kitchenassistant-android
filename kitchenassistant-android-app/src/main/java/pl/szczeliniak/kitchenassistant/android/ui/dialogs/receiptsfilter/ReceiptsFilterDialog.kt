@@ -25,11 +25,11 @@ class ReceiptsFilterDialog : DialogFragment() {
         private const val FILTER_EXTRA: String = "FILTER_EXTRA"
         private const val TAG = "ReceiptsFilterDialog"
 
-        fun show(fragmentManager: FragmentManager, receiptsFilter: ReceiptsFilter?, onFilterChanged: OnFilterChanged) {
+        fun show(fragmentManager: FragmentManager, filter: Filter?, onFilterChanged: OnFilterChanged) {
             val dialog = ReceiptsFilterDialog()
             val bundle = Bundle()
             bundle.putParcelable(CALLBACK_EXTRA, onFilterChanged)
-            bundle.putParcelable(FILTER_EXTRA, receiptsFilter)
+            bundle.putParcelable(FILTER_EXTRA, filter)
             dialog.arguments = bundle
             dialog.show(fragmentManager, TAG)
         }
@@ -49,7 +49,7 @@ class ReceiptsFilterDialog : DialogFragment() {
         binding.categoryName.setOnItemClickListener { _, _, position, _ ->
             viewModel.setCategory(categoryDropdownArrayAdapter.getItem(position))
         }
-        receiptsFilter?.let {
+        filter?.let {
             it.receiptName?.let { name -> binding.receiptName.setText(name) }
         }
 
@@ -82,7 +82,7 @@ class ReceiptsFilterDialog : DialogFragment() {
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             binding.categoryName.clearFocus()
-            val filter = ReceiptsFilter(selectedCategory?.id, name)
+            val filter = Filter(selectedCategory?.id, name)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -101,7 +101,7 @@ class ReceiptsFilterDialog : DialogFragment() {
 
             override fun onSuccess(data: List<Category>) {
                 categoryDropdownArrayAdapter.refresh(data)
-                receiptsFilter?.categoryId?.let { categoryId ->
+                filter?.categoryId?.let { categoryId ->
                     data.firstOrNull { category -> category.id == categoryId }?.let {
                         viewModel.setCategory(it)
                     }
@@ -111,12 +111,12 @@ class ReceiptsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    class OnFilterChanged(private val action: (receiptsFilter: ReceiptsFilter) -> Unit) : Parcelable {
-        fun onFilterChanged(receiptsFilter: ReceiptsFilter) = action(receiptsFilter)
+    class OnFilterChanged(private val action: (filter: Filter) -> Unit) : Parcelable {
+        fun onFilterChanged(filter: Filter) = action(filter)
     }
 
     @Parcelize
-    data class ReceiptsFilter(val categoryId: Int?, val receiptName: String?) : Parcelable {}
+    data class Filter(val categoryId: Int?, val receiptName: String?) : Parcelable {}
 
     private val onFilterChanged: OnFilterChanged
         get() {
@@ -128,7 +128,7 @@ class ReceiptsFilterDialog : DialogFragment() {
             return binding.receiptName.text.toString().ifEmpty { null }
         }
 
-    private val receiptsFilter: ReceiptsFilter?
+    private val filter: Filter?
         get() {
             return requireArguments().getParcelable(FILTER_EXTRA)
         }

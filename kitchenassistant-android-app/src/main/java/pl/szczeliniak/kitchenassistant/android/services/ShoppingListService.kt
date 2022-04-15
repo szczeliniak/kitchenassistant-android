@@ -16,11 +16,19 @@ class ShoppingListService constructor(
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun findAll(archived: Boolean): Flow<LoadingState<List<ShoppingList>>> {
+    suspend fun findAll(archived: Boolean, name: String?): Flow<LoadingState<List<ShoppingList>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAll(localStorageService.getId(), archived).shoppingLists))
+                emit(
+                    LoadingState.Success(
+                        repository.findAll(
+                            localStorageService.getId(),
+                            archived,
+                            name
+                        ).shoppingLists
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

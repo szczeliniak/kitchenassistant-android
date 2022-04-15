@@ -29,7 +29,7 @@ class ArchivedShoppingListsActivityViewModel @Inject constructor(
 
     fun reloadShoppingLists() {
         viewModelScope.launch {
-            shoppingListService.findAll(true)
+            shoppingListService.findAll(true, null)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

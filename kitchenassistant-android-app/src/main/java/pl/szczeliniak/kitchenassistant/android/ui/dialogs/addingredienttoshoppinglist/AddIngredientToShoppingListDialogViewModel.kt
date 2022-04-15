@@ -39,7 +39,7 @@ class AddIngredientToShoppingListDialogViewModel @Inject constructor(
 
     private fun loadShoppingLists() {
         viewModelScope.launch {
-            shoppingListService.findAll(false)
+            shoppingListService.findAll(false, null)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

@@ -27,7 +27,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_shipping_list_name"
+                    app:counterMaxLength="@integer/max_length_shopping_list_name"
                     app:counterEnabled="true"
                     android:id="@+id/shopping_list_name_layout"
                     style="@style/InputLayout"
@@ -37,7 +37,7 @@
                         android:hint="@string/label_shopping_list_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_shipping_list_name"
+                        android:maxLength="@integer/max_length_shopping_list_name"
                         android:inputType="text"
                         android:id="@+id/shopping_list_name"/>
 
@@ -45,7 +45,7 @@
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_shipping_list_description"
+                    app:counterMaxLength="@integer/max_length_shopping_list_description"
                     style="@style/InputLayout"
                     app:counterEnabled="true"
                     android:layout_height="wrap_content">
@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:minLines="4"
-                        android:maxLength="@integer/max_length_shipping_list_description"
+                        android:maxLength="@integer/max_length_shopping_list_description"
                         android:inputType="textMultiLine"
                         android:id="@+id/shopping_list_description"/>
 

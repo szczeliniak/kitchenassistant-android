@@ -14,7 +14,8 @@ interface ShoppingListRepository {
     @GET("/shoppinglists")
     suspend fun findAll(
         @Query("userId") userId: Int? = null,
-        @Query("archived") archived: Boolean? = null
+        @Query("archived") archived: Boolean? = null,
+        @Query("name") name: String? = null
     ): ShoppingListsResponse
 
     @GET("/shoppinglists/{id}")

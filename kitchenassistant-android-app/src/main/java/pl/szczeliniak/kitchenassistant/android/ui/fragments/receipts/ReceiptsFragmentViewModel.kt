@@ -20,10 +20,10 @@ class ReceiptsFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _receipts = MutableLiveData<LoadingState<List<Receipt>>>()
-    private val _filter = MutableLiveData<ReceiptsFilterDialog.ReceiptsFilter>()
+    private val _filter = MutableLiveData<ReceiptsFilterDialog.Filter>()
 
     val receipts: LiveData<LoadingState<List<Receipt>>> get() = _receipts
-    val filter: LiveData<ReceiptsFilterDialog.ReceiptsFilter> get() = _filter
+    val filter: LiveData<ReceiptsFilterDialog.Filter> get() = _filter
 
     init {
         reloadReceipts(null, null)
@@ -47,7 +47,7 @@ class ReceiptsFragmentViewModel @Inject constructor(
         return liveData
     }
 
-    fun changeFilter(filter: ReceiptsFilterDialog.ReceiptsFilter) {
+    fun changeFilter(filter: ReceiptsFilterDialog.Filter) {
         _filter.value = filter
     }
 

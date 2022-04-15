@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,17 +20,18 @@ class ShoppingListsFragmentViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _shoppingLists = MutableLiveData<LoadingState<List<ShoppingList>>>()
+    private val _filter = MutableLiveData<ShoppingListsFilterDialog.Filter>()
 
-    val shoppingLists: LiveData<LoadingState<List<ShoppingList>>>
-        get() = _shoppingLists
+    val shoppingLists: LiveData<LoadingState<List<ShoppingList>>> get() = _shoppingLists
+    val filter: LiveData<ShoppingListsFilterDialog.Filter> get() = _filter
 
     init {
-        reloadShoppingLists()
+        reloadShoppingLists(null)
     }
 
-    fun reloadShoppingLists() {
+    fun reloadShoppingLists(name: String?) {
         viewModelScope.launch {
-            shoppingListService.findAll(false)
+            shoppingListService.findAll(false, name)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }
@@ -43,6 +45,10 @@ class ShoppingListsFragmentViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
+    }
+
+    fun changeFilter(filter: ShoppingListsFilterDialog.Filter) {
+        _filter.value = filter
     }
 
 }
