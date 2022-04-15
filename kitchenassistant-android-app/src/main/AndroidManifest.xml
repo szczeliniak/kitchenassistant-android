@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="pl.szczeliniak.kitchenassistant.android">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
@@ -12,10 +13,12 @@
             android:supportsRtl="true"
             android:name="pl.szczeliniak.kitchenassistant.android.KitchenAssistantApplication"
             android:fullBackupContent="true"
+            tools:ignore="LockedOrientationActivity"
             android:theme="@style/Theme.KitchenAssistant">
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,41 +28,49 @@
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppinglists.ArchivedShoppingListsActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity"
                 android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
     </application>

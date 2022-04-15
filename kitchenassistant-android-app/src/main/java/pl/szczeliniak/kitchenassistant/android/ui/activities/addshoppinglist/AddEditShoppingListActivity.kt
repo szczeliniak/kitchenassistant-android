@@ -117,7 +117,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddEditShoppingListActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {

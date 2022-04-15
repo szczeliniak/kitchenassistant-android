@@ -91,7 +91,7 @@ class AddEditCategoryDialog : DialogFragment() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(requireActivity())
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {

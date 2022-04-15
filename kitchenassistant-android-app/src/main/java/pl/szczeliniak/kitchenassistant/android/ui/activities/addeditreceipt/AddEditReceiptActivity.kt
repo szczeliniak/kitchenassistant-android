@@ -119,7 +119,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@AddEditReceiptActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {

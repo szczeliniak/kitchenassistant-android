@@ -7,15 +7,7 @@ class ContextUtils {
 
     companion object {
         fun Context.toast(resId: Int) {
-            showToast(getString(resId))
-        }
-
-        fun Context.toast(message: String) {
-            showToast(message)
-        }
-
-        private fun Context.showToast(message: String) {
-            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(resId), Toast.LENGTH_LONG).show()
         }
     }
 

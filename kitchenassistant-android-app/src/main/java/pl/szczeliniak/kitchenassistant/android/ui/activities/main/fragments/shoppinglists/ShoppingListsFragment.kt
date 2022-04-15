@@ -71,7 +71,7 @@ class ShoppingListsFragment : Fragment() {
             }
 
             override fun onFinish() {
-                binding.layout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {
@@ -91,7 +91,7 @@ class ShoppingListsFragment : Fragment() {
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.layout.hideProgressSpinner(requireActivity())
+                binding.layout.hideProgressSpinner()
             }
 
             override fun onSuccess(data: List<ShoppingList>) {

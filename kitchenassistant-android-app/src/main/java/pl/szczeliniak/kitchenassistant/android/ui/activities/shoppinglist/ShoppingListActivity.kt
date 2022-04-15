@@ -89,7 +89,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: ShoppingList) {
@@ -139,7 +139,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {
@@ -155,7 +155,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {
@@ -171,7 +171,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@ShoppingListActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {

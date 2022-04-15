@@ -75,7 +75,7 @@ class CategoriesActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.root.hideProgressSpinner(this@CategoriesActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: List<Category>) {
@@ -107,7 +107,7 @@ class CategoriesActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    binding.layout.hideProgressSpinner(this@CategoriesActivity)
+                    binding.layout.hideProgressSpinner()
                 }
 
                 override fun onSuccess(data: Int) {

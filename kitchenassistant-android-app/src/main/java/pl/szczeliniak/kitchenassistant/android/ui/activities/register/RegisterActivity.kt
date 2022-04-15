@@ -107,7 +107,7 @@ class RegisterActivity : AppCompatActivity() {
     private fun prepareRegisterStateHandler(): LoadingStateHandler<LoginResponse> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
-                binding.root.hideProgressSpinner(this@RegisterActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: LoginResponse) {

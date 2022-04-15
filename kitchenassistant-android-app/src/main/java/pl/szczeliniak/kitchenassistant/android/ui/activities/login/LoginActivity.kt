@@ -50,25 +50,25 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        binding.loginFormLayout.buttonLogin.setOnClickListener { handleLoginButtonClick() }
-        binding.loginFormLayout.buttonRegister.setOnClickListener {
+        binding.buttonLogin.setOnClickListener { handleLoginButtonClick() }
+        binding.buttonRegister.setOnClickListener {
             RegisterActivity.start(this@LoginActivity)
         }
 
-        binding.loginFormLayout.loginEmail.doOnTextChanged { _, _, _, _ ->
+        binding.loginEmail.doOnTextChanged { _, _, _, _ ->
             if (!isEmailValid()) {
-                binding.loginFormLayout.loginEmailLayout.error = getString(R.string.message_wrong_email)
+                binding.loginEmailLayout.error = getString(R.string.message_wrong_email)
             } else {
-                binding.loginFormLayout.loginEmailLayout.error = null
+                binding.loginEmailLayout.error = null
             }
             checkButtonState()
         }
 
-        binding.loginFormLayout.loginPassword.doOnTextChanged { _, _, _, _ ->
+        binding.loginPassword.doOnTextChanged { _, _, _, _ ->
             if (!isPasswordValid()) {
-                binding.loginFormLayout.loginPasswordLayout.error = getString(R.string.message_wrong_password)
+                binding.loginPasswordLayout.error = getString(R.string.message_wrong_password)
             } else {
-                binding.loginFormLayout.loginPasswordLayout.error = null
+                binding.loginPasswordLayout.error = null
             }
             checkButtonState()
         }
@@ -85,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun checkButtonState() {
-        binding.loginFormLayout.buttonLogin.enable(isEmailValid() && isPasswordValid())
+        binding.buttonLogin.enable(isEmailValid() && isPasswordValid())
     }
 
     private fun goToMainActivity() {
@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
     private fun prepareLoginStateHandler(): LoadingStateHandler<LoginResponse> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<LoginResponse> {
             override fun onException(th: Throwable) {
-                binding.root.hideProgressSpinner(this@LoginActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: LoginResponse) {
@@ -116,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.message_login_data_does_not_match)
-                    binding.loginFormLayout.loginPassword.setText("")
+                    binding.loginPassword.setText("")
                 } else {
                     super.onHttpException(exception)
                 }
@@ -132,12 +132,12 @@ class LoginActivity : AppCompatActivity() {
 
     private val email: String
         get() {
-            return binding.loginFormLayout.loginEmail.text.toString()
+            return binding.loginEmail.text.toString()
         }
 
     private val password: String
         get() {
-            return binding.loginFormLayout.loginPassword.text.toString()
+            return binding.loginPassword.text.toString()
         }
 
 }

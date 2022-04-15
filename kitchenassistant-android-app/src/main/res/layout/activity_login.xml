@@ -10,26 +10,101 @@
             android:layout_width="match_parent"
             android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/login_layout"
                 android:layout_width="match_parent"
+                android:orientation="vertical"
                 android:layout_height="wrap_content">
 
-            <include
-                    android:id="@+id/login_logo_layout"
-                    layout="@layout/include_login_header"
+            <androidx.appcompat.widget.LinearLayoutCompat
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            <include
-                    app:layout_constraintTop_toBottomOf="@id/login_logo_layout"
-                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/login_form_layout"
-                    layout="@layout/include_login_form"/>
+                    style="@style/BaseLayout"
+                    android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="@dimen/image_size_big"
+                        android:layout_height="@dimen/image_size_big"
+                        android:layout_gravity="center"
+                        android:src="@drawable/logo"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextApplicationHeaderName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        style="@style/TextApplicationHeaderDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                    style="@style/BaseLayout"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:id="@+id/login_email_layout"
+                        style="@style/InputLayout"
+                        android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:hint="@string/form_login_email"
+                            android:maxLength="@integer/max_length_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="textEmailAddress"
+                            android:id="@+id/login_email"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        style="@style/InputLayout"
+                        android:id="@+id/login_password_layout"
+                        android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:hint="@string/form_login_password"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:maxLength="@integer/max_length_password"
+                            android:inputType="textPassword"
+                            android:id="@+id/login_password"/>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                            style="@style/ButtonPrimary"
+                            android:id="@+id/button_login"
+                            android:text="@string/label_button_login"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                            style="@style/ButtonSecondary"
+                            android:id="@+id/button_register"
+                            android:text="@string/label_button_register"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"/>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>
 

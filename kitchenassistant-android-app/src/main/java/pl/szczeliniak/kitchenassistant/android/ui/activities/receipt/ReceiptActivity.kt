@@ -72,7 +72,7 @@ class ReceiptActivity : AppCompatActivity() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(this@ReceiptActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Receipt) {

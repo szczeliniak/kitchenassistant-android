@@ -8,7 +8,6 @@ class AppCompatEditTextUtils {
         fun AppCompatEditText.getTextOrNull(): String? {
             return text.toString().ifEmpty { null }
         }
-
     }
 
 }

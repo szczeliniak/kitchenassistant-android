@@ -98,7 +98,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(requireActivity())
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: Int) {
@@ -115,7 +115,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
             }
 
             override fun onFinish() {
-                binding.root.hideProgressSpinner(requireActivity())
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: List<ShoppingList>) {

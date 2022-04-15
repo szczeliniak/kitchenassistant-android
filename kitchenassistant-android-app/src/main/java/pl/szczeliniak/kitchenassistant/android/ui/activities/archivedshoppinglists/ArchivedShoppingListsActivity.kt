@@ -73,7 +73,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.root.hideProgressSpinner(this@ArchivedShoppingListsActivity)
+                binding.root.hideProgressSpinner()
             }
 
             override fun onSuccess(data: List<ShoppingList>) {
@@ -107,7 +107,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
                 }
 
                 override fun onFinish() {
-                    binding.layout.hideProgressSpinner(this@ArchivedShoppingListsActivity)
+                    binding.layout.hideProgressSpinner()
                 }
 
                 override fun onSuccess(data: Int) {
