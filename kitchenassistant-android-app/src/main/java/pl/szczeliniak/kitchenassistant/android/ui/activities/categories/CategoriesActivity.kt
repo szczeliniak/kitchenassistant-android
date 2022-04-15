@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityCategoriesBin
 import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.dialogs.addeditcategory.AddEditCategoryDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditcategory.AddEditCategoryDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.CategoryItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon

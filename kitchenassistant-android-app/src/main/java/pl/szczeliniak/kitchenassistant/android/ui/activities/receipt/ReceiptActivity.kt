@@ -14,11 +14,11 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityReceiptBindin
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ReceiptActivityFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.info.ReceiptInfoFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.ingredients.ReceiptIngredientsFragment
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.fragments.steps.ReceiptStepsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
+import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptinfo.ReceiptInfoFragment
+import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptingredients.ReceiptIngredientsFragment
+import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptsteps.ReceiptStepsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
