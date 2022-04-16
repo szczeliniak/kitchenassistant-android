@@ -5,8 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollRecyclerViewListener(
     private val linearLayoutManager: LinearLayoutManager,
-    private val onLoadMore: OnLoadMore,
-    private val scrollPredicate: ScrollPredicate,
+    private val onLoadMore: OnLoadMore
 ) : RecyclerView.OnScrollListener() {
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -14,7 +13,6 @@ class EndlessScrollRecyclerViewListener(
             return
         }
         if ((linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()) >= linearLayoutManager.itemCount
-            && scrollPredicate.isTrue()
         ) {
             onLoadMore.onLoadMore()
         }
@@ -22,10 +20,6 @@ class EndlessScrollRecyclerViewListener(
 
     fun interface OnLoadMore {
         fun onLoadMore()
-    }
-
-    fun interface ScrollPredicate {
-        fun isTrue(): Boolean
     }
 
 }

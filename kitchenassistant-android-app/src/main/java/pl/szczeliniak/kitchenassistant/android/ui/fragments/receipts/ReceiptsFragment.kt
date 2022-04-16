@@ -23,6 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.PaginationHandler
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -31,8 +32,6 @@ import javax.inject.Inject
 class ReceiptsFragment : Fragment() {
 
     companion object {
-        private const val DEFAULT_PAGE = 1
-
         fun create(): ReceiptsFragment {
             return ReceiptsFragment()
         }
@@ -47,10 +46,9 @@ class ReceiptsFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var paginationHandler: PaginationHandler
 
     private var filter: ReceiptsFilterDialog.Filter? = null
-    private var page: Int = DEFAULT_PAGE
-    private var maxPage: Int = DEFAULT_PAGE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptsBinding.inflate(inflater)
@@ -60,13 +58,11 @@ class ReceiptsFragment : Fragment() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
+        paginationHandler = PaginationHandler { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName) }
+
         binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager,
-            {
-                page += 1
-                viewModel.loadReceipts(page, filter?.categoryId, filter?.receiptName)
-            }
-        ) { !binding.root.isRefreshing && page < maxPage })
+            binding.recyclerView.layoutManager as LinearLayoutManager
+        ) { paginationHandler.load() })
 
         binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
         return binding.root
@@ -74,8 +70,7 @@ class ReceiptsFragment : Fragment() {
 
     private fun resetReceipts() {
         adapter.clear()
-        page = DEFAULT_PAGE
-        viewModel.loadReceipts(page, filter?.categoryId, filter?.receiptName)
+        paginationHandler.reset()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -117,7 +112,7 @@ class ReceiptsFragment : Fragment() {
             }
 
             override fun onSuccess(data: ReceiptsResponse) {
-                maxPage = data.pagination.numberOfPages
+                paginationHandler.maxPage = data.pagination.numberOfPages
                 if (data.receipts.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())
                 } else {

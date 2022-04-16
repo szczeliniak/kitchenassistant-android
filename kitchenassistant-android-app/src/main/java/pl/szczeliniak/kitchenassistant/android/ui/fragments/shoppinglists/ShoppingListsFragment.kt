@@ -23,6 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.Sh
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.PaginationHandler
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -31,8 +32,6 @@ import javax.inject.Inject
 class ShoppingListsFragment : Fragment() {
 
     companion object {
-        private const val DEFAULT_PAGE = 1
-
         fun create(): ShoppingListsFragment {
             return ShoppingListsFragment()
         }
@@ -47,10 +46,9 @@ class ShoppingListsFragment : Fragment() {
     private lateinit var binding: FragmentShoppingListsBinding
     private lateinit var shoppingListsLoadingStateHandler: LoadingStateHandler<ShoppingListsResponse>
     private lateinit var deleteShoppingListLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var paginationHandler: PaginationHandler
 
     private var filter: ShoppingListsFilterDialog.Filter? = null
-    private var page: Int = DEFAULT_PAGE
-    private var maxPage: Int = DEFAULT_PAGE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentShoppingListsBinding.inflate(inflater)
@@ -60,13 +58,10 @@ class ShoppingListsFragment : Fragment() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
+        paginationHandler = PaginationHandler { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
         binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager,
-            {
-                page += 1
-                viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
-            }
-        ) { !binding.root.isRefreshing && page < maxPage })
+            binding.recyclerView.layoutManager as LinearLayoutManager
+        ) { paginationHandler.load() })
 
         binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
         return binding.root
@@ -85,8 +80,7 @@ class ShoppingListsFragment : Fragment() {
 
     private fun resetShoppingLists() {
         adapter.clear()
-        page = DEFAULT_PAGE
-        viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
+        paginationHandler.reset()
     }
 
     private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -118,7 +112,7 @@ class ShoppingListsFragment : Fragment() {
                 }
 
                 override fun onSuccess(data: ShoppingListsResponse) {
-                    maxPage = data.pagination.numberOfPages
+                    paginationHandler.maxPage = data.pagination.numberOfPages
                     if (data.shoppingLists.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
                     } else {

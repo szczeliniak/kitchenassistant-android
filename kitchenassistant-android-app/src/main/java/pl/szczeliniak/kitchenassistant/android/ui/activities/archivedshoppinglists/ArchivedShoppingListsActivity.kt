@@ -26,6 +26,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.Sh
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
+import pl.szczeliniak.kitchenassistant.android.ui.utils.PaginationHandler
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -35,8 +36,6 @@ import javax.inject.Inject
 class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     companion object {
-        private const val DEFAULT_PAGE = 1
-
         fun start(context: Context) {
             val intent = Intent(context, ArchivedShoppingListsActivity::class.java)
             context.startActivity(intent)
@@ -50,11 +49,10 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     private val adapter = GroupAdapter<GroupieViewHolder>()
     private val saveShoppingListLoadingStateHandler = prepareLoadShoppingListsStateHandler()
     private val deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
+    private lateinit var paginationHandler: PaginationHandler
 
     private lateinit var binding: ActivityArchviedShoppingListsBinding
     private var filter: ShoppingListsFilterDialog.Filter? = null
-    private var page: Int = DEFAULT_PAGE
-    private var maxPage: Int = DEFAULT_PAGE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,13 +74,11 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
+        paginationHandler = PaginationHandler { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
         binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager,
-            {
-                page += 1
-                viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
-            }
-        ) { !binding.refreshLayout.isRefreshing && page < maxPage })
+            binding.recyclerView.layoutManager as LinearLayoutManager
+        ) { paginationHandler.load() })
+
         binding.refreshLayout.setOnRefreshListener { resetShoppingLists() }
     }
 
@@ -97,7 +93,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: ShoppingListsResponse) {
-                maxPage = data.pagination.numberOfPages
+                paginationHandler.maxPage = data.pagination.numberOfPages
 
                 if (data.shoppingLists.isEmpty()) {
                     binding.layout.showEmptyIcon(this@ArchivedShoppingListsActivity)
@@ -169,7 +165,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     fun resetShoppingLists() {
         adapter.clear()
-        viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
+        paginationHandler.reset()
     }
 
 }
