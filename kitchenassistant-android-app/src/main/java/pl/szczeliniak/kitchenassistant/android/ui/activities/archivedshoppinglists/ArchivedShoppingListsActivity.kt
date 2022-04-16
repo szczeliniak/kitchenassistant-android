@@ -8,6 +8,7 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,8 +17,9 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityArchviedShoppingListsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
+import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
@@ -33,6 +35,8 @@ import javax.inject.Inject
 class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     companion object {
+        private const val DEFAULT_PAGE = 1
+
         fun start(context: Context) {
             val intent = Intent(context, ArchivedShoppingListsActivity::class.java)
             context.startActivity(intent)
@@ -49,6 +53,8 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityArchviedShoppingListsBinding
     private var filter: ShoppingListsFilterDialog.Filter? = null
+    private var page: Int = DEFAULT_PAGE
+    private var maxPage: Int = DEFAULT_PAGE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +64,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         }
         viewModel.filter.observe(this) {
             this.filter = it
-            viewModel.reloadShoppingLists(it.name, it?.date)
+            resetShoppingLists()
         }
     }
 
@@ -70,27 +76,34 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
-        binding.root.setOnRefreshListener { viewModel.reloadShoppingLists(filter?.name, filter?.date) }
+        binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            {
+                page += 1
+                viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
+            }
+        ) { !binding.refreshLayout.isRefreshing && page < maxPage })
+        binding.refreshLayout.setOnRefreshListener { resetShoppingLists() }
     }
 
-    private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<ShoppingList>> {
+    private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<ShoppingListsResponse> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListsResponse> {
             override fun onInProgress() {
-                binding.root.showProgressSpinner(this@ArchivedShoppingListsActivity)
+                binding.refreshLayout.isRefreshing = true
             }
 
             override fun onFinish() {
-                binding.root.isRefreshing = false
-                binding.root.hideProgressSpinner()
+                binding.refreshLayout.isRefreshing = false
             }
 
-            override fun onSuccess(data: List<ShoppingList>) {
-                adapter.clear()
-                if (data.isEmpty()) {
+            override fun onSuccess(data: ShoppingListsResponse) {
+                maxPage = data.pagination.numberOfPages
+
+                if (data.shoppingLists.isEmpty()) {
                     binding.layout.showEmptyIcon(this@ArchivedShoppingListsActivity)
                 } else {
                     binding.layout.hideEmptyIcon()
-                    data.forEach { shoppingList ->
+                    data.shoppingLists.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(this@ArchivedShoppingListsActivity, shoppingList, {
                             ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id)
                         }, {
@@ -119,8 +132,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(data: Int) {
-                    adapter.clear()
-                    viewModel.reloadShoppingLists(filter?.name, filter?.date)
+                    resetShoppingLists()
                 }
             })
     }
@@ -152,7 +164,12 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
     @Subscribe
     fun reloadReceiptEvent(event: ReloadShoppingListsEvent) {
-        viewModel.reloadShoppingLists(filter?.name, filter?.date)
+        resetShoppingLists()
+    }
+
+    fun resetShoppingLists() {
+        adapter.clear()
+        viewModel.reloadShoppingLists(page, filter?.name, filter?.date)
     }
 
 }

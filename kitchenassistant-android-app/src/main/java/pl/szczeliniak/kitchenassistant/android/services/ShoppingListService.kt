@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListI
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import java.time.LocalDate
@@ -17,7 +18,13 @@ class ShoppingListService constructor(
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun findAll(archived: Boolean, name: String?, date: LocalDate?): Flow<LoadingState<List<ShoppingList>>> {
+    suspend fun findAll(
+        archived: Boolean,
+        name: String?,
+        date: LocalDate?,
+        page: Int?,
+        limit: Int?
+    ): Flow<LoadingState<ShoppingListsResponse>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -27,8 +34,10 @@ class ShoppingListService constructor(
                             localStorageService.getId(),
                             archived,
                             name,
-                            date
-                        ).shoppingLists
+                            date,
+                            page,
+                            limit
+                        )
                     )
                 )
             } catch (e: KitchenAssistantNetworkException) {

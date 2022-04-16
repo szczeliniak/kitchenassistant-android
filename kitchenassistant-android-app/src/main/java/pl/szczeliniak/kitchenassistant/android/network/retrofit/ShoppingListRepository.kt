@@ -17,7 +17,9 @@ interface ShoppingListRepository {
         @Query("userId") userId: Int? = null,
         @Query("archived") archived: Boolean? = null,
         @Query("name") name: String? = null,
-        @Query("date") date: LocalDate? = null
+        @Query("date") date: LocalDate? = null,
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null
     ): ShoppingListsResponse
 
     @GET("/shoppinglists/{id}")

@@ -5,6 +5,7 @@
       <map>
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_receipt.xml" value="0.45" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_shopping_list.xml" value="0.18070652173913043" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/activity_archvied_shopping_lists.xml" value="0.1" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_login.xml" value="0.17395833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_main.xml" value="0.10190217391304347" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_register.xml" value="0.11684782608695653" />

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import java.time.LocalDate
@@ -20,19 +20,23 @@ class ShoppingListsFragmentViewModel @Inject constructor(
     private val shoppingListService: ShoppingListService
 ) : ViewModel() {
 
-    private val _shoppingLists = MutableLiveData<LoadingState<List<ShoppingList>>>()
+    companion object {
+        private const val LIMIT = 20
+    }
+
+    private val _shoppingLists = MutableLiveData<LoadingState<ShoppingListsResponse>>()
     private val _filter = MutableLiveData<ShoppingListsFilterDialog.Filter>()
 
-    val shoppingLists: LiveData<LoadingState<List<ShoppingList>>> get() = _shoppingLists
+    val shoppingLists: LiveData<LoadingState<ShoppingListsResponse>> get() = _shoppingLists
     val filter: LiveData<ShoppingListsFilterDialog.Filter> get() = _filter
 
     init {
-        reloadShoppingLists(null, null)
+        reloadShoppingLists(1, null, null)
     }
 
-    fun reloadShoppingLists(name: String?, date: LocalDate?) {
+    fun reloadShoppingLists(page: Int, name: String?, date: LocalDate?) {
         viewModelScope.launch {
-            shoppingListService.findAll(false, name, date)
+            shoppingListService.findAll(false, name, date, page, LIMIT)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

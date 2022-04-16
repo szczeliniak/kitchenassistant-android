@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
 import javax.inject.Inject
@@ -19,7 +20,7 @@ class AddIngredientToShoppingListDialogViewModel @Inject constructor(
     private val shoppingListService: ShoppingListService,
 ) : ViewModel() {
 
-    private val _shoppingLists = MutableLiveData<LoadingState<List<ShoppingList>>>()
+    private val _shoppingLists = MutableLiveData<LoadingState<ShoppingListsResponse>>()
 
     private val _selectedShoppingList = MutableLiveData<ShoppingList?>()
 
@@ -28,7 +29,7 @@ class AddIngredientToShoppingListDialogViewModel @Inject constructor(
             return _selectedShoppingList
         }
 
-    val shoppingLists: LiveData<LoadingState<List<ShoppingList>>>
+    val shoppingLists: LiveData<LoadingState<ShoppingListsResponse>>
         get() {
             return _shoppingLists
         }
@@ -39,7 +40,7 @@ class AddIngredientToShoppingListDialogViewModel @Inject constructor(
 
     private fun loadShoppingLists() {
         viewModelScope.launch {
-            shoppingListService.findAll(false, null, null)
+            shoppingListService.findAll(false, null, null, null, 10)
                 .onEach { _shoppingLists.value = it }
                 .launchIn(viewModelScope)
         }

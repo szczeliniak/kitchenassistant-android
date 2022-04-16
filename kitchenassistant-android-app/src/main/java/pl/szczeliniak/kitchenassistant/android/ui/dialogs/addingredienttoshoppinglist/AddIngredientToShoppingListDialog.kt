@@ -14,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddIngredientTo
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.ShoppingListDropdownArrayAdapter
@@ -43,7 +44,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddIngredientToShoppingListBinding
     private lateinit var addIngredientToShoppingListStateHandler: LoadingStateHandler<Int>
-    private lateinit var loadShoppingListsStateHandler: LoadingStateHandler<List<ShoppingList>>
+    private lateinit var loadShoppingListsStateHandler: LoadingStateHandler<ShoppingListsResponse>
     private lateinit var shoppingListsDropdownAdapter: ShoppingListDropdownArrayAdapter
     private lateinit var positiveButton: Button
 
@@ -108,20 +109,22 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         })
     }
 
-    private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<List<ShoppingList>> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<ShoppingList>> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(requireActivity())
-            }
+    private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<ShoppingListsResponse> {
+        return LoadingStateHandler(
+            requireActivity(),
+            object : LoadingStateHandler.OnStateChanged<ShoppingListsResponse> {
+                override fun onInProgress() {
+                    binding.root.showProgressSpinner(requireActivity())
+                }
 
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
+                override fun onFinish() {
+                    binding.root.hideProgressSpinner()
+                }
 
-            override fun onSuccess(data: List<ShoppingList>) {
-                shoppingListsDropdownAdapter.refresh(data)
-            }
-        })
+                override fun onSuccess(data: ShoppingListsResponse) {
+                    shoppingListsDropdownAdapter.refresh(data.shoppingLists)
+                }
+            })
     }
 
     override fun onResume() {
