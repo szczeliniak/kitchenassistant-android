@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
+import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
@@ -14,7 +15,12 @@ class ReceiptService constructor(
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun findAll(categoryId: Int?, receiptName: String?): Flow<LoadingState<List<Receipt>>> {
+    suspend fun findAll(
+        categoryId: Int?,
+        receiptName: String?,
+        page: Int?,
+        limit: Int?
+    ): Flow<LoadingState<ReceiptsResponse>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -23,8 +29,9 @@ class ReceiptService constructor(
                         repository.findAll(
                             localStorageService.getId(),
                             categoryId,
-                            receiptName
-                        ).receipts
+                            receiptName,
+                            page, limit
+                        )
                     )
                 )
             } catch (e: KitchenAssistantNetworkException) {

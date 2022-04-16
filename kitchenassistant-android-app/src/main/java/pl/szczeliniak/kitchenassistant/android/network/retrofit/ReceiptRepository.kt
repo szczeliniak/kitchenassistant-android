@@ -13,7 +13,9 @@ interface ReceiptRepository {
     suspend fun findAll(
         @Query("userId") userId: Int?,
         @Query("categoryId") categoryId: Int?,
-        @Query("name") name: String?
+        @Query("name") name: String?,
+        @Query("page") page: Int?,
+        @Query("limit") limit: Int?
     ): ReceiptsResponse
 
     @GET("/receipts/{id}")

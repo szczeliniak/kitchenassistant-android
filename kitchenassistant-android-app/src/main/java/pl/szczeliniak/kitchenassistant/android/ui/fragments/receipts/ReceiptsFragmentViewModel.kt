@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
 import javax.inject.Inject
@@ -19,19 +19,23 @@ class ReceiptsFragmentViewModel @Inject constructor(
     private val receiptService: ReceiptService
 ) : ViewModel() {
 
-    private val _receipts = MutableLiveData<LoadingState<List<Receipt>>>()
+    companion object {
+        private const val LIMIT = 20
+    }
+
+    private val _receipts = MutableLiveData<LoadingState<ReceiptsResponse>>()
     private val _filter = MutableLiveData<ReceiptsFilterDialog.Filter>()
 
-    val receipts: LiveData<LoadingState<List<Receipt>>> get() = _receipts
+    val receipts: LiveData<LoadingState<ReceiptsResponse>> get() = _receipts
     val filter: LiveData<ReceiptsFilterDialog.Filter> get() = _filter
 
     init {
-        reloadReceipts(null, null)
+        loadReceipts(1, null, null)
     }
 
-    fun reloadReceipts(categoryId: Int?, receiptName: String?) {
+    fun loadReceipts(page: Int, categoryId: Int?, receiptName: String?) {
         viewModelScope.launch {
-            receiptService.findAll(categoryId, receiptName)
+            receiptService.findAll(categoryId, receiptName, page, LIMIT)
                 .onEach { _receipts.value = it }
                 .launchIn(viewModelScope)
         }

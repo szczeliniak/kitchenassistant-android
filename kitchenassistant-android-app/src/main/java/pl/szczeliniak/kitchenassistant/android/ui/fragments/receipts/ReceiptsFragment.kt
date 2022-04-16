@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
@@ -13,8 +14,9 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
+import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
@@ -29,6 +31,8 @@ import javax.inject.Inject
 class ReceiptsFragment : Fragment() {
 
     companion object {
+        private const val DEFAULT_PAGE = 1
+
         fun create(): ReceiptsFragment {
             return ReceiptsFragment()
         }
@@ -41,21 +45,37 @@ class ReceiptsFragment : Fragment() {
     lateinit var eventBus: EventBus
 
     private lateinit var binding: FragmentReceiptsBinding
-    private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<List<Receipt>>
+    private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
+
     private var filter: ReceiptsFilterDialog.Filter? = null
+    private var page: Int = DEFAULT_PAGE
+    private var maxPage: Int = DEFAULT_PAGE
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptsBinding.inflate(inflater)
-
-        binding.root.setOnRefreshListener { viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName) }
+        binding.root.setOnRefreshListener { resetReceipts() }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
+        binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            {
+                page += 1
+                viewModel.loadReceipts(page, filter?.categoryId, filter?.receiptName)
+            }
+        ) { !binding.root.isRefreshing && page < maxPage })
+
         binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
         return binding.root
+    }
+
+    private fun resetReceipts() {
+        adapter.clear()
+        page = DEFAULT_PAGE
+        viewModel.loadReceipts(page, filter?.categoryId, filter?.receiptName)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,7 +85,7 @@ class ReceiptsFragment : Fragment() {
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
         viewModel.filter.observe(viewLifecycleOwner) {
             this.filter = it
-            viewModel.reloadReceipts(it.categoryId, it.receiptName)
+            resetReceipts()
         }
     }
 
@@ -80,32 +100,29 @@ class ReceiptsFragment : Fragment() {
             }
 
             override fun onSuccess(data: Int) {
-                adapter.clear()
-                viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName)
+                resetReceipts()
             }
         })
     }
 
-    private fun prepareReceiptsLoadingStateHandler(): LoadingStateHandler<List<Receipt>> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<Receipt>> {
+    private fun prepareReceiptsLoadingStateHandler(): LoadingStateHandler<ReceiptsResponse> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<ReceiptsResponse> {
             override fun onInProgress() {
                 binding.root.isRefreshing = true
                 binding.layout.hideEmptyIcon()
-                binding.layout.showProgressSpinner(requireActivity())
             }
 
             override fun onFinish() {
                 binding.root.isRefreshing = false
-                binding.layout.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: List<Receipt>) {
-                adapter.clear()
-                if (data.isEmpty()) {
+            override fun onSuccess(data: ReceiptsResponse) {
+                maxPage = data.pagination.numberOfPages
+                if (data.receipts.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())
                 } else {
                     binding.layout.hideEmptyIcon()
-                    data.forEach { receipt ->
+                    data.receipts.forEach { receipt ->
                         adapter.add(ReceiptItem(requireContext(), receipt, {
                             ReceiptActivity.start(requireContext(), it.id)
                         }, {
@@ -127,6 +144,11 @@ class ReceiptsFragment : Fragment() {
         eventBus.register(this)
     }
 
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_receipts, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -145,14 +167,9 @@ class ReceiptsFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onDestroy() {
-        eventBus.unregister(this)
-        super.onDestroy()
-    }
-
     @Subscribe
     fun reloadReceiptsEvent(event: ReloadReceiptsEvent) {
-        viewModel.reloadReceipts(filter?.categoryId, filter?.receiptName)
+        resetReceipts()
     }
 
 }
