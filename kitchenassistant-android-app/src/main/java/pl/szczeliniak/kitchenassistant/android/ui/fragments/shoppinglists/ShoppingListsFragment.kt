@@ -23,7 +23,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.Sh
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
-import pl.szczeliniak.kitchenassistant.android.ui.utils.PaginationHandler
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -46,7 +45,7 @@ class ShoppingListsFragment : Fragment() {
     private lateinit var binding: FragmentShoppingListsBinding
     private lateinit var shoppingListsLoadingStateHandler: LoadingStateHandler<ShoppingListsResponse>
     private lateinit var deleteShoppingListLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var paginationHandler: PaginationHandler
+    private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
 
     private var filter: ShoppingListsFilterDialog.Filter? = null
 
@@ -58,10 +57,11 @@ class ShoppingListsFragment : Fragment() {
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
-        paginationHandler = PaginationHandler { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
-        binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
+
+        endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { paginationHandler.load() })
+        ) { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
+        binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
         return binding.root
@@ -80,7 +80,7 @@ class ShoppingListsFragment : Fragment() {
 
     private fun resetShoppingLists() {
         adapter.clear()
-        paginationHandler.reset()
+        endlessScrollRecyclerViewListener.reset()
     }
 
     private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -112,7 +112,7 @@ class ShoppingListsFragment : Fragment() {
                 }
 
                 override fun onSuccess(data: ShoppingListsResponse) {
-                    paginationHandler.maxPage = data.pagination.numberOfPages
+                    endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                     if (data.shoppingLists.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
                     } else {

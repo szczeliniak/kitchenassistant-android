@@ -23,7 +23,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
-import pl.szczeliniak.kitchenassistant.android.ui.utils.PaginationHandler
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -46,7 +45,7 @@ class ReceiptsFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var paginationHandler: PaginationHandler
+    private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
 
     private var filter: ReceiptsFilterDialog.Filter? = null
 
@@ -58,11 +57,10 @@ class ReceiptsFragment : Fragment() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        paginationHandler = PaginationHandler { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName) }
-
-        binding.recyclerView.addOnScrollListener(EndlessScrollRecyclerViewListener(
+        endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { paginationHandler.load() })
+        ) { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName) }
+        binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
         return binding.root
@@ -70,7 +68,7 @@ class ReceiptsFragment : Fragment() {
 
     private fun resetReceipts() {
         adapter.clear()
-        paginationHandler.reset()
+        endlessScrollRecyclerViewListener.reset()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -112,7 +110,7 @@ class ReceiptsFragment : Fragment() {
             }
 
             override fun onSuccess(data: ReceiptsResponse) {
-                paginationHandler.maxPage = data.pagination.numberOfPages
+                endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                 if (data.receipts.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())
                 } else {

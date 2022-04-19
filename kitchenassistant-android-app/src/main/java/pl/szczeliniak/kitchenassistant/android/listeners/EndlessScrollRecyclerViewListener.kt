@@ -5,8 +5,15 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollRecyclerViewListener(
     private val linearLayoutManager: LinearLayoutManager,
-    private val onLoadMore: OnLoadMore
+    var onLoad: OnLoad
 ) : RecyclerView.OnScrollListener() {
+
+    companion object {
+        private const val DEFAULT_PAGE = 1
+    }
+
+    private var page: Int = DEFAULT_PAGE
+    var maxPage: Int = DEFAULT_PAGE
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         if (dy < 1) {
@@ -14,12 +21,25 @@ class EndlessScrollRecyclerViewListener(
         }
         if ((linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()) >= linearLayoutManager.itemCount
         ) {
-            onLoadMore.onLoadMore()
+            load()
         }
     }
 
-    fun interface OnLoadMore {
-        fun onLoadMore()
+    fun reset() {
+        page = 0
+        load()
+    }
+
+    private fun load() {
+        if (page >= maxPage) {
+            return
+        }
+        page += 1
+        onLoad.onLoad(page)
+    }
+
+    fun interface OnLoad {
+        fun onLoad(page: Int)
     }
 
 }
