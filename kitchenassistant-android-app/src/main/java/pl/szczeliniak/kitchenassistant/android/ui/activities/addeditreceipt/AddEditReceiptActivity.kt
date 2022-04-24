@@ -3,10 +3,12 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -21,11 +23,13 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -44,6 +48,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val viewModel: AddEditReceiptActivityViewModel by viewModels()
     private val saveReceiptLoadingStateHandler = prepareSaveReceiptLoadingStateHandler()
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
+    private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
+
     private val receipt: Receipt?
         get() {
             return intent.getParcelableExtra(RECEIPT_EXTRA)
@@ -56,6 +62,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
     lateinit var eventBus: EventBus
     private lateinit var binding: ActivityAddEditReceiptBinding
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
+    private lateinit var tagsArrayAdapter: TagDropdownArrayAdapter
+
     private var selectedCategory: Category? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,13 +73,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private fun initLayout() {
         binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
-        receipt?.let { id ->
+        receipt?.let { r ->
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
-            binding.receiptName.setText(id.name)
-            binding.receiptDescription.setText(id.description)
-            binding.receiptAuthor.setText(id.author)
-            binding.receiptUrl.setText(id.source)
-            viewModel.setCategory(id.category)
+            binding.receiptName.setText(r.name)
+            binding.receiptDescription.setText(r.description)
+            binding.receiptAuthor.setText(r.author)
+            binding.receiptUrl.setText(r.source)
+            r.tags.forEach { addTagChip(binding.tag, it) }
+            viewModel.setCategory(r.category)
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
@@ -84,6 +93,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
                 }
             }
         }
+
+        tagsArrayAdapter = TagDropdownArrayAdapter(this)
+        binding.tag.setAdapter(tagsArrayAdapter)
+        binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
+        binding.tag.setOnItemClickListener { _, _, position, _ ->
+            addTagChip(binding.tag, tagsArrayAdapter.getItem(position)!!)
+        }
+        viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
 
         binding.receiptCategory.setOnItemClickListener { _, _, position, _ ->
             viewModel.setCategory(categoriesDropdownAdapter.getItem(position))
@@ -107,6 +124,25 @@ class AddEditReceiptActivity : AppCompatActivity() {
         }
 
         setContentView(binding.root)
+    }
+
+    private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
+        if (isChipToBeAdded(binding.tag, keyCode, event)) {
+            addTagChip(binding.tag, binding.tag.text.toString())
+            return true
+        }
+        return false
+    }
+
+    private fun isChipToBeAdded(textView: AppCompatAutoCompleteTextView, keyCode: Int, event: KeyEvent): Boolean {
+        return event.action == KeyEvent.ACTION_DOWN
+                && keyCode == KeyEvent.KEYCODE_ENTER
+                && textView.text.toString().isNotBlank()
+    }
+
+    private fun addTagChip(textView: AppCompatAutoCompleteTextView, item: String) {
+        binding.tagChips.add(layoutInflater, item, true)
+        textView.setText("")
     }
 
     private fun isNameValid(): Boolean {
@@ -141,6 +177,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
         })
     }
 
+    private fun prepareLoadTagsLoadingStateHandler(): LoadingStateHandler<List<String>> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<String>> {
+            override fun onSuccess(data: List<String>) {
+                tagsArrayAdapter.refresh(data)
+            }
+        })
+    }
+
     private fun saveReceipt() {
         if (!isNameValid()) {
             return
@@ -148,7 +192,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
         receipt?.let { r ->
             viewModel.updateReceipt(
                 r.id,
-                UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id, Collections.emptyList())
+                UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id, tags)
             ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
             viewModel.addReceipt(
@@ -159,7 +203,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
                     description,
                     localStorageService.getId(),
                     selectedCategory?.id,
-                    Collections.emptyList()
+                    tags
                 )
             ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         }
@@ -183,6 +227,11 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val description: String?
         get() {
             return binding.receiptDescription.getTextOrNull()
+        }
+
+    private val tags: List<String>
+        get() {
+            return binding.tagChips.getTextInChips()
         }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

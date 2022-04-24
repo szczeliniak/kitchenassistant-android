@@ -190,6 +190,19 @@ class ReceiptService constructor(
         }
     }
 
+    suspend fun findAllTags(): Flow<LoadingState<List<String>>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.findAllTags(localStorageService.getId()).tags))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun deleteCategory(id: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

@@ -1,10 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
-import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.*
 import retrofit2.http.*
 
 interface ReceiptRepository {
@@ -59,6 +56,9 @@ interface ReceiptRepository {
 
     @GET("/receipts/categories")
     suspend fun findAllCategories(@Query("userId") userId: Int?): CategoriesResponse
+
+    @GET("/receipts/tags")
+    suspend fun findAllTags(@Query("userId") userId: Int?): TagsResponse
 
     @DELETE("/receipts/categories/{id}")
     suspend fun deleteCategory(@Path("id") id: Int): SuccessResponse

@@ -35,7 +35,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptAuthor.setTextOrDefault(r.author)
             binding.receiptUrl.setTextOrDefault(r.source)
             binding.receiptTags.setTextOrDefault(r.tags.joinToString())
-            r.category?.let { binding.receiptCategory.text = it.name }
+            binding.receiptCategory.setTextOrDefault(r.category?.name)
         }
     }
 
