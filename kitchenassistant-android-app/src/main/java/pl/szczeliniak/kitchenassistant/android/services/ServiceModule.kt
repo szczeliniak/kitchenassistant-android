@@ -25,8 +25,12 @@ class ServiceModule {
     fun registerService(registerRepository: RegisterRepository): RegisterService = RegisterService(registerRepository)
 
     @Provides
-    fun receiptService(receiptRepository: ReceiptRepository, localStorageService: LocalStorageService): ReceiptService =
-        ReceiptService(receiptRepository, localStorageService)
+    fun receiptService(
+        receiptRepository: ReceiptRepository,
+        localStorageService: LocalStorageService,
+        @ApplicationContext context: Context
+    ): ReceiptService =
+        ReceiptService(receiptRepository, localStorageService, context)
 
     @Provides
     fun shoppingListService(

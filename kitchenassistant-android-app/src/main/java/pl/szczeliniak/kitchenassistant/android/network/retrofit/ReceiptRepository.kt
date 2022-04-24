@@ -1,7 +1,9 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
+import okhttp3.ResponseBody
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ReceiptRepository {
@@ -68,5 +70,9 @@ interface ReceiptRepository {
 
     @PUT("/receipts/categories/{id}")
     suspend fun updateCategory(@Path("id") id: Int, @Body request: UpdateCategoryRequest): SuccessResponse
+
+    @Streaming
+    @GET("/files/{id}")
+    suspend fun download(@Path("id") id: Int): Response<ResponseBody>
 
 }

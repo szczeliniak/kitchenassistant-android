@@ -54,6 +54,7 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayout_version"
     implementation "com.github.lisawray.groupie:groupie:$groupie_version"
     implementation "com.github.lisawray.groupie:groupie-viewbinding:$groupie_version"
+    implementation 'com.squareup.picasso:picasso:2.71828'
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
 }
