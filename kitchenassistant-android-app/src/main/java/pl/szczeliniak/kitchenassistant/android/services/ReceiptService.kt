@@ -18,6 +18,7 @@ class ReceiptService constructor(
     suspend fun findAll(
         categoryId: Int?,
         receiptName: String?,
+        tag: String?,
         page: Int?,
         limit: Int?
     ): Flow<LoadingState<ReceiptsResponse>> {
@@ -30,7 +31,7 @@ class ReceiptService constructor(
                             localStorageService.getId(),
                             categoryId,
                             receiptName,
-                            page, limit
+                            tag, page, limit
                         )
                     )
                 )

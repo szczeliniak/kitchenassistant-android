@@ -30,12 +30,12 @@ class ReceiptsFragmentViewModel @Inject constructor(
     val filter: LiveData<ReceiptsFilterDialog.Filter> get() = _filter
 
     init {
-        loadReceipts(1, null, null)
+        loadReceipts(1, null, null, null)
     }
 
-    fun loadReceipts(page: Int, categoryId: Int?, receiptName: String?) {
+    fun loadReceipts(page: Int, categoryId: Int?, receiptName: String?, tag: String?) {
         viewModelScope.launch {
-            receiptService.findAll(categoryId, receiptName, page, LIMIT)
+            receiptService.findAll(categoryId, receiptName, tag, page, LIMIT)
                 .onEach { _receipts.value = it }
                 .launchIn(viewModelScope)
         }

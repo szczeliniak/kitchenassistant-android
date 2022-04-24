@@ -14,6 +14,7 @@ interface ReceiptRepository {
         @Query("userId") userId: Int?,
         @Query("categoryId") categoryId: Int?,
         @Query("name") name: String?,
+        @Query("tag") tag: String?,
         @Query("page") page: Int?,
         @Query("limit") limit: Int?
     ): ReceiptsResponse

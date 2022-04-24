@@ -51,6 +51,7 @@ class ReceiptsFilterDialog : DialogFragment() {
         }
         filter?.let {
             it.receiptName?.let { name -> binding.receiptName.setText(name) }
+            it.receiptTag?.let { name -> binding.receiptTagName.setText(name) }
         }
 
         loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
@@ -82,7 +83,7 @@ class ReceiptsFilterDialog : DialogFragment() {
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
             binding.categoryName.clearFocus()
-            val filter = Filter(selectedCategory?.id, name)
+            val filter = Filter(selectedCategory?.id, name, receiptTag)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -116,7 +117,7 @@ class ReceiptsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val categoryId: Int?, val receiptName: String?) : Parcelable {}
+    data class Filter(val categoryId: Int?, val receiptName: String?, val receiptTag: String?) : Parcelable
 
     private val onFilterChanged: OnFilterChanged
         get() {
@@ -126,6 +127,11 @@ class ReceiptsFilterDialog : DialogFragment() {
     private val name: String?
         get() {
             return binding.receiptName.text.toString().ifEmpty { null }
+        }
+
+    private val receiptTag: String?
+        get() {
+            return binding.receiptTagName.text.toString().ifEmpty { null }
         }
 
     private val filter: Filter?

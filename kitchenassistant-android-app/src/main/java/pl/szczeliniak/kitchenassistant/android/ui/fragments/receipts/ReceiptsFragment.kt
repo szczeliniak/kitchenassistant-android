@@ -59,7 +59,7 @@ class ReceiptsFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName) }
+        ) { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName, filter?.receiptTag) }
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
@@ -152,7 +152,7 @@ class ReceiptsFragment : Fragment() {
             R.id.fragment_receipts_menu_item_filter -> {
                 ReceiptsFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptName),
+                    ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptName, filter?.receiptTag),
                     ReceiptsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
                 return true
             }
