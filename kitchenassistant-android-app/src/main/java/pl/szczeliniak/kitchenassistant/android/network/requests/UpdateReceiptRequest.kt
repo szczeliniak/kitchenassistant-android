@@ -5,5 +5,6 @@ data class UpdateReceiptRequest(
     val author: String?,
     val source: String?,
     val description: String?,
-    val categoryId: Int?
+    val categoryId: Int?,
+    val tags: List<String>
 )

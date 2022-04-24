@@ -25,6 +25,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.C
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -145,8 +146,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
             return
         }
         receipt?.let { r ->
-            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id))
-                .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
+            viewModel.updateReceipt(
+                r.id,
+                UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id, Collections.emptyList())
+            ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
             viewModel.addReceipt(
                 AddReceiptRequest(
@@ -155,10 +158,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
                     url,
                     description,
                     localStorageService.getId(),
-                    selectedCategory?.id
+                    selectedCategory?.id,
+                    Collections.emptyList()
                 )
-            )
-                .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
+            ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         }
     }
 

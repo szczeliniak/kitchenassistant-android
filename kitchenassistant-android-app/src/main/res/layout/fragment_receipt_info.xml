@@ -79,6 +79,27 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_receipt_tags"
+                    style="@style/TextOverLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/receipt_tags"
+                    tools:text="Tag1, Tag2, Tag3"
+                    style="@style/TextPrimary"
+                    android:inputType="textMultiLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_description"
                     style="@style/TextOverLine"
                     android:layout_width="match_parent"

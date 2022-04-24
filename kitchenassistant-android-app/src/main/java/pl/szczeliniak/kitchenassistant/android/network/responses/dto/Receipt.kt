@@ -13,4 +13,5 @@ data class Receipt(
     val category: Category?,
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
+    val tags: List<String>
 ) : Parcelable
