@@ -49,19 +49,19 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     lateinit var eventBus: EventBus
 
     private val viewModel: AddEditShoppingListActivityViewModel by viewModels()
+    private val saveShoppingListLoadingStateHandler = prepareSaveShoppingListLoadingStateHandler()
 
     private lateinit var binding: ActivityAddEditShoppingListBinding
 
-    private val saveShoppingListLoadingStateHandler = prepareSaveShoppingListLoadingStateHandler()
-
-    private val shoppingList: ShoppingList?
-        get() {
-            return intent.getParcelableExtra(SHOPPING_LIST_EXTRA)
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initLayout()
+    }
+
+    private fun initLayout() {
         binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.shoppingListDate.setOnClickListener {
             val date = this.date ?: LocalDate.now()
             val dialog = DatePickerDialog(this@AddEditShoppingListActivity, { _, year, month, dayOfMonth ->
@@ -72,7 +72,6 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }
             dialog.show()
         }
-        setContentView(binding.root)
         shoppingList?.let {
             binding.shoppingListName.setText(it.name)
             binding.shoppingListDescription.setText(it.description)
@@ -90,16 +89,12 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
         }
         binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
-            if (!isNameValid()) {
+            if (name.isNullOrEmpty()) {
                 binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
             } else {
                 binding.shoppingListNameLayout.error = null
             }
         }
-    }
-
-    private fun isNameValid(): Boolean {
-        return !name.isNullOrEmpty()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -136,7 +131,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingList() {
-        if (!isNameValid()) {
+        if (name.isNullOrEmpty()) {
             return
         }
         shoppingList?.let { list ->
@@ -162,6 +157,11 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         get() {
             val asString = binding.shoppingListDate.text.toString()
             return if (LocalDateUtils.parsable(asString)) LocalDateUtils.parse(asString) else null
+        }
+
+    private val shoppingList: ShoppingList?
+        get() {
+            return intent.getParcelableExtra(SHOPPING_LIST_EXTRA)
         }
 
 }

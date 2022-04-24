@@ -8,7 +8,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView
 import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -50,11 +49,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
 
-    private val receipt: Receipt?
-        get() {
-            return intent.getParcelableExtra(RECEIPT_EXTRA)
-        }
-
     @Inject
     lateinit var localStorageService: LocalStorageService
 
@@ -64,89 +58,83 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
     private lateinit var tagsArrayAdapter: TagDropdownArrayAdapter
 
-    private var selectedCategory: Category? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        tagsArrayAdapter = TagDropdownArrayAdapter(this)
+        categoriesDropdownAdapter = CategoryDropdownArrayAdapter(this)
+
         initLayout()
+
+        viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
+        viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
     }
 
     private fun initLayout() {
         binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         receipt?.let { r ->
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
             binding.receiptName.setText(r.name)
             binding.receiptDescription.setText(r.description)
             binding.receiptAuthor.setText(r.author)
             binding.receiptUrl.setText(r.source)
-            r.tags.forEach { addTagChip(binding.tag, it) }
-            viewModel.setCategory(r.category)
+            r.category?.let { setCategory(it.name, it.id) }
+            r.tags.forEach { addTagChip(it) }
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
         binding.receiptCategory.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.receiptCategory.text.toString().isEmpty() || selectedCategory == null) {
-                    viewModel.setCategory(null)
-                } else {
-                    viewModel.setCategory(selectedCategory)
-                }
+            if (hasFocus && binding.receiptCategory.text.toString().isNotEmpty()) {
+                return@setOnFocusChangeListener
             }
+            setCategory("", null)
         }
 
-        tagsArrayAdapter = TagDropdownArrayAdapter(this)
         binding.tag.setAdapter(tagsArrayAdapter)
         binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
         binding.tag.setOnItemClickListener { _, _, position, _ ->
-            addTagChip(binding.tag, tagsArrayAdapter.getItem(position)!!)
-        }
-        viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
-
-        binding.receiptCategory.setOnItemClickListener { _, _, position, _ ->
-            viewModel.setCategory(categoriesDropdownAdapter.getItem(position))
+            addTagChip(tagsArrayAdapter.getItem(position)!!)
         }
 
-        viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
-        viewModel.selectedCategory.observe(this) {
-            selectedCategory = it
-            binding.receiptCategory.setText(it?.name ?: "")
-        }
-
-        categoriesDropdownAdapter = CategoryDropdownArrayAdapter(this)
         binding.receiptCategory.setAdapter(categoriesDropdownAdapter)
+        binding.receiptCategory.setOnItemClickListener { _, _, position, _ ->
+            categoriesDropdownAdapter.getItem(position)?.let {
+                setCategory(it.name, it.id)
+            } ?: kotlin.run {
+                setCategory("", null)
+            }
+        }
 
         binding.receiptName.doOnTextChanged { _, _, _, _ ->
-            if (!isNameValid()) {
+            if (name.isNullOrEmpty()) {
                 binding.receiptNameLayout.error = getString(R.string.message_receipt_name_is_empty)
             } else {
                 binding.receiptNameLayout.error = null
             }
         }
+    }
 
-        setContentView(binding.root)
+    private fun setCategory(name: String, id: Int?) {
+        binding.receiptCategory.tag = id
+        binding.receiptCategory.setText(name)
     }
 
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
-        if (isChipToBeAdded(binding.tag, keyCode, event)) {
-            addTagChip(binding.tag, binding.tag.text.toString())
-            return true
+        if (event.action != KeyEvent.ACTION_DOWN
+            || keyCode != KeyEvent.KEYCODE_ENTER
+            || binding.tag.text.toString().isBlank()
+        ) {
+            return false
         }
-        return false
+        addTagChip(binding.tag.text.toString())
+        return true
     }
 
-    private fun isChipToBeAdded(textView: AppCompatAutoCompleteTextView, keyCode: Int, event: KeyEvent): Boolean {
-        return event.action == KeyEvent.ACTION_DOWN
-                && keyCode == KeyEvent.KEYCODE_ENTER
-                && textView.text.toString().isNotBlank()
-    }
-
-    private fun addTagChip(textView: AppCompatAutoCompleteTextView, item: String) {
+    private fun addTagChip(item: String) {
         binding.tagChips.add(layoutInflater, item, true)
-        textView.setText("")
-    }
-
-    private fun isNameValid(): Boolean {
-        return !name.isNullOrEmpty()
+        binding.tag.setText("")
     }
 
     private fun prepareSaveReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -186,25 +174,15 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     private fun saveReceipt() {
-        if (!isNameValid()) {
+        if (name.isNullOrEmpty()) {
             return
         }
         receipt?.let { r ->
-            viewModel.updateReceipt(
-                r.id,
-                UpdateReceiptRequest(name!!, author, url, description, selectedCategory?.id, tags)
-            ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
+            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, categoryId, tags))
+                .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
             viewModel.addReceipt(
-                AddReceiptRequest(
-                    name!!,
-                    author,
-                    url,
-                    description,
-                    localStorageService.getId(),
-                    selectedCategory?.id,
-                    tags
-                )
+                AddReceiptRequest(name!!, author, url, description, localStorageService.getId(), categoryId, tags)
             ).observe(this) { saveReceiptLoadingStateHandler.handle(it) }
         }
     }
@@ -229,9 +207,19 @@ class AddEditReceiptActivity : AppCompatActivity() {
             return binding.receiptDescription.getTextOrNull()
         }
 
+    private val categoryId: Int?
+        get() {
+            return if (binding.receiptCategory.tag == null) return null else binding.receiptCategory.tag as Int
+        }
+
     private val tags: List<String>
         get() {
             return binding.tagChips.getTextInChips()
+        }
+
+    private val receipt: Receipt?
+        get() {
+            return intent.getParcelableExtra(RECEIPT_EXTRA)
         }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

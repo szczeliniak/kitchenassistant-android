@@ -20,11 +20,11 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.hideEmptyIcon
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ActivityUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import javax.inject.Inject
@@ -60,26 +60,27 @@ class ShoppingListActivity : AppCompatActivity() {
     private val changeShoppingListItemStateStateHandler: LoadingStateHandler<Int> =
         prepareChangeShoppingListItemStateStateHandler()
 
-    private val viewModel: ShoppingListActivityViewModel by viewModels() {
+    private val viewModel: ShoppingListActivityViewModel by viewModels {
         ShoppingListActivityViewModel.provideFactory(shoppingListActivityViewModelFactory, shoppingListId)
     }
 
-    private val shoppingListId: Int
-        get() {
-            return intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initLayout()
+
+        viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
+    }
+
+    private fun initLayout() {
         binding = ActivityShoppingListBinding.inflate(layoutInflater)
-        binding.recyclerView.adapter = itemsAdapter
         setContentView(binding.root)
+
+        binding.recyclerView.adapter = itemsAdapter
 
         binding.buttonAddShoppingListItem.setOnClickListener {
             AddEditShoppingListItemDialog.show(supportFragmentManager, shoppingListId)
         }
-
-        viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
     }
 
     private fun prepareShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingList> {
@@ -208,5 +209,10 @@ class ShoppingListActivity : AppCompatActivity() {
     fun reloadShoppingListEvent(event: ReloadShoppingListEvent) {
         viewModel.reload()
     }
+
+    private val shoppingListId: Int
+        get() {
+            return intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
+        }
 
 }

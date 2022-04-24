@@ -23,13 +23,6 @@ class AddEditReceiptActivityViewModel @Inject constructor(
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
     private val _tags = MutableLiveData<LoadingState<List<String>>>()
 
-    private val _selectedCategory = MutableLiveData<Category?>()
-
-    val selectedCategory: LiveData<Category?>
-        get() {
-            return _selectedCategory
-        }
-
     val categories: LiveData<LoadingState<List<Category>>>
         get() {
             return _categories
@@ -79,10 +72,6 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .onEach { _tags.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun setCategory(category: Category?) {
-        _selectedCategory.value = category
     }
 
 }

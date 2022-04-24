@@ -36,6 +36,10 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        initLayout(savedInstanceState)
+    }
+
+    private fun initLayout(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -92,18 +96,14 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
             R.id.menu_nav_view_item_logout -> {
-                logout()
+                if (localStorageService.logout()) {
+                    LoginActivity.start(this)
+                    finish()
+                }
                 return true
             }
         }
         return false
-    }
-
-    private fun logout() {
-        if (localStorageService.logout()) {
-            LoginActivity.start(this)
-            finish()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

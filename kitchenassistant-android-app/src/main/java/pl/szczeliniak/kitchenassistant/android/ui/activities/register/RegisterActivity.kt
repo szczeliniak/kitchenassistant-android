@@ -43,7 +43,16 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        initLayout()
+
+        checkButtonState()
+    }
+
+    private fun initLayout() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_register)
         binding.buttonRegister.setOnClickListener { handleRegisterButtonClick() }
         binding.registerEmail.doOnTextChanged { _, _, _, _ ->
@@ -78,9 +87,6 @@ class RegisterActivity : AppCompatActivity() {
             }
             checkButtonState()
         }
-
-        checkButtonState()
-        setContentView(binding.root)
     }
 
     private fun isPasswordValid(): Boolean {

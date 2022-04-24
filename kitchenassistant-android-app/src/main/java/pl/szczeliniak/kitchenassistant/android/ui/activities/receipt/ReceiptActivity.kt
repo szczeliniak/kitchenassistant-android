@@ -58,11 +58,16 @@ class ReceiptActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityReceiptBinding.inflate(layoutInflater)
-        initPager()
-        setContentView(binding.root)
+
+        initLayout()
 
         viewModel.receipt.observe(this) { receiptLoadingStateHandler.handle(it) }
+    }
+
+    private fun initLayout() {
+        binding = ActivityReceiptBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        initPager()
     }
 
     private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {

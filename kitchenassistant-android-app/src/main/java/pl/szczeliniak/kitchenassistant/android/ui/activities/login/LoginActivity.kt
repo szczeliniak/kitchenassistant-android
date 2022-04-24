@@ -43,13 +43,22 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (localStorageService.isLoggedIn()) {
             goToMainActivity()
             finish()
             return
         }
 
+        initLayout()
+
+        checkButtonState()
+    }
+
+    private fun initLayout() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
         binding.buttonLogin.setOnClickListener { handleLoginButtonClick() }
         binding.buttonRegister.setOnClickListener {
             RegisterActivity.start(this@LoginActivity)
@@ -72,8 +81,6 @@ class LoginActivity : AppCompatActivity() {
             }
             checkButtonState()
         }
-        checkButtonState()
-        setContentView(binding.root)
     }
 
     private fun isPasswordValid(): Boolean {
@@ -96,7 +103,6 @@ class LoginActivity : AppCompatActivity() {
     private fun handleLoginButtonClick() {
         viewModel.login(LoginRequest(email, password))
             .observe(this@LoginActivity) { loginStateHandler.handle(it) }
-
     }
 
     private fun prepareLoginStateHandler(): LoadingStateHandler<LoginResponse> {
@@ -106,7 +112,8 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: LoginResponse) {
-                handleLoginSuccess(data)
+                localStorageService.login(data.token, data.id)
+                goToMainActivity()
             }
 
             override fun onInProgress() {
@@ -123,11 +130,6 @@ class LoginActivity : AppCompatActivity() {
             }
         }
         )
-    }
-
-    private fun handleLoginSuccess(response: LoginResponse) {
-        localStorageService.login(response.token, response.id)
-        goToMainActivity()
     }
 
     private val email: String
