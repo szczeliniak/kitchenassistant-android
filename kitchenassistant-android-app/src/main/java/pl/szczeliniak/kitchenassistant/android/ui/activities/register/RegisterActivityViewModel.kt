@@ -11,18 +11,18 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.RegisterRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
-import pl.szczeliniak.kitchenassistant.android.services.RegisterService
+import pl.szczeliniak.kitchenassistant.android.services.UserService
 import javax.inject.Inject
 
 @HiltViewModel
 class RegisterActivityViewModel @Inject constructor(
-    private val registerService: RegisterService,
+    private val userService: UserService,
 ) : ViewModel() {
 
     fun login(request: RegisterRequest): LiveData<LoadingState<LoginResponse>> {
         val liveData = MutableLiveData<LoadingState<LoginResponse>>()
         viewModelScope.launch {
-            registerService.register(request)
+            userService.register(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

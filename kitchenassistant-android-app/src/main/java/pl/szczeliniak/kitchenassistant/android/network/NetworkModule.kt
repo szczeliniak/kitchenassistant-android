@@ -17,10 +17,9 @@ import pl.szczeliniak.kitchenassistant.android.network.converters.LocalDateTimeC
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkCheckInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConnectionChecker
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.LoginRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.RegisterRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -94,13 +93,8 @@ class NetworkModule {
     }
 
     @Provides
-    fun loginRepository(retrofitBuilder: Retrofit.Builder): LoginRepository {
-        return retrofitBuilder.build().create(LoginRepository::class.java)
-    }
-
-    @Provides
-    fun registerRepository(retrofitBuilder: Retrofit.Builder): RegisterRepository {
-        return retrofitBuilder.build().create(RegisterRepository::class.java)
+    fun userRepository(retrofitBuilder: Retrofit.Builder): UserRepository {
+        return retrofitBuilder.build().create(UserRepository::class.java)
     }
 
     @Provides

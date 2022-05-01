@@ -11,18 +11,18 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
-import pl.szczeliniak.kitchenassistant.android.services.LoginService
+import pl.szczeliniak.kitchenassistant.android.services.UserService
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginActivityViewModel @Inject constructor(
-    private val loginService: LoginService,
+    private val userService: UserService,
 ) : ViewModel() {
 
     fun login(request: LoginRequest): LiveData<LoadingState<LoginResponse>> {
         val liveData = MutableLiveData<LoadingState<LoginResponse>>()
         viewModelScope.launch {
-            loginService.login(request)
+            userService.login(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
