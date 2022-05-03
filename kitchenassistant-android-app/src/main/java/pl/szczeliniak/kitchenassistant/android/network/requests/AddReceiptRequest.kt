@@ -7,5 +7,6 @@ data class AddReceiptRequest(
     val description: String?,
     val userId: Int,
     val categoryId: Int?,
-    val tags: List<String>
+    val tags: List<String>,
+    val photos: List<Int>
 )

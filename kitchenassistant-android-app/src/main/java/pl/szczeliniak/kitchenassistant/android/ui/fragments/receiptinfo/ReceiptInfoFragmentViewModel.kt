@@ -9,19 +9,19 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
+import pl.szczeliniak.kitchenassistant.android.services.FileService
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ReceiptInfoFragmentViewModel @Inject constructor(
-    private val receiptService: ReceiptService,
+    private val fileService: FileService
 ) : ViewModel() {
 
     fun loadPhoto(id: Int): LiveData<LoadingState<File>> {
         val liveData = MutableLiveData<LoadingState<File>>()
         viewModelScope.launch {
-            receiptService.download(id)
+            fileService.download(id)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

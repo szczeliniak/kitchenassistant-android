@@ -1,9 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.services
 
-import android.content.Context
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantException
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
@@ -11,13 +9,10 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsRespons
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
-import java.io.File
-import java.io.InputStream
 
 class ReceiptService constructor(
-    private val repository: ReceiptRepository,
-    private val localStorageService: LocalStorageService,
-    private val context: Context
+    private val receiptRepository: ReceiptRepository,
+    private val localStorageService: LocalStorageService
 ) {
 
     suspend fun findAll(
@@ -32,7 +27,7 @@ class ReceiptService constructor(
             try {
                 emit(
                     LoadingState.Success(
-                        repository.findAll(
+                        receiptRepository.findAll(
                             localStorageService.getId(),
                             categoryId,
                             receiptName,
@@ -52,7 +47,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findById(receiptId).receipt))
+                emit(LoadingState.Success(receiptRepository.findById(receiptId).receipt))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -65,7 +60,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.delete(id).id))
+                emit(LoadingState.Success(receiptRepository.delete(id).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -78,7 +73,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.deleteIngredient(receiptId, ingredientId).id))
+                emit(LoadingState.Success(receiptRepository.deleteIngredient(receiptId, ingredientId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -91,7 +86,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.deleteStep(receiptId, stepId).id))
+                emit(LoadingState.Success(receiptRepository.deleteStep(receiptId, stepId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -104,7 +99,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.add(request).id))
+                emit(LoadingState.Success(receiptRepository.add(request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -117,7 +112,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.update(receiptId, request).id))
+                emit(LoadingState.Success(receiptRepository.update(receiptId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -130,7 +125,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.addIngredient(receiptId, request).id))
+                emit(LoadingState.Success(receiptRepository.addIngredient(receiptId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -147,7 +142,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.updateIngredient(receiptId, ingredientId, request).id))
+                emit(LoadingState.Success(receiptRepository.updateIngredient(receiptId, ingredientId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -160,7 +155,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.addStep(receiptId, request).id))
+                emit(LoadingState.Success(receiptRepository.addStep(receiptId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -173,7 +168,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.updateStep(receiptId, stepId, request).id))
+                emit(LoadingState.Success(receiptRepository.updateStep(receiptId, stepId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -186,7 +181,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAllCategories(localStorageService.getId()).categories))
+                emit(LoadingState.Success(receiptRepository.findAllCategories(localStorageService.getId()).categories))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -199,7 +194,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findAllTags(localStorageService.getId()).tags))
+                emit(LoadingState.Success(receiptRepository.findAllTags(localStorageService.getId()).tags))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -212,7 +207,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.deleteCategory(id).id))
+                emit(LoadingState.Success(receiptRepository.deleteCategory(id).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -225,7 +220,7 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.addCategory(request).id))
+                emit(LoadingState.Success(receiptRepository.addCategory(request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -238,51 +233,13 @@ class ReceiptService constructor(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.updateCategory(categoryId, request).id))
+                emit(LoadingState.Success(receiptRepository.updateCategory(categoryId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
                 emit(LoadingState.Exception(e))
             }
         }
-    }
-
-    suspend fun download(id: Int): Flow<LoadingState<File>> {
-        return flow {
-            emit(LoadingState.InProgress)
-            try {
-                val file = getFromCache(id)
-                if (file != null) {
-                    emit(LoadingState.Success(file))
-                } else {
-                    val inputStream = repository.download(id).body()?.byteStream()
-                    if (inputStream == null) {
-                        emit(LoadingState.Exception(KitchenAssistantException("Cannot load photo.")))
-                    } else {
-                        emit(LoadingState.Success(saveInCache(inputStream, id)))
-                    }
-                }
-            } catch (e: KitchenAssistantNetworkException) {
-                emit(LoadingState.NoInternetException)
-            } catch (e: Exception) {
-                emit(LoadingState.Exception(e))
-            }
-        }
-    }
-
-    private fun getFromCache(id: Int): File? {
-        val file = getFile(id)
-        return if (file.exists()) file else null
-    }
-
-    private fun getFile(id: Int): File {
-        return File(context.cacheDir, "file-${id}")
-    }
-
-    private fun saveInCache(inputStream: InputStream, id: Int): File {
-        val file = getFile(id)
-        file.outputStream().use { inputStream.copyTo(it) }
-        return file
     }
 
 }

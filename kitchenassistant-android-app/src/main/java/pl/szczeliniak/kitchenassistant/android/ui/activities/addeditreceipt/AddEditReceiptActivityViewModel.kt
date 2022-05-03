@@ -12,12 +12,15 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditReceiptActivityViewModel @Inject constructor(
     private val receiptService: ReceiptService,
+    private val fileService: FileService
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
@@ -72,6 +75,16 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .onEach { _tags.value = it }
                 .launchIn(viewModelScope)
         }
+    }
+
+    fun uploadPhotos(file: List<File>): LiveData<LoadingState<List<Int>>> {
+        val liveData = MutableLiveData<LoadingState<List<Int>>>()
+        viewModelScope.launch {
+            fileService.upload(file)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
     }
 
 }

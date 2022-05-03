@@ -1,6 +1,6 @@
 buildscript {
 
-    ext.kotlin_version = "1.6.10"
+    ext.kotlin_version = "1.5.10"
     ext.gradle_version = '7.0.0'
     ext.hilt_version = "2.41"
     ext.eventbus_version = "3.3.1"
@@ -10,10 +10,13 @@ buildscript {
     ext.material_version = "1.5.0"
     ext.appcompat_version = "1.4.1"
     ext.ktx_version = "1.7.0"
-    ext.navigation_version = "2.4.1"
+    ext.navigation_version = "2.4.2"
     ext.http3_logging_version = "4.9.3"
     ext.retrofit_version = "2.9.0"
     ext.groupie_version = "2.9.0"
+    ext.picasso_version = "2.71828"
+    ext.easyimage_version = "3.2.0"
+    ext.ucrop_version = "2.2.6"
 
     repositories {
         google()
