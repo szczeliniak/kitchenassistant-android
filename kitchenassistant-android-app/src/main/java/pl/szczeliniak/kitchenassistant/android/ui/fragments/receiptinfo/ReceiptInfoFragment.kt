@@ -49,6 +49,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptUrl.setTextOrDefault(r.source)
             binding.receiptTags.setTextOrDefault(r.tags.joinToString())
             binding.receiptCategory.setTextOrDefault(r.category?.name)
+            photosAdapter.clear()
             r.photos.forEach { photo ->
                 viewModel.loadPhoto(photo.fileId).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
