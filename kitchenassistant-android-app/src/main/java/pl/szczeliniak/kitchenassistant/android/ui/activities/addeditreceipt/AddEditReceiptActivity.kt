@@ -11,28 +11,31 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
-import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.aprilapps.easyphotopicker.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
-import pl.szczeliniak.kitchenassistant.android.databinding.PhotoBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import pl.szczeliniak.kitchenassistant.android.ui.utils.GroupAdapterUtils.Companion.getItems
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -58,7 +61,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val uploadPhotosLoadingStateHandler = prepareUploadPhotosLoadingStateHandler()
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
-    private val photos = ArrayList<Uri>()
+    private val downloadPhotoFileLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
+    private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
     @Inject
     lateinit var localStorageService: LocalStorageService
@@ -94,6 +98,11 @@ class AddEditReceiptActivity : AppCompatActivity() {
             binding.receiptUrl.setText(r.source)
             r.category?.let { setCategory(it.name, it.id) }
             r.tags.forEach { addTagChip(it) }
+            r.photos.forEach { photo ->
+                viewModel.loadFile(photo.fileId).observe(this@AddEditReceiptActivity) {
+                    downloadPhotoFileLoadingStateHandler.handle(it)
+                }
+            }
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
@@ -133,6 +142,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
             .build()
 
         binding.buttonAddPhotos.setOnClickListener { easyImage.openChooser(this) }
+
+        binding.photosRecyclerView.adapter = photosAdapter
     }
 
     private fun setCategory(name: String, id: Int?) {
@@ -187,18 +198,37 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: List<Int>) {
-                viewModel.addReceipt(
-                    AddReceiptRequest(
-                        name!!,
-                        author,
-                        url,
-                        description,
-                        localStorageService.getId(),
-                        categoryId,
-                        tags,
-                        data
+                receipt?.let { r ->
+                    val photoIds = ArrayList<Int>(photosAdapter.getItems<PhotoItem>().filter { it.fileId != null }
+                        .map { it.fileId!! })
+                    photoIds.addAll(data)
+                    viewModel.updateReceipt(
+                        r.id,
+                        UpdateReceiptRequest(
+                            name!!,
+                            author,
+                            url,
+                            description,
+                            categoryId,
+                            tags,
+                            photoIds
+                        )
                     )
-                ).observe(this@AddEditReceiptActivity) { saveReceiptLoadingStateHandler.handle(it) }
+                        .observe(this@AddEditReceiptActivity) { saveReceiptLoadingStateHandler.handle(it) }
+                } ?: kotlin.run {
+                    viewModel.addReceipt(
+                        AddReceiptRequest(
+                            name!!,
+                            author,
+                            url,
+                            description,
+                            localStorageService.getId(),
+                            categoryId,
+                            tags,
+                            data
+                        )
+                    ).observe(this@AddEditReceiptActivity) { saveReceiptLoadingStateHandler.handle(it) }
+                }
             }
         })
     }
@@ -219,18 +249,27 @@ class AddEditReceiptActivity : AppCompatActivity() {
         })
     }
 
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<FileService.DownloadedFile> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<FileService.DownloadedFile> {
+            override fun onSuccess(data: FileService.DownloadedFile) {
+                photosAdapter.add(PhotoItem(this@AddEditReceiptActivity, data.file.toUri(), data.fileId) { item ->
+                    photosAdapter.remove(item)
+                })
+            }
+        })
+    }
+
     private fun saveReceipt() {
         if (name.isNullOrEmpty()) {
             return
         }
-        receipt?.let { r ->
-            viewModel.updateReceipt(r.id, UpdateReceiptRequest(name!!, author, url, description, categoryId, tags))
-                .observe(this) { saveReceiptLoadingStateHandler.handle(it) }
-        } ?: kotlin.run {
-            viewModel.uploadPhotos(photos.map { File(URI.create(it.toString())) }).observe(this) {
+
+        viewModel.uploadPhotos(photosAdapter.getItems<PhotoItem>()
+            .filter { it.fileId == null }
+            .map { File(URI.create(it.uri.toString())) })
+            .observe(this) {
                 uploadPhotosLoadingStateHandler.handle(it)
             }
-        }
     }
 
     private val name: String?
@@ -288,10 +327,11 @@ class AddEditReceiptActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) {
                 data?.let {
                     UCrop.getOutput(data)?.let {
-                        photos.add(it)
-                        val photoLayout = PhotoBinding.inflate(layoutInflater)
-                        Picasso.get().load(it).fit().centerCrop().into(photoLayout.photoImageView)
-                        binding.photosContainer.addView(photoLayout.root)
+                        photosAdapter.add(
+                            PhotoItem(
+                                this@AddEditReceiptActivity,
+                                it
+                            ) { item -> photosAdapter.remove(item) })
                     }
                 }
                 return

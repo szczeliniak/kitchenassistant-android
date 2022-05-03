@@ -87,4 +87,14 @@ class AddEditReceiptActivityViewModel @Inject constructor(
         return liveData
     }
 
+    fun loadFile(id: Int): LiveData<LoadingState<FileService.DownloadedFile>> {
+        val liveData = MutableLiveData<LoadingState<FileService.DownloadedFile>>()
+        viewModelScope.launch {
+            fileService.download(id)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData;
+    }
+
 }

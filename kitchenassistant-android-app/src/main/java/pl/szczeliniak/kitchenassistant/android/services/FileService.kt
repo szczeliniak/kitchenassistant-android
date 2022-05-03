@@ -19,19 +19,19 @@ class FileService constructor(
     private val localStorageService: LocalStorageService
 ) {
 
-    suspend fun download(id: Int): Flow<LoadingState<File>> {
+    suspend fun download(id: Int): Flow<LoadingState<DownloadedFile>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
                 val file = getFromCache(id)
                 if (file != null) {
-                    emit(LoadingState.Success(file))
+                    emit(LoadingState.Success(DownloadedFile(id, file)))
                 } else {
                     val inputStream = fileRepository.download(id).body()?.byteStream()
                     if (inputStream == null) {
                         emit(LoadingState.Exception(KitchenAssistantException("Cannot load photo.")))
                     } else {
-                        emit(LoadingState.Success(saveInCache(inputStream, id)))
+                        emit(LoadingState.Success(DownloadedFile(id, saveInCache(inputStream, id))))
                     }
                 }
             } catch (e: KitchenAssistantNetworkException) {
@@ -78,5 +78,7 @@ class FileService constructor(
         file.outputStream().use { inputStream.copyTo(it) }
         return file
     }
+
+    data class DownloadedFile(val fileId: Int, val file: File)
 
 }

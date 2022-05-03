@@ -4,15 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import com.squareup.picasso.Picasso
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
-import pl.szczeliniak.kitchenassistant.android.databinding.PhotoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
+import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
-import java.io.File
 
 @AndroidEntryPoint
 class ReceiptInfoFragment : ReceiptActivityFragment() {
@@ -24,13 +26,14 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     }
 
     private val viewModel: ReceiptInfoFragmentViewModel by viewModels()
+    private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
-    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<File>
-
+    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<FileService.DownloadedFile>
     private lateinit var binding: FragmentReceiptInfoBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptInfoBinding.inflate(inflater)
+        binding.photosRecyclerView.adapter = photosAdapter
         return binding.root
     }
 
@@ -46,9 +49,8 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptUrl.setTextOrDefault(r.source)
             binding.receiptTags.setTextOrDefault(r.tags.joinToString())
             binding.receiptCategory.setTextOrDefault(r.category?.name)
-            binding.photosContainer.removeAllViews()
             r.photos.forEach { photo ->
-                viewModel.loadPhoto(photo.id).observe(viewLifecycleOwner) {
+                viewModel.loadPhoto(photo.fileId).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
                 }
             }
@@ -59,14 +61,14 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
         loadData()
     }
 
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<File> {
-        return LoadingStateHandler(requireContext(), object : LoadingStateHandler.OnStateChanged<File> {
-            override fun onSuccess(data: File) {
-                val photoLayout = PhotoBinding.inflate(layoutInflater)
-                Picasso.get().load(data).fit().centerCrop().into(photoLayout.photoImageView)
-                binding.photosContainer.addView(photoLayout.root)
-            }
-        })
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<FileService.DownloadedFile> {
+        return LoadingStateHandler(
+            requireContext(),
+            object : LoadingStateHandler.OnStateChanged<FileService.DownloadedFile> {
+                override fun onSuccess(data: FileService.DownloadedFile) {
+                    photosAdapter.add(PhotoItem(requireContext(), data.file.toUri()))
+                }
+            })
     }
 
 }

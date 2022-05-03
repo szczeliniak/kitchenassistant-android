@@ -151,13 +151,16 @@
                         style="@style/ButtonSecondary"
                         android:text="@string/label_button_add_photo"/>
 
-                <androidx.appcompat.widget.LinearLayoutCompat
+                <androidx.recyclerview.widget.RecyclerView
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/button_add_photos"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="match_parent"
+                        android:id="@+id/photos_recycler_view"
                         android:layout_height="wrap_content"
-                        android:id="@+id/photos_container"
-                        android:orientation="vertical">
-
-                </androidx.appcompat.widget.LinearLayoutCompat>
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 

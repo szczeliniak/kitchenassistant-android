@@ -14,5 +14,5 @@ data class Receipt(
     val ingredients: List<Ingredient>,
     val steps: List<Step>,
     val tags: List<String>,
-    val photos: List<Photo>
+    val photos: MutableList<Photo>
 ) : Parcelable
