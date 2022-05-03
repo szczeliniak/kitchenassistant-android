@@ -1,7 +1,7 @@
 buildscript {
 
-    ext.kotlin_version = "1.5.10"
-    ext.gradle_version = '7.0.0'
+    ext.kotlin_version = "1.6.10"
+    ext.gradle_version = '7.0.4'
     ext.hilt_version = "2.41"
     ext.eventbus_version = "3.3.1"
     ext.timber_version = "5.0.1"
