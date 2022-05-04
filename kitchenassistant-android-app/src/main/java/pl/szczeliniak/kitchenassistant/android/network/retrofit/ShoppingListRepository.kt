@@ -53,11 +53,11 @@ interface ShoppingListRepository {
         @Body request: UpdateShoppingListItemRequest
     ): SuccessResponse
 
-    @POST("/shoppinglists/{id}/items/{itemId}/done/{isDone}")
+    @POST("/shoppinglists/{id}/items/{itemId}/completed/{isCompleted}")
     suspend fun changeItemState(
         @Path("id") shoppingListId: Int,
         @Path("itemId") shoppingListItemId: Int,
-        @Path("isDone") state: Boolean
+        @Path("isCompleted") isCompleted: Boolean
     ): SuccessResponse
 
 }

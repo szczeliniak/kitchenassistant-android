@@ -21,9 +21,9 @@ class ShoppingListItemItem constructor(
     override fun bind(binding: ListItemShoppingListItemBinding, position: Int) {
         binding.shoppingListItemName.text = shoppingListItem.name
         binding.shoppingListItemQuantity.text = shoppingListItem.quantity
-        binding.shoppingListItemIsDone.isChecked = shoppingListItem.done
+        binding.shoppingListItemIsCompleted.isChecked = shoppingListItem.completed
 
-        binding.shoppingListItemIsDone.setOnCheckedChangeListener { _, isChecked ->
+        binding.shoppingListItemIsCompleted.setOnCheckedChangeListener { _, isChecked ->
             onCheckClick.onClick(shoppingListId, shoppingListItem, isChecked)
         }
 
