@@ -87,7 +87,7 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
                     }, { receiptId, i ->
                         AddEditIngredientDialog.show(requireActivity().supportFragmentManager, receiptId, i)
                     }, { _, i ->
-                        AddIngredientToShoppingListDialog.show(requireActivity().supportFragmentManager, i)
+                        AddIngredientToShoppingListDialog.show(requireActivity().supportFragmentManager, i, r.id)
                     }))
                 }
             }

@@ -27,6 +27,12 @@ class ShoppingListItemItem constructor(
             onCheckClick.onClick(shoppingListId, shoppingListItem, isChecked)
         }
 
+        shoppingListItem.receipt?.let {
+            binding.shoppingListItemReceiptName.text = it.name
+        } ?: kotlin.run {
+            binding.shoppingListItemReceiptName.visibility = View.GONE
+        }
+
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 

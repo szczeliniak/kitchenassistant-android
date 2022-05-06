@@ -13,26 +13,50 @@
             android:foregroundGravity="center"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_gravity="center_vertical"
-            tools:text="Name"
-            style="@style/TextSecondary"
-            android:gravity="center"
+    <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="0dp"
-            android:textColor="@color/secondary_dark"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/shopping_list_item_name"
-            android:layout_height="wrap_content"/>
+            android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:layout_gravity="center_vertical"
-            tools:text="Quantity"
-            android:gravity="center"
-            style="@style/TextSecondary"
-            android:id="@+id/shopping_list_item_quantity"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_gravity="center_vertical"
+                    tools:text="Name"
+                    style="@style/TextSecondary"
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:textColor="@color/secondary_dark"
+                    android:layout_weight="1"
+                    android:id="@+id/shopping_list_item_name"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_gravity="center_vertical"
+                    tools:text="Quantity"
+                    android:gravity="center"
+                    style="@style/TextSecondary"
+                    android:id="@+id/shopping_list_item_quantity"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_gravity="center_vertical"
+                tools:text="Quantity"
+                android:gravity="center"
+                style="@style/TextSecondary"
+                android:id="@+id/shopping_list_item_receipt_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.appcompat.widget.AppCompatImageButton
             android:layout_gravity="center"

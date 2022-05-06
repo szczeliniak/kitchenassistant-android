@@ -4,11 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ShoppingListItem(
+data class SimpleReceipt(
     val id: Int,
-    val name: String,
-    val completed: Boolean,
-    val quantity: String,
-    val sequence: String,
-    val receipt: SimpleReceipt?
+    val name: String
 ) : Parcelable
