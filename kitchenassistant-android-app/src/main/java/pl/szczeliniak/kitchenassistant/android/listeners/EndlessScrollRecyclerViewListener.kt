@@ -27,6 +27,7 @@ class EndlessScrollRecyclerViewListener(
 
     fun reset() {
         page = 0
+        maxPage = DEFAULT_PAGE
         load()
     }
 
