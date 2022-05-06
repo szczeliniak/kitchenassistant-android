@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_receipt.xml" value="0.2520833333333333" />
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_shopping_cart.xml" value="0.1" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_receipt.xml" value="0.18" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_shopping_list.xml" value="0.18070652173913043" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_archvied_shopping_lists.xml" value="0.1" />

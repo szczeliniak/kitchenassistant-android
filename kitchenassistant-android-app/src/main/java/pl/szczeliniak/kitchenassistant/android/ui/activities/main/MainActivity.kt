@@ -21,8 +21,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val SAVED_FRAGMENT_ID = "SAVED_FRAGMENT_ID"
-
         fun start(context: Context) {
             val intent = Intent(context, MainActivity::class.java)
             context.startActivity(intent)
@@ -34,12 +32,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private val receiptsFragment = ReceiptsFragment.create()
+    private val shoppingListsFragment = ShoppingListsFragment.create()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initLayout(savedInstanceState)
-    }
 
-    private fun initLayout(savedInstanceState: Bundle?) {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -50,30 +48,28 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
         binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
-        savedInstanceState?.getInt(SAVED_FRAGMENT_ID)?.let {
-            binding.bottomNavView.selectedItemId = it
-        } ?: kotlin.run {
-            binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
-        }
+        binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
     }
 
     private fun onNavigationItemChanged(itemId: Int): Boolean {
         when (itemId) {
             R.id.nav_bottom_item_receipts -> {
-                setCurrentFragment(ReceiptsFragment.create())
+                changeFragment(receiptsFragment)
                 return true
             }
             R.id.nav_bottom_item_shopping_lists -> {
-                setCurrentFragment(ShoppingListsFragment.create())
+                changeFragment(shoppingListsFragment)
                 return true
             }
         }
         return false
     }
 
-    private fun setCurrentFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
-        replace(R.id.fragment_container, fragment)
-        commit()
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragment_container, fragment)
+            commit()
+        }
     }
 
     private fun onDrawerItemClicked(itemId: Int): Boolean {
@@ -104,11 +100,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return false
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt(SAVED_FRAGMENT_ID, binding.bottomNavView.selectedItemId)
     }
 
 }

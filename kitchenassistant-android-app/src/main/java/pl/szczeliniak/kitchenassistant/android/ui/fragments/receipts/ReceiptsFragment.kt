@@ -110,6 +110,7 @@ class ReceiptsFragment : Fragment() {
             }
 
             override fun onSuccess(data: ReceiptsResponse) {
+                adapter.clear()
                 endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                 if (data.receipts.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())

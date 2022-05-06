@@ -112,6 +112,7 @@ class ShoppingListsFragment : Fragment() {
                 }
 
                 override fun onSuccess(data: ShoppingListsResponse) {
+                    adapter.clear()
                     endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                     if (data.shoppingLists.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
