@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Filter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
@@ -13,9 +12,11 @@ import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
 
-    private val allShoppingLists = ArrayList<ShoppingList>()
-
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return prepareView(position, convertView, parent)
+    }
+
+    private fun prepareView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
         val binding: DropdownShoppingListBinding?
 
@@ -41,46 +42,13 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
         return binding.root
     }
 
+    override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
+        return prepareView(position, convertView, parent)
+    }
+
     data class ViewHolder(
         val nameTextView: AppCompatTextView,
         val dateTextView: AppCompatTextView
     )
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val results = FilterResults()
-                if (constraint != null) {
-                    val list = filterCategories(constraint)
-                    results.values = list
-                    results.count = list.size
-                }
-                return results
-            }
-
-            private fun filterCategories(constraint: CharSequence): ArrayList<ShoppingList> {
-                return ArrayList(allShoppingLists.filter { sl ->
-                    sl.name.lowercase().contains(constraint.toString().lowercase())
-                })
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                results?.values?.let {
-                    val items = it as ArrayList<*>
-                    if (items.isNotEmpty()) {
-                        clear()
-                        items.forEach { sl -> add(sl as ShoppingList) }
-                        notifyDataSetChanged()
-                    }
-                }
-            }
-
-        }
-    }
-
-    fun refresh(shoppingLists: List<ShoppingList>) {
-        allShoppingLists.clear()
-        allShoppingLists.addAll(shoppingLists)
-    }
 
 }

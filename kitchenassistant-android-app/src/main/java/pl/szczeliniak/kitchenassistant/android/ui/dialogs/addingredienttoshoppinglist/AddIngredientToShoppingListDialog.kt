@@ -16,9 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.ShoppingListDropdownArrayAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -30,7 +28,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
 
-        const val TAG = "AddIngredientToShoppingListDialog"
+        private const val TAG = "AddIngredientToShoppingListDialog"
 
         fun show(fragmentManager: FragmentManager, ingredient: Ingredient, receiptId: Int) {
             val bundle = Bundle()
@@ -52,7 +50,6 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
 
     @Inject
     lateinit var eventBus: EventBus
-    private var selectedShoppingList: ShoppingList? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddIngredientToShoppingListBinding.inflate(layoutInflater)
@@ -60,33 +57,11 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         addIngredientToShoppingListStateHandler = prepareAddIngredientToShoppingListStateHandler()
         loadShoppingListsStateHandler = prepareLoadShoppingListsStateHandler()
 
-        viewModel.selectedShoppingList.observe(this) {
-            selectedShoppingList = it
-            binding.shoppingListName.setText(it?.name ?: "")
-            if (it == null) {
-                binding.shoppingListItemNameLayout.error = getString(R.string.message_shopping_list_item_name_is_empty)
-            } else {
-                binding.shoppingListItemNameLayout.error = null
-            }
-            positiveButton.enable(binding.shoppingListItemNameLayout.error == null)
-        }
-
         viewModel.shoppingLists.observe(this) { loadShoppingListsStateHandler.handle(it) }
 
         shoppingListsDropdownAdapter = ShoppingListDropdownArrayAdapter(requireContext())
-        binding.shoppingListName.setAdapter(shoppingListsDropdownAdapter)
-        binding.shoppingListName.setOnItemClickListener { _, _, position, _ ->
-            viewModel.setShoppingList(shoppingListsDropdownAdapter.getItem(position))
-        }
-        binding.shoppingListName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.shoppingListName.text.toString().isEmpty() || selectedShoppingList == null) {
-                    viewModel.setShoppingList(null)
-                } else {
-                    viewModel.setShoppingList(selectedShoppingList)
-                }
-            }
-        }
+        binding.shoppingListName.adapter = shoppingListsDropdownAdapter
+
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
@@ -124,7 +99,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
                 }
 
                 override fun onSuccess(data: ShoppingListsResponse) {
-                    shoppingListsDropdownAdapter.refresh(data.shoppingLists)
+                    shoppingListsDropdownAdapter.addAll(data.shoppingLists)
                 }
             })
     }
@@ -135,7 +110,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
             viewModel.addItem(
-                selectedShoppingList?.id!!,
+                shoppingListsDropdownAdapter.getItem(binding.shoppingListName.selectedItemPosition)?.id!!,
                 AddShoppingListItemRequest(ingredient.name, ingredient.quantity, sequence, receiptId)
             ).observe(this) { addIngredientToShoppingListStateHandler.handle(it) }
         }
