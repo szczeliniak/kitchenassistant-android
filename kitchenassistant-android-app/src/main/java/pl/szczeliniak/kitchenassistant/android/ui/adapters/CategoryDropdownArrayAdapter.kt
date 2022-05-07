@@ -5,14 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Filter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 
 class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(context, 0, ArrayList()) {
-
-    private val allCategories = ArrayList<Category>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
@@ -27,51 +24,31 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
             viewHolder = binding.root.tag as ViewHolder
         }
 
-        getItem(position)?.let {
-            viewHolder.nameTextView.text = String.format(it.name)
+        getItem(position)?.name?.let {
+            viewHolder.nameTextView.text = String.format(it)
+        } ?: kotlin.run {
+            viewHolder.nameTextView.text = String.format("---")
         }
 
         return binding.root
     }
 
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return getView(position, convertView, parent)
+    }
+
+    fun getPositionById(id: Int): Int? {
+        for (i in 0..count) {
+            val item = getItem(i)
+            if (item != null && item.id == id) {
+                return i
+            }
+        }
+        return null
+    }
+
     data class ViewHolder(
         val nameTextView: AppCompatTextView
     )
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val results = FilterResults()
-                if (constraint != null) {
-                    val list = filterCategories(constraint)
-                    results.values = list
-                    results.count = list.size
-                }
-                return results
-            }
-
-            private fun filterCategories(constraint: CharSequence): ArrayList<Category> {
-                return ArrayList(allCategories.filter { c ->
-                    c.name.lowercase().contains(constraint.toString().lowercase())
-                })
-            }
-
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                results?.values?.let {
-                    val items = it as ArrayList<*>
-                    if (items.isNotEmpty()) {
-                        clear()
-                        items.forEach { r -> add(r as Category) }
-                        notifyDataSetChanged()
-                    }
-                }
-            }
-        }
-    }
-
-    fun refresh(categories: List<Category>) {
-        allCategories.clear()
-        allCategories.addAll(categories)
-    }
 
 }

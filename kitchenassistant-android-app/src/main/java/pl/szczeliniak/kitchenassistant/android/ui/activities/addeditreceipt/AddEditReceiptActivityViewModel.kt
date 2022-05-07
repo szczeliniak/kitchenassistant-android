@@ -94,7 +94,7 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
-        return liveData;
+        return liveData
     }
 
 }

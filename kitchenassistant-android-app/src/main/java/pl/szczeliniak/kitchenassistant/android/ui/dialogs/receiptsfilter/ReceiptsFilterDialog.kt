@@ -38,17 +38,13 @@ class ReceiptsFilterDialog : DialogFragment() {
     private lateinit var binding: DialogReceiptsFilterBinding
     private lateinit var loadCategoriesLoadingStateHandler: LoadingStateHandler<List<Category>>
     private lateinit var categoryDropdownArrayAdapter: CategoryDropdownArrayAdapter
-    private var selectedCategory: Category? = null
 
     private val viewModel: ReceiptsFilterDialogViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogReceiptsFilterBinding.inflate(layoutInflater)
         categoryDropdownArrayAdapter = CategoryDropdownArrayAdapter(requireContext())
-        binding.categoryName.setAdapter(categoryDropdownArrayAdapter)
-        binding.categoryName.setOnItemClickListener { _, _, position, _ ->
-            viewModel.setCategory(categoryDropdownArrayAdapter.getItem(position))
-        }
+        binding.receiptCategory.adapter = categoryDropdownArrayAdapter
         filter?.let {
             it.receiptName?.let { name -> binding.receiptName.setText(name) }
             it.receiptTag?.let { name -> binding.receiptTagName.setText(name) }
@@ -66,24 +62,10 @@ class ReceiptsFilterDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
-        viewModel.selectedCategory.observe(this) {
-            selectedCategory = it
-            binding.categoryName.setText(it?.name ?: "")
-        }
-        binding.categoryName.setOnFocusChangeListener { _, hasFocus ->
-            if (!hasFocus) {
-                if (binding.categoryName.text.toString().isEmpty() || selectedCategory == null) {
-                    viewModel.setCategory(null)
-                } else {
-                    viewModel.setCategory(selectedCategory)
-                }
-            }
-        }
 
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            binding.categoryName.clearFocus()
-            val filter = Filter(selectedCategory?.id, name, receiptTag)
+            val filter = Filter(categoryId, name, receiptTag)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -101,10 +83,13 @@ class ReceiptsFilterDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: List<Category>) {
-                categoryDropdownArrayAdapter.refresh(data)
+                categoryDropdownArrayAdapter.clear()
+                categoryDropdownArrayAdapter.add(null)
+                categoryDropdownArrayAdapter.addAll(data)
+
                 filter?.categoryId?.let { categoryId ->
-                    data.firstOrNull { category -> category.id == categoryId }?.let {
-                        viewModel.setCategory(it)
+                    categoryDropdownArrayAdapter.getPositionById(categoryId)?.let { position ->
+                        binding.receiptCategory.setSelection(position)
                     }
                 }
             }
@@ -137,6 +122,12 @@ class ReceiptsFilterDialog : DialogFragment() {
     private val filter: Filter?
         get() {
             return requireArguments().getParcelable(FILTER_EXTRA)
+        }
+
+    private val categoryId: Int?
+        get() {
+            val position = binding.receiptCategory.selectedItemPosition
+            return if (position == 0) null else categoryDropdownArrayAdapter.getItem(position)?.id
         }
 
 }

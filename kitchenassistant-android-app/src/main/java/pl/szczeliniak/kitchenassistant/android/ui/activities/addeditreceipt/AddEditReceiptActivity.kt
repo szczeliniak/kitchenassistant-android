@@ -96,7 +96,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
             binding.receiptDescription.setText(r.description)
             binding.receiptAuthor.setText(r.author)
             binding.receiptUrl.setText(r.source)
-            r.category?.let { setCategory(it.name, it.id) }
             r.tags.forEach { addTagChip(it) }
             r.photos.forEach { photo ->
                 viewModel.loadFile(photo.fileId).observe(this@AddEditReceiptActivity) {
@@ -106,12 +105,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
-        binding.receiptCategory.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && binding.receiptCategory.text.toString().isNotEmpty()) {
-                return@setOnFocusChangeListener
-            }
-            setCategory("", null)
-        }
 
         binding.tag.setAdapter(tagsArrayAdapter)
         binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
@@ -119,14 +112,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             addTagChip(tagsArrayAdapter.getItem(position)!!)
         }
 
-        binding.receiptCategory.setAdapter(categoriesDropdownAdapter)
-        binding.receiptCategory.setOnItemClickListener { _, _, position, _ ->
-            categoriesDropdownAdapter.getItem(position)?.let {
-                setCategory(it.name, it.id)
-            } ?: kotlin.run {
-                setCategory("", null)
-            }
-        }
+        binding.receiptCategory.adapter = categoriesDropdownAdapter
 
         binding.receiptName.doOnTextChanged { _, _, _, _ ->
             if (name.isNullOrEmpty()) {
@@ -144,11 +130,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
         binding.buttonAddPhotos.setOnClickListener { easyImage.openChooser(this) }
 
         binding.photosRecyclerView.adapter = photosAdapter
-    }
-
-    private fun setCategory(name: String, id: Int?) {
-        binding.receiptCategory.tag = id
-        binding.receiptCategory.setText(name)
     }
 
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
@@ -236,7 +217,15 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<Category>> {
             override fun onSuccess(data: List<Category>) {
-                categoriesDropdownAdapter.refresh(data)
+                categoriesDropdownAdapter.clear()
+                categoriesDropdownAdapter.add(null)
+                categoriesDropdownAdapter.addAll(data)
+
+                receipt?.category?.let { category ->
+                    categoriesDropdownAdapter.getPositionById(category.id)?.let { position ->
+                        binding.receiptCategory.setSelection(position)
+                    }
+                }
             }
         })
     }
@@ -294,7 +283,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
     private val categoryId: Int?
         get() {
-            return if (binding.receiptCategory.tag == null) return null else binding.receiptCategory.tag as Int
+            val position = binding.receiptCategory.selectedItemPosition
+            return if (position == 0) null else categoriesDropdownAdapter.getItem(position)?.id
         }
 
     private val tags: List<String>

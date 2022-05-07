@@ -20,12 +20,8 @@ class ReceiptsFilterDialogViewModel @Inject constructor(
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
 
-    private val _selectedCategory = MutableLiveData<Category?>()
-
     val categories: LiveData<LoadingState<List<Category>>>
         get() = _categories
-
-    val selectedCategory: LiveData<Category?> get() = _selectedCategory
 
     init {
         reloadCategories()
@@ -37,10 +33,6 @@ class ReceiptsFilterDialogViewModel @Inject constructor(
                 .onEach { _categories.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun setCategory(category: Category?) {
-        _selectedCategory.value = category
     }
 
 }

@@ -14,23 +14,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
-            app:counterEnabled="true"
-            app:counterMaxLength="@integer/max_length_category_name"
-            style="@style/InputLayout"
-            android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
-                android:hint="@string/label_category_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="@integer/max_length_category_name"
-                android:inputType="text"
-                android:id="@+id/category_name"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+            android:id="@+id/receipt_category"
+            android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
