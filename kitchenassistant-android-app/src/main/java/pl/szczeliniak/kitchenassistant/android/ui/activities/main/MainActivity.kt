@@ -4,7 +4,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
@@ -12,8 +13,6 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppinglists.ArchivedShoppingListsActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
-import pl.szczeliniak.kitchenassistant.android.ui.fragments.receipts.ReceiptsFragment
-import pl.szczeliniak.kitchenassistant.android.ui.fragments.shoppinglists.ShoppingListsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import javax.inject.Inject
 
@@ -32,9 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val receiptsFragment = ReceiptsFragment.create()
-    private val shoppingListsFragment = ShoppingListsFragment.create()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,31 +41,14 @@ class MainActivity : AppCompatActivity() {
             binding.drawerLayout.open()
         }
 
-        binding.bottomNavView.setOnItemSelectedListener { onNavigationItemChanged(it.itemId) }
+        NavigationUI.setupWithNavController(
+            binding.bottomNavView,
+            (supportFragmentManager.findFragmentById(R.id.fragment_container) as NavHostFragment).navController
+        )
+
         binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
         binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
-    }
-
-    private fun onNavigationItemChanged(itemId: Int): Boolean {
-        when (itemId) {
-            R.id.nav_bottom_item_receipts -> {
-                changeFragment(receiptsFragment)
-                return true
-            }
-            R.id.nav_bottom_item_shopping_lists -> {
-                changeFragment(shoppingListsFragment)
-                return true
-            }
-        }
-        return false
-    }
-
-    private fun changeFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.fragment_container, fragment)
-            commit()
-        }
     }
 
     private fun onDrawerItemClicked(itemId: Int): Boolean {

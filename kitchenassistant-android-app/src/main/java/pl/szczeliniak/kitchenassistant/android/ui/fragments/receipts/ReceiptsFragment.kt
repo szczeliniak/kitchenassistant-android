@@ -31,6 +31,8 @@ import javax.inject.Inject
 class ReceiptsFragment : Fragment() {
 
     companion object {
+        private const val FILTER_SAVED_STATE_EXTRA = "FILTER_SAVED_STATE_EXTRA"
+
         fun create(): ReceiptsFragment {
             return ReceiptsFragment()
         }
@@ -50,6 +52,10 @@ class ReceiptsFragment : Fragment() {
     private var filter: ReceiptsFilterDialog.Filter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        savedInstanceState?.getParcelable<ReceiptsFilterDialog.Filter?>(FILTER_SAVED_STATE_EXTRA)?.let {
+            filter = it
+        }
+
         binding = FragmentReceiptsBinding.inflate(inflater)
         binding.root.setOnRefreshListener { resetReceipts() }
         binding.recyclerView.adapter = adapter
@@ -76,10 +82,6 @@ class ReceiptsFragment : Fragment() {
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
-        viewModel.filter.observe(viewLifecycleOwner) {
-            this.filter = it
-            resetReceipts()
-        }
     }
 
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -154,7 +156,11 @@ class ReceiptsFragment : Fragment() {
                 ReceiptsFilterDialog.show(
                     requireActivity().supportFragmentManager,
                     ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptName, filter?.receiptTag),
-                    ReceiptsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
+                    ReceiptsFilterDialog.OnFilterChanged {
+                        filter = it
+                        resetReceipts()
+                    }
+                )
                 return true
             }
         }
@@ -164,6 +170,11 @@ class ReceiptsFragment : Fragment() {
     @Subscribe
     fun reloadReceiptsEvent(event: ReloadReceiptsEvent) {
         resetReceipts()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(FILTER_SAVED_STATE_EXTRA, filter)
     }
 
 }

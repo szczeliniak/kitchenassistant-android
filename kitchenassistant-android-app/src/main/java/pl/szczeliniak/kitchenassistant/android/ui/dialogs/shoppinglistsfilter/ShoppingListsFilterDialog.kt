@@ -80,7 +80,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val name: String?, val date: LocalDate?) : Parcelable {}
+    data class Filter(val name: String?, val date: LocalDate?) : Parcelable
 
     private val onFilterChanged: OnFilterChanged
         get() {

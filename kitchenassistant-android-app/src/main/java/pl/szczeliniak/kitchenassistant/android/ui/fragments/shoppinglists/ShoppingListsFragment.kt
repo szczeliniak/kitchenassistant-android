@@ -31,6 +31,7 @@ import javax.inject.Inject
 class ShoppingListsFragment : Fragment() {
 
     companion object {
+        private const val FILTER_SAVED_STATE_EXTRA = "FILTER_SAVED_STATE_EXTRA"
         fun create(): ShoppingListsFragment {
             return ShoppingListsFragment()
         }
@@ -50,6 +51,9 @@ class ShoppingListsFragment : Fragment() {
     private var filter: ShoppingListsFilterDialog.Filter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        savedInstanceState?.getParcelable<ShoppingListsFilterDialog.Filter?>(FILTER_SAVED_STATE_EXTRA)?.let {
+            filter = it
+        }
         binding = FragmentShoppingListsBinding.inflate(inflater)
 
         binding.root.setOnRefreshListener { resetShoppingLists() }
@@ -72,10 +76,6 @@ class ShoppingListsFragment : Fragment() {
         shoppingListsLoadingStateHandler = prepareShoppingListsLoadingStateHandler()
         deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
         viewModel.shoppingLists.observe(viewLifecycleOwner) { shoppingListsLoadingStateHandler.handle(it) }
-        viewModel.filter.observe(viewLifecycleOwner) {
-            this.filter = it
-            resetShoppingLists()
-        }
     }
 
     private fun resetShoppingLists() {
@@ -156,7 +156,10 @@ class ShoppingListsFragment : Fragment() {
                 ShoppingListsFilterDialog.show(
                     requireActivity().supportFragmentManager,
                     ShoppingListsFilterDialog.Filter(filter?.name, filter?.date),
-                    ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
+                    ShoppingListsFilterDialog.OnFilterChanged {
+                        filter = it
+                        resetShoppingLists()
+                    })
                 return true
             }
         }
@@ -166,6 +169,11 @@ class ShoppingListsFragment : Fragment() {
     @Subscribe
     fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
         resetShoppingLists()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putParcelable(FILTER_SAVED_STATE_EXTRA, filter)
     }
 
 }

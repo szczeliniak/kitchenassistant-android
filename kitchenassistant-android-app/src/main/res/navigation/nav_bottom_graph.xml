@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/main_activity_nav_graph"
+            app:startDestination="@id/nav_bottom_item_receipts">
+
+    <fragment android:id="@+id/nav_bottom_item_receipts"
+              android:name="pl.szczeliniak.kitchenassistant.android.ui.fragments.receipts.ReceiptsFragment"
+              android:label="@string/title_fragment_receipts"/>
+    <fragment android:id="@+id/nav_bottom_item_shopping_lists"
+              android:name="pl.szczeliniak.kitchenassistant.android.ui.fragments.shoppinglists.ShoppingListsFragment"
+              android:label="@string/title_fragment_shopping_lists"/>
+</navigation>

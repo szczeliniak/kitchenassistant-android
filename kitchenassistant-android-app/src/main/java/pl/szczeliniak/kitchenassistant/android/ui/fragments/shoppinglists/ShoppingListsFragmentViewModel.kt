@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -25,10 +24,8 @@ class ShoppingListsFragmentViewModel @Inject constructor(
     }
 
     private val _shoppingLists = MutableLiveData<LoadingState<ShoppingListsResponse>>()
-    private val _filter = MutableLiveData<ShoppingListsFilterDialog.Filter>()
 
     val shoppingLists: LiveData<LoadingState<ShoppingListsResponse>> get() = _shoppingLists
-    val filter: LiveData<ShoppingListsFilterDialog.Filter> get() = _filter
 
     init {
         reloadShoppingLists(1, null, null)
@@ -50,10 +47,6 @@ class ShoppingListsFragmentViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
-    }
-
-    fun changeFilter(filter: ShoppingListsFilterDialog.Filter) {
-        _filter.value = filter
     }
 
 }
