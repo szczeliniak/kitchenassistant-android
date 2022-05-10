@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.fragments.shoppinglists
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,6 +22,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.Add
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -39,6 +41,7 @@ class ShoppingListsFragment : Fragment() {
 
     private val viewModel: ShoppingListsFragmentViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
+    private val debounceExecutor = DebounceExecutor(500)
 
     @Inject
     lateinit var eventBus: EventBus
@@ -47,6 +50,7 @@ class ShoppingListsFragment : Fragment() {
     private lateinit var shoppingListsLoadingStateHandler: LoadingStateHandler<ShoppingListsResponse>
     private lateinit var deleteShoppingListLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
+    private lateinit var searchView: SearchView
 
     private var filter: ShoppingListsFilterDialog.Filter? = null
 
@@ -64,7 +68,7 @@ class ShoppingListsFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
+        ) { viewModel.reloadShoppingLists(it, searchView.query.toString(), filter?.date) }
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
@@ -147,6 +151,18 @@ class ShoppingListsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_shopping_lists, menu)
+        searchView = menu.findItem(R.id.fragment_shopping_lists_menu_item_search).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                debounceExecutor.execute { resetShoppingLists() }
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -155,7 +171,7 @@ class ShoppingListsFragment : Fragment() {
             R.id.fragment_shopping_lists_menu_item_filter -> {
                 ShoppingListsFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    ShoppingListsFilterDialog.Filter(filter?.name, filter?.date),
+                    ShoppingListsFilterDialog.Filter(filter?.date),
                     ShoppingListsFilterDialog.OnFilterChanged {
                         filter = it
                         resetShoppingLists()

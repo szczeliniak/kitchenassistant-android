@@ -74,7 +74,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.reloadShoppingLists(it, filter?.name, filter?.date) }
+        ) { viewModel.reloadShoppingLists(it, null, filter?.date) }
 
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
@@ -150,7 +150,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.activity_archived_shopping_lists_menu_item_filter) {
             ShoppingListsFilterDialog.show(supportFragmentManager,
-                ShoppingListsFilterDialog.Filter(filter?.name, filter?.date),
+                ShoppingListsFilterDialog.Filter(filter?.date),
                 ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })
             return true
         }

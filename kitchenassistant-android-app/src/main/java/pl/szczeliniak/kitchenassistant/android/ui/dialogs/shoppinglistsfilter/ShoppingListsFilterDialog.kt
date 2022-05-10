@@ -52,7 +52,6 @@ class ShoppingListsFilterDialog : DialogFragment() {
             dialog.show()
         }
         filter?.let {
-            it.name?.let { name -> binding.shoppingListName.setText(name) }
             it.date?.let { date -> binding.shoppingListDate.text = LocalDateUtils.stringify(date) }
         }
 
@@ -67,7 +66,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val filter = Filter(name, date)
+            val filter = Filter(date)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -80,16 +79,11 @@ class ShoppingListsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val name: String?, val date: LocalDate?) : Parcelable
+    data class Filter(val date: LocalDate?) : Parcelable
 
     private val onFilterChanged: OnFilterChanged
         get() {
             return requireArguments().getParcelable(CALLBACK_EXTRA)!!
-        }
-
-    private val name: String?
-        get() {
-            return binding.shoppingListName.text.toString().ifEmpty { null }
         }
 
     private val filter: Filter?
