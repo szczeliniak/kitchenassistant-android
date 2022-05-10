@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_receipt.xml" value="0.2520833333333333" />
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_search.xml" value="0.11388888888888889" />
         <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_shopping_cart.xml" value="0.1" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_receipt.xml" value="0.18" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_shopping_list.xml" value="0.18070652173913043" />
@@ -26,6 +27,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/dropdown_tag.xml" value="0.2546875" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_info.xml" value="0.25" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_ingredients.xml" value="0.223731884057971" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipts.xml" value="0.1" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_form.xml" value="0.17395833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_header.xml" value="0.18072916666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_ingredient.xml" value="0.3020833333333333" />

@@ -3,6 +3,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+            android:title="@string/label_button_search"
+            android:icon="@drawable/icon_search"
+            app:showAsAction="ifRoom|collapseActionView"
+            android:id="@+id/fragment_receipts_menu_item_search"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+
+    <item
             android:id="@+id/fragment_receipts_menu_item_filter"
             android:icon="@drawable/icon_filter"
             app:showAsAction="always"

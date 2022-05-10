@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.fragments.receipts
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -21,6 +22,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddE
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -40,6 +42,7 @@ class ReceiptsFragment : Fragment() {
 
     private val viewModel: ReceiptsFragmentViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
+    private val debounceExecutor = DebounceExecutor(500)
 
     @Inject
     lateinit var eventBus: EventBus
@@ -48,6 +51,7 @@ class ReceiptsFragment : Fragment() {
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
+    private lateinit var searchView: SearchView
 
     private var filter: ReceiptsFilterDialog.Filter? = null
 
@@ -65,7 +69,7 @@ class ReceiptsFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.loadReceipts(it, filter?.categoryId, filter?.receiptName, filter?.receiptTag) }
+        ) { viewModel.loadReceipts(it, filter?.categoryId, searchView.query.toString(), filter?.receiptTag) }
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddReceipt.setOnClickListener { AddEditReceiptActivity.start(requireContext()) }
@@ -147,6 +151,18 @@ class ReceiptsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_receipts, menu)
+        searchView = menu.findItem(R.id.fragment_receipts_menu_item_search).actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                debounceExecutor.execute { resetReceipts() }
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -155,7 +171,7 @@ class ReceiptsFragment : Fragment() {
             R.id.fragment_receipts_menu_item_filter -> {
                 ReceiptsFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptName, filter?.receiptTag),
+                    ReceiptsFilterDialog.Filter(filter?.categoryId, filter?.receiptTag),
                     ReceiptsFilterDialog.OnFilterChanged {
                         filter = it
                         resetReceipts()
