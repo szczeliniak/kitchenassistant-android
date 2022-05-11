@@ -15,6 +15,7 @@ class ReceiptItem constructor(
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick,
+    private val onAddRemoveFromFavourites: OnClick,
 ) : BindableItem<ListItemReceiptBinding>() {
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
@@ -36,6 +37,10 @@ class ReceiptItem constructor(
     private fun showPopupMenu(view: View): Boolean {
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.receipt_item)
+
+        popupMenu.menu.findItem(R.id.receipt_item_menu_item_add_remove_from_favorites).title =
+            context.getString(if (receipt.favorite) R.string.label_button_remove_from_favorites else R.string.label_button_add_to_favorites)
+
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.receipt_item_menu_item_delete -> {
@@ -44,6 +49,10 @@ class ReceiptItem constructor(
                 }
                 R.id.receipt_item_menu_item_edit -> {
                     onEditClick.onClick(receipt)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.receipt_item_menu_item_add_remove_from_favorites -> {
+                    onAddRemoveFromFavourites.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
             }

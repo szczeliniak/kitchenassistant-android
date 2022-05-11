@@ -50,6 +50,7 @@ class ReceiptsFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var addRemoveFromFavoritesLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -85,10 +86,27 @@ class ReceiptsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
+        addRemoveFromFavoritesLoadingStateHandler = prepareAddRemoveFromFavoritesLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
     }
 
     private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.layout.showProgressSpinner(requireActivity())
+            }
+
+            override fun onFinish() {
+                binding.layout.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: Int) {
+                resetReceipts()
+            }
+        })
+    }
+
+    private fun prepareAddRemoveFromFavoritesLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -131,6 +149,10 @@ class ReceiptsFragment : Fragment() {
                             }
                         }, {
                             AddEditReceiptActivity.start(requireContext(), it)
+                        }, {
+                            viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
+                                addRemoveFromFavoritesLoadingStateHandler.handle(r)
+                            }
                         }))
                     }
                 }

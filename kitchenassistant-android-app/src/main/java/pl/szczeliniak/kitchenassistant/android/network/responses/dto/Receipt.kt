@@ -10,6 +10,7 @@ data class Receipt(
     val author: String?,
     val description: String?,
     val source: String?,
+    val favorite: Boolean,
     val category: Category?,
     val ingredients: List<Ingredient>,
     val steps: List<Step>,

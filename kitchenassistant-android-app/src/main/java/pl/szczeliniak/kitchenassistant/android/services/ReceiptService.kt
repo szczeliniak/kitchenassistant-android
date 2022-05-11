@@ -242,4 +242,17 @@ class ReceiptService constructor(
         }
     }
 
+    fun setFavorite(id: Int, isFavorite: Boolean): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(receiptRepository.setFavorite(id, isFavorite).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
 }

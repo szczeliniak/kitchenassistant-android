@@ -48,4 +48,14 @@ class ReceiptsFragmentViewModel @Inject constructor(
         return liveData
     }
 
+    fun setFavorite(id: Int, isFavorite: Boolean): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            receiptService.setFavorite(id, isFavorite)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
 }

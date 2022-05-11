@@ -69,4 +69,7 @@ interface ReceiptRepository {
     @PUT("/receipts/categories/{id}")
     suspend fun updateCategory(@Path("id") id: Int, @Body request: UpdateCategoryRequest): SuccessResponse
 
+    @PUT("/receipts/{id}/favorite/{isFavorite}")
+    suspend fun setFavorite(@Path("id") id: Int, @Path("isFavorite") isFavorite: Boolean): SuccessResponse
+
 }

@@ -9,4 +9,8 @@
             android:id="@+id/receipt_item_menu_item_edit"
             android:title="@string/label_button_edit"/>
 
+    <item
+            android:id="@+id/receipt_item_menu_item_add_remove_from_favorites"
+            android:title="@string/label_button_add_to_favorites"/>
+
 </menu>
