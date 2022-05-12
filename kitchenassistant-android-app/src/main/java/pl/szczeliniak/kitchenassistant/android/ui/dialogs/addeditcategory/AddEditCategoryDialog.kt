@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -18,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryReque
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -54,17 +54,17 @@ class AddEditCategoryDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditCategoryBinding.inflate(layoutInflater)
         category?.let { step ->
-            binding.categoryName.setText(step.name)
+            binding.categoryName.text = step.name
             binding.title.text = getString(R.string.title_dialog_edit_category)
         }
 
-        binding.categoryName.doOnTextChanged { _, _, _, _ ->
+        binding.categoryName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isNameValid()) {
-                binding.categoryNameLayout.error = getString(R.string.message_category_name_is_empty)
-            } else {
-                binding.categoryNameLayout.error = null
+                id = R.string.message_category_name_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
         addStepLoadingStateHandler = prepareSaveStepLoadingStateHandler()
@@ -120,7 +120,7 @@ class AddEditCategoryDialog : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.categoryName.text.toString()
+            return binding.categoryName.text
         }
 
     private val category: Category?

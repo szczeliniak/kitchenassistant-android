@@ -10,7 +10,6 @@ import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.core.widget.doOnTextChanged
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.yalantis.ucrop.UCrop
@@ -30,8 +29,9 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.components.AutocompleteInputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
@@ -92,10 +92,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
         receipt?.let { r ->
             binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
-            binding.receiptName.setText(r.name)
-            binding.receiptDescription.setText(r.description)
-            binding.receiptAuthor.setText(r.author)
-            binding.receiptUrl.setText(r.source)
+            binding.receiptName.text = r.name
+            binding.receiptDescription.text = r.description ?: ""
+            binding.receiptAuthor.text = r.author ?: ""
+            binding.receiptUrl.text = r.source ?: ""
             r.tags.forEach { addTagChip(it) }
             r.photos.forEach { photo ->
                 viewModel.loadFile(photo.fileId).observe(this@AddEditReceiptActivity) {
@@ -107,19 +107,19 @@ class AddEditReceiptActivity : AppCompatActivity() {
         }
 
         binding.tag.setAdapter(tagsArrayAdapter)
-        binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
-        binding.tag.setOnItemClickListener { _, _, position, _ ->
-            addTagChip(tagsArrayAdapter.getItem(position)!!)
+        binding.tag.onKeyListener =
+            AutocompleteInputComponent.OnKeyListener { keyCode, event -> onKeyInTagPressed(keyCode, event) }
+        binding.tag.onItemClicked = AutocompleteInputComponent.OnItemClicked {
+            addTagChip(tagsArrayAdapter.getItem(it)!!)
         }
 
         binding.receiptCategory.adapter = categoriesDropdownAdapter
 
-        binding.receiptName.doOnTextChanged { _, _, _, _ ->
-            if (name.isNullOrEmpty()) {
-                binding.receiptNameLayout.error = getString(R.string.message_receipt_name_is_empty)
-            } else {
-                binding.receiptNameLayout.error = null
+        binding.receiptName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            if (name.isEmpty()) {
+                return@OnTextChangedValidator R.string.message_receipt_name_is_empty
             }
+            return@OnTextChangedValidator null
         }
 
         easyImage = EasyImage.Builder(this)
@@ -135,17 +135,17 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
         if (event.action != KeyEvent.ACTION_DOWN
             || keyCode != KeyEvent.KEYCODE_ENTER
-            || binding.tag.text.toString().isBlank()
+            || binding.tag.text.isBlank()
         ) {
             return false
         }
-        addTagChip(binding.tag.text.toString())
+        addTagChip(binding.tag.text)
         return true
     }
 
     private fun addTagChip(item: String) {
         binding.tagChips.add(layoutInflater, item, true)
-        binding.tag.setText("")
+        binding.tag.text = ""
     }
 
     private fun prepareSaveReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -186,7 +186,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
                     viewModel.updateReceipt(
                         r.id,
                         UpdateReceiptRequest(
-                            name!!,
+                            name,
                             author,
                             url,
                             description,
@@ -199,7 +199,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
                 } ?: kotlin.run {
                     viewModel.addReceipt(
                         AddReceiptRequest(
-                            name!!,
+                            name,
                             author,
                             url,
                             description,
@@ -249,7 +249,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     private fun saveReceipt() {
-        if (name.isNullOrEmpty()) {
+        if (name.isEmpty()) {
             return
         }
 
@@ -261,24 +261,24 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
     }
 
-    private val name: String?
+    private val name: String
         get() {
-            return binding.receiptName.getTextOrNull()
+            return binding.receiptName.text
         }
 
     private val author: String?
         get() {
-            return binding.receiptAuthor.getTextOrNull()
+            return binding.receiptAuthor.textOrNull
         }
 
     private val url: String?
         get() {
-            return binding.receiptUrl.getTextOrNull()
+            return binding.receiptUrl.textOrNull
         }
 
     private val description: String?
         get() {
-            return binding.receiptDescription.getTextOrNull()
+            return binding.receiptDescription.textOrNull
         }
 
     private val categoryId: Int?

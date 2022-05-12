@@ -25,100 +25,55 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_receipt_name"
+                    android:id="@+id/receipt_name"
+                    app:hint="@string/label_receipt_name"
+                    app:maxLength="@integer/max_length_receipt_name"
+                    app:inputType="text"
                     app:counterEnabled="true"
-                    style="@style/InputLayout"
-                    android:id="@+id/receipt_name_layout"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/label_receipt_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_receipt_name"
-                        android:inputType="text"
-                        android:id="@+id/receipt_name"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_receipt_author"
+                    android:id="@+id/receipt_author"
+                    app:hint="@string/label_receipt_author"
+                    app:maxLength="@integer/max_length_receipt_author"
+                    app:inputType="text"
                     app:counterEnabled="true"
-                    style="@style/InputLayout"
-                    android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
-                        android:hint="@string/label_receipt_author"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_receipt_author"
-                        android:inputType="text"
-                        android:id="@+id/receipt_author"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatSpinner
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_category"
                     android:layout_height="wrap_content"/>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_receipt_url"
-                    style="@style/InputLayout"
+                    android:id="@+id/receipt_url"
+                    app:hint="@string/label_receipt_url"
+                    app:maxLength="@integer/max_length_receipt_url"
+                    app:inputType="uri"
                     app:counterEnabled="true"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/label_receipt_url"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_receipt_url"
-                        android:inputType="textUri"
-                        android:id="@+id/receipt_url"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    app:counterMaxLength="@integer/max_length_receipt_description"
-                    style="@style/InputLayout"
+                    android:id="@+id/receipt_description"
+                    app:hint="@string/label_receipt_description"
+                    app:maxLength="@integer/max_length_receipt_description"
+                    app:inputType="multiline"
+                    app:minLines="4"
                     app:counterEnabled="true"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/label_receipt_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:minLines="4"
-                        android:maxLength="@integer/max_length_receipt_description"
-                        android:inputType="textMultiLine"
-                        android:id="@+id/receipt_description"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tag_input_layout"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.AutocompleteInputComponent
                     android:layout_width="match_parent"
+                    android:id="@+id/tag"
+                    app:hint="@string/label_receipt_tag"
+                    app:maxLength="@integer/max_length_receipt_tag"
                     app:counterEnabled="true"
-                    app:counterMaxLength="@integer/max_length_receipt_tag"
-                    style="@style/InputLayout"
-                    android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
-                        android:hint="@string/label_receipt_tag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_receipt_tag"
-                        android:inputType="text"
-                        android:id="@+id/tag"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"/>
 
             <com.google.android.material.chip.ChipGroup
                     android:id="@+id/tag_chips"

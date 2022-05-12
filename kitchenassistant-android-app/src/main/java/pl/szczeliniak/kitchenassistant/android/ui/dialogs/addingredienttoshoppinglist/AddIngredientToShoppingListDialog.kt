@@ -119,8 +119,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
 
     private val sequence: Int?
         get() {
-            val asString = binding.shoppingListItemSequence.text.toString()
-            return if (asString.isEmpty()) null else asString.toInt()
+            return binding.shoppingListItemSequence.textOrNull?.toInt()
         }
 
     private val ingredient: Ingredient

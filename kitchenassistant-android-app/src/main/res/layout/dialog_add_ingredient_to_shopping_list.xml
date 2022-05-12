@@ -19,21 +19,13 @@
             android:id="@+id/shopping_list_name"
             android:layout_height="wrap_content"/>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
             android:layout_width="match_parent"
+            android:id="@+id/shopping_list_item_sequence"
+            app:hint="@string/label_shopping_list_item_sequence"
+            app:maxLength="@integer/max_length_shopping_list_item_sequence"
+            app:inputType="number"
             app:counterEnabled="true"
-            app:counterMaxLength="@integer/max_length_shopping_list_item_sequence"
-            style="@style/InputLayout"
-            android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/label_shopping_list_item_sequence"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="@integer/max_length_shopping_list_item_sequence"
-                android:inputType="numberDecimal"
-                android:id="@+id/shopping_list_item_sequence"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
@@ -47,37 +48,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputLayout
+                <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                         android:layout_width="match_parent"
-                        android:id="@+id/login_email_layout"
-                        style="@style/InputLayout"
-                        android:layout_height="wrap_content">
+                        android:id="@+id/login_email"
+                        custom:hint="@string/form_login_email"
+                        custom:maxLength="@integer/max_length_email"
+                        custom:inputType="email"
+                        android:layout_height="wrap_content"/>
 
-                    <com.google.android.material.textfield.TextInputEditText
-                            android:hint="@string/form_login_email"
-                            android:maxLength="@integer/max_length_email"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
-                            android:id="@+id/login_email"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
+                <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                         android:layout_width="match_parent"
-                        style="@style/InputLayout"
-                        android:id="@+id/login_password_layout"
-                        android:layout_height="wrap_content">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                            android:hint="@string/form_login_password"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:maxLength="@integer/max_length_password"
-                            android:inputType="textPassword"
-                            android:id="@+id/login_password"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:id="@+id/login_password"
+                        custom:hint="@string/form_login_password"
+                        custom:maxLength="@integer/max_length_password"
+                        custom:inputType="password"
+                        android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                         android:orientation="horizontal"

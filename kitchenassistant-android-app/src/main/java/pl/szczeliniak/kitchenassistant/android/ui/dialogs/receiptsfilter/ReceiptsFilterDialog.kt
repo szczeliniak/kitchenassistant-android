@@ -46,7 +46,7 @@ class ReceiptsFilterDialog : DialogFragment() {
         categoryDropdownArrayAdapter = CategoryDropdownArrayAdapter(requireContext())
         binding.receiptCategory.adapter = categoryDropdownArrayAdapter
         filter?.let {
-            it.receiptTag?.let { name -> binding.receiptTagName.setText(name) }
+            it.receiptTag?.let { name -> binding.receiptTagName.text = name }
         }
 
         loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
@@ -110,7 +110,7 @@ class ReceiptsFilterDialog : DialogFragment() {
 
     private val receiptTag: String?
         get() {
-            return binding.receiptTagName.text.toString().ifEmpty { null }
+            return binding.receiptTagName.text.ifEmpty { null }
         }
 
     private val filter: Filter?

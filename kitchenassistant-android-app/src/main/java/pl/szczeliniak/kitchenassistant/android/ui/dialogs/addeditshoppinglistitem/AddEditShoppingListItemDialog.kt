@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -17,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -57,29 +57,28 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         binding = DialogAddEditShoppingListItemBinding.inflate(layoutInflater)
 
         shoppingListItem?.let {
-            binding.shoppingListName.setText(it.name)
-            binding.shoppingListItemQuantity.setText(it.quantity)
-            binding.shoppingListItemSequence.setText(it.sequence)
+            binding.shoppingListName.text = it.name
+            binding.shoppingListItemQuantity.text = it.quantity
+            binding.shoppingListItemSequence.text = it.sequence ?: ""
             binding.title.text = getString(R.string.title_dialog_edit_shopping_list_item)
         }
 
-        binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
+        binding.shoppingListName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isNameValid()) {
-                binding.shoppingListItemNameLayout.error = getString(R.string.message_shopping_list_item_name_is_empty)
-            } else {
-                binding.shoppingListItemNameLayout.error = null
+                id = R.string.message_shopping_list_item_name_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
-        binding.shoppingListItemQuantity.doOnTextChanged { _, _, _, _ ->
+        binding.shoppingListItemQuantity.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isQuantityValid()) {
-                binding.shoppingListItemQuantityLayout.error =
-                    getString(R.string.message_shopping_list_item_quantity_is_empty)
-            } else {
-                binding.shoppingListItemQuantityLayout.error = null
+                id = R.string.message_shopping_list_item_quantity_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
         addShoppingListItemLoadingStateHandler = prepareAddShoppingListItemLoadingStateHandler()
@@ -145,21 +144,17 @@ class AddEditShoppingListItemDialog : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.shoppingListName.text.toString()
+            return binding.shoppingListName.text
         }
 
     private val quantity: String
         get() {
-            return binding.shoppingListItemQuantity.text.toString()
+            return binding.shoppingListItemQuantity.text
         }
 
     private val sequence: Int?
         get() {
-            val asString = binding.shoppingListItemSequence.text.toString()
-            if (asString.isEmpty()) {
-                return null
-            }
-            return asString.toInt()
+            return binding.shoppingListItemSequence.textOrNull?.toInt()
         }
 
     private val shoppingListId: Int

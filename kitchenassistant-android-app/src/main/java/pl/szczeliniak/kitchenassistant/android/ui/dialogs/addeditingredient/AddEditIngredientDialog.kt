@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -17,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -53,28 +53,29 @@ class AddEditIngredientDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditIngredientBinding.inflate(layoutInflater)
         ingredient?.let {
-            binding.ingredientName.setText(it.name)
-            binding.ingredientQuantity.setText(it.quantity)
+            binding.ingredientName.text = it.name
+            binding.ingredientQuantity.text = it.quantity
             binding.title.text = getString(R.string.title_dialog_edit_ingredient)
         }
 
         saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
-        binding.ingredientName.doOnTextChanged { _, _, _, _ ->
+
+        binding.ingredientName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isNameValid()) {
-                binding.ingredientNameLayout.error = getString(R.string.message_ingredient_name_is_empty)
-            } else {
-                binding.ingredientNameLayout.error = null
+                id = R.string.message_ingredient_name_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
-        binding.ingredientQuantity.doOnTextChanged { _, _, _, _ ->
+        binding.ingredientQuantity.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isQuantityValid()) {
-                binding.ingredientQuantityLayout.error = getString(R.string.message_ingredient_quantity_is_empty)
-            } else {
-                binding.ingredientQuantityLayout.error = null
+                id = R.string.message_ingredient_quantity_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
         val builder = AlertDialog.Builder(requireContext())
@@ -133,12 +134,12 @@ class AddEditIngredientDialog : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.ingredientName.text.toString()
+            return binding.ingredientName.text
         }
 
     private val quantity: String
         get() {
-            return binding.ingredientQuantity.text.toString()
+            return binding.ingredientQuantity.text
         }
 
     private val receiptId: Int

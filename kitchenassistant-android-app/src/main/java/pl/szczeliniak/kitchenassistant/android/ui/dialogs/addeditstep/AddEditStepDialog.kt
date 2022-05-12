@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -17,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -52,25 +52,25 @@ class AddEditStepDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditStepBinding.inflate(layoutInflater)
         step?.let { step ->
-            binding.stepName.setText(step.name)
+            binding.stepName.text = step.name
             step.description?.let {
-                binding.stepDescription.setText(it)
+                binding.stepDescription.text = it
             }
             step.sequence?.let {
-                binding.stepSequence.setText(it.toString())
+                binding.stepSequence.text = it.toString()
             }
             binding.title.text = getString(R.string.title_dialog_edit_step)
         }
 
         addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
 
-        binding.stepName.doOnTextChanged { _, _, _, _ ->
+        binding.stepName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isNameValid()) {
-                binding.stepNameLayout.error = getString(R.string.message_step_name_is_empty)
-            } else {
-                binding.stepNameLayout.error = null
+                id = R.string.message_step_name_is_empty
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
         val builder = AlertDialog.Builder(requireContext())
@@ -124,21 +124,17 @@ class AddEditStepDialog : DialogFragment() {
 
     private val name: String
         get() {
-            return binding.stepName.text.toString()
+            return binding.stepName.text
         }
 
     private val description: String
         get() {
-            return binding.stepDescription.text.toString()
+            return binding.stepDescription.text
         }
 
     private val sequence: Int?
         get() {
-            val asString = binding.stepSequence.text.toString()
-            if (asString.isEmpty()) {
-                return null
-            }
-            return asString.toInt()
+            return binding.stepSequence.textOrNull?.toInt()
         }
 
     private val receiptId: Int

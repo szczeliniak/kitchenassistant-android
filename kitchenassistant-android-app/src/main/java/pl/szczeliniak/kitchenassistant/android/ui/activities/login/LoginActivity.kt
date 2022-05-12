@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
@@ -15,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -64,22 +64,22 @@ class LoginActivity : AppCompatActivity() {
             RegisterActivity.start(this@LoginActivity)
         }
 
-        binding.loginEmail.doOnTextChanged { _, _, _, _ ->
+        binding.loginEmail.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isEmailValid()) {
-                binding.loginEmailLayout.error = getString(R.string.message_wrong_email)
-            } else {
-                binding.loginEmailLayout.error = null
+                id = R.string.message_wrong_email
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
 
-        binding.loginPassword.doOnTextChanged { _, _, _, _ ->
+        binding.loginPassword.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isPasswordValid()) {
-                binding.loginPasswordLayout.error = getString(R.string.message_wrong_password)
-            } else {
-                binding.loginPasswordLayout.error = null
+                id = R.string.message_wrong_password
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
     }
 
@@ -123,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
             override fun onHttpException(exception: HttpException) {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.message_login_data_does_not_match)
-                    binding.loginPassword.setText("")
+                    binding.loginPassword.text = ""
                 } else {
                     super.onHttpException(exception)
                 }
@@ -134,12 +134,12 @@ class LoginActivity : AppCompatActivity() {
 
     private val email: String
         get() {
-            return binding.loginEmail.text.toString()
+            return binding.loginEmail.text
         }
 
     private val password: String
         get() {
-            return binding.loginPassword.text.toString()
+            return binding.loginPassword.text
         }
 
 }

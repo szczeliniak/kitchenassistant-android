@@ -9,7 +9,6 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
@@ -21,7 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingLi
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -73,8 +72,8 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             dialog.show()
         }
         shoppingList?.let {
-            binding.shoppingListName.setText(it.name)
-            binding.shoppingListDescription.setText(it.description)
+            binding.shoppingListName.text = it.name
+            binding.shoppingListDescription.text = it.description ?: ""
             it.date?.let { date ->
                 binding.shoppingListDate.text = LocalDateUtils.stringify(
                     LocalDate.of(
@@ -88,12 +87,11 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         } ?: kotlin.run {
             binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
         }
-        binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
-            if (name.isNullOrEmpty()) {
-                binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
-            } else {
-                binding.shoppingListNameLayout.error = null
+        binding.shoppingListName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            if (name.isEmpty()) {
+                return@OnTextChangedValidator R.string.message_shopping_list_name_is_empty
             }
+            return@OnTextChangedValidator null
         }
     }
 
@@ -131,26 +129,26 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingList() {
-        if (name.isNullOrEmpty()) {
+        if (name.isEmpty()) {
             return
         }
         shoppingList?.let { list ->
-            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name!!, description, date))
+            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name, description, date))
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
-            viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId(), date))
+            viewModel.addShoppingList(AddShoppingListRequest(name, description, localStorageService.getId(), date))
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         }
     }
 
-    private val name: String?
+    private val name: String
         get() {
-            return binding.shoppingListName.getTextOrNull()
+            return binding.shoppingListName.text
         }
 
     private val description: String?
         get() {
-            return binding.shoppingListDescription.getTextOrNull()
+            return binding.shoppingListDescription.textOrNull
         }
 
     private val date: LocalDate?

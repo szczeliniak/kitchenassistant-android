@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.doOnTextChanged
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRegisterBinding
@@ -14,6 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.RegisterRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
+import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -43,9 +43,7 @@ class RegisterActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         initLayout()
-
         checkButtonState()
     }
 
@@ -55,37 +53,38 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_register)
         binding.buttonRegister.setOnClickListener { handleRegisterButtonClick() }
-        binding.registerEmail.doOnTextChanged { _, _, _, _ ->
+
+        binding.registerEmail.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isEmailValid()) {
-                binding.registerEmailLayout.error = getString(R.string.message_wrong_email)
-            } else {
-                binding.registerEmailLayout.error = null
+                id = R.string.message_wrong_email
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
-        binding.registerName.doOnTextChanged { _, _, _, _ ->
+        binding.registerName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isNameValid()) {
-                binding.registerNameLayout.error = getString(R.string.message_empty_name)
-            } else {
-                binding.registerNameLayout.error = null
+                id = R.string.message_empty_name
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
-        binding.registerPassword.doOnTextChanged { _, _, _, _ ->
+        binding.registerPassword.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isPasswordValid()) {
-                binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
-            } else {
-                binding.registerPasswordLayout.error = null
+                id = R.string.message_wrong_password
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
-        binding.registerPassword2.doOnTextChanged { _, _, _, _ ->
+        binding.registerPassword2.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+            var id: Int? = null
             if (!isPasswordValid()) {
-                binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
-            } else {
-                binding.registerPasswordLayout.error = null
+                id = R.string.message_wrong_password
             }
             checkButtonState()
+            return@OnTextChangedValidator id
         }
     }
 
@@ -139,22 +138,22 @@ class RegisterActivity : AppCompatActivity() {
 
     private val email: String
         get() {
-            return binding.registerEmail.text.toString()
+            return binding.registerEmail.text
         }
 
     private val name: String
         get() {
-            return binding.registerName.text.toString()
+            return binding.registerName.text
         }
 
     private val password: String
         get() {
-            return binding.registerPassword.text.toString()
+            return binding.registerPassword.text
         }
 
     private val password2: String
         get() {
-            return binding.registerPassword2.text.toString()
+            return binding.registerPassword2.text
         }
 
 }

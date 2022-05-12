@@ -24,68 +24,37 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    style="@style/InputLayout"
-                    android:id="@+id/register_email_layout"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/register_email"
+                    app:hint="@string/form_register_email"
+                    app:maxLength="@integer/max_length_email"
+                    app:inputType="email"
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/form_register_email"
-                        android:maxLength="@integer/max_length_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:id="@+id/register_email"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    style="@style/InputLayout"
-                    android:id="@+id/register_name_layout"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/register_name"
+                    app:hint="@string/form_register_name"
+                    app:maxLength="@integer/max_length_name"
+                    app:inputType="text"
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/form_register_name"
-                        android:maxLength="@integer/max_length_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:id="@+id/register_name"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    style="@style/InputLayout"
-                    android:id="@+id/register_password_layout"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/register_password"
+                    app:hint="@string/from_register_password"
+                    app:maxLength="@integer/max_length_password"
+                    app:inputType="password"
+                    android:layout_height="wrap_content"/>
 
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/from_register_password"
-                        android:maxLength="@integer/max_length_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:id="@+id/register_password"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
+            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
                     android:layout_width="match_parent"
-                    style="@style/InputLayout"
-                    android:layout_height="wrap_content">
-
-                <com.google.android.material.textfield.TextInputEditText
-                        android:hint="@string/form_register_password2"
-                        android:layout_width="match_parent"
-                        android:maxLength="@integer/max_length_password"
-                        android:layout_height="wrap_content"
-                        android:inputType="textPassword"
-                        android:id="@+id/register_password2"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:id="@+id/register_password2"
+                    app:hint="@string/form_register_password2"
+                    app:maxLength="@integer/max_length_password"
+                    app:inputType="password"
+                    android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatButton
                     style="@style/ButtonPrimary"

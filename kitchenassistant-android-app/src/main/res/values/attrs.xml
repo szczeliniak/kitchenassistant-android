@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="hint" format="reference"/>
+    <attr name="counterEnabled" format="boolean"/>
+    <attr name="maxLength" format="integer"/>
+
+    <declare-styleable name="InputComponent">
+        <attr name="hint"/>
+        <attr name="maxLength"/>
+        <attr name="inputType" format="enum">
+            <enum name="text" value="0"/>
+            <enum name="email" value="1"/>
+            <enum name="password" value="2"/>
+            <enum name="uri" value="3"/>
+            <enum name="multiline" value="4"/>
+            <enum name="number" value="5"/>
+        </attr>
+        <attr name="counterEnabled"/>
+        <attr name="minLines" format="integer"/>
+    </declare-styleable>
+
+    <declare-styleable name="AutocompleteInputComponent">
+        <attr name="hint"/>
+        <attr name="counterEnabled"/>
+        <attr name="maxLength"/>
+    </declare-styleable>
+
+</resources>
