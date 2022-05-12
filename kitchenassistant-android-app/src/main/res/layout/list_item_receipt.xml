@@ -26,12 +26,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_name"
-                tools:text="Receipt name"
-                style="@style/TextPrimary"
+        <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/receipt_name"
+                    tools:text="Receipt name"
+                    style="@style/TextPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/icon_star"
+                    android:paddingHorizontal="@dimen/padding_margin_tiny"
+                    app:tint="@color/secondary"
+                    android:id="@+id/receipt_is_favorite"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/description_receipt_is_favorite"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/receipt_description"
