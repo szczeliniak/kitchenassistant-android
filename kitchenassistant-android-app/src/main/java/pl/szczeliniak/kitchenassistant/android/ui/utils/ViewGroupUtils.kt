@@ -1,30 +1,35 @@
 package pl.szczeliniak.kitchenassistant.android.ui.utils
 
-import android.app.Activity
-import android.view.LayoutInflater
+import android.content.Context
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
+import android.view.ViewGroup.LayoutParams
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.EmptyMessageViewBinding
-import pl.szczeliniak.kitchenassistant.android.databinding.ProgressSpinnerBinding
+import pl.szczeliniak.kitchenassistant.android.ui.components.EmptyMessageViewComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.ProgressSpinnerComponent
 
 class ViewGroupUtils {
 
     companion object {
-        fun ViewGroup.showProgressSpinner(activity: Activity?) {
-            ProgressSpinnerBinding.inflate(LayoutInflater.from(activity), this, true)
+        fun ViewGroup.showProgressSpinner(context: Context) {
+            val component = ProgressSpinnerComponent(context, null)
+            component.id = R.id.progress_spinner
+            component.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            addView(component)
         }
 
         fun ViewGroup.hideProgressSpinner() {
-            this.findViewById<ConstraintLayout>(R.id.progress_spinner_layout)?.let { this.removeView(it) }
+            this.findViewById<ProgressSpinnerComponent>(R.id.progress_spinner)?.let { this.removeView(it) }
         }
 
-        fun ViewGroup.showEmptyIcon(activity: Activity) {
-            EmptyMessageViewBinding.inflate(LayoutInflater.from(activity), this, true)
+        fun ViewGroup.showEmptyIcon(context: Context) {
+            val component = EmptyMessageViewComponent(context, null)
+            component.id = R.id.empty_message_view
+            component.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            addView(component)
         }
 
         fun ViewGroup.hideEmptyIcon() {
-            this.findViewById<ConstraintLayout>(R.id.message_layout)?.let { this.removeView(it) }
+            this.findViewById<EmptyMessageViewComponent>(R.id.empty_message_view)?.let { this.removeView(it) }
         }
     }
 
