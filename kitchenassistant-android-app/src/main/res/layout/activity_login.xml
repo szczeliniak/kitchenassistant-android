@@ -66,24 +66,25 @@
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                         android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/padding_margin_tiny"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                    <androidx.appcompat.widget.AppCompatButton
-                            style="@style/ButtonPrimary"
+                    <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
                             android:id="@+id/button_login"
-                            android:text="@string/label_button_login"
-                            android:layout_width="0dp"
-                            android:layout_weight="1"
-                            android:layout_height="wrap_content"/>
+                            app:text="@string/label_button_login"
+                            app:style="primary"/>
 
-                    <androidx.appcompat.widget.AppCompatButton
-                            style="@style/ButtonSecondary"
-                            android:id="@+id/button_register"
-                            android:text="@string/label_button_register"
+                    <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
                             android:layout_width="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:layout_height="wrap_content"/>
+                            android:id="@+id/button_register"
+                            app:text="@string/label_button_register"
+                            app:style="secondary"/>
 
                 </androidx.appcompat.widget.LinearLayoutCompat>
 

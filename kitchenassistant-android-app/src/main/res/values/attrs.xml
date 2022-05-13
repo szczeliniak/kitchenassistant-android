@@ -25,4 +25,12 @@
         <attr name="maxLength"/>
     </declare-styleable>
 
+    <declare-styleable name="ButtonComponent">
+        <attr name="style" format="enum">
+            <enum name="primary" value="0"/>
+            <enum name="secondary" value="1"/>
+        </attr>
+        <attr name="text" format="reference"/>
+    </declare-styleable>
+
 </resources>

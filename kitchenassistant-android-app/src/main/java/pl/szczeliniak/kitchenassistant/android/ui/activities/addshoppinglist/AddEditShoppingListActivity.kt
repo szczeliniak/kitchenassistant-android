@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingLi
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -61,7 +62,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         binding = ActivityAddEditShoppingListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.shoppingListDate.setOnClickListener {
+        binding.shoppingListDate.onClick = ButtonComponent.OnClick {
             val date = this.date ?: LocalDate.now()
             val dialog = DatePickerDialog(this@AddEditShoppingListActivity, { _, year, month, dayOfMonth ->
                 binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month + 1, dayOfMonth))

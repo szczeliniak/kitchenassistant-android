@@ -30,6 +30,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActi
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.components.AutocompleteInputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
@@ -127,7 +128,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             .allowMultiple(true)
             .build()
 
-        binding.buttonAddPhotos.setOnClickListener { easyImage.openChooser(this) }
+        binding.buttonAddPhotos.onClick = ButtonComponent.OnClick { easyImage.openChooser(this) }
 
         binding.photosRecyclerView.adapter = photosAdapter
     }

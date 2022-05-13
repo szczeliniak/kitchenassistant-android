@@ -44,12 +44,12 @@
                     app:counterEnabled="true"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
                     android:layout_width="match_parent"
-                    android:id="@+id/shopping_list_date"
-                    android:text="@string/label_button_select_date"
                     android:layout_height="wrap_content"
-                    style="@style/ButtonPrimary"/>
+                    android:id="@+id/shopping_list_date"
+                    app:text="@string/label_button_select_date"
+                    app:style="primary"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

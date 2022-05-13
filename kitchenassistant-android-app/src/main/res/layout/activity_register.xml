@@ -56,12 +56,12 @@
                     app:inputType="password"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatButton
-                    style="@style/ButtonPrimary"
-                    android:id="@+id/button_register"
-                    android:text="@string/label_button_register"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_register"
+                    app:text="@string/label_button_register"
+                    app:style="primary"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

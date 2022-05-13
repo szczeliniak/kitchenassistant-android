@@ -85,12 +85,12 @@
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <androidx.appcompat.widget.AppCompatButton
+                <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/button_add_photos"
-                        style="@style/ButtonSecondary"
-                        android:text="@string/label_button_add_photo"/>
+                        app:text="@string/label_button_add_photo"
+                        app:style="secondary"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                         android:nestedScrollingEnabled="false"

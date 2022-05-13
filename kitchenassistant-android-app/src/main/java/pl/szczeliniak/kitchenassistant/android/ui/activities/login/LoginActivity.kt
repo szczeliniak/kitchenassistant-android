@@ -14,8 +14,8 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
+import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -59,8 +59,8 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonLogin.setOnClickListener { handleLoginButtonClick() }
-        binding.buttonRegister.setOnClickListener {
+        binding.buttonLogin.onClick = ButtonComponent.OnClick { handleLoginButtonClick() }
+        binding.buttonRegister.onClick = ButtonComponent.OnClick {
             RegisterActivity.start(this@LoginActivity)
         }
 

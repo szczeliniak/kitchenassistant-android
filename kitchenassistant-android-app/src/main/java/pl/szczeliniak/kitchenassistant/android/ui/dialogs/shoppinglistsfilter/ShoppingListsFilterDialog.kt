@@ -12,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.parcelize.Parcelize
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogShoppingListsFilterBinding
+import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 import java.time.LocalDate
 
@@ -41,7 +42,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogShoppingListsFilterBinding.inflate(layoutInflater)
-        binding.shoppingListDate.setOnClickListener {
+        binding.shoppingListDate.onClick = ButtonComponent.OnClick {
             val date = this.date ?: LocalDate.now()
             val dialog = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
                 binding.shoppingListDate.text = LocalDateUtils.stringify(LocalDate.of(year, month + 1, dayOfMonth))
