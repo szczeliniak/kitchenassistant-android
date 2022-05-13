@@ -21,7 +21,6 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -94,7 +93,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: ShoppingList) {
-                binding.toolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
+                binding.toolbar.init(this@ShoppingListActivity, data.name)
                 binding.shoppingListDescription.setTextOrDefault(data.description)
                 binding.shoppingListDate.setTextOrDefault(LocalDateUtils.stringify(data.date))
 

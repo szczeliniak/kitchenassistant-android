@@ -37,7 +37,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.GroupAdapterUtils.Companion.getItems
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import java.io.File
@@ -92,7 +91,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         receipt?.let { r ->
-            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
+            binding.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
             binding.receiptName.text = r.name
             binding.receiptDescription.text = r.description ?: ""
             binding.receiptAuthor.text = r.author ?: ""
@@ -104,7 +103,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
                 }
             }
         } ?: kotlin.run {
-            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
+            binding.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
         }
 
         binding.tag.setAdapter(tagsArrayAdapter)

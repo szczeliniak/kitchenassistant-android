@@ -22,7 +22,6 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
@@ -84,9 +83,9 @@ class AddEditShoppingListActivity : AppCompatActivity() {
                     )
                 )
             }
-            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_edit_shopping_list)
+            binding.toolbar.init(this, R.string.title_activity_edit_shopping_list)
         } ?: kotlin.run {
-            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
+            binding.toolbar.init(this, R.string.title_activity_new_shopping_list)
         }
         binding.shoppingListName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
             if (name.isEmpty()) {

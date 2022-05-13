@@ -19,7 +19,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragm
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptinfo.ReceiptInfoFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptingredients.ReceiptIngredientsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptsteps.ReceiptStepsFragment
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
@@ -81,7 +80,7 @@ class ReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Receipt) {
-                binding.toolbarLayout.toolbar.init(this@ReceiptActivity, data.name)
+                binding.toolbar.init(this@ReceiptActivity, data.name)
                 receipt = data
                 observers.forEach { it.onReceiptChanged() }
             }

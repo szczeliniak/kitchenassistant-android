@@ -24,7 +24,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.Add
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -66,7 +65,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityArchviedShoppingListsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_archived_shopping_lists)
+        binding.toolbar.init(this, R.string.title_activity_archived_shopping_lists)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)

@@ -13,7 +13,6 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.archivedshoppinglists.ArchivedShoppingListsActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbarLayout.toolbar.init(this, R.drawable.icon_menu) {
+        binding.toolbar.init(this, R.drawable.icon_menu) {
             binding.drawerLayout.open()
         }
 

@@ -9,18 +9,6 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="InputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="errorEnabled">true</item>
-        <item name="counterEnabled">false</item>
-        <item name="endIconMode">clear_text</item>
-        <item name="counterTextColor">@color/secondary_dark</item>
-    </style>
-
-    <style name="ProgressBar">
-        <item name="colorAccent">@color/secondary_dark</item>
-        <item name="android:layout_gravity">center</item>
-    </style>
-
     <style name="Toolbar" parent="ThemeOverlay.MaterialComponents.ActionBar">
         <item name="android:textColor">@color/black</item>
         <item name="android:textColorPrimary">@color/white</item>
