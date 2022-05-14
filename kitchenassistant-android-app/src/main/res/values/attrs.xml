@@ -50,6 +50,7 @@
             <enum name="fieldLabel" value="0"/>
             <enum name="fieldValue" value="1"/>
             <enum name="fieldDescription" value="2"/>
+            <enum name="message" value="3"/>
         </attr>
         <attr name="url" format="boolean"/>
         <attr name="multiline" format="boolean"/>

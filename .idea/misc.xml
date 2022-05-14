@@ -19,7 +19,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/chip.xml" value="0.2546875" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_autocomplete_input.xml" value="0.37604166666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_button.xml" value="0.2598958333333333" />
-        <entry key="kitchenassistant-android-app/src/main/res/layout/component_empty_message_view.xml" value="0.12639311043566362" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/component_empty_message_view.xml" value="0.25" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_floating_action_button.xml" value="0.1403242147922999" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_input.xml" value="0.20989583333333334" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_progress_bar.xml" value="0.37604166666666666" />

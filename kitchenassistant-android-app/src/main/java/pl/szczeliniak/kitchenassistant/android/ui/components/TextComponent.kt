@@ -51,6 +51,9 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
                 2 -> {
                     applyFieldDescription()
                 }
+                3 -> {
+                    applyMessage()
+                }
             }
 
 
@@ -73,7 +76,6 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
 
     }
 
-
     private fun applyFieldLabel() {
         binding.text.isAllCaps = true
         binding.text.setTextColor(resources.getColor(R.color.secondary_dark, null))
@@ -88,6 +90,13 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
     private fun applyFieldDescription() {
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_small))
         binding.text.typeface = resources.getFont(R.font.roboto_light)
+    }
+
+    private fun applyMessage() {
+        binding.text.isAllCaps = true
+        binding.text.typeface = resources.getFont(R.font.roboto_light)
+        binding.text.letterSpacing = 0.1F
+        binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_big))
     }
 
     var text: String? = null
