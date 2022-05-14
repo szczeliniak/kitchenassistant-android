@@ -33,4 +33,9 @@
         <attr name="text" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="FloatingActionButtonComponent">
+        <attr name="drawable" format="reference"/>
+        <attr name="description" format="reference"/>
+    </declare-styleable>
+
 </resources>

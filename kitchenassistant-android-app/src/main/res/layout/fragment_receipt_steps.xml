@@ -5,19 +5,25 @@
         android:layout_width="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:id="@+id/recycler_view"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:id="@+id/layout">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:id="@+id/recycler_view"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
             android:id="@+id/button_add_step"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/icon_add"
-            android:contentDescription="@string/description_add_step"
-            style="@style/FloatingActionButton"
+            app:drawable="@drawable/icon_add"
+            app:description="@string/description_add_step"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
+import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
@@ -43,7 +44,7 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptIngredientsBinding.inflate(inflater)
         binding.recyclerView.adapter = ingredientsAdapter
-        binding.buttonAddIngredient.setOnClickListener { showAddIngredientDialog() }
+        binding.buttonAddIngredient.onClick = FloatingActionButtonComponent.OnClick { showAddIngredientDialog() }
         return binding.root
     }
 
@@ -76,9 +77,9 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
         receipt?.let { r ->
             ingredientsAdapter.clear()
             if (r.ingredients.isEmpty()) {
-                binding.root.showEmptyIcon(requireActivity())
+                binding.layout.showEmptyIcon(requireActivity())
             } else {
-                binding.root.hideEmptyIcon()
+                binding.layout.hideEmptyIcon()
                 r.ingredients.forEach { ingredient ->
                     ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { receiptId, i ->
                         viewModel.delete(receiptId, i.id).observe(viewLifecycleOwner) {

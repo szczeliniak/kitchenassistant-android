@@ -18,6 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
@@ -33,10 +34,12 @@ class ShoppingListActivity : AppCompatActivity() {
 
     companion object {
         private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"
+        private const val SHOPPING_LIST_IS_ARCHIVED_EXTRA = "SHOPPING_LIST_IS_ARCHIVED_EXTRA"
 
-        fun start(context: Context, shoppingListId: Int) {
+        fun start(context: Context, shoppingListId: Int, isArchived: Boolean) {
             val intent = Intent(context, ShoppingListActivity::class.java)
             intent.putExtra(SHOPPING_LIST_ID_EXTRA, shoppingListId)
+            intent.putExtra(SHOPPING_LIST_IS_ARCHIVED_EXTRA, isArchived)
             context.startActivity(intent)
         }
     }
@@ -77,8 +80,12 @@ class ShoppingListActivity : AppCompatActivity() {
 
         binding.recyclerView.adapter = itemsAdapter
 
-        binding.buttonAddShoppingListItem.setOnClickListener {
-            AddEditShoppingListItemDialog.show(supportFragmentManager, shoppingListId)
+        if (isArchived) {
+            binding.root.removeView(binding.buttonAddShoppingListItem)
+        } else {
+            binding.buttonAddShoppingListItem.onClick = FloatingActionButtonComponent.OnClick {
+                AddEditShoppingListItemDialog.show(supportFragmentManager, shoppingListId)
+            }
         }
     }
 
@@ -192,7 +199,9 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_shopping_list, menu)
+        if (!isArchived) {
+            menuInflater.inflate(R.menu.activity_shopping_list, menu)
+        }
         return true
     }
 
@@ -212,6 +221,11 @@ class ShoppingListActivity : AppCompatActivity() {
     private val shoppingListId: Int
         get() {
             return intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
+        }
+
+    private val isArchived: Boolean
+        get() {
+            return intent.getBooleanExtra(SHOPPING_LIST_IS_ARCHIVED_EXTRA, false)
         }
 
 }

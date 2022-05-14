@@ -121,7 +121,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             override fun onSuccess(data: Int) {
                 eventBus.post(ReloadShoppingListsEvent())
                 if (shoppingList == null) {
-                    ShoppingListActivity.start(this@AddEditShoppingListActivity, data)
+                    ShoppingListActivity.start(this@AddEditShoppingListActivity, data, false)
                 }
                 finish()
             }

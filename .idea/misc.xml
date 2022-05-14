@@ -20,6 +20,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_autocomplete_input.xml" value="0.37604166666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_button.xml" value="0.2598958333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_empty_message_view.xml" value="0.12639311043566362" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/component_floating_action_button.xml" value="0.1403242147922999" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_input.xml" value="0.20989583333333334" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_progress_bar.xml" value="0.37604166666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/component_progress_spinner.xml" value="0.1828774062816616" />
@@ -37,7 +38,9 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/empty_message_view.xml" value="0.2598958333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_info.xml" value="0.25" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_ingredients.xml" value="0.223731884057971" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_steps.xml" value="0.2234375" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipts.xml" value="0.1" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_shopping_lists.xml" value="0.2234375" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_form.xml" value="0.17395833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_header.xml" value="0.18072916666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_ingredient.xml" value="0.3020833333333333" />

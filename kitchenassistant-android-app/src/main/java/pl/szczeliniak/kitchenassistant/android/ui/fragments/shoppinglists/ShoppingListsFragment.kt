@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
@@ -71,7 +72,8 @@ class ShoppingListsFragment : Fragment() {
         ) { viewModel.reloadShoppingLists(it, searchView.query.toString(), filter?.date) }
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
-        binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
+        binding.buttonAddShoppingList.onClick =
+            FloatingActionButtonComponent.OnClick { AddEditShoppingListActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -124,7 +126,7 @@ class ShoppingListsFragment : Fragment() {
                         binding.layout.hideEmptyIcon()
                         data.shoppingLists.forEach { shoppingList ->
                             adapter.add(ShoppingListItem(requireContext(), shoppingList, {
-                                ShoppingListActivity.start(requireContext(), shoppingList.id)
+                                ShoppingListActivity.start(requireContext(), shoppingList.id, false)
                             }, {
                                 viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                     deleteShoppingListLoadingStateHandler.handle(r)

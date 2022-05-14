@@ -12,6 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
+import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditstep.AddEditStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
@@ -42,7 +43,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptStepsBinding.inflate(inflater)
         binding.recyclerView.adapter = stepsAdapter
-        binding.buttonAddStep.setOnClickListener { showAddStepDialog() }
+        binding.buttonAddStep.onClick = FloatingActionButtonComponent.OnClick { showAddStepDialog() }
         return binding.root
     }
 
@@ -75,9 +76,9 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
         receipt?.let { r ->
             stepsAdapter.clear()
             if (r.steps.isEmpty()) {
-                binding.root.showEmptyIcon(requireActivity())
+                binding.layout.showEmptyIcon(requireActivity())
             } else {
-                binding.root.hideEmptyIcon()
+                binding.layout.hideEmptyIcon()
                 r.steps.forEach { step ->
                     stepsAdapter.add(StepItem(requireContext(), r.id, step, { receiptId, s ->
                         viewModel.delete(receiptId, s.id).observe(viewLifecycleOwner) {
