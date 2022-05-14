@@ -18,14 +18,15 @@
                 android:layout_height="wrap_content">
 
             <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:type="fieldLabel"
                     app:text="@string/label_receipt_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_author"
-                    tools:text="Adam Malysz"
-                    style="@style/TextPrimary"
+                    app:type="fieldValue"
+                    tools:text="@string/label_receipt_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -37,14 +38,15 @@
                 android:layout_height="wrap_content">
 
             <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:type="fieldLabel"
                     app:text="@string/label_receipt_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_category"
+                    app:type="fieldValue"
                     tools:text="Category name"
-                    style="@style/TextPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -56,15 +58,16 @@
                 android:layout_height="wrap_content">
 
             <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:type="fieldLabel"
                     app:text="@string/label_receipt_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_url"
+                    app:type="fieldValue"
+                    app:url="true"
                     tools:text="https://www.google.pl"
-                    style="@style/TextPrimary"
-                    android:autoLink="web"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -76,15 +79,16 @@
                 android:layout_height="wrap_content">
 
             <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:type="fieldLabel"
                     app:text="@string/label_receipt_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_tags"
+                    app:type="fieldValue"
+                    app:multiline="true"
                     tools:text="Tag1, Tag2, Tag3"
-                    style="@style/TextPrimary"
-                    android:inputType="textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -96,15 +100,16 @@
                 android:layout_height="wrap_content">
 
             <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:type="fieldLabel"
                     app:text="@string/label_receipt_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_description"
+                    app:type="fieldValue"
+                    app:multiline="true"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum convallis imperdiet sollicitudin. Nulla maximus, velit non mollis ornare, dui sem lobortis mauris, vitae auctor nulla odio nec nulla. Nulla rutrum felis orci, quis tristique diam auctor non. Aliquam erat volutpat. Sed blandit est neque, id viverra orci luctus vel."
-                    style="@style/TextPrimary"
-                    android:inputType="textMultiLine"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

@@ -23,10 +23,6 @@
         <item name="android:maxLines">1</item>
     </style>
 
-    <style name="TextPrimary" parent="Text">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-    </style>
-
     <style name="TextSecondary" parent="Text">
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/roboto_light</item>

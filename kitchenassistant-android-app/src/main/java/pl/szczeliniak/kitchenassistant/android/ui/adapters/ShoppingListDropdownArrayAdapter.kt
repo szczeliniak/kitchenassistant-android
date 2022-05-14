@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
@@ -14,10 +13,6 @@ import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return prepareView(position, convertView, parent)
-    }
-
-    private fun prepareView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
         val binding: DropdownShoppingListBinding?
 
@@ -43,12 +38,12 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
         return binding.root
     }
 
-    override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
-        return prepareView(position, convertView, parent)
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return getView(position, convertView, parent)
     }
 
     data class ViewHolder(
-        val nameTextView: AppCompatTextView,
+        val nameTextView: TextComponent,
         val dateTextView: TextComponent
     )
 

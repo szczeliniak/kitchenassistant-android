@@ -46,6 +46,20 @@
 
     <declare-styleable name="TextComponent">
         <attr name="text"/>
+        <attr name="type" format="enum">
+            <enum name="fieldLabel" value="0"/>
+            <enum name="fieldValue" value="1"/>
+        </attr>
+        <attr name="url" format="boolean"/>
+        <attr name="multiline" format="boolean"/>
+        <attr name="alignment" format="enum">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="center" value="2"/>
+        </attr>
+        <attr name="iconAfterText" format="reference"/>
+        <attr name="iconAfterTextColor" format="reference"/>
+        <attr name="iconAfterTextDescription" format="reference"/>
     </declare-styleable>
 
 </resources>

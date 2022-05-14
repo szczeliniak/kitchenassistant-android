@@ -25,7 +25,7 @@ class ReceiptItem constructor(
         binding.receiptDescription.fillOrHide(receipt.description, binding.receiptDescription)
         binding.root.setOnClickListener { onClick.onClick(receipt) }
         binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
-        binding.receiptIsFavorite.visibility = if (receipt.favorite) View.VISIBLE else View.GONE
+        binding.receiptName.showIcon(receipt.favorite)
     }
 
     override fun getLayout(): Int {

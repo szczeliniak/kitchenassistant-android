@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
 
 class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(context, 0, ArrayList()) {
 
@@ -48,7 +48,7 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
     }
 
     data class ViewHolder(
-        val nameTextView: AppCompatTextView
+        val nameTextView: TextComponent
     )
 
 }

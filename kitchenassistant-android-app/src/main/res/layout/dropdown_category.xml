@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatTextView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        style="@style/TextPrimary"
+<pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
         android:padding="@dimen/padding_margin_medium"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:type="fieldValue"
+        tools:text="Shopping list name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

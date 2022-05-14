@@ -44,10 +44,12 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_shopping_lists.xml" value="0.2234375" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_form.xml" value="0.17395833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_header.xml" value="0.18072916666666666" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_category.xml" value="0.15353260869565216" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_ingredient.xml" value="0.3020833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_receipt.xml" value="0.25" />
-        <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_shopping_list.xml" value="0.5" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_shopping_list.xml" value="0.33" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_shopping_list_item.xml" value="0.33" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_step.xml" value="0.15307971014492755" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/photo.xml" value="0.23229166666666667" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/progress_spinner.xml" value="0.37604166666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/toolbar.xml" value="0.2598958333333333" />

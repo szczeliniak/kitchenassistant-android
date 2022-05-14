@@ -13,11 +13,11 @@
             android:layout_weight="1"
             android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                tools:text="Step name"
-                style="@style/TextPrimary"
-                android:gravity="center"
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:id="@+id/step_name"
+                app:type="fieldValue"
+                tools:text="Step name"
+                app:alignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

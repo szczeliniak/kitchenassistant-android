@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/text"
+
+<androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:text="@string/label_shopping_list_description"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:textColor="@color/secondary_dark"
-        android:fontFamily="@font/roboto_bold"
-        android:maxLines="1"
-        android:textAllCaps="true"
-        android:textSize="@dimen/text_size_tiny"
-        android:layout_height="wrap_content"/>
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/text"
+            tools:text="Some example of text"
+            android:layout_width="wrap_content"
+            android:fontFamily="@font/roboto_regular"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:layout_height="wrap_content"/>
+
+    <ImageView
+            android:layout_width="wrap_content"
+            android:paddingHorizontal="@dimen/padding_margin_tiny"
+            android:id="@+id/icon"
+            tools:tint="@color/black"
+            tools:src="@drawable/icon_star"
+            android:layout_height="match_parent"
+            tools:ignore="ContentDescription"/>
+</androidx.appcompat.widget.LinearLayoutCompat>

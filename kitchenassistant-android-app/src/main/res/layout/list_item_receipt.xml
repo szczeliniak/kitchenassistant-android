@@ -20,6 +20,7 @@
             android:layout_height="wrap_content">
 
         <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                app:type="fieldLabel"
                 tools:text="Adam Malysz"
                 android:layout_width="match_parent"
                 android:id="@+id/receipt_author"
@@ -30,21 +31,15 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:id="@+id/receipt_name"
+                    app:type="fieldValue"
                     tools:text="Receipt name"
-                    style="@style/TextPrimary"
+                    app:iconAfterText="@drawable/icon_star"
+                    app:iconAfterTextColor="@color/secondary"
+                    app:iconAfterTextDescription="@string/description_receipt_is_favorite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:src="@drawable/icon_star"
-                    android:paddingHorizontal="@dimen/padding_margin_tiny"
-                    app:tint="@color/secondary"
-                    android:id="@+id/receipt_is_favorite"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@string/description_receipt_is_favorite"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

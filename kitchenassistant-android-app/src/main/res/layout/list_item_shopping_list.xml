@@ -20,15 +20,16 @@
             android:layout_height="wrap_content">
 
         <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                app:type="fieldLabel"
                 tools:text="01-01-2022"
                 android:layout_width="match_parent"
                 android:id="@+id/shopping_list_date"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:id="@+id/shopping_list_name"
+                app:type="fieldValue"
                 tools:text="Shopping list name"
-                style="@style/TextPrimary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
