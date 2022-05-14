@@ -7,11 +7,10 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextOverLine"
+    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
             tools:text="01-01-1111"
-            android:id="@+id/shopping_list_date"
             android:layout_width="match_parent"
+            android:id="@+id/shopping_list_date"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView

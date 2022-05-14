@@ -17,9 +17,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_receipt_author"
-                    style="@style/TextOverLine"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:text="@string/label_receipt_author"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -37,9 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_receipt_category"
-                    style="@style/TextOverLine"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:text="@string/label_receipt_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -57,9 +55,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_receipt_url"
-                    style="@style/TextOverLine"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:text="@string/label_receipt_url"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -78,9 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_receipt_tags"
-                    style="@style/TextOverLine"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:text="@string/label_receipt_tags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -99,9 +95,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_receipt_description"
-                    style="@style/TextOverLine"
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                    app:text="@string/label_receipt_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

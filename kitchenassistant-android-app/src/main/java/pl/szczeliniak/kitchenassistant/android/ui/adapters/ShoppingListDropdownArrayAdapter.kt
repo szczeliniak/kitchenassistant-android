@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
@@ -48,7 +49,7 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
 
     data class ViewHolder(
         val nameTextView: AppCompatTextView,
-        val dateTextView: AppCompatTextView
+        val dateTextView: TextComponent
     )
 
 }

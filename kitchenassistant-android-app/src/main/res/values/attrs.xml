@@ -4,6 +4,7 @@
     <attr name="counterEnabled" format="boolean"/>
     <attr name="maxLength" format="integer"/>
     <attr name="icon" format="reference"/>
+    <attr name="text" format="reference"/>
 
     <declare-styleable name="InputComponent">
         <attr name="hint"/>
@@ -31,7 +32,7 @@
             <enum name="primary" value="0"/>
             <enum name="secondary" value="1"/>
         </attr>
-        <attr name="text" format="reference"/>
+        <attr name="text"/>
     </declare-styleable>
 
     <declare-styleable name="FloatingActionButtonComponent">
@@ -39,8 +40,12 @@
         <attr name="description" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="IconButtonComponent">s
+    <declare-styleable name="IconButtonComponent">
         <attr name="icon"/>
+    </declare-styleable>
+
+    <declare-styleable name="TextComponent">
+        <attr name="text"/>
     </declare-styleable>
 
 </resources>

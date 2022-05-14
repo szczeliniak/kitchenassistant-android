@@ -19,11 +19,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/shopping_list_date"
-                tools:text="Adam Malysz"
-                style="@style/TextOverLine"
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                tools:text="01-01-2022"
                 android:layout_width="match_parent"
+                android:id="@+id/shopping_list_date"
                 android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
