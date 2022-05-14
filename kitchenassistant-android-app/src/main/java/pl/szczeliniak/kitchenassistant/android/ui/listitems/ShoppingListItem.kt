@@ -7,6 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
@@ -22,7 +23,7 @@ class ShoppingListItem constructor(
         binding.shoppingListName.text = shoppingList.name
         binding.shoppingListDescription.fillOrHide(shoppingList.description, binding.shoppingListDescription)
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
         shoppingList.date?.let {
             binding.shoppingListDate.text = LocalDateUtils.stringify(it)
         } ?: run {

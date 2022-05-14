@@ -101,7 +101,7 @@
             android:id="@+id/button_add_shopping_list_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:drawable="@drawable/icon_add"
+            app:icon="@drawable/icon_add"
             app:description="@string/description_add_shopping_list_item"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

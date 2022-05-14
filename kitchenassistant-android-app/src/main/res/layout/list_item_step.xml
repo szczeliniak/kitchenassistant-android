@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
         style="@style/BaseLayout"
         android:layout_width="match_parent"
@@ -31,12 +31,10 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-            android:layout_gravity="center"
-            style="@style/TransparentImageButton"
-            android:src="@drawable/icon_more"
+    <pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
             android:id="@+id/button_more"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:icon="@drawable/icon_more"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

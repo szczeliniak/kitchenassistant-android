@@ -26,7 +26,7 @@ class FloatingActionButtonComponent(context: Context, attributeSet: AttributeSet
         binding = ComponentFloatingActionButtonBinding.inflate(LayoutInflater.from(context), this, true)
 
         context.theme.obtainStyledAttributes(attributeSet, R.styleable.FloatingActionButtonComponent, 0, 0).apply {
-            binding.fab.setImageDrawable(getDrawable(R.styleable.FloatingActionButtonComponent_drawable))
+            binding.fab.setImageDrawable(getDrawable(R.styleable.FloatingActionButtonComponent_icon))
             binding.fab.contentDescription = getString(R.styleable.FloatingActionButtonComponent_description) ?: ""
         }
 

@@ -7,6 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
 class ReceiptItem constructor(
@@ -23,7 +24,7 @@ class ReceiptItem constructor(
         binding.receiptAuthor.fillOrHide(receipt.author, binding.receiptAuthor)
         binding.receiptDescription.fillOrHide(receipt.description, binding.receiptDescription)
         binding.root.setOnClickListener { onClick.onClick(receipt) }
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
         binding.receiptIsFavorite.visibility = if (receipt.favorite) View.VISIBLE else View.GONE
     }
 

@@ -7,6 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListItemBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
 
 class ShoppingListItemItem constructor(
     private val context: Context,
@@ -33,7 +34,7 @@ class ShoppingListItemItem constructor(
             binding.shoppingListItemReceiptName.visibility = View.GONE
         }
 
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

@@ -7,6 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemIngredientBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
+import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
 
 class IngredientItem constructor(
     private val context: Context,
@@ -21,7 +22,7 @@ class IngredientItem constructor(
     override fun bind(binding: ListItemIngredientBinding, position: Int) {
         binding.ingredientName.text = ingredient.name
         binding.ingredientQuantity.text = ingredient.quantity
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

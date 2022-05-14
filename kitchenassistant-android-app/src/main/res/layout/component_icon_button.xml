@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatImageButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_gravity="center"
+        android:src="@drawable/icon_more"
+        android:background="@android:color/transparent"
+        android:tint="@color/black"
+        android:padding="@dimen/padding_margin_tiny"
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:foreground="?attr/selectableItemBackground"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_height="wrap_content"/>

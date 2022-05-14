@@ -42,14 +42,13 @@
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.AppCompatImageButton
+    <pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            style="@style/TransparentImageButton"
-            android:src="@drawable/icon_more"
             android:id="@+id/button_more"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:icon="@drawable/icon_more"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

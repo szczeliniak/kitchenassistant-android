@@ -85,40 +85,6 @@
         <item name="android:textColor">@color/primary_dark</item>
     </style>
 
-    <style name="Button">
-        <item name="android:paddingTop">@dimen/padding_margin_medium</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_medium</item>
-        <item name="android:textSize">@dimen/text_size_small</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.1</item>
-        <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="android:foreground">?attr/selectableItemBackground</item>
-        <item name="android:layout_gravity">center_horizontal</item>
-        <item name="android:focusable">true</item>
-        <item name="android:clickable">true</item>
-    </style>
-
-    <style name="ButtonPrimary" parent="Button">
-        <item name="android:backgroundTint">@color/primary_dark</item>
-    </style>
-
-    <style name="ButtonSecondary" parent="Button">
-        <item name="android:backgroundTint">@color/secondary_dark</item>
-    </style>
-
-    <style name="TransparentImageButton" parent="Button">
-        <item name="android:background">@android:color/transparent</item>
-        <item name="android:padding">@dimen/padding_margin_tiny</item>
-        <item name="android:tint">@color/black</item>
-    </style>
-
-    <style name="FloatingActionButton" parent="Button">
-        <item name="backgroundTint">@color/secondary</item>
-        <item name="android:layout_marginBottom">@dimen/padding_margin_medium</item>
-        <item name="android:layout_marginEnd">@dimen/padding_margin_medium</item>
-    </style>
-
     <style name="BaseLayout">
         <item name="android:padding">@dimen/padding_margin_medium</item>
     </style>
