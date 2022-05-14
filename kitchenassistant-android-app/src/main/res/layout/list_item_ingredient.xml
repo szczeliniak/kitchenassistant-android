@@ -7,23 +7,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
             android:layout_gravity="center_vertical"
-            tools:text="Name"
-            style="@style/TextSecondary"
-            android:textColor="@color/secondary_dark"
-            android:layout_width="0dp"
-            android:gravity="center"
-            android:layout_weight="1"
             android:id="@+id/ingredient_name"
+            app:type="fieldDescription"
+            tools:text="Name"
+            app:alignment="center"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
             android:layout_gravity="center_vertical"
-            tools:text="Quantity"
-            style="@style/TextSecondary"
-            android:gravity="center"
             android:id="@+id/ingredient_quantity"
+            app:type="fieldDescription"
+            tools:text="Quantity"
+            app:alignment="center"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"/>

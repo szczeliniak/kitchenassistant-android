@@ -24,35 +24,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:layout_gravity="center_vertical"
-                    tools:text="Name"
-                    style="@style/TextSecondary"
-                    android:gravity="center"
-                    android:layout_width="0dp"
-                    android:textColor="@color/secondary_dark"
-                    android:layout_weight="1"
                     android:id="@+id/shopping_list_item_name"
+                    app:type="fieldDescription"
+                    tools:text="Name"
+                    app:alignment="center"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                     android:layout_gravity="center_vertical"
-                    tools:text="Quantity"
-                    android:gravity="center"
-                    style="@style/TextSecondary"
                     android:id="@+id/shopping_list_item_quantity"
+                    app:type="fieldDescription"
+                    tools:text="Quantity"
+                    app:alignment="center"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:layout_gravity="center_vertical"
-                tools:text="Quantity"
-                android:gravity="center"
-                style="@style/TextSecondary"
                 android:id="@+id/shopping_list_item_receipt_name"
+                app:type="fieldDescription"
+                tools:text="Receipt name"
+                app:alignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

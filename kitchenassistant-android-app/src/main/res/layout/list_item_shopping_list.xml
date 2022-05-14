@@ -33,10 +33,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:id="@+id/shopping_list_description"
+                app:type="fieldDescription"
                 tools:text="Description"
-                style="@style/TextSecondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

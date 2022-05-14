@@ -43,10 +43,10 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:id="@+id/receipt_description"
-                tools:text="Description"
-                style="@style/TextSecondary"
+                app:type="fieldDescription"
+                tools:text="Receipt description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

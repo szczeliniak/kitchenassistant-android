@@ -21,11 +21,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                tools:text="Step description"
-                style="@style/TextSecondary"
-                android:gravity="center"
+        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
                 android:id="@+id/step_description"
+                app:type="fieldDescription"
+                tools:text="Step description"
+                app:alignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
