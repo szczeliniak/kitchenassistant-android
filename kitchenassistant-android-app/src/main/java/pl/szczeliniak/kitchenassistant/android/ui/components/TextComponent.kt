@@ -57,6 +57,9 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
                 4 -> {
                     applyDialogTitle()
                 }
+                5 -> {
+                    applyAppName()
+                }
             }
 
 
@@ -74,6 +77,13 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
             } else {
                 binding.icon.visibility = View.GONE
             }
+
+            binding.text.setTextColor(
+                getColor(
+                    R.styleable.TextComponent_textColor,
+                    binding.text.currentTextColor
+                )
+            )
 
         }
 
@@ -107,6 +117,14 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
         binding.text.isAllCaps = true
         binding.text.letterSpacing = 0.1F
         binding.text.setTextColor(resources.getColor(R.color.primary_dark, null))
+    }
+
+    private fun applyAppName() {
+        binding.text.setTextColor(resources.getColor(R.color.white, null))
+        binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_medium))
+        binding.text.isAllCaps = true
+        binding.text.letterSpacing = 0.1F
+        binding.text.typeface = resources.getFont(R.font.roboto_light)
     }
 
     var text: String? = null

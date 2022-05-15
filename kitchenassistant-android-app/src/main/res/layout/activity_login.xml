@@ -30,8 +30,12 @@
                         android:layout_gravity="center"
                         android:src="@drawable/logo"/>
 
-                <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextApplicationHeaderName"
+                <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+                        android:id="@+id/receipt_author"
+                        app:type="appName"
+                        app:textColor="@color/black"
+                        app:text="@string/app_name"
+                        app:alignment="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
