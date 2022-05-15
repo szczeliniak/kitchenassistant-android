@@ -60,8 +60,10 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
                 5 -> {
                     applyAppName()
                 }
+                6 -> {
+                    applyAppDescription()
+                }
             }
-
 
             val drawable = getDrawable(R.styleable.TextComponent_iconAfterText)
             hasIcon = drawable != null
@@ -125,6 +127,13 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
         binding.text.isAllCaps = true
         binding.text.letterSpacing = 0.1F
         binding.text.typeface = resources.getFont(R.font.roboto_light)
+    }
+
+    private fun applyAppDescription() {
+        binding.text.setTextColor(resources.getColor(R.color.black, null))
+        binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_small))
+        binding.text.letterSpacing = 0.1F
+        binding.text.typeface = resources.getFont(R.font.roboto_thin)
     }
 
     var text: String? = null
