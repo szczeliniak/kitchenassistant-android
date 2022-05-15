@@ -29,9 +29,9 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.components.AutocompleteInputComponent
-import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaButton
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaAutocompleteInput
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
@@ -108,14 +108,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
         binding.tag.setAdapter(tagsArrayAdapter)
         binding.tag.onKeyListener =
-            AutocompleteInputComponent.OnKeyListener { keyCode, event -> onKeyInTagPressed(keyCode, event) }
-        binding.tag.onItemClicked = AutocompleteInputComponent.OnItemClicked {
+            KaAutocompleteInput.OnKeyListener { keyCode, event -> onKeyInTagPressed(keyCode, event) }
+        binding.tag.onItemClicked = KaAutocompleteInput.OnItemClicked {
             addTagChip(tagsArrayAdapter.getItem(it)!!)
         }
 
         binding.receiptCategory.adapter = categoriesDropdownAdapter
 
-        binding.receiptName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.receiptName.onTextChangedValidator = KaInput.OnTextChangedValidator {
             if (name.isEmpty()) {
                 return@OnTextChangedValidator R.string.message_receipt_name_is_empty
             }
@@ -127,7 +127,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             .allowMultiple(true)
             .build()
 
-        binding.buttonAddPhotos.onClick = ButtonComponent.OnClick { easyImage.openChooser(this) }
+        binding.buttonAddPhotos.onClick = KaButton.OnClick { easyImage.openChooser(this) }
 
         binding.photosRecyclerView.adapter = photosAdapter
     }

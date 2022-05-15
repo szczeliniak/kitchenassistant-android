@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -64,7 +64,7 @@ class AddEditStepDialog : DialogFragment() {
 
         addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
 
-        binding.stepName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.stepName.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isNameValid()) {
                 id = R.string.message_step_name_is_empty

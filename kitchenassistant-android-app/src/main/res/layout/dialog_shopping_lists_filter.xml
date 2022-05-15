@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:withPadding="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/BaseLayout"
         android:orientation="vertical">
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
             android:id="@+id/title"
             app:type="dialogTitle"
             app:text="@string/title_dialog_shopping_lists_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaButton
             android:layout_marginVertical="@dimen/padding_margin_medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,4 +22,4 @@
             app:text="@string/label_button_select_date"
             app:style="primary"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:clickable="true"
+        app:withPadding="true"
         android:focusable="true"
         android:background="?selectableItemBackground"
-        style="@style/BaseLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -19,19 +19,19 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content">
 
-        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+        <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                 app:type="fieldLabel"
                 tools:text="Adam Malysz"
                 android:layout_width="match_parent"
                 android:id="@+id/receipt_author"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                     android:id="@+id/receipt_name"
                     app:type="fieldValue"
                     tools:text="Receipt name"
@@ -41,18 +41,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+        <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                 android:id="@+id/receipt_description"
                 app:type="fieldDescription"
                 tools:text="Receipt description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaIconButton
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -61,4 +61,4 @@
             android:layout_height="wrap_content"
             app:icon="@drawable/icon_more"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>

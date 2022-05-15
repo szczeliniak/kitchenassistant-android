@@ -14,8 +14,8 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
-import pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaButton
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -59,12 +59,12 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.buttonLogin.onClick = ButtonComponent.OnClick { handleLoginButtonClick() }
-        binding.buttonRegister.onClick = ButtonComponent.OnClick {
+        binding.buttonLogin.onClick = KaButton.OnClick { handleLoginButtonClick() }
+        binding.buttonRegister.onClick = KaButton.OnClick {
             RegisterActivity.start(this@LoginActivity)
         }
 
-        binding.loginEmail.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.loginEmail.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isEmailValid()) {
                 id = R.string.message_wrong_email
@@ -73,7 +73,7 @@ class LoginActivity : AppCompatActivity() {
             return@OnTextChangedValidator id
         }
 
-        binding.loginPassword.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.loginPassword.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isPasswordValid()) {
                 id = R.string.message_wrong_password

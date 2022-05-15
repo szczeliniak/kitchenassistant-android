@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptStepsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditstep.AddEditStepDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.StepItem
@@ -43,7 +43,7 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptStepsBinding.inflate(inflater)
         binding.recyclerView.adapter = stepsAdapter
-        binding.buttonAddStep.onClick = FloatingActionButtonComponent.OnClick { showAddStepDialog() }
+        binding.buttonAddStep.onClick = KaFloatingActionButton.OnClick { showAddStepDialog() }
         return binding.root
     }
 

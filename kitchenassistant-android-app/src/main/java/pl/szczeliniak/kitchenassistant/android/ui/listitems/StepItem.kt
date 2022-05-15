@@ -7,8 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemStepBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
-import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaIconButton
 
 class StepItem constructor(
     private val context: Context,
@@ -22,7 +21,7 @@ class StepItem constructor(
     override fun bind(binding: ListItemStepBinding, position: Int) {
         binding.stepName.text = String.format("%s. %s", position + 1, step.name)
         binding.stepDescription.fillOrHide(step.description, binding.stepDescription)
-        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
+        binding.buttonMore.onClick = KaIconButton.OnClick { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

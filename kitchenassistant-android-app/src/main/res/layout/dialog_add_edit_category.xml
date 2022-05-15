@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:withPadding="true"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/BaseLayout"
         android:orientation="vertical">
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
             android:id="@+id/title"
             app:type="dialogTitle"
             app:text="@string/title_dialog_add_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
             android:layout_width="match_parent"
             android:id="@+id/category_name"
             app:hint="@string/label_category_name"
@@ -23,4 +23,4 @@
             app:counterEnabled="true"
             android:layout_height="wrap_content"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>

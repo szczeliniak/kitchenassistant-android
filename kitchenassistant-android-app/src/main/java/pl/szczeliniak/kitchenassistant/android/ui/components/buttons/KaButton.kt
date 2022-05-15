@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.buttons
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentButtonBinding
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 
-class ButtonComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class KaButton(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentButtonBinding
 
@@ -31,10 +31,10 @@ class ButtonComponent(context: Context, attributeSet: AttributeSet) : FrameLayou
     init {
         binding = ComponentButtonBinding.inflate(LayoutInflater.from(context), this, true)
 
-        context.theme.obtainStyledAttributes(attributeSet, R.styleable.ButtonComponent, 0, 0).apply {
-            binding.button.text = getString(R.styleable.ButtonComponent_text) ?: ""
+        context.theme.obtainStyledAttributes(attributeSet, R.styleable.KaButton, 0, 0).apply {
+            binding.button.text = getString(R.styleable.KaButton_text) ?: ""
 
-            when (getInt(R.styleable.ButtonComponent_style, 0)) {
+            when (getInt(R.styleable.KaButton_style, 0)) {
                 0 -> applyPrimary()
                 1 -> applySecondary()
             }

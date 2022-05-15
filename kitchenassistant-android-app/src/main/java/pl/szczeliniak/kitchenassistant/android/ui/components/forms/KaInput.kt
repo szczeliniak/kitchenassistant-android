@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.forms
 
 import android.content.Context
 import android.text.InputFilter
@@ -10,7 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentInputBinding
 
-class InputComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class KaInput(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentInputBinding
 
@@ -30,23 +30,23 @@ class InputComponent(context: Context, attributeSet: AttributeSet) : FrameLayout
     init {
         binding = ComponentInputBinding.inflate(LayoutInflater.from(context), this, true)
 
-        context.theme.obtainStyledAttributes(attributeSet, R.styleable.InputComponent, 0, 0).apply {
-            binding.inputEditText.hint = getString(R.styleable.InputComponent_hint) ?: ""
-            binding.inputEditText.inputType = getInputType(getInt(R.styleable.InputComponent_inputType, 0))
+        context.theme.obtainStyledAttributes(attributeSet, R.styleable.KaInput, 0, 0).apply {
+            binding.inputEditText.hint = getString(R.styleable.KaInput_hint) ?: ""
+            binding.inputEditText.inputType = getInputType(getInt(R.styleable.KaInput_inputType, 0))
 
-            val maxLength = getInt(R.styleable.InputComponent_maxLength, 0)
+            val maxLength = getInt(R.styleable.KaInput_maxLength, 0)
             if (maxLength > 0) {
                 binding.inputEditText.filters = arrayOf(InputFilter.LengthFilter(maxLength))
             }
 
-            if (getBoolean(R.styleable.InputComponent_counterEnabled, false)) {
+            if (getBoolean(R.styleable.KaInput_counterEnabled, false)) {
                 binding.inputLayout.isCounterEnabled = true
                 binding.inputLayout.counterMaxLength = maxLength
             } else {
                 binding.inputLayout.isCounterEnabled = false
             }
 
-            binding.inputEditText.minLines = getInt(R.styleable.InputComponent_minLines, 1)
+            binding.inputEditText.minLines = getInt(R.styleable.KaInput_minLines, 1)
 
         }
     }

@@ -17,7 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryReque
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -58,7 +58,7 @@ class AddEditCategoryDialog : DialogFragment() {
             binding.title.text = getString(R.string.title_dialog_edit_category)
         }
 
-        binding.categoryName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.categoryName.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isNameValid()) {
                 id = R.string.message_category_name_is_empty

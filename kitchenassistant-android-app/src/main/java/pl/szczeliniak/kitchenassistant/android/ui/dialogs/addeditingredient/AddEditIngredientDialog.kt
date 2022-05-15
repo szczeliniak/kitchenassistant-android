@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -60,7 +60,7 @@ class AddEditIngredientDialog : DialogFragment() {
 
         saveIngredientLoadingStateHandler = prepareAddIngredientLoadingStateHandler()
 
-        binding.ingredientName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.ingredientName.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isNameValid()) {
                 id = R.string.message_ingredient_name_is_empty
@@ -69,7 +69,7 @@ class AddEditIngredientDialog : DialogFragment() {
             return@OnTextChangedValidator id
         }
 
-        binding.ingredientQuantity.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.ingredientQuantity.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isQuantityValid()) {
                 id = R.string.message_ingredient_quantity_is_empty

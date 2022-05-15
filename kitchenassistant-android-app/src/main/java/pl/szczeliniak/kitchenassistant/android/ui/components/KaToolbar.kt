@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentToolbarBinding
 
-class ToolbarComponent(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
+class KaToolbar(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentToolbarBinding
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.ToolbarComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.KaToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -13,7 +13,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/toolbar"/>
 
-    <androidx.core.widget.NestedScrollView
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaNestedScrollViewLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
@@ -21,13 +21,13 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
                 android:layout_width="match_parent"
-                style="@style/BaseLayout"
+                app:withPadding="true"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_name"
                     app:hint="@string/label_receipt_name"
@@ -36,7 +36,7 @@
                     app:counterEnabled="true"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_author"
                     app:hint="@string/label_receipt_author"
@@ -45,12 +45,12 @@
                     app:counterEnabled="true"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatSpinner
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaDropdown
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_category"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_url"
                     app:hint="@string/label_receipt_url"
@@ -59,7 +59,7 @@
                     app:counterEnabled="true"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/receipt_description"
                     app:hint="@string/label_receipt_description"
@@ -69,7 +69,7 @@
                     app:counterEnabled="true"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.AutocompleteInputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaAutocompleteInput
                     android:layout_width="match_parent"
                     android:id="@+id/tag"
                     app:hint="@string/label_receipt_tag"
@@ -82,19 +82,19 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
                     android:layout_width="match_parent"
                     android:orientation="vertical"
                     android:layout_height="wrap_content">
 
-                <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
+                <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaButton
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/button_add_photos"
                         app:text="@string/label_button_add_photo"
                         app:style="secondary"/>
 
-                <androidx.recyclerview.widget.RecyclerView
+                <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaRecyclerViewLayout
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/button_add_photos"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -102,13 +102,12 @@
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="match_parent"
                         android:id="@+id/photos_recycler_view"
-                        android:layout_height="wrap_content"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                        android:layout_height="wrap_content"/>
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaNestedScrollViewLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>

@@ -18,10 +18,9 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
 import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -83,7 +82,7 @@ class ShoppingListActivity : AppCompatActivity() {
         if (isArchived) {
             binding.root.removeView(binding.buttonAddShoppingListItem)
         } else {
-            binding.buttonAddShoppingListItem.onClick = FloatingActionButtonComponent.OnClick {
+            binding.buttonAddShoppingListItem.onClick = KaFloatingActionButton.OnClick {
                 AddEditShoppingListItemDialog.show(supportFragmentManager, shoppingListId)
             }
         }

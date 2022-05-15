@@ -7,7 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaIconButton
 
 class CategoryItem constructor(
     private val context: Context,
@@ -19,7 +19,7 @@ class CategoryItem constructor(
 
     override fun bind(binding: ListItemCategoryBinding, position: Int) {
         binding.categoryName.text = category.name
-        binding.buttonMore.onClick = IconButtonComponent.OnClick { showPopupMenu(it) }
+        binding.buttonMore.onClick = KaIconButton.OnClick { showPopupMenu(it) }
     }
 
     private fun showPopupMenu(view: View): Boolean {

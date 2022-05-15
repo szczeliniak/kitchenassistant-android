@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.ToolbarComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.KaToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
@@ -13,19 +13,19 @@
             app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/toolbar"/>
 
-    <androidx.core.widget.NestedScrollView
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaNestedScrollViewLayout
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-                style="@style/BaseLayout"
+        <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
                 android:orientation="vertical"
+                app:withPadding="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/register_email"
                     app:hint="@string/form_register_email"
@@ -33,7 +33,7 @@
                     app:inputType="email"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/register_name"
                     app:hint="@string/form_register_name"
@@ -41,7 +41,7 @@
                     app:inputType="text"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/register_password"
                     app:hint="@string/from_register_password"
@@ -49,7 +49,7 @@
                     app:inputType="password"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
                     android:layout_width="match_parent"
                     android:id="@+id/register_password2"
                     app:hint="@string/form_register_password2"
@@ -57,16 +57,16 @@
                     app:inputType="password"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.ButtonComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaButton
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/button_register"
                     app:text="@string/label_button_register"
                     app:style="primary"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaNestedScrollViewLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>
 

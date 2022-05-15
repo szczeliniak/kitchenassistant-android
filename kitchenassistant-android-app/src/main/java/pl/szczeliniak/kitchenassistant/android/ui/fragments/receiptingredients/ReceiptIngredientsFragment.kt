@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
@@ -44,7 +44,7 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptIngredientsBinding.inflate(inflater)
         binding.recyclerView.adapter = ingredientsAdapter
-        binding.buttonAddIngredient.onClick = FloatingActionButtonComponent.OnClick { showAddIngredientDialog() }
+        binding.buttonAddIngredient.onClick = KaFloatingActionButton.OnClick { showAddIngredientDialog() }
         return binding.root
     }
 

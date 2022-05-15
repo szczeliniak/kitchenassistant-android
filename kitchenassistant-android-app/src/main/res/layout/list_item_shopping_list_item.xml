@@ -1,30 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="horizontal"
-        style="@style/BaseLayout"
+        app:withPadding="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatCheckBox
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaCheckbox
             android:id="@+id/shopping_list_item_is_completed"
             android:layout_width="wrap_content"
             android:foregroundGravity="center"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                     android:layout_gravity="center_vertical"
                     android:id="@+id/shopping_list_item_name"
                     app:type="fieldDescription"
@@ -34,7 +35,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
-            <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+            <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                     android:layout_gravity="center_vertical"
                     android:id="@+id/shopping_list_item_quantity"
                     app:type="fieldDescription"
@@ -44,9 +45,9 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"/>
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-        <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+        <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
                 android:layout_gravity="center_vertical"
                 android:id="@+id/shopping_list_item_receipt_name"
                 app:type="fieldDescription"
@@ -55,12 +56,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.LinearLayoutCompat>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaIconButton
             android:id="@+id/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/icon_more"/>
 
-</androidx.appcompat.widget.LinearLayoutCompat>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaLinearLayout>

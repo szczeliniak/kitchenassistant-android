@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
-import pl.szczeliniak.kitchenassistant.android.ui.components.InputComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaInput
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -63,7 +63,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             binding.title.text = getString(R.string.title_dialog_edit_shopping_list_item)
         }
 
-        binding.shoppingListName.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.shoppingListName.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isNameValid()) {
                 id = R.string.message_shopping_list_item_name_is_empty
@@ -72,7 +72,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             return@OnTextChangedValidator id
         }
 
-        binding.shoppingListItemQuantity.onTextChangedValidator = InputComponent.OnTextChangedValidator {
+        binding.shoppingListItemQuantity.onTextChangedValidator = KaInput.OnTextChangedValidator {
             var id: Int? = null
             if (!isQuantityValid()) {
                 id = R.string.message_shopping_list_item_quantity_is_empty

@@ -3,28 +3,28 @@ package pl.szczeliniak.kitchenassistant.android.ui.utils
 import android.content.Context
 import android.view.ViewGroup
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.ui.components.EmptyMessageViewComponent
-import pl.szczeliniak.kitchenassistant.android.ui.components.ProgressSpinnerComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.KaProgressSpinner
+import pl.szczeliniak.kitchenassistant.android.ui.components.views.KaEmptyMessageView
 
 class ViewGroupUtils {
 
     companion object {
         fun ViewGroup.showProgressSpinner(context: Context) {
-            val component = ProgressSpinnerComponent(context, null)
+            val component = KaProgressSpinner(context, null)
             addView(component)
         }
 
         fun ViewGroup.hideProgressSpinner() {
-            this.findViewById<ProgressSpinnerComponent>(R.id.progress_spinner)?.let { this.removeView(it) }
+            this.findViewById<KaProgressSpinner>(R.id.progress_spinner)?.let { this.removeView(it) }
         }
 
         fun ViewGroup.showEmptyIcon(context: Context) {
-            val component = EmptyMessageViewComponent(context, null)
+            val component = KaEmptyMessageView(context, null)
             addView(component)
         }
 
         fun ViewGroup.hideEmptyIcon() {
-            this.findViewById<EmptyMessageViewComponent>(R.id.empty_message_view)?.let { this.removeView(it) }
+            this.findViewById<KaEmptyMessageView>(R.id.empty_message_view)?.let { this.removeView(it) }
         }
     }
 

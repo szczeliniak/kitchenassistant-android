@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.forms
 
 import android.content.Context
 import android.text.InputType
@@ -14,7 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ComponentTextBinding
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 
-class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class KaText(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentTextBinding
 
@@ -23,66 +23,66 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
     init {
         binding = ComponentTextBinding.inflate(LayoutInflater.from(context), this, true)
 
-        context.theme.obtainStyledAttributes(attributeSet, R.styleable.TextComponent, 0, 0).apply {
-            binding.text.text = getString(R.styleable.TextComponent_text)
-            if (getBoolean(R.styleable.TextComponent_url, false)) {
+        context.theme.obtainStyledAttributes(attributeSet, R.styleable.KaText, 0, 0).apply {
+            binding.text.text = getString(R.styleable.KaText_text)
+            if (getBoolean(R.styleable.KaText_url, false)) {
                 binding.text.linksClickable = true
                 Linkify.addLinks(binding.text, Linkify.WEB_URLS)
             }
 
-            when (getInt(R.styleable.TextComponent_alignment, 0)) {
+            when (getInt(R.styleable.KaText_alignment, 0)) {
                 0 -> binding.root.gravity = Gravity.START
                 1 -> binding.root.gravity = Gravity.END
                 2 -> binding.root.gravity = Gravity.CENTER
             }
 
-            if (getBoolean(R.styleable.TextComponent_multiline, false)) {
+            if (getBoolean(R.styleable.KaText_multiline, false)) {
                 binding.text.isSingleLine = false
                 binding.text.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
             }
 
-            when (getInt(R.styleable.TextComponent_type, 0)) {
+            when (getInt(R.styleable.KaText_type, 0)) {
                 0 -> {
-                    applyFieldLabel()
+                    applyFieldLabelStyle()
                 }
                 1 -> {
-                    applyFieldValue()
+                    applyFieldValueStyle()
                 }
                 2 -> {
-                    applyFieldDescription()
+                    applyFieldDescriptionStyle()
                 }
                 3 -> {
-                    applyMessage()
+                    applyMessageStyle()
                 }
                 4 -> {
-                    applyDialogTitle()
+                    applyDialogTitleStyle()
                 }
                 5 -> {
-                    applyAppName()
+                    applyAppNameStyle()
                 }
                 6 -> {
-                    applyAppDescription()
+                    applyAppDescriptionStyle()
                 }
             }
 
-            val drawable = getDrawable(R.styleable.TextComponent_iconAfterText)
+            val drawable = getDrawable(R.styleable.KaText_iconAfterText)
             hasIcon = drawable != null
             if (hasIcon) {
                 binding.icon.setImageDrawable(drawable)
                 binding.icon.setColorFilter(
                     getColor(
-                        R.styleable.TextComponent_iconAfterTextColor,
+                        R.styleable.KaText_iconAfterTextColor,
                         resources.getColor(R.color.black, null)
                     )
                 )
-                binding.icon.contentDescription = getString(R.styleable.TextComponent_iconAfterTextDescription) ?: ""
+                binding.icon.contentDescription = getString(R.styleable.KaText_iconAfterTextDescription) ?: ""
             } else {
                 binding.icon.visibility = View.GONE
             }
 
             binding.text.setTextColor(
                 getColor(
-                    R.styleable.TextComponent_textColor,
+                    R.styleable.KaText_textColor,
                     binding.text.currentTextColor
                 )
             )
@@ -91,37 +91,37 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
 
     }
 
-    private fun applyFieldLabel() {
+    private fun applyFieldLabelStyle() {
         binding.text.isAllCaps = true
         binding.text.setTextColor(resources.getColor(R.color.secondary_dark, null))
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_tiny))
         binding.text.typeface = resources.getFont(R.font.roboto_bold)
     }
 
-    private fun applyFieldValue() {
+    private fun applyFieldValueStyle() {
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_medium))
     }
 
-    private fun applyFieldDescription() {
+    private fun applyFieldDescriptionStyle() {
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_small))
         binding.text.typeface = resources.getFont(R.font.roboto_light)
     }
 
-    private fun applyMessage() {
+    private fun applyMessageStyle() {
         binding.text.isAllCaps = true
         binding.text.typeface = resources.getFont(R.font.roboto_light)
         binding.text.letterSpacing = 0.1F
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_big))
     }
 
-    private fun applyDialogTitle() {
+    private fun applyDialogTitleStyle() {
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_medium))
         binding.text.isAllCaps = true
         binding.text.letterSpacing = 0.1F
         binding.text.setTextColor(resources.getColor(R.color.primary_dark, null))
     }
 
-    private fun applyAppName() {
+    private fun applyAppNameStyle() {
         binding.text.setTextColor(resources.getColor(R.color.white, null))
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_medium))
         binding.text.isAllCaps = true
@@ -129,7 +129,7 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
         binding.text.typeface = resources.getFont(R.font.roboto_light)
     }
 
-    private fun applyAppDescription() {
+    private fun applyAppDescriptionStyle() {
         binding.text.setTextColor(resources.getColor(R.color.black, null))
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_small))
         binding.text.letterSpacing = 0.1F

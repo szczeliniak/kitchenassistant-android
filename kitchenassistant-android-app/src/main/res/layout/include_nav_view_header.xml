@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
+        app:withPadding="true"
         android:layout_height="wrap_content"
         android:background="@color/secondary_dark"
-        style="@style/BaseLayout"
         android:backgroundTint="@color/secondary_dark">
 
     <ImageView
@@ -18,7 +18,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:type="appName"
@@ -27,4 +27,4 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>

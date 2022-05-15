@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        app:withPadding="true"
         android:clickable="true"
-        style="@style/BaseLayout"
         android:focusable="true"
         android:background="?selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
             android:id="@+id/category_name"
             app:type="fieldValue"
             tools:text="Shopping list name"
@@ -21,7 +21,7 @@
             app:layout_constraintRight_toLeftOf="@id/button_more"
             android:layout_height="match_parent"/>
 
-    <pl.szczeliniak.kitchenassistant.android.ui.components.IconButtonComponent
+    <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaIconButton
             android:id="@+id/button_more"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,4 +30,4 @@
             app:layout_constraintRight_toRightOf="parent"
             app:icon="@drawable/icon_more"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>

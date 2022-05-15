@@ -20,7 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
@@ -73,7 +73,7 @@ class ShoppingListsFragment : Fragment() {
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddShoppingList.onClick =
-            FloatingActionButtonComponent.OnClick { AddEditShoppingListActivity.start(requireContext()) }
+            KaFloatingActionButton.OnClick { AddEditShoppingListActivity.start(requireContext()) }
         return binding.root
     }
 

@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.buttons
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import androidx.core.view.setMargins
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentFloatingActionButtonBinding
 
-class FloatingActionButtonComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class KaFloatingActionButton(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentFloatingActionButtonBinding
 
@@ -25,9 +25,9 @@ class FloatingActionButtonComponent(context: Context, attributeSet: AttributeSet
     init {
         binding = ComponentFloatingActionButtonBinding.inflate(LayoutInflater.from(context), this, true)
 
-        context.theme.obtainStyledAttributes(attributeSet, R.styleable.FloatingActionButtonComponent, 0, 0).apply {
-            binding.fab.setImageDrawable(getDrawable(R.styleable.FloatingActionButtonComponent_icon))
-            binding.fab.contentDescription = getString(R.styleable.FloatingActionButtonComponent_description) ?: ""
+        context.theme.obtainStyledAttributes(attributeSet, R.styleable.KaFloatingActionButton, 0, 0).apply {
+            binding.fab.setImageDrawable(getDrawable(R.styleable.KaFloatingActionButton_icon))
+            binding.fab.contentDescription = getString(R.styleable.KaFloatingActionButton_description) ?: ""
         }
 
     }

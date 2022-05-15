@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentEmptyMessageViewBinding
 
-class EmptyMessageViewComponent(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
+class KaEmptyMessageView(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentEmptyMessageViewBinding
 

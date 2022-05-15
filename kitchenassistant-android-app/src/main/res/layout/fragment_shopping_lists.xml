@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+<pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaSwipeRefreshLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
                 android:id="@+id/layout"
                 android:layout_height="match_parent"
                 android:layout_width="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
+            <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaRecyclerViewLayout
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     android:layout_width="match_parent"
                     android:id="@+id/recycler_view"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    android:layout_height="match_parent"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>
 
-        <pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+        <pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
                 android:id="@+id/button_add_shopping_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,7 +34,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>
 
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaSwipeRefreshLayout>
 

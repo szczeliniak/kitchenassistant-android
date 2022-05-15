@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentProgressSpinnerBinding
 
-class ProgressSpinnerComponent(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
+class KaProgressSpinner(context: Context, attributeSet: AttributeSet?) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentProgressSpinnerBinding
 

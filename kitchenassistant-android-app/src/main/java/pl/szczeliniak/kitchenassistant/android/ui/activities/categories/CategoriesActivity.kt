@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityCategoriesBin
 import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditcategory.AddEditCategoryDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.CategoryItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
@@ -62,7 +62,7 @@ class CategoriesActivity : AppCompatActivity() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
         binding.root.setOnRefreshListener { viewModel.reloadCategories() }
-        binding.buttonAddCategory.onClick = FloatingActionButtonComponent.OnClick {
+        binding.buttonAddCategory.onClick = KaFloatingActionButton.OnClick {
             AddEditCategoryDialog.show(supportFragmentManager)
         }
     }

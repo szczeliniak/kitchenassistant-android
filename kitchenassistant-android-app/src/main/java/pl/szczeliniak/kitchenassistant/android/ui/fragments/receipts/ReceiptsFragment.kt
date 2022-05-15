@@ -20,7 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
-import pl.szczeliniak.kitchenassistant.android.ui.components.FloatingActionButtonComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.buttons.KaFloatingActionButton
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
@@ -75,7 +75,7 @@ class ReceiptsFragment : Fragment() {
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddReceipt.onClick =
-            FloatingActionButtonComponent.OnClick { AddEditReceiptActivity.start(requireContext()) }
+            KaFloatingActionButton.OnClick { AddEditReceiptActivity.start(requireContext()) }
         return binding.root
     }
 

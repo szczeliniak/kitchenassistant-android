@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.components
+package pl.szczeliniak.kitchenassistant.android.ui.components.forms
 
 import android.content.Context
 import android.text.InputFilter
@@ -11,7 +11,7 @@ import android.widget.ListAdapter
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ComponentAutocompleteInputBinding
 
-class AutocompleteInputComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
+class KaAutocompleteInput(context: Context, attributeSet: AttributeSet) : FrameLayout(context, attributeSet) {
 
     val binding: ComponentAutocompleteInputBinding
 
@@ -45,15 +45,15 @@ class AutocompleteInputComponent(context: Context, attributeSet: AttributeSet) :
     init {
         binding = ComponentAutocompleteInputBinding.inflate(LayoutInflater.from(context), this, true)
 
-        context.theme.obtainStyledAttributes(attributeSet, R.styleable.AutocompleteInputComponent, 0, 0).apply {
-            binding.inputEditText.hint = getString(R.styleable.AutocompleteInputComponent_hint) ?: ""
+        context.theme.obtainStyledAttributes(attributeSet, R.styleable.KaAutocompleteInput, 0, 0).apply {
+            binding.inputEditText.hint = getString(R.styleable.KaAutocompleteInput_hint) ?: ""
 
-            val maxLength = getInt(R.styleable.AutocompleteInputComponent_maxLength, 0)
+            val maxLength = getInt(R.styleable.KaAutocompleteInput_maxLength, 0)
             if (maxLength > 0) {
                 binding.inputEditText.filters = arrayOf(InputFilter.LengthFilter(maxLength))
             }
 
-            if (getBoolean(R.styleable.AutocompleteInputComponent_counterEnabled, false)) {
+            if (getBoolean(R.styleable.KaAutocompleteInput_counterEnabled, false)) {
                 binding.inputLayout.isCounterEnabled = true
                 binding.inputLayout.counterMaxLength = maxLength
             } else {

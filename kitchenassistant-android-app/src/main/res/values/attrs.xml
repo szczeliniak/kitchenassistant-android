@@ -5,8 +5,8 @@
     <attr name="maxLength" format="integer"/>
     <attr name="icon" format="reference"/>
     <attr name="text" format="reference"/>
-
-    <declare-styleable name="InputComponent">
+    <attr name="withPadding" format="boolean"/>
+    <declare-styleable name="KaInput">
         <attr name="hint"/>
         <attr name="maxLength"/>
         <attr name="inputType" format="enum">
@@ -21,13 +21,13 @@
         <attr name="minLines" format="integer"/>
     </declare-styleable>
 
-    <declare-styleable name="AutocompleteInputComponent">
+    <declare-styleable name="KaAutocompleteInput">
         <attr name="hint"/>
         <attr name="counterEnabled"/>
         <attr name="maxLength"/>
     </declare-styleable>
 
-    <declare-styleable name="ButtonComponent">
+    <declare-styleable name="KaButton">
         <attr name="style" format="enum">
             <enum name="primary" value="0"/>
             <enum name="secondary" value="1"/>
@@ -35,16 +35,16 @@
         <attr name="text"/>
     </declare-styleable>
 
-    <declare-styleable name="FloatingActionButtonComponent">
+    <declare-styleable name="KaFloatingActionButton">
         <attr name="icon"/>
         <attr name="description" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="IconButtonComponent">
+    <declare-styleable name="KaIconButton">
         <attr name="icon"/>
     </declare-styleable>
 
-    <declare-styleable name="TextComponent">
+    <declare-styleable name="KaText">
         <attr name="text"/>
         <attr name="textColor" format="reference"/>
         <attr name="type" format="enum">
@@ -66,6 +66,14 @@
         <attr name="iconAfterText" format="reference"/>
         <attr name="iconAfterTextColor" format="reference"/>
         <attr name="iconAfterTextDescription" format="reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="KaConstraintLayout">
+        <attr name="withPadding"/>
+    </declare-styleable>
+
+    <declare-styleable name="KaLinearLayout">
+        <attr name="withPadding"/>
     </declare-styleable>
 
 </resources>

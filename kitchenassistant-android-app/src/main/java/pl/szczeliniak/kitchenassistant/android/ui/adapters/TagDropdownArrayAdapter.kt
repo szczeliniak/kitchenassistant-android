@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Filter
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownTagBinding
-import pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
+import pl.szczeliniak.kitchenassistant.android.ui.components.forms.KaText
 
 class TagDropdownArrayAdapter(context: Context) : ArrayAdapter<String>(context, 0, ArrayList()) {
 
@@ -34,7 +34,7 @@ class TagDropdownArrayAdapter(context: Context) : ArrayAdapter<String>(context, 
     }
 
     data class ViewHolder(
-        val nameTextView: TextComponent
+        val nameTextView: KaText
     )
 
     override fun getFilter(): Filter {

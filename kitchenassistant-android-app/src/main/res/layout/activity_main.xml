@@ -6,13 +6,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout
             xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".ui.activities.main.MainActivity">
 
-        <pl.szczeliniak.kitchenassistant.android.ui.components.ToolbarComponent
+        <pl.szczeliniak.kitchenassistant.android.ui.components.KaToolbar
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
                 android:background="?android:attr/windowBackground"
                 app:menu="@menu/nav_bottom"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </pl.szczeliniak.kitchenassistant.android.ui.components.layouts.KaConstraintLayout>
 
     <com.google.android.material.navigation.NavigationView
             android:id="@+id/nav_view"
