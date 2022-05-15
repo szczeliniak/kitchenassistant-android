@@ -7,10 +7,10 @@
         style="@style/BaseLayout"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
             android:id="@+id/title"
-            android:text="@string/title_dialog_add_category"
-            style="@style/TextDialogTitle"
+            app:type="dialogTitle"
+            app:text="@string/title_dialog_add_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

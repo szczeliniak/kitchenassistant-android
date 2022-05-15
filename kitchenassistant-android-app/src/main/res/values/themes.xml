@@ -53,13 +53,6 @@
         <item name="android:letterSpacing">0.1</item>
     </style>
 
-    <style name="TextDialogTitle" parent="Text">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.1</item>
-        <item name="android:textColor">@color/primary_dark</item>
-    </style>
-
     <style name="BaseLayout">
         <item name="android:padding">@dimen/padding_margin_medium</item>
     </style>

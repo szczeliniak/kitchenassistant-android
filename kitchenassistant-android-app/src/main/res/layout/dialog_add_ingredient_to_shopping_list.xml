@@ -7,10 +7,10 @@
         style="@style/BaseLayout"
         android:orientation="vertical">
 
-    <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/title_dialog_add_ingredient_to_shopping_list"
+    <pl.szczeliniak.kitchenassistant.android.ui.components.TextComponent
             android:id="@+id/title"
-            style="@style/TextDialogTitle"
+            app:type="dialogTitle"
+            app:text="@string/title_dialog_add_ingredient_to_shopping_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

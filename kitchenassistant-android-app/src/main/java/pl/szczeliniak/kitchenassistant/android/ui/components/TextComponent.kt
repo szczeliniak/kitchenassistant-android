@@ -54,6 +54,9 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
                 3 -> {
                     applyMessage()
                 }
+                4 -> {
+                    applyDialogTitle()
+                }
             }
 
 
@@ -97,6 +100,13 @@ class TextComponent(context: Context, attributeSet: AttributeSet) : FrameLayout(
         binding.text.typeface = resources.getFont(R.font.roboto_light)
         binding.text.letterSpacing = 0.1F
         binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_big))
+    }
+
+    private fun applyDialogTitle() {
+        binding.text.setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_size_medium))
+        binding.text.isAllCaps = true
+        binding.text.letterSpacing = 0.1F
+        binding.text.setTextColor(resources.getColor(R.color.primary_dark, null))
     }
 
     var text: String? = null
