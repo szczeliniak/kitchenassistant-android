@@ -19,7 +19,7 @@
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-                style="@style/BaseLayout"
+                style="@style/ContentLayout"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -35,7 +35,7 @@
                         android:maxLength="@integer/max_length_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
+                        style="@style/EditTextEmail"
                         android:id="@+id/register_email"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -51,7 +51,7 @@
                         android:maxLength="@integer/max_length_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
+                        style="@style/EditTextText"
                         android:id="@+id/register_name"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -67,7 +67,7 @@
                         android:maxLength="@integer/max_length_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
+                        style="@style/EditTextPassword"
                         android:id="@+id/register_password"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -82,7 +82,7 @@
                         android:layout_width="match_parent"
                         android:maxLength="@integer/max_length_password"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
+                        style="@style/EditTextPassword"
                         android:id="@+id/register_password2"/>
 
             </com.google.android.material.textfield.TextInputLayout>

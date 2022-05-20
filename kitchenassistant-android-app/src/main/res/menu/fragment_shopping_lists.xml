@@ -6,11 +6,11 @@
             android:title="@string/label_button_search"
             android:icon="@drawable/icon_search"
             app:showAsAction="ifRoom|collapseActionView"
-            android:id="@+id/fragment_shopping_lists_menu_item_search"
+            android:id="@+id/search"
             app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
-            android:id="@+id/fragment_shopping_lists_menu_item_filter"
+            android:id="@+id/filter"
             android:icon="@drawable/icon_filter"
             app:showAsAction="always"
             android:title="@string/label_button_filter"/>

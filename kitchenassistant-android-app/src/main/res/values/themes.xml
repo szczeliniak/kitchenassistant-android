@@ -9,13 +9,6 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>
 
-    <style name="InputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="errorEnabled">true</item>
-        <item name="counterEnabled">false</item>
-        <item name="endIconMode">clear_text</item>
-        <item name="counterTextColor">@color/secondary_dark</item>
-    </style>
-
     <style name="ProgressBar">
         <item name="colorAccent">@color/secondary_dark</item>
         <item name="android:layout_gravity">center</item>
@@ -29,29 +22,90 @@
         <item name="android:textColorHint">@color/white</item>
     </style>
 
-    <style name="Text">
+    <style name="InputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="errorEnabled">true</item>
+        <item name="counterEnabled">false</item>
+        <item name="endIconMode">clear_text</item>
+    </style>
+
+    <style name="InputLayoutWithCounter" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="errorEnabled">true</item>
+        <item name="counterEnabled">true</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="counterTextColor">@color/secondary_dark</item>
+    </style>
+
+    <style name="TextViewAutocomplete" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="EditTextEmail">
+        <item name="android:inputType">textEmailAddress</item>
+    </style>
+
+    <style name="EditTextPassword">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+    <style name="EditTextText">
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="EditTextNumber">
+        <item name="android:inputType">numberDecimal</item>
+    </style>
+
+    <style name="EditTextUrl">
+        <item name="android:inputType">textUri</item>
+    </style>
+
+    <style name="EditTextDescription">
+        <item name="android:minLines">4</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+    <style name="TextViewTitle">
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
         <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
     </style>
 
-    <style name="TextOverLine" parent="Text">
+    <style name="TextViewHeader">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+    </style>
+
+    <style name="TextViewSubheader">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:textColor">@color/secondary_dark</item>
         <item name="android:textSize">@dimen/text_size_tiny</item>
         <item name="android:fontFamily">@font/roboto_bold</item>
     </style>
 
-    <style name="TextPrimary" parent="Text">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-    </style>
-
-    <style name="TextSecondary" parent="Text">
+    <style name="TextViewDescription">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/roboto_light</item>
     </style>
 
-    <style name="TextMessage" parent="Text">
+    <style name="TextViewUrl">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:autoLink">web</item>
+    </style>
+
+    <style name="TextViewMessage">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:maxLines">1</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/roboto_light</item>
@@ -60,8 +114,8 @@
         <item name="android:textSize">@dimen/text_size_big</item>
     </style>
 
-    <style name="TextApplicationHeaderName" parent="Text">
-        <item name="android:textSize">@dimen/text_size_big</item>
+    <style name="TextViewAppName">
+        <item name="android:textSize">@dimen/text_size_medium</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:fontFamily">@font/roboto_light</item>
@@ -71,7 +125,8 @@
         <item name="android:text">@string/app_name</item>
     </style>
 
-    <style name="TextApplicationHeaderDescription" parent="Text">
+    <style name="TextViewAppDescription">
+        <item name="android:maxLines">1</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:letterSpacing">0.1</item>
         <item name="android:fontFamily">@font/roboto_thin</item>
@@ -81,25 +136,9 @@
         <item name="android:text">@string/app_description</item>
     </style>
 
-    <style name="TextNavigationViewApplicationName" parent="Text">
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:text">@string/app_name</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:fontFamily">@font/roboto_light</item>
-        <item name="android:letterSpacing">0.1</item>
-    </style>
-
-    <style name="TextDialogTitle" parent="Text">
-        <item name="android:textSize">@dimen/text_size_medium</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.1</item>
-        <item name="android:textColor">@color/primary_dark</item>
-    </style>
-
-    <style name="Button">
-        <item name="android:paddingTop">@dimen/padding_margin_medium</item>
-        <item name="android:paddingBottom">@dimen/padding_margin_medium</item>
+    <style name="ButtonPrimary">
+        <item name="android:backgroundTint">@color/primary_dark</item>
+        <item name="android:paddingVertical">@dimen/padding_margin_medium</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textAllCaps">true</item>
@@ -111,27 +150,53 @@
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="ButtonPrimary" parent="Button">
-        <item name="android:backgroundTint">@color/primary_dark</item>
-    </style>
-
-    <style name="ButtonSecondary" parent="Button">
+    <style name="ButtonSecondary">
         <item name="android:backgroundTint">@color/secondary_dark</item>
+        <item name="android:paddingVertical">@dimen/padding_margin_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
-    <style name="TransparentImageButton" parent="Button">
+    <style name="ButtonTransparentImage">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:padding">@dimen/padding_margin_tiny</item>
         <item name="android:tint">@color/black</item>
+        <item name="android:paddingVertical">@dimen/padding_margin_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
     </style>
 
-    <style name="FloatingActionButton" parent="Button">
+    <style name="ButtonFloatingAction">
+        <item name="android:paddingVertical">@dimen/padding_margin_medium</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:letterSpacing">0.1</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
         <item name="backgroundTint">@color/secondary</item>
         <item name="android:layout_marginBottom">@dimen/padding_margin_medium</item>
         <item name="android:layout_marginEnd">@dimen/padding_margin_medium</item>
     </style>
 
-    <style name="BaseLayout">
+    <style name="ContentLayout">
         <item name="android:padding">@dimen/padding_margin_medium</item>
     </style>
 

@@ -38,7 +38,7 @@ class PhotoItem constructor(
         popupMenu.inflate(R.menu.photo_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.photo_item_menu_item_delete -> {
+                R.id.delete -> {
                     onDeleteClick?.onClick(this)
                     return@setOnMenuItemClickListener true
                 }

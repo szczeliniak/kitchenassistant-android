@@ -100,4 +100,21 @@
     <string name="label_button_add_to_favorites">Add to favorites</string>
     <string name="label_button_remove_from_favorites">Remove from favorites</string>
     <string name="description_receipt_is_favorite">Receipt is marked as favorite</string>
+
+    <string name="placeholder_receipt_author">Pawkens</string>
+    <string name="placeholder_receipt_category">Some category</string>
+    <string name="placeholder_step_name">Some step</string>
+    <string name="placeholder_step_description">Some step description</string>
+    <string name="placeholder_shopping_list_description">Shopping list description</string>
+    <string name="placeholder_shopping_list_date">2022&#8211;01&#8211;01</string>
+    <string name="placeholder_shopping_list_name">Shopping list name</string>
+    <string name="placeholder_receipt_url">https://www.google.pl</string>
+    <string name="placeholder_receipt_tags">Tag1, Tag2, Tag3, Tag4</string>
+    <string name="placeholder_receipt_description">Some receipt description</string>
+    <string name="placeholder_ingredient_name">Ingredient name</string>
+    <string name="placeholder_ingredient_description">Ingredient description</string>
+    <string name="placeholder_receipt_name">Receipt name</string>
+    <string name="placeholder_receipt_date">2022&#8211;03&#8211;02</string>
+    <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
+    <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
 </resources>

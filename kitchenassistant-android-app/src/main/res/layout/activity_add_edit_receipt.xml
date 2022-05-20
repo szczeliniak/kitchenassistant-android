@@ -21,24 +21,23 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
-                style="@style/BaseLayout"
+                style="@style/ContentLayout"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_receipt_name"
-                    app:counterEnabled="true"
-                    style="@style/InputLayout"
+                    style="@style/InputLayoutWithCounter"
                     android:id="@+id/receipt_name_layout"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                        style="@style/EditTextText"
                         android:hint="@string/label_receipt_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/max_length_receipt_name"
-                        android:inputType="text"
                         android:id="@+id/receipt_name"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -46,17 +45,15 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_receipt_author"
-                    app:counterEnabled="true"
-                    style="@style/InputLayout"
+                    style="@style/InputLayoutWithCounter"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
-                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                        style="@style/TextViewAutocomplete"
                         android:hint="@string/label_receipt_author"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/max_length_receipt_author"
-                        android:inputType="text"
                         android:id="@+id/receipt_author"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -69,8 +66,7 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_receipt_url"
-                    style="@style/InputLayout"
-                    app:counterEnabled="true"
+                    style="@style/InputLayoutWithCounter"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -78,7 +74,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/max_length_receipt_url"
-                        android:inputType="textUri"
+                        style="@style/EditTextUrl"
                         android:id="@+id/receipt_url"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -86,17 +82,15 @@
             <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     app:counterMaxLength="@integer/max_length_receipt_description"
-                    style="@style/InputLayout"
-                    app:counterEnabled="true"
+                    style="@style/InputLayoutWithCounter"
                     android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
                         android:hint="@string/label_receipt_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:minLines="4"
+                        style="@style/EditTextDescription"
                         android:maxLength="@integer/max_length_receipt_description"
-                        android:inputType="textMultiLine"
                         android:id="@+id/receipt_description"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -110,12 +104,11 @@
                     android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                        style="@style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox"
+                        style="@style/TextViewAutocomplete"
                         android:hint="@string/label_receipt_tag"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:maxLength="@integer/max_length_receipt_tag"
-                        android:inputType="text"
                         android:id="@+id/tag"/>
 
             </com.google.android.material.textfield.TextInputLayout>

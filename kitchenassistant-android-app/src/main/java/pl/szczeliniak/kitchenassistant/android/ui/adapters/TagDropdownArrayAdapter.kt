@@ -19,7 +19,7 @@ class TagDropdownArrayAdapter(context: Context) : ArrayAdapter<String>(context, 
 
         if (convertView == null) {
             binding = DropdownTagBinding.inflate(LayoutInflater.from(context))
-            viewHolder = ViewHolder(binding.root)
+            viewHolder = ViewHolder(binding.tag)
             binding.root.tag = viewHolder
         } else {
             binding = DropdownTagBinding.bind(convertView)

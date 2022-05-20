@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,12 +22,13 @@
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/padding_margin_tiny"
                 android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_gravity="center_vertical"
-                    tools:text="Name"
-                    style="@style/TextSecondary"
+                    tools:text="@string/placeholder_shopping_list_item_name"
+                    style="@style/TextViewDescription"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:textColor="@color/secondary_dark"
@@ -37,9 +38,9 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:layout_gravity="center_vertical"
-                    tools:text="Quantity"
+                    tools:text="@string/placeholder_shopping_list_item_quantity"
                     android:gravity="center"
-                    style="@style/TextSecondary"
+                    style="@style/TextViewDescription"
                     android:id="@+id/shopping_list_item_quantity"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -49,9 +50,9 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:layout_gravity="center_vertical"
-                tools:text="Quantity"
+                tools:text="@string/placeholder_shopping_list_item_quantity"
                 android:gravity="center"
-                style="@style/TextSecondary"
+                style="@style/TextViewDescription"
                 android:id="@+id/shopping_list_item_receipt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -60,7 +61,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
             android:layout_gravity="center"
-            style="@style/TransparentImageButton"
+            style="@style/ButtonTransparentImage"
             android:src="@drawable/icon_more"
             android:id="@+id/button_more"
             android:layout_width="wrap_content"

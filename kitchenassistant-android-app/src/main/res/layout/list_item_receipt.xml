@@ -6,7 +6,7 @@
         android:clickable="true"
         android:focusable="true"
         android:background="?selectableItemBackground"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -21,8 +21,9 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/receipt_author"
-                tools:text="Adam Malysz"
-                style="@style/TextOverLine"
+                tools:text="@string/placeholder_receipt_author"
+                style="@style/TextViewSubheader"
+                android:textColor="@color/secondary_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -33,12 +34,12 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_name"
-                    tools:text="Receipt name"
-                    style="@style/TextPrimary"
+                    tools:text="@string/placeholder_receipt_name"
+                    style="@style/TextViewHeader"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:src="@drawable/icon_star"
                     android:paddingHorizontal="@dimen/padding_margin_tiny"
@@ -51,8 +52,8 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/receipt_description"
-                tools:text="Description"
-                style="@style/TextSecondary"
+                tools:text="@string/placeholder_receipt_description"
+                style="@style/TextViewDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
@@ -62,7 +63,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            style="@style/TransparentImageButton"
+            style="@style/ButtonTransparentImage"
             android:src="@drawable/icon_more"
             android:id="@+id/button_more"
             android:layout_width="wrap_content"

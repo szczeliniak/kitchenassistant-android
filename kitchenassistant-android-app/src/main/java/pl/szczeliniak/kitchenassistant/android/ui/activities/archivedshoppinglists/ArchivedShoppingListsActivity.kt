@@ -148,7 +148,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.activity_archived_shopping_lists_menu_item_filter) {
+        if (item.itemId == R.id.filter) {
             ShoppingListsFilterDialog.show(supportFragmentManager,
                 ShoppingListsFilterDialog.Filter(filter?.date),
                 ShoppingListsFilterDialog.OnFilterChanged { viewModel.changeFilter(it) })

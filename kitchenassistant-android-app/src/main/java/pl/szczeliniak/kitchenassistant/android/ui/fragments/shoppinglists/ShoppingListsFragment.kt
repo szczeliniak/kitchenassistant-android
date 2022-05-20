@@ -151,7 +151,7 @@ class ShoppingListsFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_shopping_lists, menu)
-        searchView = menu.findItem(R.id.fragment_shopping_lists_menu_item_search).actionView as SearchView
+        searchView = menu.findItem(R.id.search).actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return true
@@ -168,7 +168,7 @@ class ShoppingListsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.fragment_shopping_lists_menu_item_filter -> {
+            R.id.filter -> {
                 ShoppingListsFilterDialog.show(
                     requireActivity().supportFragmentManager,
                     ShoppingListsFilterDialog.Filter(filter?.date),

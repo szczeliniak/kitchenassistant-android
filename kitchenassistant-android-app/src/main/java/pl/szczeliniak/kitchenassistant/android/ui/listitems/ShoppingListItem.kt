@@ -43,11 +43,11 @@ class ShoppingListItem constructor(
         popupMenu.inflate(R.menu.shopping_list_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.shopping_list_item_menu_item_delete -> {
+                R.id.delete -> {
                     onDeleteClick.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.shopping_list_item_menu_item_edit -> {
+                R.id.edit -> {
                     onEditClick.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }

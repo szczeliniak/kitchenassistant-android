@@ -5,10 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/secondary_dark"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:backgroundTint="@color/secondary_dark">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/image_size_medium"
             android:layout_height="@dimen/image_size_medium"
             app:srcCompat="@drawable/logo"
@@ -21,7 +21,9 @@
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextNavigationViewApplicationName"
+            android:textColor="@color/white"
+            android:paddingVertical="@dimen/padding_margin_tiny"
+            style="@style/TextViewAppName"
             android:id="@+id/nav_view_app_name"
             app:layout_constraintTop_toBottomOf="@id/nav_view_image"
             app:layout_constraintStart_toStartOf="parent"

@@ -29,11 +29,11 @@ class StepItem constructor(
         popupMenu.inflate(R.menu.step_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.step_item_menu_item_delete -> {
+                R.id.delete -> {
                     onDeleteClick.onClick(receiptId, step)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.step_item_menu_item_edit -> {
+                R.id.edit -> {
                     onEditClick.onClick(receiptId, step)
                     return@setOnMenuItemClickListener true
                 }

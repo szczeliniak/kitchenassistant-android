@@ -39,20 +39,20 @@ class ReceiptItem constructor(
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.receipt_item)
 
-        popupMenu.menu.findItem(R.id.receipt_item_menu_item_add_remove_from_favorites).title =
+        popupMenu.menu.findItem(R.id.add_remove_from_favorites).title =
             context.getString(if (receipt.favorite) R.string.label_button_remove_from_favorites else R.string.label_button_add_to_favorites)
 
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.receipt_item_menu_item_delete -> {
+                R.id.delete -> {
                     onDeleteClick.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.receipt_item_menu_item_edit -> {
+                R.id.edit -> {
                     onEditClick.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.receipt_item_menu_item_add_remove_from_favorites -> {
+                R.id.add_remove_from_favorites -> {
                     onAddRemoveFromFavourites.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }

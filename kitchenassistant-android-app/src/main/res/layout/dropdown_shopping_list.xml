@@ -3,21 +3,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_margin_medium"
+        style="@style/ContentLayout"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            style="@style/TextOverLine"
-            tools:text="01-01-1111"
+            style="@style/TextViewSubheader"
+            tools:text="@string/placeholder_shopping_list_date"
+            android:textColor="@color/secondary_dark"
             android:id="@+id/shopping_list_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/shopping_list_name"
-            style="@style/TextPrimary"
-            tools:text="Some list name"
+            style="@style/TextViewHeader"
+            tools:text="@string/placeholder_shopping_list_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -19,26 +19,26 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:orientation="vertical"
-            style="@style/BaseLayout"
+            style="@style/ContentLayout"
             android:layout_width="match_parent"
             android:layout_height="0dp">
 
         <androidx.appcompat.widget.LinearLayoutCompat
-
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_shopping_list_description"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/shopping_list_description"
-                    tools:text="Shopping list description"
-                    style="@style/TextPrimary"
+                    tools:text="@string/placeholder_shopping_list_description"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -51,14 +51,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_shopping_list_date"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/shopping_list_date"
-                    tools:text="2020-01-01"
-                    style="@style/TextPrimary"
+                    tools:text="@string/placeholder_shopping_list_date"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -71,7 +72,8 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_shopping_list_items"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -102,7 +104,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_add"
             android:contentDescription="@string/description_add_shopping_list_item"
-            style="@style/FloatingActionButton"
+            style="@style/ButtonFloatingAction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

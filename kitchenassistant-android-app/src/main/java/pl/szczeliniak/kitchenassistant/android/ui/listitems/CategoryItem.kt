@@ -26,11 +26,11 @@ class CategoryItem constructor(
         popupMenu.inflate(R.menu.category_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.category_item_menu_item_delete -> {
+                R.id.delete -> {
                     onDeleteClick.onClick(category)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.category_item_menu_item_edit -> {
+                R.id.edit -> {
                     onEditClick.onClick(category)
                     return@setOnMenuItemClickListener true
                 }

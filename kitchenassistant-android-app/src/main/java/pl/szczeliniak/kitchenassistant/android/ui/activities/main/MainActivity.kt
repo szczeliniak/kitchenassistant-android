@@ -48,29 +48,29 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
-        binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
+        binding.bottomNavView.selectedItemId = R.id.receipts
     }
 
     private fun onDrawerItemClicked(itemId: Int): Boolean {
         binding.root.closeDrawers()
         when (itemId) {
-            R.id.menu_nav_view_item_receipts -> {
-                binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_receipts
+            R.id.receipts -> {
+                binding.bottomNavView.selectedItemId = R.id.receipts
                 return true
             }
-            R.id.menu_nav_view_item_shopping_lists -> {
-                binding.bottomNavView.selectedItemId = R.id.nav_bottom_item_shopping_lists
+            R.id.shopping_lists -> {
+                binding.bottomNavView.selectedItemId = R.id.shopping_lists
                 return true
             }
-            R.id.menu_nav_view_item_archived_shopping_lists -> {
+            R.id.archived_shopping_lists -> {
                 ArchivedShoppingListsActivity.start(this@MainActivity)
                 return true
             }
-            R.id.menu_nav_view_item_categories -> {
+            R.id.categories -> {
                 CategoriesActivity.start(this@MainActivity)
                 return true
             }
-            R.id.menu_nav_view_item_logout -> {
+            R.id.logout -> {
                 if (localStorageService.logout()) {
                     LoginActivity.start(this)
                     finish()

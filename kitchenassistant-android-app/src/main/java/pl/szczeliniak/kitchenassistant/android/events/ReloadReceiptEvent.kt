@@ -1,3 +1,3 @@
 package pl.szczeliniak.kitchenassistant.android.events
 
-class ReloadReceiptEvent()
+class ReloadReceiptEvent

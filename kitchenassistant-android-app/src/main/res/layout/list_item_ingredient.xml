@@ -3,14 +3,14 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_gravity="center_vertical"
-            tools:text="Name"
-            style="@style/TextSecondary"
+            tools:text="@string/placeholder_ingredient_name"
+            style="@style/TextViewDescription"
             android:textColor="@color/secondary_dark"
             android:layout_width="0dp"
             android:gravity="center"
@@ -20,8 +20,8 @@
 
     <androidx.appcompat.widget.AppCompatTextView
             android:layout_gravity="center_vertical"
-            tools:text="Quantity"
-            style="@style/TextSecondary"
+            tools:text="@string/placeholder_ingredient_description"
+            style="@style/TextViewDescription"
             android:gravity="center"
             android:id="@+id/ingredient_quantity"
             android:layout_width="0dp"
@@ -30,7 +30,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
             android:layout_gravity="center"
-            style="@style/TransparentImageButton"
+            style="@style/ButtonTransparentImage"
             android:src="@drawable/icon_more"
             android:id="@+id/button_more"
             android:layout_width="wrap_content"

@@ -4,13 +4,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:text="@string/title_dialog_add_ingredient_to_shopping_list"
             android:id="@+id/title"
-            style="@style/TextDialogTitle"
+            style="@style/TextViewTitle"
+            android:textColor="@color/primary_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -21,9 +22,8 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:counterEnabled="true"
+            style="@style/InputLayoutWithCounter"
             app:counterMaxLength="@integer/max_length_shopping_list_item_sequence"
-            style="@style/InputLayout"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/max_length_shopping_list_item_sequence"
-                android:inputType="numberDecimal"
+                style="@style/EditTextNumber"
                 android:id="@+id/shopping_list_item_sequence"/>
 
     </com.google.android.material.textfield.TextInputLayout>

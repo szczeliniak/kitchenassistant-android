@@ -103,7 +103,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.activity_add_shopping_list_menu_item_save) {
+        if (item.itemId == R.id.save) {
             saveShoppingList()
             return true
         }

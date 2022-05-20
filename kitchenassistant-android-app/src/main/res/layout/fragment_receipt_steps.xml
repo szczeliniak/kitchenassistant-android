@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_add"
             android:contentDescription="@string/description_add_step"
-            style="@style/FloatingActionButton"
+            style="@style/ButtonFloatingAction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
 

@@ -198,7 +198,7 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.activity_shopping_list_menu_item_archive) {
+        if (item.itemId == R.id.archive) {
             viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
             return true
         }

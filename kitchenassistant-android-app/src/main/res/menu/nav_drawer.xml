@@ -5,25 +5,25 @@
 
     <group>
         <item
-                android:id="@+id/menu_nav_view_item_receipts"
+                android:id="@+id/receipts"
                 android:title="@string/title_fragment_receipts"/>
         <item
-                android:id="@+id/menu_nav_view_item_shopping_lists"
+                android:id="@+id/shopping_lists"
                 android:title="@string/title_fragment_shopping_lists"/>
     </group>
 
     <group>
         <item
-                android:id="@+id/menu_nav_view_item_archived_shopping_lists"
+                android:id="@+id/archived_shopping_lists"
                 android:title="@string/title_activity_archived_shopping_lists"/>
         <item
-                android:id="@+id/menu_nav_view_item_categories"
+                android:id="@+id/categories"
                 android:title="@string/title_activity_categories"/>
     </group>
 
     <item android:title="@string/label_nav_view_section_others">
         <menu>
-            <item android:id="@+id/menu_nav_view_item_logout"
+            <item android:id="@+id/logout"
                   android:title="@string/label_nav_view_item_logout"/>
         </menu>
     </item>

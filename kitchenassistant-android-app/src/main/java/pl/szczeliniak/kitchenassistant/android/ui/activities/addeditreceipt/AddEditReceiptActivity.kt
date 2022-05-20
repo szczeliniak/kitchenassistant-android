@@ -303,7 +303,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.activity_add_receipt_menu_item_save) {
+        if (item.itemId == R.id.save) {
             saveReceipt()
             return true
         }

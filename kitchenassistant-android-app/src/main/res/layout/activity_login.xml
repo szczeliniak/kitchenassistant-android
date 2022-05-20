@@ -20,7 +20,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    style="@style/BaseLayout"
+                    style="@style/ContentLayout"
                     android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -30,19 +30,19 @@
                         android:src="@drawable/logo"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextApplicationHeaderName"
+                        style="@style/TextViewAppName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextApplicationHeaderDescription"
+                        style="@style/TextViewAppDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
             <androidx.appcompat.widget.LinearLayoutCompat
-                    style="@style/BaseLayout"
+                    style="@style/ContentLayout"
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -58,7 +58,7 @@
                             android:maxLength="@integer/max_length_email"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textEmailAddress"
+                            style="@style/EditTextEmail"
                             android:id="@+id/login_email"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -74,7 +74,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:maxLength="@integer/max_length_password"
-                            android:inputType="textPassword"
+                            style="@style/EditTextPassword"
                             android:id="@+id/login_password"/>
 
                 </com.google.android.material.textfield.TextInputLayout>

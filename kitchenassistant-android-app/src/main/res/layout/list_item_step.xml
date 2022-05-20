@@ -3,7 +3,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,16 +14,16 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
-                tools:text="Step name"
-                style="@style/TextPrimary"
+                tools:text="@string/placeholder_step_name"
+                style="@style/TextViewHeader"
                 android:gravity="center"
                 android:id="@+id/step_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-                tools:text="Step description"
-                style="@style/TextSecondary"
+                tools:text="@string/placeholder_step_description"
+                style="@style/TextViewDescription"
                 android:gravity="center"
                 android:id="@+id/step_description"
                 android:layout_width="match_parent"
@@ -33,7 +33,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
             android:layout_gravity="center"
-            style="@style/TransparentImageButton"
+            style="@style/ButtonTransparentImage"
             android:src="@drawable/icon_more"
             android:id="@+id/button_more"
             android:layout_width="wrap_content"

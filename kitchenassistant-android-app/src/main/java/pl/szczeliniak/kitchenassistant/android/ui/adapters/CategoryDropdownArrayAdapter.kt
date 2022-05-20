@@ -17,7 +17,7 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
 
         if (convertView == null) {
             binding = DropdownCategoryBinding.inflate(LayoutInflater.from(context))
-            viewHolder = ViewHolder(binding.root)
+            viewHolder = ViewHolder(binding.category)
             binding.root.tag = viewHolder
         } else {
             binding = DropdownCategoryBinding.bind(convertView)

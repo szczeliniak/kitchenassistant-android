@@ -4,22 +4,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        style="@style/BaseLayout"
+        style="@style/ContentLayout"
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/title"
             android:text="@string/title_dialog_add_ingredient"
-            style="@style/TextDialogTitle"
+            style="@style/TextViewTitle"
+            android:textColor="@color/primary_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_ingredient_name"
             android:id="@+id/ingredient_name_layout"
-            style="@style/InputLayout"
+            style="@style/InputLayoutWithCounter"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -27,17 +27,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/max_length_ingredient_name"
-                android:inputType="text"
+                style="@style/EditTextText"
                 android:id="@+id/ingredient_name"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:counterEnabled="true"
             app:counterMaxLength="@integer/max_length_ingredient_quantity"
             android:id="@+id/ingredient_quantity_layout"
-            style="@style/InputLayout"
+            style="@style/InputLayoutWithCounter"
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -45,7 +44,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:maxLength="@integer/max_length_ingredient_quantity"
-                android:inputType="text"
+                style="@style/EditTextText"
                 android:id="@+id/ingredient_quantity"/>
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -3,12 +3,13 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto">
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.LinearLayoutCompat
             android:orientation="vertical"
             android:id="@+id/receipt_info_layout"
-            style="@style/BaseLayout"
+            style="@style/ContentLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -19,14 +20,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_author"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_author"
-                    tools:text="Adam Malysz"
-                    style="@style/TextPrimary"
+                    tools:text="@string/placeholder_receipt_author"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -39,14 +41,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_category"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_category"
-                    tools:text="Category name"
-                    style="@style/TextPrimary"
+                    tools:text="@string/placeholder_receipt_category"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -59,15 +62,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_url"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_url"
-                    tools:text="https://www.google.pl"
-                    style="@style/TextPrimary"
-                    android:autoLink="web"
+                    tools:text="@string/placeholder_receipt_url"
+                    style="@style/TextViewUrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -80,15 +83,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_tags"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_tags"
-                    tools:text="Tag1, Tag2, Tag3"
-                    style="@style/TextPrimary"
-                    android:inputType="textMultiLine"
+                    tools:text="@string/placeholder_receipt_tags"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -101,15 +104,15 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_receipt_description"
-                    style="@style/TextOverLine"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/receipt_description"
-                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum convallis imperdiet sollicitudin. Nulla maximus, velit non mollis ornare, dui sem lobortis mauris, vitae auctor nulla odio nec nulla. Nulla rutrum felis orci, quis tristique diam auctor non. Aliquam erat volutpat. Sed blandit est neque, id viverra orci luctus vel."
-                    style="@style/TextPrimary"
-                    android:inputType="textMultiLine"
+                    tools:text="@string/placeholder_receipt_description"
+                    style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
