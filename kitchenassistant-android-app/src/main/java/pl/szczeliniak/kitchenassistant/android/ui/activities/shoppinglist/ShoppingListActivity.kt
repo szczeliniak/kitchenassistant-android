@@ -19,6 +19,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -107,10 +108,12 @@ class ShoppingListActivity : AppCompatActivity() {
                         itemsAdapter.add(
                             ShoppingListItemItem(
                                 this@ShoppingListActivity, shoppingListId, item, { shoppingListId, shoppingListItem ->
-                                    viewModel.deleteItem(shoppingListId, shoppingListItem.id)
-                                        .observe(this@ShoppingListActivity) {
-                                            deleteShoppingListItemStateHandler.handle(it)
-                                        }
+                                    ConfirmationDialog.show(supportFragmentManager) {
+                                        viewModel.deleteItem(shoppingListId, shoppingListItem.id)
+                                            .observe(this@ShoppingListActivity) {
+                                                deleteShoppingListItemStateHandler.handle(it)
+                                            }
+                                    }
                                 }, { shoppingListId, shoppingListItem ->
                                     AddEditShoppingListItemDialog.show(
                                         supportFragmentManager,
@@ -118,12 +121,14 @@ class ShoppingListActivity : AppCompatActivity() {
                                         shoppingListItem
                                     )
                                 }, { shoppingListId, shoppingListItem, isChecked ->
-                                    viewModel.changeItemState(
-                                        shoppingListId,
-                                        shoppingListItem.id,
-                                        isChecked
-                                    ).observe(this@ShoppingListActivity) {
-                                        changeShoppingListItemStateStateHandler.handle(it)
+                                    ConfirmationDialog.show(supportFragmentManager) {
+                                        viewModel.changeItemState(
+                                            shoppingListId,
+                                            shoppingListItem.id,
+                                            isChecked
+                                        ).observe(this@ShoppingListActivity) {
+                                            changeShoppingListItemStateStateHandler.handle(it)
+                                        }
                                     }
                                 }
                             ))
@@ -199,7 +204,9 @@ class ShoppingListActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.archive) {
-            viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
+            ConfirmationDialog.show(supportFragmentManager) {
+                viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
+            }
             return true
         }
         return super.onOptionsItemSelected(item)

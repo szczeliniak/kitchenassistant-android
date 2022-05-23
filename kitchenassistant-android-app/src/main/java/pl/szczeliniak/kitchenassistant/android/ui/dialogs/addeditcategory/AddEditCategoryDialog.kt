@@ -18,6 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryReque
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -108,8 +109,10 @@ class AddEditCategoryDialog : DialogFragment() {
         checkButtonState()
         positiveButton.setOnClickListener {
             category?.let { c ->
-                viewModel.updateCategory(c.id, UpdateCategoryRequest(name))
-                    .observe(this) { addStepLoadingStateHandler.handle(it) }
+                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                    viewModel.updateCategory(c.id, UpdateCategoryRequest(name))
+                        .observe(this) { addStepLoadingStateHandler.handle(it) }
+                }
             } ?: kotlin.run {
                 viewModel.addCategory(AddCategoryRequest(name, localStorageService.getId()))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }

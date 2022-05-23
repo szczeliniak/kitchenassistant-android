@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -120,8 +121,10 @@ class AddEditIngredientDialog : DialogFragment() {
         checkButtonState()
         positiveButton.setOnClickListener {
             ingredient?.let { ingredient ->
-                viewModel.updateIngredient(receiptId, ingredient.id, UpdateIngredientRequest(name, quantity))
-                    .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
+                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                    viewModel.updateIngredient(receiptId, ingredient.id, UpdateIngredientRequest(name, quantity))
+                        .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
+                }
             } ?: kotlin.run {
                 viewModel.addIngredient(receiptId, AddIngredientRequest(name, quantity))
                     .observe(this) { saveIngredientLoadingStateHandler.handle(it) }

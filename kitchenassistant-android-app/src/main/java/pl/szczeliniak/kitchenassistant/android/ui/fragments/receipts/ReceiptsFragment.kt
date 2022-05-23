@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
@@ -144,14 +145,18 @@ class ReceiptsFragment : Fragment() {
                         adapter.add(ReceiptItem(requireContext(), receipt, {
                             ReceiptActivity.start(requireContext(), it.id)
                         }, {
-                            viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                deleteReceiptLoadingStateHandler.handle(r)
+                            ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                                viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
+                                    deleteReceiptLoadingStateHandler.handle(r)
+                                }
                             }
                         }, {
                             AddEditReceiptActivity.start(requireContext(), it)
                         }, {
-                            viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
-                                addRemoveFromFavoritesLoadingStateHandler.handle(r)
+                            ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                                viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
+                                    addRemoveFromFavoritesLoadingStateHandler.handle(r)
+                                }
                             }
                         }))
                     }

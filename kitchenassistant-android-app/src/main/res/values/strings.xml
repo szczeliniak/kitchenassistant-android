@@ -117,4 +117,6 @@
     <string name="placeholder_receipt_date">2022&#8211;03&#8211;02</string>
     <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
+    <string name="message_confirm_action">Are you sure?</string>
+    <string name="label_button_confirm">Yes, do it!</string>
 </resources>

@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -127,11 +128,13 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         checkButtonState()
         positiveButton.setOnClickListener {
             shoppingListItem?.let { item ->
-                viewModel.updateShoppingListItem(
-                    shoppingListId,
-                    item.id,
-                    UpdateShoppingListItemRequest(name, quantity, sequence, item.receipt?.id)
-                ).observe(this) { addShoppingListItemLoadingStateHandler.handle(it) }
+                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                    viewModel.updateShoppingListItem(
+                        shoppingListId,
+                        item.id,
+                        UpdateShoppingListItemRequest(name, quantity, sequence, item.receipt?.id)
+                    ).observe(this) { addShoppingListItemLoadingStateHandler.handle(it) }
+                }
             } ?: kotlin.run {
                 viewModel.addShoppingListItem(
                     shoppingListId,

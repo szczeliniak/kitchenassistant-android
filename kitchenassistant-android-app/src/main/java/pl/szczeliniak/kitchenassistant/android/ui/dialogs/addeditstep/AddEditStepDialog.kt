@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -112,8 +113,10 @@ class AddEditStepDialog : DialogFragment() {
         checkButtonState()
         positiveButton.setOnClickListener {
             step?.let { step ->
-                viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))
-                    .observe(this) { addStepLoadingStateHandler.handle(it) }
+                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                    viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))
+                        .observe(this) { addStepLoadingStateHandler.handle(it) }
+                }
             } ?: kotlin.run {
                 viewModel.addStep(receiptId, AddStepRequest(name, description, sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
