@@ -18,5 +18,7 @@
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_small">14sp</dimen>
     <dimen name="text_size_tiny">10sp</dimen>
+    <dimen name="radius_button">10dp</dimen>
+    <dimen name="login_header_min_height">300dp</dimen>
 
 </resources>

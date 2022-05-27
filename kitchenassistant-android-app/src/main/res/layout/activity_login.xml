@@ -18,8 +18,10 @@
 
             <androidx.appcompat.widget.LinearLayoutCompat
                     app:layout_constraintTop_toTopOf="parent"
+                    android:minHeight="@dimen/login_header_min_height"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     style="@style/ContentLayout"
                     android:orientation="vertical">
 
@@ -30,7 +32,7 @@
                         android:src="@drawable/logo"/>
 
                 <androidx.appcompat.widget.AppCompatTextView
-                        style="@style/TextViewAppName"
+                        style="@style/Header1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -85,6 +87,7 @@
                         android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatButton
+                            android:layout_marginEnd="@dimen/padding_margin_tiny"
                             style="@style/ButtonPrimary"
                             android:id="@+id/button_login"
                             android:text="@string/label_button_login"
@@ -93,6 +96,7 @@
                             android:layout_height="wrap_content"/>
 
                     <androidx.appcompat.widget.AppCompatButton
+                            android:layout_marginStart="@dimen/padding_margin_tiny"
                             style="@style/ButtonSecondary"
                             android:id="@+id/button_register"
                             android:text="@string/label_button_register"
