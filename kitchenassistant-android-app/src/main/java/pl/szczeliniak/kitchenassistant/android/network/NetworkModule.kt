@@ -13,7 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.network.converters.LocalDateConverter
-import pl.szczeliniak.kitchenassistant.android.network.converters.LocalDateTimeConverter
+import pl.szczeliniak.kitchenassistant.android.network.converters.ZonedDateTimeConverter
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkCheckInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConnectionChecker
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
@@ -25,7 +25,7 @@ import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.inject.Singleton
 
 @Module
@@ -36,17 +36,17 @@ class NetworkModule {
     fun localDateConverter(): LocalDateConverter = LocalDateConverter()
 
     @Provides
-    fun localDateTimeConverter(): LocalDateTimeConverter = LocalDateTimeConverter()
+    fun zonedDateTimeConverter(): ZonedDateTimeConverter = ZonedDateTimeConverter()
 
     @Provides
     @Singleton
     fun gson(
         localDateConverter: LocalDateConverter,
-        localDateTimeConverter: LocalDateTimeConverter
+        zonedDateTimeConverter: ZonedDateTimeConverter
     ): Gson {
         return GsonBuilder()
             .registerTypeAdapter(LocalDate::class.java, localDateConverter)
-            .registerTypeAdapter(LocalDateTime::class.java, localDateTimeConverter)
+            .registerTypeAdapter(ZonedDateTime::class.java, zonedDateTimeConverter)
             .create()
     }
 

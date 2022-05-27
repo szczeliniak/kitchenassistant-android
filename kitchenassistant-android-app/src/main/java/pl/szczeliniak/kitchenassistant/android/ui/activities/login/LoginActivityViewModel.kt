@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.RefreshTokenResponse
 import pl.szczeliniak.kitchenassistant.android.services.UserService
 import javax.inject.Inject
 
@@ -23,6 +24,16 @@ class LoginActivityViewModel @Inject constructor(
         val liveData = MutableLiveData<LoadingState<LoginResponse>>()
         viewModelScope.launch {
             userService.login(request)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun refreshToken(): LiveData<LoadingState<RefreshTokenResponse>> {
+        val liveData = MutableLiveData<LoadingState<RefreshTokenResponse>>()
+        viewModelScope.launch {
+            userService.refreshToken()
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

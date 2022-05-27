@@ -12,6 +12,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.RefreshTokenResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
@@ -35,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val loginStateHandler: LoadingStateHandler<LoginResponse> = prepareLoginStateHandler()
+    private val refreshTokenStateHandler: LoadingStateHandler<RefreshTokenResponse> = prepareRefreshTokenStateHandler()
 
     private val viewModel: LoginActivityViewModel by viewModels()
 
@@ -45,14 +47,16 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         if (localStorageService.isLoggedIn()) {
-            goToMainActivity()
-            finish()
-            return
+            refreshToken()
         }
 
         initLayout()
 
         checkButtonState()
+    }
+
+    private fun refreshToken() {
+        viewModel.refreshToken().observe(this) { refreshTokenStateHandler.handle(it) }
     }
 
     private fun initLayout() {
@@ -112,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: LoginResponse) {
-                localStorageService.login(data.token, data.id)
+                localStorageService.login(data.token, data.id, data.validTo)
                 goToMainActivity()
             }
 
@@ -127,6 +131,24 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     super.onHttpException(exception)
                 }
+            }
+        }
+        )
+    }
+
+    private fun prepareRefreshTokenStateHandler(): LoadingStateHandler<RefreshTokenResponse> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RefreshTokenResponse> {
+            override fun onException(th: Throwable) {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: RefreshTokenResponse) {
+                localStorageService.login(data.token, localStorageService.getId(), data.validTo)
+                goToMainActivity()
+            }
+
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@LoginActivity)
             }
         }
         )

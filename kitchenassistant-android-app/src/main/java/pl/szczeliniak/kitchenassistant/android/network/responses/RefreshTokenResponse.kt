@@ -2,8 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network.responses
 
 import java.time.ZonedDateTime
 
-data class LoginResponse(
-    val id: Int,
+data class RefreshTokenResponse(
     val token: String,
     val validTo: ZonedDateTime
 )
