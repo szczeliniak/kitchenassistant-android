@@ -150,6 +150,15 @@ class LoginActivity : AppCompatActivity() {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@LoginActivity)
             }
+
+            override fun onHttpException(exception: HttpException) {
+                if (exception.code() == 403) {
+                    this@LoginActivity.toast(R.string.message_token_expired)
+                    localStorageService.logout()
+                } else {
+                    super.onHttpException(exception)
+                }
+            }
         }
         )
     }

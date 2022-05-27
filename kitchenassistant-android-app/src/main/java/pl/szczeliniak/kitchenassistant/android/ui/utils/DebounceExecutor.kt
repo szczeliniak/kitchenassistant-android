@@ -10,7 +10,7 @@ class DebounceExecutor(
 
     fun execute(runnable: Runnable) {
         searchQueryJob?.cancel()
-        searchQueryJob = GlobalScope.launch(Dispatchers.Main) {
+        searchQueryJob = CoroutineScope(Dispatchers.Main).launch {
             delay(debounceMillis)
             runnable.run()
         }

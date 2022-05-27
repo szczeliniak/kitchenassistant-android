@@ -20,6 +20,8 @@
     <string name="message_empty_list">Empty list</string>
     <string name="message_category_name_is_empty">Category name cannot be empty</string>
     <string name="message_image_crop_error">Cannot crop image</string>
+    <string name="message_token_expired">Token expired or invalid. Log in again</string>
+    <string name="message_confirm_action">Are you sure?</string>
 
     <string name="form_login_email">Email</string>
     <string name="form_login_password">Password</string>
@@ -39,6 +41,7 @@
     <string name="description_add_shopping_list_item">Add shopping list item</string>
     <string name="description_add_category">Add category</string>
     <string name="description_receipt_photo">Receipt photo</string>
+    <string name="description_receipt_is_favorite">Receipt is marked as favorite</string>
 
     <string name="title_activity_new_receipt">New receipt</string>
     <string name="title_activity_edit_receipt">Edit receipt</string>
@@ -99,7 +102,7 @@
     <string name="label_button_search">Search</string>
     <string name="label_button_add_to_favorites">Add to favorites</string>
     <string name="label_button_remove_from_favorites">Remove from favorites</string>
-    <string name="description_receipt_is_favorite">Receipt is marked as favorite</string>
+    <string name="label_button_confirm">Yes, do it!</string>
 
     <string name="placeholder_receipt_author">Pawkens</string>
     <string name="placeholder_receipt_category">Some category</string>
@@ -117,6 +120,4 @@
     <string name="placeholder_receipt_date">2022&#8211;03&#8211;02</string>
     <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
-    <string name="message_confirm_action">Are you sure?</string>
-    <string name="label_button_confirm">Yes, do it!</string>
 </resources>

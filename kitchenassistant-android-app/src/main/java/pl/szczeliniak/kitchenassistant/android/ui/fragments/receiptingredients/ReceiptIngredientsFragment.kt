@@ -14,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
@@ -81,8 +82,10 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
                 binding.root.hideEmptyIcon()
                 r.ingredients.forEach { ingredient ->
                     ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { receiptId, i ->
-                        viewModel.delete(receiptId, i.id).observe(viewLifecycleOwner) {
-                            deleteIngredientStateHandler.handle(it)
+                        ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                            viewModel.delete(receiptId, i.id).observe(viewLifecycleOwner) {
+                                deleteIngredientStateHandler.handle(it)
+                            }
                         }
                     }, { receiptId, i ->
                         AddEditIngredientDialog.show(requireActivity().supportFragmentManager, receiptId, i)
