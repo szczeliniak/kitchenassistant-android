@@ -94,7 +94,6 @@
 
     <style name="TextViewDescription">
         <item name="android:textColor">@color/black</item>
-        <item name="android:maxLines">1</item>
         <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:fontFamily">@font/roboto_light</item>
     </style>

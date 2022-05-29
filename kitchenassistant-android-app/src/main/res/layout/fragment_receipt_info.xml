@@ -118,6 +118,12 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.fragment.app.FragmentContainerView
+                android:paddingVertical="@dimen/padding_margin_tiny"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/yt_player_fragment"/>
+
         <androidx.recyclerview.widget.RecyclerView
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintTop_toBottomOf="@id/button_add_photos"

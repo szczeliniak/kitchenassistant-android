@@ -22,6 +22,7 @@
     <string name="message_image_crop_error">Cannot crop image</string>
     <string name="message_token_expired">Token expired or invalid. Log in again</string>
     <string name="message_confirm_action">Are you sure?</string>
+    <string name="message_cannot_load_youtube_video">Cannot load YouTube video</string>
 
     <string name="form_login_email">Email</string>
     <string name="form_login_password">Password</string>

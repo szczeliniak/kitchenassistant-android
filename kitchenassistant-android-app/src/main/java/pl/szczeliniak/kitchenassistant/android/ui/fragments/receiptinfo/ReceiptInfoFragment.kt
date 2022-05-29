@@ -6,20 +6,30 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
+import com.google.android.youtube.player.YouTubePlayerSupportFragmentX
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
+import pl.szczeliniak.kitchenassistant.android.BuildConfig
+import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
+import java.util.regex.Pattern
 
 @AndroidEntryPoint
 class ReceiptInfoFragment : ReceiptActivityFragment() {
 
     companion object {
+        val YT_VIDEO_ID_PATTERN: Pattern =
+            Pattern.compile("^.*((youtu.be\\/)|(v\\/)|(\\/u\\/\\w\\/)|(embed\\/)|(watch\\?))\\??v?=?([^#&?]*).*")
+
         fun create(): ReceiptInfoFragment {
             return ReceiptInfoFragment()
         }
@@ -30,6 +40,8 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
 
     private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<FileService.DownloadedFile>
     private lateinit var binding: FragmentReceiptInfoBinding
+
+    private var player: YouTubePlayer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptInfoBinding.inflate(inflater)
@@ -47,6 +59,14 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptDescription.setTextOrDefault(r.description)
             binding.receiptAuthor.setTextOrDefault(r.author)
             binding.receiptUrl.setTextOrDefault(r.source)
+
+            getYtVideoId(r.source)?.let { videoId ->
+                binding.ytPlayerFragment.visibility = View.VISIBLE
+                initVideo(videoId)
+            } ?: kotlin.run {
+                binding.ytPlayerFragment.visibility = View.GONE
+            }
+
             binding.receiptTags.setTextOrDefault(r.tags.joinToString())
             binding.receiptCategory.setTextOrDefault(r.category?.name)
             photosAdapter.clear()
@@ -56,6 +76,46 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
                 }
             }
         }
+    }
+
+    private fun getYtVideoId(source: String?): String? {
+        if (source == null) {
+            return null
+        }
+        val matcher = YT_VIDEO_ID_PATTERN.matcher(source)
+        if (matcher.matches()) {
+            val videoId = matcher.group(7)
+            if (videoId != null && videoId.length == 11) {
+                return videoId
+            }
+        }
+        return null
+    }
+
+    private fun initVideo(videoId: String) {
+        val fragment = YouTubePlayerSupportFragmentX.newInstance()
+        val transaction = parentFragmentManager.beginTransaction()
+        transaction.add(R.id.yt_player_fragment, fragment).commit()
+
+        fragment.initialize(BuildConfig.CDP_APIKEY, object : YouTubePlayer.OnInitializedListener {
+            override fun onInitializationSuccess(
+                provider: YouTubePlayer.Provider?,
+                player: YouTubePlayer?,
+                wasRestored: Boolean
+            ) {
+                player?.let { pl ->
+                    this@ReceiptInfoFragment.player = pl
+                    pl.cueVideo(videoId)
+                }
+            }
+
+            override fun onInitializationFailure(
+                p0: YouTubePlayer.Provider?,
+                p1: YouTubeInitializationResult?
+            ) {
+                requireActivity().toast(R.string.message_cannot_load_youtube_video)
+            }
+        })
     }
 
     override fun onReceiptChanged() {
@@ -70,6 +130,11 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
                     photosAdapter.add(PhotoItem(requireContext(), data.file.toUri()))
                 }
             })
+    }
+
+    override fun onPause() {
+        this.player?.pause()
+        super.onPause()
     }
 
 }
