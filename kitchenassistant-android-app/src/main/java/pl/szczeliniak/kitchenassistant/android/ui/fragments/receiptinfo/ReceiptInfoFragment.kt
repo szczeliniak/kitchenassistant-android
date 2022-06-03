@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import java.util.regex.Pattern
 
@@ -67,7 +68,13 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
                 binding.ytPlayerFragment.visibility = View.GONE
             }
 
-            binding.receiptTags.setTextOrDefault(r.tags.joinToString())
+            if (r.tags.isEmpty()) {
+                binding.tagsLayout.visibility = View.GONE
+            } else {
+                binding.tagsLayout.visibility = View.VISIBLE
+                r.tags.forEach { binding.tagChips.add(layoutInflater, it, false) }
+            }
+
             binding.receiptCategory.setTextOrDefault(r.category?.name)
             photosAdapter.clear()
             r.photos.forEach { photo ->

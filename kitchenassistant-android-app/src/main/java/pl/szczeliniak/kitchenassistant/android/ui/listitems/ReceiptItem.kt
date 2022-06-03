@@ -1,6 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.ui.listitems
 
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
@@ -8,6 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 
 class ReceiptItem constructor(
     private val context: Context,
@@ -21,7 +23,8 @@ class ReceiptItem constructor(
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
         binding.receiptName.text = receipt.name
         binding.receiptAuthor.fillOrHide(receipt.author, binding.receiptAuthor)
-        binding.receiptDescription.fillOrHide(receipt.description, binding.receiptDescription)
+        binding.tagChips.removeAllViews()
+        receipt.tags.forEach { binding.tagChips.add(LayoutInflater.from(context), it, false) }
         binding.root.setOnClickListener { onClick.onClick(receipt) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
         binding.receiptIsFavorite.visibility = if (receipt.favorite) View.VISIBLE else View.GONE

@@ -78,6 +78,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:orientation="vertical"
+                android:id="@+id/tags_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -88,10 +89,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/receipt_tags"
-                    tools:text="@string/placeholder_receipt_tags"
-                    style="@style/TextViewHeader"
+            <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tag_chips"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 

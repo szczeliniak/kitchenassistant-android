@@ -50,10 +50,8 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_description"
-                tools:text="@string/placeholder_receipt_description"
-                style="@style/TextViewDescription"
+        <com.google.android.material.chip.ChipGroup
+                android:id="@+id/tag_chips"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
