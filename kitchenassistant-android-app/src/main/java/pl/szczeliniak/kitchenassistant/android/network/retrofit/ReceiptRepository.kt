@@ -60,6 +60,9 @@ interface ReceiptRepository {
     @GET("/receipts/tags")
     suspend fun findAllTags(@Query("userId") userId: Int?): TagsResponse
 
+    @GET("/receipts/authors")
+    suspend fun findAllAuthors(@Query("userId") userId: Int?): AuthorsResponse
+
     @DELETE("/receipts/categories/{id}")
     suspend fun deleteCategory(@Path("id") id: Int): SuccessResponse
 

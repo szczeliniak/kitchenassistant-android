@@ -203,6 +203,19 @@ class ReceiptService constructor(
         }
     }
 
+    suspend fun findAllAuthors(): Flow<LoadingState<List<String>>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(receiptRepository.findAllAuthors(localStorageService.getId()).authors))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun deleteCategory(id: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

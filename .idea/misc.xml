@@ -25,6 +25,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/dialog_confirmation.xml" value="0.32155797101449274" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/dialog_receipts_filter.xml" value="0.20606884057971014" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/dialog_shopping_lists_filter.xml" value="0.1534090909090909" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/dropdown_author.xml" value="0.225" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/dropdown_category.xml" value="0.23596014492753623" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/dropdown_shopping_list.xml" value="0.23596014492753623" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/dropdown_tag.xml" value="0.2546875" />

@@ -28,9 +28,11 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
 import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.adapters.AuthorDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatAutoCompleteTextViewUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
@@ -61,6 +63,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private val uploadPhotosLoadingStateHandler = prepareUploadPhotosLoadingStateHandler()
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
+    private val loadAuthorsLoadingStateHandler = prepareLoadAuthorsLoadingStateHandler()
     private val downloadPhotoFileLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
     private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
@@ -72,17 +75,20 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddEditReceiptBinding
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
     private lateinit var tagsArrayAdapter: TagDropdownArrayAdapter
+    private lateinit var authorsArrayAdapter: AuthorDropdownArrayAdapter
     private lateinit var easyImage: EasyImage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         tagsArrayAdapter = TagDropdownArrayAdapter(this)
+        authorsArrayAdapter = AuthorDropdownArrayAdapter(this)
         categoriesDropdownAdapter = CategoryDropdownArrayAdapter(this)
 
         initLayout()
 
         viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
+        viewModel.authors.observe(this) { loadAuthorsLoadingStateHandler.handle(it) }
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
     }
 
@@ -110,6 +116,11 @@ class AddEditReceiptActivity : AppCompatActivity() {
         binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
         binding.tag.setOnItemClickListener { _, _, position, _ ->
             addTagChip(tagsArrayAdapter.getItem(position)!!)
+        }
+
+        binding.receiptAuthor.setAdapter(authorsArrayAdapter)
+        binding.receiptAuthor.setOnItemClickListener { _, _, position, _ ->
+            binding.receiptAuthor.setText(authorsArrayAdapter.getItem(position))
         }
 
         binding.receiptCategory.adapter = categoriesDropdownAdapter
@@ -234,6 +245,14 @@ class AddEditReceiptActivity : AppCompatActivity() {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<String>> {
             override fun onSuccess(data: List<String>) {
                 tagsArrayAdapter.refresh(data)
+            }
+        })
+    }
+
+    private fun prepareLoadAuthorsLoadingStateHandler(): LoadingStateHandler<List<String>> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<String>> {
+            override fun onSuccess(data: List<String>) {
+                authorsArrayAdapter.refresh(data)
             }
         })
     }

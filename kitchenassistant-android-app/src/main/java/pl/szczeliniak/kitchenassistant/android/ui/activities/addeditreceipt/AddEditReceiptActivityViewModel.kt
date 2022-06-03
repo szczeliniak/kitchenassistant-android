@@ -25,6 +25,7 @@ class AddEditReceiptActivityViewModel @Inject constructor(
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
     private val _tags = MutableLiveData<LoadingState<List<String>>>()
+    private val _authors = MutableLiveData<LoadingState<List<String>>>()
 
     val categories: LiveData<LoadingState<List<Category>>>
         get() {
@@ -36,9 +37,15 @@ class AddEditReceiptActivityViewModel @Inject constructor(
             return _tags
         }
 
+    val authors: LiveData<LoadingState<List<String>>>
+        get() {
+            return _authors
+        }
+
     init {
         loadCategories()
         loadTags()
+        loadAuthors()
     }
 
     fun addReceipt(request: AddReceiptRequest): LiveData<LoadingState<Int>> {
@@ -73,6 +80,14 @@ class AddEditReceiptActivityViewModel @Inject constructor(
         viewModelScope.launch {
             receiptService.findAllTags()
                 .onEach { _tags.value = it }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    private fun loadAuthors() {
+        viewModelScope.launch {
+            receiptService.findAllAuthors()
+                .onEach { _authors.value = it }
                 .launchIn(viewModelScope)
         }
     }
