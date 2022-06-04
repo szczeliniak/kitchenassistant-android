@@ -14,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.DialogReceiptsFilterB
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 
@@ -37,7 +38,9 @@ class ReceiptsFilterDialog : DialogFragment() {
 
     private lateinit var binding: DialogReceiptsFilterBinding
     private lateinit var loadCategoriesLoadingStateHandler: LoadingStateHandler<List<Category>>
+    private lateinit var loadTagsLoadingStateHandler: LoadingStateHandler<List<String>>
     private lateinit var categoryDropdownArrayAdapter: CategoryDropdownArrayAdapter
+    private lateinit var tagDropdownArrayAdapter: TagDropdownArrayAdapter
 
     private val viewModel: ReceiptsFilterDialogViewModel by viewModels()
 
@@ -45,11 +48,17 @@ class ReceiptsFilterDialog : DialogFragment() {
         binding = DialogReceiptsFilterBinding.inflate(layoutInflater)
         categoryDropdownArrayAdapter = CategoryDropdownArrayAdapter(requireContext())
         binding.receiptCategory.adapter = categoryDropdownArrayAdapter
+        tagDropdownArrayAdapter = TagDropdownArrayAdapter(requireContext())
+        binding.receiptTagName.setAdapter(tagDropdownArrayAdapter)
+        binding.receiptTagName.setOnItemClickListener { _, _, position, _ ->
+            binding.receiptTagName.setText(tagDropdownArrayAdapter.getItem(position)!!)
+        }
         filter?.let {
             it.receiptTag?.let { name -> binding.receiptTagName.setText(name) }
         }
 
         loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
+        loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
@@ -61,6 +70,7 @@ class ReceiptsFilterDialog : DialogFragment() {
     override fun onResume() {
         super.onResume()
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
+        viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
 
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
@@ -91,6 +101,14 @@ class ReceiptsFilterDialog : DialogFragment() {
                         binding.receiptCategory.setSelection(position)
                     }
                 }
+            }
+        })
+    }
+
+    private fun prepareLoadTagsLoadingStateHandler(): LoadingStateHandler<List<String>> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<String>> {
+            override fun onSuccess(data: List<String>) {
+                tagDropdownArrayAdapter.refresh(data)
             }
         })
     }

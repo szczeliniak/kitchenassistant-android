@@ -53,7 +53,7 @@
                         android:hint="@string/label_receipt_author"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLength="@integer/max_length_receipt_tag"
+                        android:maxLength="@integer/max_length_receipt_author"
                         android:id="@+id/receipt_author"/>
 
             </com.google.android.material.textfield.TextInputLayout>

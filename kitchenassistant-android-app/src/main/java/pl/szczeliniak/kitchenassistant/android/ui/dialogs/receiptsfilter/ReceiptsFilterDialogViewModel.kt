@@ -19,18 +19,33 @@ class ReceiptsFilterDialogViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
+    private val _tags = MutableLiveData<LoadingState<List<String>>>()
 
     val categories: LiveData<LoadingState<List<Category>>>
         get() = _categories
 
+    val tags: LiveData<LoadingState<List<String>>>
+        get() {
+            return _tags
+        }
+
     init {
         reloadCategories()
+        loadTags()
     }
 
     private fun reloadCategories() {
         viewModelScope.launch {
             receiptService.findAllCategories()
                 .onEach { _categories.value = it }
+                .launchIn(viewModelScope)
+        }
+    }
+
+    private fun loadTags() {
+        viewModelScope.launch {
+            receiptService.findAllTags()
+                .onEach { _tags.value = it }
                 .launchIn(viewModelScope)
         }
     }
