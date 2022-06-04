@@ -17,7 +17,6 @@ import pl.szczeliniak.kitchenassistant.android.network.converters.ZonedDateTimeC
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkCheckInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConnectionChecker
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.FileRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
@@ -101,11 +100,6 @@ class NetworkModule {
     @Provides
     fun receiptRepository(retrofitBuilder: Retrofit.Builder): ReceiptRepository {
         return retrofitBuilder.build().create(ReceiptRepository::class.java)
-    }
-
-    @Provides
-    fun fileRepository(retrofitBuilder: Retrofit.Builder): FileRepository {
-        return retrofitBuilder.build().create(FileRepository::class.java)
     }
 
     @Provides

@@ -6,5 +6,5 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Photo(
     val id: Int,
-    val fileId: Int
+    val name: String,
 ) : Parcelable

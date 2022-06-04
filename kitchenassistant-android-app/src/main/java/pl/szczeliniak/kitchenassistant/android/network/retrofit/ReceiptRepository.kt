@@ -1,7 +1,10 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.*
+import retrofit2.Response
 import retrofit2.http.*
 
 interface ReceiptRepository {
@@ -74,5 +77,13 @@ interface ReceiptRepository {
 
     @PUT("/receipts/{id}/favorite/{isFavorite}")
     suspend fun setFavorite(@Path("id") id: Int, @Path("isFavorite") isFavorite: Boolean): SuccessResponse
+
+    @Streaming
+    @GET("/receipts/photos/{id}")
+    suspend fun downloadPhoto(@Path("id") id: Int): Response<ResponseBody>
+
+    @Multipart
+    @POST("/receipts/photos")
+    suspend fun uploadPhoto(@Query("userId") userId: Int, @Part part: MultipartBody.Part): SuccessResponse
 
 }

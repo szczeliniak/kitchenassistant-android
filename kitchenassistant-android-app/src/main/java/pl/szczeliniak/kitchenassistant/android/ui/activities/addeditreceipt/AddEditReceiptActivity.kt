@@ -25,8 +25,8 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptReques
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
-import pl.szczeliniak.kitchenassistant.android.services.FileService
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
+import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.AuthorDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
@@ -104,7 +104,7 @@ class AddEditReceiptActivity : AppCompatActivity() {
             binding.receiptUrl.setText(r.source)
             r.tags.forEach { addTagChip(it) }
             r.photos.forEach { photo ->
-                viewModel.loadFile(photo.fileId).observe(this@AddEditReceiptActivity) {
+                viewModel.loadPhoto(photo).observe(this@AddEditReceiptActivity) {
                     downloadPhotoFileLoadingStateHandler.handle(it)
                 }
             }
@@ -257,9 +257,9 @@ class AddEditReceiptActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<FileService.DownloadedFile> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<FileService.DownloadedFile> {
-            override fun onSuccess(data: FileService.DownloadedFile) {
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<ReceiptService.DownloadedPhoto> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ReceiptService.DownloadedPhoto> {
+            override fun onSuccess(data: ReceiptService.DownloadedPhoto) {
                 photosAdapter.add(PhotoItem(this@AddEditReceiptActivity, data.file.toUri(), data.fileId) { item ->
                     photosAdapter.remove(item)
                 })

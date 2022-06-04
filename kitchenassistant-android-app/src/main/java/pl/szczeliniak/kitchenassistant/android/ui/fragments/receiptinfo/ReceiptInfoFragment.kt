@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.BuildConfig
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.services.FileService
+import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
@@ -39,7 +39,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     private val viewModel: ReceiptInfoFragmentViewModel by viewModels()
     private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
-    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<FileService.DownloadedFile>
+    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<ReceiptService.DownloadedPhoto>
     private lateinit var binding: FragmentReceiptInfoBinding
 
     private var player: YouTubePlayer? = null
@@ -78,7 +78,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptCategory.setTextOrDefault(r.category?.name)
             photosAdapter.clear()
             r.photos.forEach { photo ->
-                viewModel.loadPhoto(photo.fileId).observe(viewLifecycleOwner) {
+                viewModel.loadPhoto(photo).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
                 }
             }
@@ -129,11 +129,11 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
         loadData()
     }
 
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<FileService.DownloadedFile> {
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<ReceiptService.DownloadedPhoto> {
         return LoadingStateHandler(
             requireContext(),
-            object : LoadingStateHandler.OnStateChanged<FileService.DownloadedFile> {
-                override fun onSuccess(data: FileService.DownloadedFile) {
+            object : LoadingStateHandler.OnStateChanged<ReceiptService.DownloadedPhoto> {
+                override fun onSuccess(data: ReceiptService.DownloadedPhoto) {
                     photosAdapter.add(PhotoItem(requireContext(), data.file.toUri()))
                 }
             })

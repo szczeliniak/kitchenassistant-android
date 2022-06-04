@@ -6,7 +6,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.FileRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
@@ -22,17 +21,11 @@ class ServiceModule {
     fun userService(userRepository: UserRepository): UserService = UserService(userRepository)
 
     @Provides
-    fun fileService(
-        fileRepository: FileRepository,
-        @ApplicationContext context: Context,
-        localStorageService: LocalStorageService
-    ): FileService = FileService(fileRepository, context, localStorageService)
-
-    @Provides
     fun receiptService(
         receiptRepository: ReceiptRepository,
-        localStorageService: LocalStorageService
-    ): ReceiptService = ReceiptService(receiptRepository, localStorageService)
+        localStorageService: LocalStorageService,
+        @ApplicationContext context: Context,
+    ): ReceiptService = ReceiptService(receiptRepository, localStorageService, context)
 
     @Provides
     fun shoppingListService(
