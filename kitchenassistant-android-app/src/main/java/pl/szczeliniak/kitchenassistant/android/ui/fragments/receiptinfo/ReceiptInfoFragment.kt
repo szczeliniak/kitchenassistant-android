@@ -68,6 +68,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
                 binding.ytPlayerFragment.visibility = View.GONE
             }
 
+            binding.tagChips.removeAllViews()
             if (r.tags.isEmpty()) {
                 binding.tagsLayout.visibility = View.GONE
             } else {
@@ -100,29 +101,26 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     }
 
     private fun initVideo(videoId: String) {
-        val fragment = YouTubePlayerSupportFragmentX.newInstance()
-        val transaction = parentFragmentManager.beginTransaction()
-        transaction.add(R.id.yt_player_fragment, fragment).commit()
-
-        fragment.initialize(BuildConfig.CDP_APIKEY, object : YouTubePlayer.OnInitializedListener {
-            override fun onInitializationSuccess(
-                provider: YouTubePlayer.Provider?,
-                player: YouTubePlayer?,
-                wasRestored: Boolean
-            ) {
-                player?.let { pl ->
-                    this@ReceiptInfoFragment.player = pl
-                    pl.cueVideo(videoId)
+        binding.ytPlayerFragment.getFragment<YouTubePlayerSupportFragmentX>()
+            .initialize(BuildConfig.CDP_APIKEY, object : YouTubePlayer.OnInitializedListener {
+                override fun onInitializationSuccess(
+                    provider: YouTubePlayer.Provider?,
+                    player: YouTubePlayer?,
+                    wasRestored: Boolean
+                ) {
+                    player?.let { pl ->
+                        this@ReceiptInfoFragment.player = pl
+                        pl.cueVideo(videoId)
+                    }
                 }
-            }
 
-            override fun onInitializationFailure(
-                p0: YouTubePlayer.Provider?,
-                p1: YouTubeInitializationResult?
-            ) {
-                requireActivity().toast(R.string.message_cannot_load_youtube_video)
-            }
-        })
+                override fun onInitializationFailure(
+                    p0: YouTubePlayer.Provider?,
+                    p1: YouTubeInitializationResult?
+                ) {
+                    requireActivity().toast(R.string.message_cannot_load_youtube_video)
+                }
+            })
     }
 
     override fun onReceiptChanged() {

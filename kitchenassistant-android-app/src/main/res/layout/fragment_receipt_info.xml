@@ -121,6 +121,7 @@
                 android:paddingVertical="@dimen/padding_margin_tiny"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragmentX"
                 android:id="@+id/yt_player_fragment"/>
 
         <androidx.recyclerview.widget.RecyclerView

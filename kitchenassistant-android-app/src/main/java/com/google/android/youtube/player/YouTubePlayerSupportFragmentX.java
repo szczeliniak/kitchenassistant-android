@@ -1,7 +1,6 @@
 package com.google.android.youtube.player;
 
 import android.os.Bundle;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +45,7 @@ public class YouTubePlayerSupportFragmentX extends Fragment implements YouTubePl
     }
 
     public View onCreateView(LayoutInflater var1, ViewGroup var2, Bundle var3) {
-        this.c = new YouTubePlayerView(this.getActivity(), (AttributeSet) null, 0, this.a);
+        this.c = new YouTubePlayerView(this.getActivity(), null, 0, this.a);
         this.a();
         return this.c;
     }
@@ -54,11 +53,6 @@ public class YouTubePlayerSupportFragmentX extends Fragment implements YouTubePl
     public void onStart() {
         super.onStart();
         this.c.a();
-    }
-
-    public void onResume() {
-        super.onResume();
-        this.c.b();
     }
 
     public void onPause() {
