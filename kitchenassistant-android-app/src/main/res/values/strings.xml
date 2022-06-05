@@ -121,4 +121,6 @@
     <string name="placeholder_receipt_date">2022&#8211;03&#8211;02</string>
     <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
+    <string name="label_button_login_with_facebook">Login with Facebook</string>
+    <string name="message_login_with_facebook_error">Cannot log in with Facebook. Try again</string>
 </resources>

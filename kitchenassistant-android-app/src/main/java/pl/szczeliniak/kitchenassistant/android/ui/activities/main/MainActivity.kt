@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.facebook.login.LoginManager
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
@@ -72,6 +73,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.logout -> {
                 if (localStorageService.logout()) {
+                    LoginManager.getInstance().logOut()
                     LoginActivity.start(this)
                     finish()
                 }

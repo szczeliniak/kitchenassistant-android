@@ -6,11 +6,17 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doOnTextChanged
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityLoginBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.RefreshTokenResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
@@ -39,6 +45,7 @@ class LoginActivity : AppCompatActivity() {
     private val refreshTokenStateHandler: LoadingStateHandler<RefreshTokenResponse> = prepareRefreshTokenStateHandler()
 
     private val viewModel: LoginActivityViewModel by viewModels()
+    private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
 
     @Inject
     lateinit var localStorageService: LocalStorageService
@@ -84,6 +91,23 @@ class LoginActivity : AppCompatActivity() {
                 binding.loginPasswordLayout.error = null
             }
             checkButtonState()
+        }
+
+        binding.buttonLoginWithFacebook.setOnClickListener {
+            val loginManager = LoginManager.getInstance()
+            loginManager.registerCallback(facebookCallbackManager, object : FacebookCallback<LoginResult> {
+                override fun onCancel() {}
+
+                override fun onError(error: FacebookException) {
+                    toast(R.string.message_login_with_facebook_error)
+                }
+
+                override fun onSuccess(result: LoginResult) {
+                    viewModel.loginWithFacebook(LoginWithFacebookRequest(result.accessToken.token))
+                        .observe(this@LoginActivity) { loginStateHandler.handle(it) }
+                }
+            })
+            loginManager.logInWithReadPermissions(this, listOf("public_profile", "email"))
         }
     }
 
@@ -155,6 +179,7 @@ class LoginActivity : AppCompatActivity() {
                 if (exception.code() == 403) {
                     this@LoginActivity.toast(R.string.message_token_expired)
                     localStorageService.logout()
+                    LoginManager.getInstance().logOut()
                 } else {
                     super.onHttpException(exception)
                 }
@@ -172,5 +197,11 @@ class LoginActivity : AppCompatActivity() {
         get() {
             return binding.loginPassword.text.toString()
         }
+
+    @Suppress("DEPRECATION")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
 }

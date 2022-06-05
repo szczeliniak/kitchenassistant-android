@@ -17,6 +17,13 @@ android {
         targetSdkVersion 32
         versionCode 1
         versionName "1.0"
+
+        Properties properties = new Properties()
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+        resValue "string", "facebook_app_id", properties.getProperty("FACEBOOK_APP_ID")
+        resValue "string", "facebook_client_token", properties.getProperty("FACEBOOK_CLIENT_TOKEN")
+
     }
 
     buildTypes {
@@ -57,6 +64,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.github.jkwiecien:EasyImage:$easyimage_version"
     implementation "com.github.yalantis:ucrop:$ucrop_version"
+    implementation "com.facebook.android:facebook-android-sdk:$facebook_sdk_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
 }
