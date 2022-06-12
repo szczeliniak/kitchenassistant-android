@@ -78,11 +78,19 @@ class ReceiptService constructor(
         }
     }
 
-    suspend fun deleteIngredient(receiptId: Int, ingredientId: Int): Flow<LoadingState<Int>> {
+    suspend fun deleteIngredient(receiptId: Int, ingredientGroupId: Int, ingredientId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(receiptRepository.deleteIngredient(receiptId, ingredientId).id))
+                emit(
+                    LoadingState.Success(
+                        receiptRepository.deleteIngredient(
+                            receiptId,
+                            ingredientGroupId,
+                            ingredientId
+                        ).id
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -130,11 +138,15 @@ class ReceiptService constructor(
         }
     }
 
-    suspend fun addIngredient(receiptId: Int, request: AddIngredientRequest): Flow<LoadingState<Int>> {
+    suspend fun addIngredient(
+        receiptId: Int,
+        ingredientGroupId: Int,
+        request: AddIngredientRequest
+    ): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(receiptRepository.addIngredient(receiptId, request).id))
+                emit(LoadingState.Success(receiptRepository.addIngredient(receiptId, ingredientGroupId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -145,13 +157,23 @@ class ReceiptService constructor(
 
     suspend fun updateIngredient(
         receiptId: Int,
+        ingredientGroupId: Int,
         ingredientId: Int,
         request: UpdateIngredientRequest
     ): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(receiptRepository.updateIngredient(receiptId, ingredientId, request).id))
+                emit(
+                    LoadingState.Success(
+                        receiptRepository.updateIngredient(
+                            receiptId,
+                            ingredientGroupId,
+                            ingredientId,
+                            request
+                        ).id
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -335,6 +357,19 @@ class ReceiptService constructor(
         val file = getFile(name)
         file.outputStream().use { inputStream.copyTo(it) }
         return file
+    }
+
+    fun addIngredientGroup(receiptId: Int, request: AddIngredientGroupRequest): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(receiptRepository.addIngredientGroup(receiptId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
     }
 
     data class DownloadedPhoto(val fileId: Int, val file: File)

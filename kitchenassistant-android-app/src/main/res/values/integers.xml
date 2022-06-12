@@ -20,4 +20,5 @@
     <integer name="max_length_password">50</integer>
     <integer name="max_length_name">50</integer>
     <integer name="max_length_receipt_tag">50</integer>
+    <integer name="max_length_ingredient_group_name">50</integer>
 </resources>

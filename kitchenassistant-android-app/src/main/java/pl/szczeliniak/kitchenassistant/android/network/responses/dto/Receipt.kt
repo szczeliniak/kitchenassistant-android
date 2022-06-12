@@ -12,7 +12,7 @@ data class Receipt(
     val source: String?,
     val favorite: Boolean,
     val category: Category?,
-    val ingredients: List<Ingredient>,
+    val ingredientGroups: List<IngredientGroup>,
     val steps: List<Step>,
     val tags: List<String>,
     val photos: MutableList<Photo>

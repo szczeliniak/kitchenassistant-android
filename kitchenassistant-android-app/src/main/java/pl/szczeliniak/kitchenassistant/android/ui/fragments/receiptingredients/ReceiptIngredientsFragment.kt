@@ -16,6 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddE
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientGroupHeaderItem
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -49,7 +50,14 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     }
 
     private fun showAddIngredientDialog() {
-        receipt?.let { AddEditIngredientDialog.show(requireActivity().supportFragmentManager, it.id) }
+        receipt?.let {
+            AddEditIngredientDialog.show(
+                requireActivity().supportFragmentManager,
+                it.id,
+                it.ingredientGroups.first().id,
+                ArrayList(it.ingredientGroups)
+            )
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,22 +84,37 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
     private fun loadData() {
         receipt?.let { r ->
             ingredientsAdapter.clear()
-            if (r.ingredients.isEmpty()) {
+            if (r.ingredientGroups.flatMap { it.ingredients }.none()) {
                 binding.root.showEmptyIcon(requireActivity())
             } else {
                 binding.root.hideEmptyIcon()
-                r.ingredients.forEach { ingredient ->
-                    ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { receiptId, i ->
-                        ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                            viewModel.delete(receiptId, i.id).observe(viewLifecycleOwner) {
-                                deleteIngredientStateHandler.handle(it)
-                            }
+                r.ingredientGroups.forEach { ingredientGroup ->
+                    if (ingredientGroup.ingredients.isNotEmpty()) {
+                        ingredientsAdapter.add(IngredientGroupHeaderItem(ingredientGroup))
+                        ingredientGroup.ingredients.forEach { ingredient ->
+                            ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { receiptId, i ->
+                                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                                    viewModel.delete(receiptId, ingredientGroup.id, i.id).observe(viewLifecycleOwner) {
+                                        deleteIngredientStateHandler.handle(it)
+                                    }
+                                }
+                            }, { receiptId, i ->
+                                AddEditIngredientDialog.show(
+                                    requireActivity().supportFragmentManager,
+                                    receiptId,
+                                    ingredientGroup.id,
+                                    ArrayList(r.ingredientGroups),
+                                    i
+                                )
+                            }, { _, i ->
+                                AddIngredientToShoppingListDialog.show(
+                                    requireActivity().supportFragmentManager,
+                                    i,
+                                    r.id
+                                )
+                            }))
                         }
-                    }, { receiptId, i ->
-                        AddEditIngredientDialog.show(requireActivity().supportFragmentManager, receiptId, i)
-                    }, { _, i ->
-                        AddIngredientToShoppingListDialog.show(requireActivity().supportFragmentManager, i, r.id)
-                    }))
+                    }
                 }
             }
         }

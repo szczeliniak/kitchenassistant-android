@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredientRequest
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
@@ -19,10 +20,14 @@ class AddEditIngredientDialogViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
-    fun addIngredient(receiptId: Int, request: AddIngredientRequest): LiveData<LoadingState<Int>> {
+    fun addIngredient(
+        receiptId: Int,
+        ingredientGroupId: Int,
+        request: AddIngredientRequest
+    ): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.addIngredient(receiptId, request)
+            receiptService.addIngredient(receiptId, ingredientGroupId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
@@ -31,12 +36,23 @@ class AddEditIngredientDialogViewModel @Inject constructor(
 
     fun updateIngredient(
         receiptId: Int,
+        ingredientGroupId: Int,
         ingredientId: Int,
         request: UpdateIngredientRequest
     ): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.updateIngredient(receiptId, ingredientId, request)
+            receiptService.updateIngredient(receiptId, ingredientGroupId, ingredientId, request)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun addIngredientGroup(receiptId: Int, request: AddIngredientGroupRequest): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            receiptService.addIngredientGroup(receiptId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

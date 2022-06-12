@@ -88,6 +88,8 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         android:layout_width="match_parent"
+                        android:paddingBottom="@dimen/padding_margin_super_big"
+                        android:clipToPadding="false"
                         android:id="@+id/recycler_view"
                         android:layout_height="match_parent"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>

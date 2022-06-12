@@ -21,6 +21,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
@@ -43,6 +44,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import java.io.File
 import java.net.URI
+import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -217,7 +219,8 @@ class AddEditReceiptActivity : AppCompatActivity() {
                             localStorageService.getId(),
                             categoryId,
                             tags,
-                            data
+                            data,
+                            Collections.singletonList(AddIngredientGroupRequest("default"))
                         )
                     ).observe(this@AddEditReceiptActivity) { saveReceiptLoadingStateHandler.handle(it) }
                 }

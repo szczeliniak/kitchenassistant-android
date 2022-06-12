@@ -25,26 +25,38 @@ interface ReceiptRepository {
     @DELETE("/receipts/{id}")
     suspend fun delete(@Path("id") receiptId: Int): SuccessResponse
 
-    @DELETE("/receipts/{id}/ingredients/{ingredientId}")
-    suspend fun deleteIngredient(@Path("id") receiptId: Int, @Path("ingredientId") ingredientId: Int): SuccessResponse
-
-    @DELETE("/receipts/{id}/steps/{stepId}")
-    suspend fun deleteStep(@Path("id") receiptId: Int, @Path("stepId") stepId: Int): SuccessResponse
-
     @POST("/receipts")
     suspend fun add(@Body request: AddReceiptRequest): SuccessResponse
 
     @PUT("/receipts/{id}")
     suspend fun update(@Path("id") receiptId: Int, @Body request: UpdateReceiptRequest): SuccessResponse
 
-    @POST("/receipts/{id}/ingredients")
-    suspend fun addIngredient(@Path("id") receiptId: Int, @Body request: AddIngredientRequest): SuccessResponse
+    @POST("/receipts/{id}/ingredientGroups")
+    suspend fun addIngredientGroup(
+        @Path("id") receiptId: Int,
+        @Body request: AddIngredientGroupRequest
+    ): SuccessResponse
 
-    @PUT("/receipts/{id}/ingredients/{ingredientId}")
+    @POST("/receipts/{id}/ingredientGroups/{ingredientGroupId}/ingredients")
+    suspend fun addIngredient(
+        @Path("id") receiptId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int,
+        @Body request: AddIngredientRequest
+    ): SuccessResponse
+
+    @PUT("/receipts/{id}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
     suspend fun updateIngredient(
         @Path("id") receiptId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int,
         @Path("ingredientId") ingredientId: Int,
         @Body request: UpdateIngredientRequest
+    ): SuccessResponse
+
+    @DELETE("/receipts/{id}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
+    suspend fun deleteIngredient(
+        @Path("id") receiptId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int,
+        @Path("ingredientId") ingredientId: Int
     ): SuccessResponse
 
     @POST("/receipts/{id}/steps")
@@ -56,6 +68,9 @@ interface ReceiptRepository {
         @Path("stepId") stepId: Int,
         @Body request: UpdateStepRequest
     ): SuccessResponse
+
+    @DELETE("/receipts/{id}/steps/{stepId}")
+    suspend fun deleteStep(@Path("id") receiptId: Int, @Path("stepId") stepId: Int): SuccessResponse
 
     @GET("/receipts/categories")
     suspend fun findAllCategories(@Query("userId") userId: Int?): CategoriesResponse

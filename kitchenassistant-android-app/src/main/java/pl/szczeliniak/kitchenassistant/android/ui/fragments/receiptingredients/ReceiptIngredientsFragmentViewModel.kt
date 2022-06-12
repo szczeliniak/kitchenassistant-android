@@ -17,10 +17,10 @@ class ReceiptIngredientsFragmentViewModel @Inject constructor(
     private val receiptService: ReceiptService,
 ) : ViewModel() {
 
-    fun delete(receiptId: Int, ingredientId: Int): LiveData<LoadingState<Int>> {
+    fun delete(receiptId: Int, ingredientGroupId: Int, ingredientId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.deleteIngredient(receiptId, ingredientId)
+            receiptService.deleteIngredient(receiptId, ingredientGroupId, ingredientId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
