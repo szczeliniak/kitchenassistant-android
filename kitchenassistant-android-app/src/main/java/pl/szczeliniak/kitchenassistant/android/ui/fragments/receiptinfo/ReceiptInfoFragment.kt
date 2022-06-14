@@ -6,14 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
-import com.google.android.youtube.player.YouTubeInitializationResult
-import com.google.android.youtube.player.YouTubePlayer
-import com.google.android.youtube.player.YouTubePlayerSupportFragmentX
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
-import pl.szczeliniak.kitchenassistant.android.BuildConfig
-import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptInfoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
@@ -21,7 +18,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragm
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
@@ -62,10 +58,10 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
             binding.receiptUrl.setTextOrDefault(r.source)
 
             getYtVideoId(r.source)?.let { videoId ->
-                binding.ytPlayerFragment.visibility = View.VISIBLE
+                binding.youtubePlayerLayout.visibility = View.VISIBLE
                 initVideo(videoId)
             } ?: kotlin.run {
-                binding.ytPlayerFragment.visibility = View.GONE
+                binding.youtubePlayerLayout.visibility = View.GONE
             }
 
             binding.tagChips.removeAllViews()
@@ -101,26 +97,14 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     }
 
     private fun initVideo(videoId: String) {
-        binding.ytPlayerFragment.getFragment<YouTubePlayerSupportFragmentX>()
-            .initialize(BuildConfig.CDP_APIKEY, object : YouTubePlayer.OnInitializedListener {
-                override fun onInitializationSuccess(
-                    provider: YouTubePlayer.Provider?,
-                    player: YouTubePlayer?,
-                    wasRestored: Boolean
-                ) {
-                    player?.let { pl ->
-                        this@ReceiptInfoFragment.player = pl
-                        pl.cueVideo(videoId)
-                    }
-                }
+        lifecycle.addObserver(binding.youtubePlayer)
+        binding.youtubePlayer.initialize(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                this@ReceiptInfoFragment.player = youTubePlayer
+                youTubePlayer.cueVideo(videoId, 0F)
+            }
 
-                override fun onInitializationFailure(
-                    p0: YouTubePlayer.Provider?,
-                    p1: YouTubeInitializationResult?
-                ) {
-                    requireActivity().toast(R.string.message_cannot_load_youtube_video)
-                }
-            })
+        })
     }
 
     override fun onReceiptChanged() {

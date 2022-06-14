@@ -117,12 +117,21 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.fragment.app.FragmentContainerView
-                android:paddingVertical="@dimen/padding_margin_tiny"
+        <FrameLayout
+                android:id="@+id/youtube_player_layout"
+                android:visibility="gone"
+                android:paddingVertical="@dimen/padding_margin_small"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragmentX"
-                android:id="@+id/yt_player_fragment"/>
+                android:layout_height="match_parent">
+
+            <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+                    android:id="@+id/youtube_player"
+                    app:enableAutomaticInitialization="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </FrameLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
                 android:nestedScrollingEnabled="false"

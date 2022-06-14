@@ -66,5 +66,6 @@ dependencies {
     implementation "com.github.yalantis:ucrop:$ucrop_version"
     implementation "com.facebook.android:facebook-android-sdk:$facebook_sdk_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
+    implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$androidyoutubeplayer_version"
 
 }
