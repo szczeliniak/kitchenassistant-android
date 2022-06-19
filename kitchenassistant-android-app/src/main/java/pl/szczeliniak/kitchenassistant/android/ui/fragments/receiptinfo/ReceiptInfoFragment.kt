@@ -59,7 +59,7 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
 
             getYtVideoId(r.source)?.let { videoId ->
                 binding.youtubePlayerLayout.visibility = View.VISIBLE
-                initVideo(videoId)
+                loadVideo(videoId)
             } ?: kotlin.run {
                 binding.youtubePlayerLayout.visibility = View.GONE
             }
@@ -96,15 +96,20 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
         return null
     }
 
-    private fun initVideo(videoId: String) {
-        lifecycle.addObserver(binding.youtubePlayer)
-        binding.youtubePlayer.initialize(object : AbstractYouTubePlayerListener() {
-            override fun onReady(youTubePlayer: YouTubePlayer) {
-                this@ReceiptInfoFragment.player = youTubePlayer
-                youTubePlayer.cueVideo(videoId, 0F)
-            }
+    private fun loadVideo(videoId: String) {
 
-        })
+        player?.let {
+            it.cueVideo(videoId, 0F)
+        } ?: kotlin.run {
+            lifecycle.addObserver(binding.youtubePlayer)
+            binding.youtubePlayer.initialize(object : AbstractYouTubePlayerListener() {
+                override fun onReady(youTubePlayer: YouTubePlayer) {
+                    this@ReceiptInfoFragment.player = youTubePlayer
+                    youTubePlayer.cueVideo(videoId, 0F)
+                }
+
+            })
+        }
     }
 
     override fun onReceiptChanged() {
@@ -124,6 +129,11 @@ class ReceiptInfoFragment : ReceiptActivityFragment() {
     override fun onPause() {
         this.player?.pause()
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        lifecycle.removeObserver(binding.youtubePlayer)
+        super.onDestroy()
     }
 
 }
