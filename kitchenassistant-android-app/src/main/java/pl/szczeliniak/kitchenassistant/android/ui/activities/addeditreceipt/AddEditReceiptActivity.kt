@@ -15,11 +15,9 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
 import pl.aprilapps.easyphotopicker.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
@@ -72,8 +70,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
     @Inject
     lateinit var localStorageService: LocalStorageService
 
-    @Inject
-    lateinit var eventBus: EventBus
     private lateinit var binding: ActivityAddEditReceiptBinding
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
     private lateinit var tagsArrayAdapter: TagDropdownArrayAdapter
@@ -172,7 +168,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadReceiptsEvent())
                 if (receipt == null) {
                     ReceiptActivity.start(this@AddEditReceiptActivity, data)
                 }

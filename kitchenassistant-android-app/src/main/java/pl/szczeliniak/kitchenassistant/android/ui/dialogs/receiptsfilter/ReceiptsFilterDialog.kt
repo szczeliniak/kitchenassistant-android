@@ -12,11 +12,7 @@ import kotlinx.parcelize.Parcelize
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogReceiptsFilterBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 
 @AndroidEntryPoint
 class ReceiptsFilterDialog : DialogFragment() {
@@ -37,17 +33,13 @@ class ReceiptsFilterDialog : DialogFragment() {
     }
 
     private lateinit var binding: DialogReceiptsFilterBinding
-    private lateinit var loadCategoriesLoadingStateHandler: LoadingStateHandler<List<Category>>
     private lateinit var loadTagsLoadingStateHandler: LoadingStateHandler<List<String>>
-    private lateinit var categoryDropdownArrayAdapter: CategoryDropdownArrayAdapter
     private lateinit var tagDropdownArrayAdapter: TagDropdownArrayAdapter
 
     private val viewModel: ReceiptsFilterDialogViewModel by viewModels()
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogReceiptsFilterBinding.inflate(layoutInflater)
-        categoryDropdownArrayAdapter = CategoryDropdownArrayAdapter(requireContext())
-        binding.receiptCategory.adapter = categoryDropdownArrayAdapter
         tagDropdownArrayAdapter = TagDropdownArrayAdapter(requireContext())
         binding.receiptTagName.setAdapter(tagDropdownArrayAdapter)
         binding.receiptTagName.setOnItemClickListener { _, _, position, _ ->
@@ -57,7 +49,6 @@ class ReceiptsFilterDialog : DialogFragment() {
             it.receiptTag?.let { name -> binding.receiptTagName.setText(name) }
         }
 
-        loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
         loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
@@ -69,40 +60,15 @@ class ReceiptsFilterDialog : DialogFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
         viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
 
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val filter = Filter(categoryId, receiptTag)
+            val filter = Filter(receiptTag)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
-    }
-
-    private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<Category>> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(requireActivity())
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: List<Category>) {
-                categoryDropdownArrayAdapter.clear()
-                categoryDropdownArrayAdapter.add(null)
-                categoryDropdownArrayAdapter.addAll(data)
-
-                filter?.categoryId?.let { categoryId ->
-                    categoryDropdownArrayAdapter.getPositionById(categoryId)?.let { position ->
-                        binding.receiptCategory.setSelection(position)
-                    }
-                }
-            }
-        })
     }
 
     private fun prepareLoadTagsLoadingStateHandler(): LoadingStateHandler<List<String>> {
@@ -119,7 +85,7 @@ class ReceiptsFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val categoryId: Int?, val receiptTag: String?) : Parcelable
+    data class Filter(val receiptTag: String?) : Parcelable
 
     private val onFilterChanged: OnFilterChanged
         get() {
@@ -134,12 +100,6 @@ class ReceiptsFilterDialog : DialogFragment() {
     private val filter: Filter?
         get() {
             return requireArguments().getParcelable(FILTER_EXTRA)
-        }
-
-    private val categoryId: Int?
-        get() {
-            val position = binding.receiptCategory.selectedItemPosition
-            return if (position == 0) null else categoryDropdownArrayAdapter.getItem(position)?.id
         }
 
 }

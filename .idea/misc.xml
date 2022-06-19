@@ -35,6 +35,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_ingredients.xml" value="0.223731884057971" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipt_steps.xml" value="0.25364583333333335" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipts.xml" value="0.1" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_receipts_by_category.xml" value="0.25885416666666666" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/fragment_shopping_lists.xml" value="0.25364583333333335" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_form.xml" value="0.17395833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_login_header.xml" value="0.18072916666666666" />

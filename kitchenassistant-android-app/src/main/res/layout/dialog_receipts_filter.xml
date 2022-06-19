@@ -15,11 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.AppCompatSpinner
-            android:layout_width="match_parent"
-            android:id="@+id/receipt_category"
-            android:layout_height="wrap_content"/>
-
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterMaxLength="@integer/max_length_receipt_tag"

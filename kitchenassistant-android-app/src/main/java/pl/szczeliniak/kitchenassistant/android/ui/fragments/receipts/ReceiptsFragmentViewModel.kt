@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
@@ -18,44 +18,16 @@ class ReceiptsFragmentViewModel @Inject constructor(
     private val receiptService: ReceiptService
 ) : ViewModel() {
 
-    companion object {
-        private const val LIMIT = 20
-    }
+    private val _categories = MutableLiveData<LoadingState<List<Category>>>()
 
-    private val _receipts = MutableLiveData<LoadingState<ReceiptsResponse>>()
+    val categories: LiveData<LoadingState<List<Category>>> get() = _categories
 
-    val receipts: LiveData<LoadingState<ReceiptsResponse>> get() = _receipts
-
-    init {
-        loadReceipts(1, null, null, null)
-    }
-
-    fun loadReceipts(page: Int, categoryId: Int?, receiptName: String?, tag: String?) {
+    fun reloadCategories() {
         viewModelScope.launch {
-            receiptService.findAll(categoryId, receiptName, tag, page, LIMIT)
-                .onEach { _receipts.value = it }
+            receiptService.findAllCategories()
+                .onEach { _categories.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            receiptService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
-    fun setFavorite(id: Int, isFavorite: Boolean): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            receiptService.setFavorite(id, isFavorite)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
     }
 
 }
