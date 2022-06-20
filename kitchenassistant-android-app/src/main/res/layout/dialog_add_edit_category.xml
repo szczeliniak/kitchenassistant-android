@@ -32,4 +32,20 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterMaxLength="@integer/max_length_step_sequence"
+            style="@style/InputLayoutWithCounter"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/label_category_sequence"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_step_sequence"
+                style="@style/EditTextNumber"
+                android:id="@+id/category_sequence"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

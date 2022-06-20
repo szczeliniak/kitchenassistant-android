@@ -54,8 +54,9 @@ class AddEditCategoryDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditCategoryBinding.inflate(layoutInflater)
-        category?.let { step ->
-            binding.categoryName.setText(step.name)
+        category?.let { category ->
+            binding.categoryName.setText(category.name)
+            binding.categorySequence.setText(category.sequence?.toString())
             binding.title.text = getString(R.string.title_dialog_edit_category)
         }
 
@@ -110,11 +111,11 @@ class AddEditCategoryDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             category?.let { c ->
                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                    viewModel.updateCategory(c.id, UpdateCategoryRequest(name))
+                    viewModel.updateCategory(c.id, UpdateCategoryRequest(name, sequence))
                         .observe(this) { addStepLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
-                viewModel.addCategory(AddCategoryRequest(name, localStorageService.getId()))
+                viewModel.addCategory(AddCategoryRequest(name, localStorageService.getId(), sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
             }
         }
@@ -124,6 +125,12 @@ class AddEditCategoryDialog : DialogFragment() {
     private val name: String
         get() {
             return binding.categoryName.text.toString()
+        }
+
+    private val sequence: Int?
+        get() {
+            val asString = binding.categorySequence.text.toString()
+            return if (asString.isEmpty()) null else asString.toInt()
         }
 
     private val category: Category?

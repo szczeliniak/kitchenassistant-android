@@ -102,6 +102,7 @@
     <string name="label_shopping_list_item_quantity">Quantity</string>
     <string name="label_shopping_list_item_sequence">Sequence</string>
     <string name="label_category_name">Category name</string>
+    <string name="label_category_sequence">Sequence</string>
     <string name="label_receipt_tag">Tag</string>
     <string name="label_button_add_photo">Add photo</string>
     <string name="label_button_search">Search</string>
