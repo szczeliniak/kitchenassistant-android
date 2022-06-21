@@ -111,8 +111,7 @@ class CategoriesActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(data: Int) {
-                    adapter.clear()
-                    viewModel.reloadCategories()
+                    eventBus.post(ReloadCategoriesEvent())
                 }
             })
     }

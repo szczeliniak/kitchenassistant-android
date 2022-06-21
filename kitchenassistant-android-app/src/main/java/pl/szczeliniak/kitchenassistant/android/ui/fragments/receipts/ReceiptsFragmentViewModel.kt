@@ -22,6 +22,10 @@ class ReceiptsFragmentViewModel @Inject constructor(
 
     val categories: LiveData<LoadingState<List<Category>>> get() = _categories
 
+    init {
+        reloadCategories()
+    }
+
     fun reloadCategories() {
         viewModelScope.launch {
             receiptService.findAllCategories()

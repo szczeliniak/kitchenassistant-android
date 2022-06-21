@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
+import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
@@ -18,6 +21,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class ReceiptsFragment : Fragment() {
@@ -27,6 +31,9 @@ class ReceiptsFragment : Fragment() {
             return ReceiptsFragment()
         }
     }
+
+    @Inject
+    lateinit var eventBus: EventBus
 
     private val viewModel: ReceiptsFragmentViewModel by viewModels()
 
@@ -77,9 +84,18 @@ class ReceiptsFragment : Fragment() {
         }.attach()
     }
 
-    override fun onStart() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        eventBus.register(this)
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
+    }
+    @Subscribe
+    fun reloadCategories(event: ReloadCategoriesEvent) {
         viewModel.reloadCategories()
-        super.onStart()
     }
 
 }
