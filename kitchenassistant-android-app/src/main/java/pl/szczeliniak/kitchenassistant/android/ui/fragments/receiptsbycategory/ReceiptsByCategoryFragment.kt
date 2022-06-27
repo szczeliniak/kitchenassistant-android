@@ -34,9 +34,9 @@ class ReceiptsByCategoryFragment : Fragment() {
         private const val FILTER_SAVED_STATE_EXTRA = "FILTER_SAVED_STATE_EXTRA"
         private const val CATEGORY_ID_EXTRA = "CATEGORY_ID_EXTRA"
 
-        fun create(id: Int): ReceiptsByCategoryFragment {
+        fun create(id: Int?): ReceiptsByCategoryFragment {
             val bundle = Bundle()
-            bundle.putInt(CATEGORY_ID_EXTRA, id)
+            id?.let { bundle.putInt(CATEGORY_ID_EXTRA, it) }
             val fragment = ReceiptsByCategoryFragment()
             fragment.arguments = bundle
             return fragment
@@ -212,9 +212,9 @@ class ReceiptsByCategoryFragment : Fragment() {
         outState.putParcelable(FILTER_SAVED_STATE_EXTRA, filter)
     }
 
-    private val categoryId: Int
+    private val categoryId: Int?
         get() {
-            return requireArguments().get(CATEGORY_ID_EXTRA) as Int
+            return requireArguments().get(CATEGORY_ID_EXTRA) as Int?
         }
 
 }

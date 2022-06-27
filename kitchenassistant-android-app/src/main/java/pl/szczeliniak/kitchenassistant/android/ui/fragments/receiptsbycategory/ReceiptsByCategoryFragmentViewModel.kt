@@ -13,13 +13,13 @@ import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 
 class ReceiptsByCategoryFragmentViewModel @AssistedInject constructor(
     private val receiptService: ReceiptService,
-    @Assisted private val categoryId: Int
+    @Assisted private val categoryId: Int?
 ) : ViewModel() {
 
     companion object {
         private const val LIMIT = 20
 
-        fun provideFactory(factory: Factory, categoryId: Int): ViewModelProvider.Factory =
+        fun provideFactory(factory: Factory, categoryId: Int?): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                     return factory.create(categoryId) as T
@@ -65,7 +65,7 @@ class ReceiptsByCategoryFragmentViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(categoryId: Int): ReceiptsByCategoryFragmentViewModel
+        fun create(categoryId: Int?): ReceiptsByCategoryFragmentViewModel
     }
 
 }

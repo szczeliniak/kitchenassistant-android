@@ -10,6 +10,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
@@ -69,18 +70,22 @@ class ReceiptsFragment : Fragment() {
                     binding.layout.showEmptyIcon(requireActivity())
                 } else {
                     binding.layout.hideEmptyIcon()
-                    initPager(data)
+                    val tabs = data.map { CategoryTab(it.id, it.name) }.toMutableList()
+                    tabs.add(CategoryTab(null, getString(R.string.label_category_tab_all)))
+                    initPager(tabs)
                 }
             }
         })
     }
 
-    private fun initPager(categories: List<Category>) {
+    private fun initPager(tabs: List<CategoryTab>) {
         binding.viewPager.adapter = FragmentPagerAdapter(
-            categories.map { ReceiptsByCategoryFragment.create(it.id) }.toTypedArray(), childFragmentManager, lifecycle
+            tabs.map { ReceiptsByCategoryFragment.create(it.categoryId) }.toTypedArray(),
+            childFragmentManager,
+            lifecycle
         )
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = categories[position].name
+            tab.text = tabs[position].tabName
         }.attach()
     }
 
@@ -93,9 +98,12 @@ class ReceiptsFragment : Fragment() {
         eventBus.unregister(this)
         super.onDestroy()
     }
+
     @Subscribe
     fun reloadCategories(event: ReloadCategoriesEvent) {
         viewModel.reloadCategories()
     }
+
+    data class CategoryTab(val categoryId: Int?, val tabName: String)
 
 }
