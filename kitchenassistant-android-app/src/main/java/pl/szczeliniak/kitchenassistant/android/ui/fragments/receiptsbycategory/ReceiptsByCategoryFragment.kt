@@ -43,9 +43,7 @@ class ReceiptsByCategoryFragment : Fragment() {
         }
     }
 
-    private val viewModel: ReceiptsByCategoryFragmentViewModel by viewModels {
-        ReceiptsByCategoryFragmentViewModel.provideFactory(receiptsByCategoryFragmentViewModel, categoryId)
-    }
+    private lateinit var viewModel: ReceiptsByCategoryFragmentViewModel
     private val adapter = GroupAdapter<GroupieViewHolder>()
     private val debounceExecutor = DebounceExecutor(500)
 
@@ -65,6 +63,11 @@ class ReceiptsByCategoryFragment : Fragment() {
         savedInstanceState?.getParcelable<ReceiptsFilterDialog.Filter?>(FILTER_SAVED_STATE_EXTRA)?.let {
             filter = it
         }
+
+        val viewModel: ReceiptsByCategoryFragmentViewModel by viewModels {
+            ReceiptsByCategoryFragmentViewModel.provideFactory(receiptsByCategoryFragmentViewModel, categoryId)
+        }
+        this.viewModel = viewModel
 
         binding = FragmentReceiptsByCategoryBinding.inflate(inflater)
         binding.root.setOnRefreshListener { resetReceipts() }
@@ -88,6 +91,7 @@ class ReceiptsByCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
         deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
         addRemoveFromFavoritesLoadingStateHandler = prepareAddRemoveFromFavoritesLoadingStateHandler()
