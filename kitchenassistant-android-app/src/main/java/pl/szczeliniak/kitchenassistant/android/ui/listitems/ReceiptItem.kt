@@ -14,6 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion
 class ReceiptItem constructor(
     private val context: Context,
     private val receipt: Receipt,
+    private val showCategory: Boolean = false,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick,
@@ -22,6 +23,9 @@ class ReceiptItem constructor(
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
         binding.receiptName.text = receipt.name
+        if (showCategory) {
+            receipt.category?.let { binding.receiptCategory.fillOrHide(it.name, binding.receiptCategory) }
+        }
         binding.receiptAuthor.fillOrHide(receipt.author, binding.receiptAuthor)
         binding.tagChips.removeAllViews()
         receipt.tags.forEach { binding.tagChips.add(LayoutInflater.from(context), it, false) }

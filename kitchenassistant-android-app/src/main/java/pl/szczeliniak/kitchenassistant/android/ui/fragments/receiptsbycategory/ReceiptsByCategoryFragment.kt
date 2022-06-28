@@ -149,7 +149,7 @@ class ReceiptsByCategoryFragment : Fragment() {
                 } else {
                     binding.layout.hideEmptyIcon()
                     data.receipts.forEach { receipt ->
-                        adapter.add(ReceiptItem(requireContext(), receipt, {
+                        adapter.add(ReceiptItem(requireContext(), receipt, categoryId == null, {
                             ReceiptActivity.start(requireContext(), it.id)
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {

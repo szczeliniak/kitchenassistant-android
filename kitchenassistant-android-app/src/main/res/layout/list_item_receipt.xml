@@ -20,8 +20,8 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/receipt_author"
-                tools:text="@string/placeholder_receipt_author"
+                android:id="@+id/receipt_category"
+                tools:text="@string/placeholder_receipt_category"
                 style="@style/TextViewSubheader"
                 android:textColor="@color/secondary_dark"
                 android:layout_width="match_parent"
@@ -32,13 +32,6 @@
                 android:orientation="horizontal"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/receipt_name"
-                    tools:text="@string/placeholder_receipt_name"
-                    style="@style/TextViewHeader"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
             <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:src="@drawable/icon_star"
@@ -48,7 +41,22 @@
                     android:layout_height="match_parent"
                     android:contentDescription="@string/description_receipt_is_favorite"/>
 
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/receipt_name"
+                    tools:text="@string/placeholder_receipt_name"
+                    style="@style/TextViewHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/receipt_author"
+                tools:text="@string/placeholder_receipt_author"
+                style="@style/TextViewSubheader"
+                android:textColor="@color/secondary_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         <com.google.android.material.chip.ChipGroup
                 android:id="@+id/tag_chips"
