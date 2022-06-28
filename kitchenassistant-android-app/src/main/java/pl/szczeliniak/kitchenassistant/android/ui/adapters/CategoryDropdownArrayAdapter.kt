@@ -38,10 +38,12 @@ class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(co
     }
 
     fun getPositionById(id: Int): Int? {
-        for (i in 0..count) {
-            val item = getItem(i)
-            if (item != null && item.id == id) {
-                return i
+        if (count > 0) {
+            for (i in 0..count) {
+                val item = getItem(i)
+                if (item != null && item.id == id) {
+                    return i
+                }
             }
         }
         return null

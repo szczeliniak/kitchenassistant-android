@@ -1,12 +1,12 @@
 package pl.szczeliniak.kitchenassistant.android.ui.fragments
 
 import androidx.fragment.app.Fragment
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 
 abstract class ReceiptActivityFragment : Fragment() {
 
-    val receipt: Receipt?
+    val receipt: ReceiptDetails?
         get() {
             val activity = requireActivity()
             if (activity is ReceiptActivity) {

@@ -15,15 +15,17 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
 import pl.aprilapps.easyphotopicker.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
@@ -49,32 +51,44 @@ import javax.inject.Inject
 class AddEditReceiptActivity : AppCompatActivity() {
 
     companion object {
-        private const val RECEIPT_EXTRA = "RECEIPT_EXTRA"
+        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
 
-        fun start(context: Context, receipt: Receipt? = null) {
+        fun start(context: Context, receiptId: Int? = null) {
             val intent = Intent(context, AddEditReceiptActivity::class.java)
-            receipt?.let { intent.putExtra(RECEIPT_EXTRA, it) }
+            receiptId?.let { intent.putExtra(RECEIPT_ID_EXTRA, it) }
             context.startActivity(intent)
         }
     }
 
-    private val viewModel: AddEditReceiptActivityViewModel by viewModels()
+    private val viewModel: AddEditReceiptActivityViewModel by viewModels {
+        AddEditReceiptActivityViewModel.provideFactory(addEditReceiptActivityViewModelFactory, receiptId)
+    }
+
     private val saveReceiptLoadingStateHandler = prepareSaveReceiptLoadingStateHandler()
     private val uploadPhotosLoadingStateHandler = prepareUploadPhotosLoadingStateHandler()
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
     private val loadAuthorsLoadingStateHandler = prepareLoadAuthorsLoadingStateHandler()
     private val downloadPhotoFileLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
+    private val receiptLoadingStateHandler: LoadingStateHandler<ReceiptDetails> = prepareReceiptLoadingStateHandler()
     private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
     @Inject
+    lateinit var eventBus: EventBus
+
+    @Inject
     lateinit var localStorageService: LocalStorageService
+
+    @Inject
+    lateinit var addEditReceiptActivityViewModelFactory: AddEditReceiptActivityViewModel.Factory
 
     private lateinit var binding: ActivityAddEditReceiptBinding
     private lateinit var categoriesDropdownAdapter: CategoryDropdownArrayAdapter
     private lateinit var tagsArrayAdapter: TagDropdownArrayAdapter
     private lateinit var authorsArrayAdapter: AuthorDropdownArrayAdapter
     private lateinit var easyImage: EasyImage
+
+    private var receipt: ReceiptDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +99,13 @@ class AddEditReceiptActivity : AppCompatActivity() {
 
         initLayout()
 
+        receiptId?.let {
+            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
+        } ?: kotlin.run {
+            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
+        }
+
+        viewModel.receipt.observe(this) { receiptLoadingStateHandler.handle(it) }
         viewModel.tags.observe(this) { loadTagsLoadingStateHandler.handle(it) }
         viewModel.authors.observe(this) { loadAuthorsLoadingStateHandler.handle(it) }
         viewModel.categories.observe(this) { loadCategoriesLoadingStateHandler.handle(it) }
@@ -93,22 +114,6 @@ class AddEditReceiptActivity : AppCompatActivity() {
     private fun initLayout() {
         binding = ActivityAddEditReceiptBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        receipt?.let { r ->
-            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_edit_receipt)
-            binding.receiptName.setText(r.name)
-            binding.receiptDescription.setText(r.description)
-            binding.receiptAuthor.setText(r.author)
-            binding.receiptUrl.setText(r.source)
-            r.tags.forEach { addTagChip(it) }
-            r.photos.forEach { photo ->
-                viewModel.loadPhoto(photo).observe(this@AddEditReceiptActivity) {
-                    downloadPhotoFileLoadingStateHandler.handle(it)
-                }
-            }
-        } ?: kotlin.run {
-            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, R.string.title_activity_new_receipt)
-        }
 
         binding.tag.setAdapter(tagsArrayAdapter)
         binding.tag.setOnKeyListener { _, keyCode, event -> onKeyInTagPressed(keyCode, event) }
@@ -168,9 +173,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                if (receipt == null) {
+                if (receiptId == null) {
                     ReceiptActivity.start(this@AddEditReceiptActivity, data)
                 }
+                eventBus.post(ReloadReceiptsEvent())
                 finish()
             }
         })
@@ -187,12 +193,13 @@ class AddEditReceiptActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: List<Int>) {
-                receipt?.let { r ->
-                    val photoIds = ArrayList<Int>(photosAdapter.getItems<PhotoItem>().filter { it.fileId != null }
-                        .map { it.fileId!! })
+                receiptId?.let {
+                    val photoIds =
+                        ArrayList(photosAdapter.getItems<PhotoItem>().filter { photo -> photo.fileId != null }
+                            .map { photo -> photo.fileId!! })
                     photoIds.addAll(data)
                     viewModel.updateReceipt(
-                        r.id,
+                        it,
                         UpdateReceiptRequest(
                             name!!,
                             author,
@@ -229,14 +236,19 @@ class AddEditReceiptActivity : AppCompatActivity() {
                 categoriesDropdownAdapter.clear()
                 categoriesDropdownAdapter.add(null)
                 categoriesDropdownAdapter.addAll(data)
-
-                receipt?.category?.let { category ->
-                    categoriesDropdownAdapter.getPositionById(category.id)?.let { position ->
-                        binding.receiptCategory.setSelection(position)
-                    }
-                }
+                setCurrentCategory()
             }
         })
+    }
+
+    private fun setCurrentCategory() {
+        receipt?.category?.let { category ->
+            categoriesDropdownAdapter.getPositionById(category.id)?.let { position ->
+                if (binding.receiptCategory.adapter.count > position) {
+                    binding.receiptCategory.setSelection(position)
+                }
+            }
+        }
     }
 
     private fun prepareLoadTagsLoadingStateHandler(): LoadingStateHandler<List<String>> {
@@ -263,6 +275,40 @@ class AddEditReceiptActivity : AppCompatActivity() {
                 })
             }
         })
+    }
+
+    private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<ReceiptDetails> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ReceiptDetails> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@AddEditReceiptActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: ReceiptDetails) {
+                receipt = data
+                fillReceipt()
+            }
+        })
+    }
+
+    private fun fillReceipt() {
+        receipt?.let {
+            binding.toolbarLayout.toolbar.init(this@AddEditReceiptActivity, it.name)
+            binding.receiptName.setText(it.name)
+            binding.receiptDescription.setText(it.description)
+            binding.receiptAuthor.setText(it.author)
+            binding.receiptUrl.setText(it.source)
+            it.tags.forEach { tag -> addTagChip(tag) }
+            it.photos.forEach { photo ->
+                viewModel.loadPhoto(photo).observe(this@AddEditReceiptActivity) { downloadedPhoto ->
+                    downloadPhotoFileLoadingStateHandler.handle(downloadedPhoto)
+                }
+            }
+            setCurrentCategory()
+        }
     }
 
     private fun saveReceipt() {
@@ -309,9 +355,10 @@ class AddEditReceiptActivity : AppCompatActivity() {
             return binding.tagChips.getTextInChips()
         }
 
-    private val receipt: Receipt?
+    private val receiptId: Int?
         get() {
-            return intent.getParcelableExtra(RECEIPT_EXTRA)
+            val id = intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
+            return if (id != -1) id else null
         }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

@@ -1,10 +1,9 @@
 package pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
+import androidx.lifecycle.*
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -13,18 +12,22 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddReceiptReques
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateReceiptRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Photo
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import java.io.File
-import javax.inject.Inject
 
-@HiltViewModel
-class AddEditReceiptActivityViewModel @Inject constructor(
-    private val receiptService: ReceiptService
+class AddEditReceiptActivityViewModel @AssistedInject constructor(
+    private val receiptService: ReceiptService,
+    @Assisted private val receiptId: Int?
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
     private val _tags = MutableLiveData<LoadingState<List<String>>>()
     private val _authors = MutableLiveData<LoadingState<List<String>>>()
+    private val _receipt = MutableLiveData<LoadingState<ReceiptDetails>>()
+
+    val receipt: LiveData<LoadingState<ReceiptDetails>>
+        get() = _receipt
 
     val categories: LiveData<LoadingState<List<Category>>>
         get() {
@@ -42,6 +45,7 @@ class AddEditReceiptActivityViewModel @Inject constructor(
         }
 
     init {
+        loadReceipt()
         loadCategories()
         loadTags()
         loadAuthors()
@@ -109,6 +113,30 @@ class AddEditReceiptActivityViewModel @Inject constructor(
                 .launchIn(viewModelScope)
         }
         return liveData
+    }
+
+    private fun loadReceipt() {
+        receiptId?.let {
+            viewModelScope.launch {
+                receiptService.findById(it)
+                    .onEach { _receipt.value = it }
+                    .launchIn(viewModelScope)
+            }
+        }
+    }
+
+    @AssistedFactory
+    interface Factory {
+        fun create(receiptId: Int?): AddEditReceiptActivityViewModel
+    }
+
+    companion object {
+        fun provideFactory(factory: Factory, receiptId: Int?): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return factory.create(receiptId) as T
+                }
+            }
     }
 
 }

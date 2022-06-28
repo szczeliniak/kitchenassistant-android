@@ -13,7 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Photo
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 import java.io.File
 import java.io.InputStream
@@ -52,7 +52,7 @@ class ReceiptService constructor(
         }
     }
 
-    suspend fun findById(receiptId: Int): Flow<LoadingState<Receipt>> {
+    suspend fun findById(receiptId: Int): Flow<LoadingState<ReceiptDetails>> {
         return flow {
             emit(LoadingState.InProgress)
             try {

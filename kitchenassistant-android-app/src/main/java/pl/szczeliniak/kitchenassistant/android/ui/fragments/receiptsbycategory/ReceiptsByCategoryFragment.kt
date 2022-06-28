@@ -10,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentReceiptsByCategoryBinding
+import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptsEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
@@ -49,6 +52,9 @@ class ReceiptsByCategoryFragment : Fragment() {
 
     @Inject
     lateinit var receiptsByCategoryFragmentViewModel: ReceiptsByCategoryFragmentViewModel.Factory
+
+    @Inject
+    lateinit var eventBus: EventBus
 
     private lateinit var binding: FragmentReceiptsByCategoryBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
@@ -158,7 +164,7 @@ class ReceiptsByCategoryFragment : Fragment() {
                                 }
                             }
                         }, {
-                            AddEditReceiptActivity.start(requireContext(), it)
+                            AddEditReceiptActivity.start(requireContext(), it.id)
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                                 viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
@@ -174,6 +180,7 @@ class ReceiptsByCategoryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        eventBus.register(this)
         setHasOptionsMenu(true)
     }
 
@@ -220,5 +227,15 @@ class ReceiptsByCategoryFragment : Fragment() {
         get() {
             return requireArguments().get(CATEGORY_ID_EXTRA) as Int?
         }
+
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
+    }
+
+    @Subscribe
+    fun reloadReceipts(event: ReloadReceiptsEvent) {
+        endlessScrollRecyclerViewListener.reset()
+    }
 
 }

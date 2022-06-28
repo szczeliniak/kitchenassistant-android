@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 
 class ReceiptActivityViewModel @AssistedInject constructor(
@@ -16,9 +16,9 @@ class ReceiptActivityViewModel @AssistedInject constructor(
     @Assisted private val receiptId: Int
 ) : ViewModel() {
 
-    private val _receipt = MutableLiveData<LoadingState<Receipt>>()
+    private val _receipt = MutableLiveData<LoadingState<ReceiptDetails>>()
 
-    val receipt: LiveData<LoadingState<Receipt>>
+    val receipt: LiveData<LoadingState<ReceiptDetails>>
         get() = _receipt
 
     fun reload() {
@@ -35,16 +35,16 @@ class ReceiptActivityViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(receiptId: Int) : ReceiptActivityViewModel
+        fun create(receiptId: Int): ReceiptActivityViewModel
     }
 
     companion object {
-        fun provideFactory(factory: Factory, receiptId: Int): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return factory.create(receiptId) as T
+        fun provideFactory(factory: Factory, receiptId: Int): ViewModelProvider.Factory =
+            object : ViewModelProvider.Factory {
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                    return factory.create(receiptId) as T
+                }
             }
-        }
-
     }
 
 }

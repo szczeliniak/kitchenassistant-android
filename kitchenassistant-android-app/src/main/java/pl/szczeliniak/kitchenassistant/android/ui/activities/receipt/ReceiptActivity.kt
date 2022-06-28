@@ -13,7 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityReceiptBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Receipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ReceiptDetails
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.ReceiptActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.receiptinfo.ReceiptInfoFragment
@@ -44,17 +44,17 @@ class ReceiptActivity : AppCompatActivity() {
     lateinit var receiptActivityViewModelFactory: ReceiptActivityViewModel.Factory
 
     private lateinit var binding: ActivityReceiptBinding
-    private val receiptLoadingStateHandler: LoadingStateHandler<Receipt> = prepareReceiptLoadingStateHandler()
+    private val receiptLoadingStateHandler: LoadingStateHandler<ReceiptDetails> = prepareReceiptLoadingStateHandler()
     private val observers = mutableListOf<ReceiptActivityFragment>()
 
-    private val viewModel: ReceiptActivityViewModel by viewModels() {
+    private val viewModel: ReceiptActivityViewModel by viewModels {
         ReceiptActivityViewModel.provideFactory(
             receiptActivityViewModelFactory,
             intent.getIntExtra(RECEIPT_ID_EXTRA, -1)
         )
     }
 
-    var receipt: Receipt? = null
+    var receipt: ReceiptDetails? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +64,8 @@ class ReceiptActivity : AppCompatActivity() {
         viewModel.receipt.observe(this) { receiptLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<Receipt> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Receipt> {
+    private fun prepareReceiptLoadingStateHandler(): LoadingStateHandler<ReceiptDetails> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ReceiptDetails> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ReceiptActivity)
             }
@@ -74,7 +74,7 @@ class ReceiptActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: Receipt) {
+            override fun onSuccess(data: ReceiptDetails) {
                 binding.toolbarLayout.toolbar.init(this@ReceiptActivity, data.name)
                 receipt = data
                 observers.forEach { it.onReceiptChanged() }
