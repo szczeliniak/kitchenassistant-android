@@ -87,7 +87,7 @@ class AddEditIngredientDialog : DialogFragment() {
 
         ingredient?.let {
             binding.ingredientName.setText(it.name)
-            binding.ingredientQuantity.setText(it.quantity)
+            it.quantity?.let { quantity -> binding.ingredientQuantity.setText(quantity) }
             binding.title.text = getString(R.string.title_dialog_edit_ingredient)
         }
 
@@ -110,15 +110,6 @@ class AddEditIngredientDialog : DialogFragment() {
             }
         }
 
-        binding.ingredientQuantity.doOnTextChanged { _, _, _, _ ->
-            if (!isQuantityValid()) {
-                binding.ingredientQuantityLayout.error = getString(R.string.message_ingredient_quantity_is_empty)
-            } else {
-                binding.ingredientQuantityLayout.error = null
-            }
-            checkButtonState()
-        }
-
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
         builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
@@ -130,16 +121,12 @@ class AddEditIngredientDialog : DialogFragment() {
         return name.isNotEmpty()
     }
 
-    private fun isQuantityValid(): Boolean {
-        return quantity.isNotEmpty()
-    }
-
     private fun isIngredientGroupValid(): Boolean {
         return ingredientGroupName.isNotEmpty()
     }
 
     private fun checkButtonState() {
-        positiveButton.enable(isNameValid() && isQuantityValid() && isIngredientGroupValid())
+        positiveButton.enable(isNameValid() && isIngredientGroupValid())
     }
 
     private fun prepareAddIngredientLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -213,9 +200,10 @@ class AddEditIngredientDialog : DialogFragment() {
             return binding.ingredientName.text.toString()
         }
 
-    private val quantity: String
+    private val quantity: String?
         get() {
-            return binding.ingredientQuantity.text.toString()
+            val asString = binding.ingredientQuantity.text.toString()
+            return asString.ifEmpty { null }
         }
 
     private val ingredientGroupName: String

@@ -73,16 +73,6 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             checkButtonState()
         }
 
-        binding.shoppingListItemQuantity.doOnTextChanged { _, _, _, _ ->
-            if (!isQuantityValid()) {
-                binding.shoppingListItemQuantityLayout.error =
-                    getString(R.string.message_shopping_list_item_quantity_is_empty)
-            } else {
-                binding.shoppingListItemQuantityLayout.error = null
-            }
-            checkButtonState()
-        }
-
         addShoppingListItemLoadingStateHandler = prepareAddShoppingListItemLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
@@ -96,12 +86,8 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         return name.isNotEmpty()
     }
 
-    private fun isQuantityValid(): Boolean {
-        return quantity.isNotEmpty()
-    }
-
     private fun checkButtonState() {
-        positiveButton.enable(isNameValid() && isQuantityValid())
+        positiveButton.enable(isNameValid())
     }
 
     private fun prepareAddShoppingListItemLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -151,9 +137,10 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             return binding.shoppingListName.text.toString()
         }
 
-    private val quantity: String
+    private val quantity: String?
         get() {
-            return binding.shoppingListItemQuantity.text.toString()
+            val asString = binding.shoppingListItemQuantity.text.toString()
+            return asString.ifEmpty { null }
         }
 
     private val sequence: Int?

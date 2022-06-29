@@ -9,13 +9,11 @@
     <string name="message_receipt_name_is_empty">Receipt name cannot be empty</string>
     <string name="message_ingredient_name_is_empty">Ingredient name cannot be empty</string>
     <string name="message_ingredient_group_name_is_empty">Ingredient group name cannot be empty</string>
-    <string name="message_ingredient_quantity_is_empty">Ingredient quantity cannot be empty</string>
     <string name="message_no_internet_connection">No Internet connection. Try again later</string>
     <string name="message_cannot_execute_operation">Operation cannot be executed. Try again later</string>
     <string name="message_step_name_is_empty">Step name cannot be empty</string>
     <string name="message_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
     <string name="message_shopping_list_item_name_is_empty">Item name cannot be empty</string>
-    <string name="message_shopping_list_item_quantity_is_empty">Quantity cannot be empty</string>
     <string name="message_empty_name">Name cannot be empty</string>
     <string name="message_register_email_exists">Email exists</string>
     <string name="message_empty_list">Empty list</string>
@@ -128,4 +126,5 @@
     <string name="placeholder_receipt_date">2022&#8211;03&#8211;02</string>
     <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
+    <string name="placeholder_shopping_list_item_receipt_name">Shopping list item receipt name</string>
 </resources>

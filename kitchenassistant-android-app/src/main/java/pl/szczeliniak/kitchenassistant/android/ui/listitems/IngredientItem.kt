@@ -20,7 +20,7 @@ class IngredientItem constructor(
 
     override fun bind(binding: ListItemIngredientBinding, position: Int) {
         binding.ingredientName.text = ingredient.name
-        binding.ingredientQuantity.text = ingredient.quantity
+        binding.ingredientQuantity.text = ingredient.quantity ?: "---"
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 

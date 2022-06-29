@@ -50,7 +50,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:layout_gravity="center_vertical"
-                tools:text="@string/placeholder_shopping_list_item_quantity"
+                tools:text="@string/placeholder_shopping_list_item_receipt_name"
                 android:gravity="center"
                 style="@style/TextViewDescription"
                 android:id="@+id/shopping_list_item_receipt_name"

@@ -20,7 +20,7 @@ class ShoppingListItemItem constructor(
 
     override fun bind(binding: ListItemShoppingListItemBinding, position: Int) {
         binding.shoppingListItemName.text = shoppingListItem.name
-        binding.shoppingListItemQuantity.text = shoppingListItem.quantity
+        binding.shoppingListItemQuantity.text = shoppingListItem.quantity ?: "---"
         binding.shoppingListItemIsCompleted.isChecked = shoppingListItem.completed
 
         binding.shoppingListItemIsCompleted.setOnCheckedChangeListener { _, isChecked ->

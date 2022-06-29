@@ -7,5 +7,5 @@ import kotlinx.parcelize.Parcelize
 data class Ingredient(
     val id: Int,
     val name: String,
-    val quantity: String
+    val quantity: String?
 ) : Parcelable
