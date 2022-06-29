@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListR
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import java.time.LocalDate
 
@@ -48,7 +48,7 @@ class ShoppingListService constructor(
         }
     }
 
-    suspend fun findById(shoppingListId: Int): Flow<LoadingState<ShoppingList>> {
+    suspend fun findById(shoppingListId: Int): Flow<LoadingState<ShoppingListDetails>> {
         return flow {
             emit(LoadingState.InProgress)
             try {

@@ -5,9 +5,10 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 @Parcelize
-data class ShoppingList(
+data class ShoppingListDetails(
     val id: Int,
     val name: String,
     val description: String?,
-    val date: LocalDate?
+    val date: LocalDate?,
+    val items: List<ShoppingListItem>
 ) : Parcelable
