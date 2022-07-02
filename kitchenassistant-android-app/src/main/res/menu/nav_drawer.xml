@@ -10,6 +10,9 @@
         <item
                 android:id="@+id/shopping_lists"
                 android:title="@string/title_fragment_shopping_lists"/>
+        <item
+                android:id="@+id/day_plans"
+                android:title="@string/title_fragment_day_plans"/>
     </group>
 
     <group>

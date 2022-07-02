@@ -11,4 +11,9 @@
             android:icon="@drawable/icon_shopping_cart"
             android:title="@string/title_fragment_shopping_lists"/>
 
+    <item
+            android:id="@+id/day_plans"
+            android:icon="@drawable/icon_shopping_cart"
+            android:title="@string/title_fragment_day_plans"/>
+
 </menu>

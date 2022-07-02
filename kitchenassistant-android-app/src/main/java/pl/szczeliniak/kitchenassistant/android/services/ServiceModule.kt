@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
@@ -32,5 +33,11 @@ class ServiceModule {
         shoppingListRepository: ShoppingListRepository,
         localStorageService: LocalStorageService
     ): ShoppingListService = ShoppingListService(shoppingListRepository, localStorageService)
+
+    @Provides
+    fun dayPlansService(
+        dayPlanRepository: DayPlanRepository,
+        localStorageService: LocalStorageService
+    ): DayPlanService = DayPlanService(dayPlanRepository, localStorageService)
 
 }

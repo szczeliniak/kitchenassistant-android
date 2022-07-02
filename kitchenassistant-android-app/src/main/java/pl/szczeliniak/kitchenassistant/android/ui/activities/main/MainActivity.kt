@@ -63,6 +63,10 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomNavView.selectedItemId = R.id.shopping_lists
                 return true
             }
+            R.id.day_plans -> {
+                binding.bottomNavView.selectedItemId = R.id.day_plans
+                return true
+            }
             R.id.archived_shopping_lists -> {
                 ArchivedShoppingListsActivity.start(this@MainActivity)
                 return true
