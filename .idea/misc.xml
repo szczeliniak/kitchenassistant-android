@@ -4,6 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="kitchenassistant-android-app/src/main/res/drawable/button_rounded.xml" value="0.18177083333333333" />
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_arrow_back.xml" value="0.17864583333333334" />
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_calendar.xml" value="0.17864583333333334" />
+        <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_done.xml" value="0.17864583333333334" />
         <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_receipt.xml" value="0.2520833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_search.xml" value="0.11388888888888889" />
         <entry key="kitchenassistant-android-app/src/main/res/drawable/icon_shopping_cart.xml" value="0.1" />
@@ -11,6 +14,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_add_edit_shopping_list.xml" value="0.18070652173913043" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_archvied_shopping_lists.xml" value="0.1" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_categories.xml" value="0.13858695652173914" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/activity_day_plan.xml" value="0.26458333333333334" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_login.xml" value="0.125" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_main.xml" value="0.10190217391304347" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/activity_receipt.xml" value="0.1" />
@@ -45,6 +49,7 @@
         <entry key="kitchenassistant-android-app/src/main/res/layout/include_nav_view_header.xml" value="0.13858695652173914" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_category.xml" value="0.25364583333333335" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_day_plan.xml" value="0.315625" />
+        <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_day_plan_receipt.xml" value="0.3109375" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_header_ingredient_group.xml" value="0.25" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_ingredient.xml" value="0.3020833333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/layout/list_item_photo.xml" value="0.25364583333333335" />
@@ -58,8 +63,10 @@
         <entry key="kitchenassistant-android-app/src/main/res/menu/activity_add_receipt.xml" value="0.23854166666666668" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/activity_add_shopping_list.xml" value="0.23854166666666668" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/activity_archived_shopping_lists.xml" value="0.1953125" />
+        <entry key="kitchenassistant-android-app/src/main/res/menu/activity_day_plan.xml" value="0.3255208333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/activity_shopping_list.xml" value="0.1953125" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/category_item.xml" value="0.23854166666666668" />
+        <entry key="kitchenassistant-android-app/src/main/res/menu/day_plan_receipt_item.xml" value="0.3255208333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/fragment_day_plans.xml" value="0.3302083333333333" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/fragment_receipts.xml" value="0.23854166666666668" />
         <entry key="kitchenassistant-android-app/src/main/res/menu/fragment_shopping_lists.xml" value="0.1953125" />

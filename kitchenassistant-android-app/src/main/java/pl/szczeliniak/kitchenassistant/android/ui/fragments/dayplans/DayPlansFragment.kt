@@ -18,6 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
+import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditdayplan.AddEditDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.dayplanfilter.DayPlansFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanItem
@@ -123,7 +124,7 @@ class DayPlansFragment : Fragment() {
                         binding.layout.hideEmptyIcon()
                         data.dayPlans.forEach { dayPlan ->
                             adapter.add(DayPlanItem(requireContext(), dayPlan, {
-//                                ShoppingListActivity.start(requireContext(), dayPlan.id) //TODO todo
+                                DayPlanActivity.start(requireContext(), dayPlan.id)
                             }, {
                                 viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
                                     deleteDayPlanLoadingStateHandler.handle(r)

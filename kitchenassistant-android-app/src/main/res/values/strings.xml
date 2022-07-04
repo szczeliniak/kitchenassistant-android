@@ -44,6 +44,7 @@
     <string name="description_receipt_photo">Receipt photo</string>
     <string name="description_receipt_is_favorite">Receipt is marked as favorite</string>
     <string name="description_add_day_plan">Add day plan</string>
+    <string name="description_add_receipt_to_day_plan">Add receipt to day plan</string>
 
     <string name="title_activity_new_receipt">New receipt</string>
     <string name="title_activity_edit_receipt">Edit receipt</string>
@@ -134,5 +135,7 @@
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
     <string name="placeholder_shopping_list_item_receipt_name">Shopping list item receipt name</string>
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
+    <string name="label_day_plan_date">Date</string>
+    <string name="label_day_plan_receipts">Receipts</string>
 
 </resources>

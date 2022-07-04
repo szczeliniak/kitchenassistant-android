@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
 import retrofit2.http.*
@@ -18,6 +19,9 @@ interface DayPlanRepository {
         @Query("limit") limit: Int? = null
     ): DayPlansResponse
 
+    @GET("/dayplans/{id}")
+    suspend fun findById(@Path("id") id: Int): DayPlanResponse
+
     @DELETE("/dayplans/{id}")
     suspend fun delete(@Path("id") id: Int): SuccessResponse
 
@@ -26,5 +30,11 @@ interface DayPlanRepository {
 
     @PUT("/dayplans/{id}")
     suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
+
+    @PUT("/dayplans/{id}/archive/{archive}")
+    suspend fun archive(@Path("id") id: Int, @Path("archive") archive: Boolean): SuccessResponse
+
+    @DELETE("/dayplans/{id}/receipts/{receiptId}")
+    suspend fun deassignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
 
 }

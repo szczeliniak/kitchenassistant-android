@@ -78,6 +78,12 @@
                 android:exported="false">
         </activity>
         <activity
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity"
+                android:windowSoftInputMode="adjustResize"
+                android:screenOrientation="portrait"
+                android:exported="false">
+        </activity>
+        <activity
                 android:name="com.yalantis.ucrop.UCropActivity"
                 android:screenOrientation="portrait"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
