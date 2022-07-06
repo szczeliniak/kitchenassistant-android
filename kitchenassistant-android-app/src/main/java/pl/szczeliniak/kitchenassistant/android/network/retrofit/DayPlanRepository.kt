@@ -37,4 +37,7 @@ interface DayPlanRepository {
     @DELETE("/dayplans/{id}/receipts/{receiptId}")
     suspend fun deassignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
 
+    @POST("/dayplans/{id}/receipts/{receiptId}")
+    suspend fun assignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
+
 }

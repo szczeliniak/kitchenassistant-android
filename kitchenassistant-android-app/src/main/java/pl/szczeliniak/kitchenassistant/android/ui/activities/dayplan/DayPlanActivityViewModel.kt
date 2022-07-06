@@ -63,6 +63,16 @@ class DayPlanActivityViewModel @AssistedInject constructor(
         return liveData
     }
 
+    fun assignReceipt(receiptId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            dayPlanService.assignReceipt(dayPlanId, receiptId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(shoppingListId: Int): DayPlanActivityViewModel

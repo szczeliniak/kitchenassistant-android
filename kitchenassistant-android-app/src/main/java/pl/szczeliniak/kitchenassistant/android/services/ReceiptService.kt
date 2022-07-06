@@ -25,11 +25,11 @@ class ReceiptService constructor(
 ) {
 
     suspend fun findAll(
-        categoryId: Int?,
-        receiptName: String?,
-        tag: String?,
-        page: Int?,
-        limit: Int?
+        categoryId: Int? = null,
+        receiptName: String? = null,
+        tag: String? = null,
+        page: Int? = null,
+        limit: Int? = null
     ): Flow<LoadingState<ReceiptsResponse>> {
         return flow {
             emit(LoadingState.InProgress)

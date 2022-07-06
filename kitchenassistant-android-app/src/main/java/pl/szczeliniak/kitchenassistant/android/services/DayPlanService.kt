@@ -122,4 +122,17 @@ class DayPlanService constructor(
         }
     }
 
+    suspend fun assignReceipt(dayPlanId: Int, receiptId: Int): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.assignReceipt(dayPlanId, receiptId).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
 }

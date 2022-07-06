@@ -73,6 +73,7 @@
     <string name="title_dialog_add_day_plan">Add day plan</string>
     <string name="title_dialog_edit_day_plan">Edit day plan</string>
     <string name="title_dialog_day_plans_filter">Filter day plans</string>
+    <string name="title_dialog_add_receipt_to_day_plan">Add receipt to day plan</string>
 
     <string name="label_button_add">Add</string>
     <string name="title_button_edit">Edit</string>
@@ -115,6 +116,8 @@
     <string name="label_button_remove_from_favorites">Remove from favorites</string>
     <string name="label_button_confirm">Yes, do it!</string>
     <string name="label_category_tab_all">All</string>
+    <string name="label_day_plan_date">Date</string>
+    <string name="label_day_plan_receipts">Receipts</string>
 
     <string name="placeholder_receipt_author">Pawkens</string>
     <string name="placeholder_receipt_category">Some category</string>
@@ -135,7 +138,5 @@
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
     <string name="placeholder_shopping_list_item_receipt_name">Shopping list item receipt name</string>
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
-    <string name="label_day_plan_date">Date</string>
-    <string name="label_day_plan_receipts">Receipts</string>
 
 </resources>

@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addreceipttodayplan.AssignReceiptToDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -51,8 +52,8 @@ class DayPlanActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDayPlanBinding
     private val dayPlanLoadingStateHandler: LoadingStateHandler<DayPlanDetails> = prepareDayPlanLoadingStateHandler()
     private val archiveDayPlanStateHandler: LoadingStateHandler<Int> = prepareArchiveDayPlanStateHandler()
-    private val deassignReceiptFromDayPlanStateHandler: LoadingStateHandler<Int> =
-        deassignReceiptFromDayPlanStateHandler()
+    private val assignDeassignReceiptFromDayPlanStateHandler: LoadingStateHandler<Int> =
+        assignDeassignReceiptFromDayPlanStateHandler()
 
     private val viewModel: DayPlanActivityViewModel by viewModels {
         DayPlanActivityViewModel.provideFactory(dayPlanActivityViewModelFactory, dayPlanId)
@@ -71,7 +72,11 @@ class DayPlanActivity : AppCompatActivity() {
         binding.recyclerView.adapter = receiptsAdapter
 
         binding.buttonAddReceiptToDayPlan.setOnClickListener {
-            //TODO
+            AssignReceiptToDayPlanDialog.show(supportFragmentManager, AssignReceiptToDayPlanDialog.OnReceiptChosen { id ->
+                viewModel.assignReceipt(id).observe(this@DayPlanActivity) {
+                    assignDeassignReceiptFromDayPlanStateHandler.handle(it)
+                }
+            })
         }
     }
 
@@ -104,7 +109,7 @@ class DayPlanActivity : AppCompatActivity() {
                                     ConfirmationDialog.show(supportFragmentManager) {
                                         viewModel.deassignReceipt(dayPlanId, receipt.id)
                                             .observe(this@DayPlanActivity) {
-                                                deassignReceiptFromDayPlanStateHandler.handle(it)
+                                                assignDeassignReceiptFromDayPlanStateHandler.handle(it)
                                             }
                                     }
                                 }
@@ -115,7 +120,7 @@ class DayPlanActivity : AppCompatActivity() {
         })
     }
 
-    private fun deassignReceiptFromDayPlanStateHandler(): LoadingStateHandler<Int> {
+    private fun assignDeassignReceiptFromDayPlanStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@DayPlanActivity)
