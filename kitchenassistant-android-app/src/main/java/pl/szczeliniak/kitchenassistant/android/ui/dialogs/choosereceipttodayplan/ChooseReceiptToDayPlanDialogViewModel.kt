@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.dialogs.addreceipttodayplan
+package pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,7 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 import javax.inject.Inject
 
 @HiltViewModel
-class AssignReceiptToDayPlanDialogViewModel @Inject constructor(
+class ChooseReceiptToDayPlanDialogViewModel @Inject constructor(
     private val receiptService: ReceiptService
 ) : ViewModel() {
 

@@ -17,10 +17,11 @@ class DayPlanService constructor(
 ) {
 
     suspend fun findAll(
-        archived: Boolean,
-        date: LocalDate?,
-        page: Int?,
-        limit: Int?
+        archived: Boolean? = null,
+        page: Int? = null,
+        limit: Int? = null,
+        since: LocalDate? = null,
+        to: LocalDate? = null
     ): Flow<LoadingState<DayPlansResponse>> {
         return flow {
             emit(LoadingState.InProgress)
@@ -30,9 +31,10 @@ class DayPlanService constructor(
                         repository.findAll(
                             localStorageService.getId(),
                             archived,
-                            date,
                             page,
-                            limit
+                            limit,
+                            since,
+                            to
                         )
                     )
                 )

@@ -17,7 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addreceipttodayplan.AssignReceiptToDayPlanDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan.ChooseReceiptToDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -72,11 +72,13 @@ class DayPlanActivity : AppCompatActivity() {
         binding.recyclerView.adapter = receiptsAdapter
 
         binding.buttonAddReceiptToDayPlan.setOnClickListener {
-            AssignReceiptToDayPlanDialog.show(supportFragmentManager, AssignReceiptToDayPlanDialog.OnReceiptChosen { id ->
-                viewModel.assignReceipt(id).observe(this@DayPlanActivity) {
-                    assignDeassignReceiptFromDayPlanStateHandler.handle(it)
-                }
-            })
+            ChooseReceiptToDayPlanDialog.show(
+                supportFragmentManager,
+                ChooseReceiptToDayPlanDialog.OnReceiptChosen { id ->
+                    viewModel.assignReceipt(id).observe(this@DayPlanActivity) {
+                        assignDeassignReceiptFromDayPlanStateHandler.handle(it)
+                    }
+                })
         }
     }
 

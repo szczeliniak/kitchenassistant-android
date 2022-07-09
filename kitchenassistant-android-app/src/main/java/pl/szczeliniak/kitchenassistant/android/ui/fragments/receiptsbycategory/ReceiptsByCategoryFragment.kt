@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforreceipt.ChooseDayPlanForReceiptDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.receiptsfilter.ReceiptsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ReceiptItem
@@ -58,8 +59,7 @@ class ReceiptsByCategoryFragment : Fragment() {
 
     private lateinit var binding: FragmentReceiptsByCategoryBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
-    private lateinit var deleteReceiptLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var addRemoveFromFavoritesLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var doActionAndResetReceiptsLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -99,25 +99,8 @@ class ReceiptsByCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
-        deleteReceiptLoadingStateHandler = prepareDeleteReceiptLoadingStateHandler()
-        addRemoveFromFavoritesLoadingStateHandler = prepareAddRemoveFromFavoritesLoadingStateHandler()
+        doActionAndResetReceiptsLoadingStateHandler = prepareAddRemoveFromFavoritesLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
-    }
-
-    private fun prepareDeleteReceiptLoadingStateHandler(): LoadingStateHandler<Int> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
-            override fun onInProgress() {
-                binding.layout.showProgressSpinner(requireActivity())
-            }
-
-            override fun onFinish() {
-                binding.layout.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: Int) {
-                resetReceipts()
-            }
-        })
     }
 
     private fun prepareAddRemoveFromFavoritesLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -160,7 +143,7 @@ class ReceiptsByCategoryFragment : Fragment() {
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                                 viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                    deleteReceiptLoadingStateHandler.handle(r)
+                                    doActionAndResetReceiptsLoadingStateHandler.handle(r)
                                 }
                             }
                         }, {
@@ -168,9 +151,19 @@ class ReceiptsByCategoryFragment : Fragment() {
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                                 viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
-                                    addRemoveFromFavoritesLoadingStateHandler.handle(r)
+                                    doActionAndResetReceiptsLoadingStateHandler.handle(r)
                                 }
                             }
+                        }, {
+                            ChooseDayPlanForReceiptDialog.show(
+                                requireActivity().supportFragmentManager,
+                                it.id,
+                                ChooseDayPlanForReceiptDialog.OnDayPlanChosen { dayPlanId, receiptId ->
+                                    viewModel.assignReceiptToDayPlan(receiptId, dayPlanId)
+                                        .observe(viewLifecycleOwner) { r ->
+                                            doActionAndResetReceiptsLoadingStateHandler.handle(r)
+                                        }
+                                })
                         }))
                     }
                 }

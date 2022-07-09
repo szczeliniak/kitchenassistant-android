@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.ReceiptsResponse
+import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
 import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
 
 class ReceiptsByCategoryFragmentViewModel @AssistedInject constructor(
     private val receiptService: ReceiptService,
+    private val dayPlanService: DayPlanService,
     @Assisted private val categoryId: Int?
 ) : ViewModel() {
 
@@ -57,6 +59,16 @@ class ReceiptsByCategoryFragmentViewModel @AssistedInject constructor(
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
             receiptService.setFavorite(id, isFavorite)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun assignReceiptToDayPlan(receiptId: Int, dayPlanId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            dayPlanService.assignReceipt(dayPlanId, receiptId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.dialogs.addreceipttodayplan
+package pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan
 
 import android.app.Dialog
 import android.os.Bundle
@@ -20,14 +20,14 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.en
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
 
 @AndroidEntryPoint
-class AssignReceiptToDayPlanDialog : DialogFragment() {
+class ChooseReceiptToDayPlanDialog : DialogFragment() {
 
     companion object {
         private const val ON_RECEIPT_CHOSEN_CALLBACK_EXTRA: String = "ON_RECEIPT_CHOSEN_CALLBACK_EXTRA"
         private const val TAG = "AddReceiptToDayPlanDialog"
 
         fun show(fragmentManager: FragmentManager, onReceiptChosen: OnReceiptChosen) {
-            val dialog = AssignReceiptToDayPlanDialog()
+            val dialog = ChooseReceiptToDayPlanDialog()
             val bundle = Bundle()
             bundle.putParcelable(ON_RECEIPT_CHOSEN_CALLBACK_EXTRA, onReceiptChosen)
             dialog.arguments = bundle
@@ -41,7 +41,7 @@ class AssignReceiptToDayPlanDialog : DialogFragment() {
     private lateinit var button: Button
 
     private val debounceExecutor = DebounceExecutor(500)
-    private val viewModel: AssignReceiptToDayPlanDialogViewModel by viewModels()
+    private val viewModel: ChooseReceiptToDayPlanDialogViewModel by viewModels()
 
     private var selectedReceiptId: Int? = null
 

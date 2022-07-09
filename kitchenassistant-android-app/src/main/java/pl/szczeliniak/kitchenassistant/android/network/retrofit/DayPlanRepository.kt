@@ -14,9 +14,10 @@ interface DayPlanRepository {
     suspend fun findAll(
         @Query("userId") userId: Int? = null,
         @Query("archived") archived: Boolean? = null,
-        @Query("date") date: LocalDate? = null,
         @Query("page") page: Int? = null,
-        @Query("limit") limit: Int? = null
+        @Query("limit") limit: Int? = null,
+        @Query("since") since: LocalDate? = null,
+        @Query("to") to: LocalDate? = null
     ): DayPlansResponse
 
     @GET("/dayplans/{id}")

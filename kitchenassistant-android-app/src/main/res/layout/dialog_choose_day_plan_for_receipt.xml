@@ -7,19 +7,16 @@
         android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/title_dialog_day_plans_filter"
+            android:text="@string/title_dialog_choose_day_plan"
             android:id="@+id/title"
             style="@style/TextViewTitle"
             android:textColor="@color/primary_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.AppCompatButton
-            android:layout_marginVertical="@dimen/padding_margin_medium"
+    <androidx.appcompat.widget.AppCompatSpinner
             android:layout_width="match_parent"
-            android:id="@+id/day_plan_date"
-            android:text="@string/label_button_select_date"
-            android:layout_height="wrap_content"
-            style="@style/ButtonPrimary"/>
+            android:id="@+id/day_plan"
+            android:layout_height="wrap_content"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

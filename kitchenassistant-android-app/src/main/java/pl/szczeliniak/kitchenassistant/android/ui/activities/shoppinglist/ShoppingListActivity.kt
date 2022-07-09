@@ -35,10 +35,12 @@ class ShoppingListActivity : AppCompatActivity() {
 
     companion object {
         private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"
+        private const val SHOW_ARCHIVED_MENU_ITEM_EXTRA = "SHOW_ARCHIVED_MENU_ITEM_EXTRA"
 
-        fun start(context: Context, shoppingListId: Int) {
+        fun start(context: Context, shoppingListId: Int, showArchivedMenuItem: Boolean? = null) {
             val intent = Intent(context, ShoppingListActivity::class.java)
             intent.putExtra(SHOPPING_LIST_ID_EXTRA, shoppingListId)
+            showArchivedMenuItem?.let { intent.putExtra(SHOW_ARCHIVED_MENU_ITEM_EXTRA, it) }
             context.startActivity(intent)
         }
     }
@@ -197,6 +199,9 @@ class ShoppingListActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.activity_shopping_list, menu)
+        if (!showArchivedMenuItem) {
+            menu?.removeItem(R.id.archive)
+        }
         return true
     }
 
@@ -218,6 +223,11 @@ class ShoppingListActivity : AppCompatActivity() {
     private val shoppingListId: Int
         get() {
             return intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
+        }
+
+    private val showArchivedMenuItem: Boolean
+        get() {
+            return intent.getBooleanExtra(SHOW_ARCHIVED_MENU_ITEM_EXTRA, true)
         }
 
 }

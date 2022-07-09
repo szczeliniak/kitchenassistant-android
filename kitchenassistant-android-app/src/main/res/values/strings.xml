@@ -138,5 +138,7 @@
     <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
     <string name="placeholder_shopping_list_item_receipt_name">Shopping list item receipt name</string>
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
+    <string name="label_button_add_to_day_plan">Add to day plan</string>
+    <string name="title_dialog_choose_day_plan">Choose day plan</string>
 
 </resources>

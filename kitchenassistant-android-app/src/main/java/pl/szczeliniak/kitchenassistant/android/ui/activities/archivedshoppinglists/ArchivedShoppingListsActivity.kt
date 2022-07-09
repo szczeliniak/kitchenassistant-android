@@ -32,7 +32,8 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ArchivedShoppingListsActivity : AppCompatActivity() {
+class
+ArchivedShoppingListsActivity : AppCompatActivity() {
 
     companion object {
         fun start(context: Context) {
@@ -100,7 +101,7 @@ class ArchivedShoppingListsActivity : AppCompatActivity() {
                     binding.layout.hideEmptyIcon()
                     data.shoppingLists.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(this@ArchivedShoppingListsActivity, shoppingList, {
-                            ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id)
+                            ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id, false)
                         }, {
                             viewModel.delete(it.id).observe(this@ArchivedShoppingListsActivity) { r ->
                                 deleteShoppingListLoadingStateHandler.handle(r)

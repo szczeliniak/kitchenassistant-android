@@ -10,6 +10,10 @@
             android:title="@string/label_button_edit"/>
 
     <item
+            android:id="@+id/add_to_day_plan"
+            android:title="@string/label_button_add_to_day_plan"/>
+
+    <item
             android:id="@+id/add_remove_from_favorites"
             android:title="@string/label_button_add_to_favorites"/>
 

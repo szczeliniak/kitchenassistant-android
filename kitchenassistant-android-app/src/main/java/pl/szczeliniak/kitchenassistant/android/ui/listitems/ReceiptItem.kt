@@ -19,6 +19,7 @@ class ReceiptItem constructor(
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick,
     private val onAddRemoveFromFavourites: OnClick,
+    private val onAssignToDayPan: OnClick
 ) : BindableItem<ListItemReceiptBinding>() {
 
     override fun bind(binding: ListItemReceiptBinding, position: Int) {
@@ -61,6 +62,10 @@ class ReceiptItem constructor(
                 }
                 R.id.add_remove_from_favorites -> {
                     onAddRemoveFromFavourites.onClick(receipt)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.add_to_day_plan -> {
+                    onAssignToDayPan.onClick(receipt)
                     return@setOnMenuItemClickListener true
                 }
             }

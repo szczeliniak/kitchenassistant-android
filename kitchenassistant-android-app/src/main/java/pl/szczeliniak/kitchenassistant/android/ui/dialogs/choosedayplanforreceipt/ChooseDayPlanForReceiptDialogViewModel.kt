@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplans
+package pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforreceipt
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -14,38 +14,25 @@ import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
 import javax.inject.Inject
 
 @HiltViewModel
-class DayPlansFragmentViewModel @Inject constructor(
-    private val dayPlansService: DayPlanService
+class ChooseDayPlanForReceiptDialogViewModel @Inject constructor(
+    private val dayPlanService: DayPlanService
 ) : ViewModel() {
-
-    companion object {
-        private const val LIMIT = 20
-    }
 
     private val _dayPlans = MutableLiveData<LoadingState<DayPlansResponse>>()
 
-    val dayPlans: LiveData<LoadingState<DayPlansResponse>> get() = _dayPlans
+    val dayPlans: LiveData<LoadingState<DayPlansResponse>>
+        get() = _dayPlans
 
     init {
-        reload(1)
+        reloadDayPlans()
     }
 
-    fun reload(page: Int) {
+    fun reloadDayPlans() {
         viewModelScope.launch {
-            dayPlansService.findAll(false, page, LIMIT)
+            dayPlanService.findAll(false, 0, 20)
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            dayPlansService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
     }
 
 }
