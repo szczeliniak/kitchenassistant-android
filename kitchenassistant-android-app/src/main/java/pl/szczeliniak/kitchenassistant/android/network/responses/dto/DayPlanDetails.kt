@@ -10,5 +10,6 @@ data class DayPlanDetails(
     val name: String,
     val description: String?,
     val date: LocalDate?,
-    val receipts: List<DayPlanReceipt>
+    val receipts: List<DayPlanReceipt>,
+    val automaticArchiving: Boolean
 ) : Parcelable

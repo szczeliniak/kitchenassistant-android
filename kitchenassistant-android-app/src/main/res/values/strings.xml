@@ -146,5 +146,6 @@
     <string name="placeholder_day_plan_description">Some day plan description</string>
     <string name="message_default_day_plan_prefix">Day Plan for</string>
     <string name="label_shopping_list_automatic_archiving">Archive automatically when selected date pass</string>
+    <string name="label_day_plan_automatic_archiving">Archive automatically when selected date pass</string>
 
 </resources>

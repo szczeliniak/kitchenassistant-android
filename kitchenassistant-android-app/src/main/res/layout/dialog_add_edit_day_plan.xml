@@ -31,13 +31,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-            android:layout_width="match_parent"
-            android:id="@+id/day_plan_date"
-            android:text="@string/label_button_select_date"
-            android:layout_height="wrap_content"
-            style="@style/ButtonPrimary"/>
-
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             app:counterMaxLength="@integer/max_length_day_plan_description"
@@ -45,13 +38,26 @@
             android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/label_day_plan_description"
+                android:hint="@string/label_receipt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLength="@integer/max_length_day_plan_description"
-                style="@style/EditTextUrl"
+                style="@style/EditTextDescription"
+                android:maxLength="@integer/max_length_receipt_description"
                 android:id="@+id/day_plan_description"/>
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="match_parent"
+            android:id="@+id/day_plan_date"
+            android:text="@string/label_button_select_date"
+            android:layout_height="wrap_content"
+            style="@style/ButtonPrimary"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+            android:text="@string/label_day_plan_automatic_archiving"
+            android:id="@+id/day_plan_automatic_archiving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

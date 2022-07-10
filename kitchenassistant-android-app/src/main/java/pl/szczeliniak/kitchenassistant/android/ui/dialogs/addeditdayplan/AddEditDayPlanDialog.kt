@@ -123,6 +123,7 @@ class AddEditDayPlanDialog : DialogFragment() {
                 binding.title.text = getString(R.string.title_dialog_edit_day_plan)
                 positiveButton.text = getString(R.string.title_button_edit)
 
+                binding.dayPlanAutomaticArchiving.isChecked = data.automaticArchiving
                 binding.dayPlanName.setText(data.name)
                 binding.dayPlanDescription.setText(data.description)
                 LocalDateUtils.stringify(data.date)?.let { date -> binding.dayPlanDate.text = date }
@@ -145,12 +146,12 @@ class AddEditDayPlanDialog : DialogFragment() {
     private fun saveDayPlan() {
         dayPlanId?.let {
             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                viewModel.update(dayPlanId!!, UpdateDayPlanRequest(name!!, description, date))
+                viewModel.update(dayPlanId!!, UpdateDayPlanRequest(name!!, description, date, automaticArchiving))
                     .observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
             }
         } ?: kotlin.run {
             viewModel.add(
-                AddDayPlanRequest(name!!, description, localStorageService.getId(), date)
+                AddDayPlanRequest(name!!, description, localStorageService.getId(), date, automaticArchiving)
             ).observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
         }
     }
@@ -175,6 +176,11 @@ class AddEditDayPlanDialog : DialogFragment() {
     private val description: String?
         get() {
             return binding.dayPlanDescription.text.toString().ifEmpty { return null }
+        }
+
+    private val automaticArchiving: Boolean
+        get() {
+            return binding.dayPlanAutomaticArchiving.isChecked
         }
 
 }
