@@ -29,6 +29,27 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_day_plan_name"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/day_plan_name"
+                    tools:text="@string/placeholder_day_plan_name"
+                    style="@style/TextViewHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_day_plan_date"
                     style="@style/TextViewSubheader"
                     android:textColor="@color/secondary_dark"
@@ -38,6 +59,28 @@
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/day_plan_date"
                     tools:text="@string/placeholder_day_plan_date"
+                    style="@style/TextViewHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:id="@+id/day_plan_description_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_day_plan_description"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/day_plan_description"
+                    tools:text="@string/placeholder_day_plan_description"
                     style="@style/TextViewHeader"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>

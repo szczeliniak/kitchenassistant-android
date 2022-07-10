@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -58,11 +59,12 @@ class AddEditDayPlanDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditDayPlanBinding.inflate(layoutInflater)
 
+        binding.dayPlanName.doOnTextChanged { _, _, _, _ -> checkButtonState() }
+
         binding.dayPlanDate.setOnClickListener {
             val date = this.date ?: LocalDate.now()
             val dialog = DatePickerDialog(requireContext(), { _, year, month, dayOfMonth ->
                 binding.dayPlanDate.text = LocalDateUtils.stringify(LocalDate.of(year, month + 1, dayOfMonth))
-                checkButtonState()
             }, date.year, date.monthValue - 1, date.dayOfMonth)
             dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.label_button_cancel)) { _, _ ->
                 binding.dayPlanDate.text = getString(R.string.label_button_select_date)
@@ -89,7 +91,7 @@ class AddEditDayPlanDialog : DialogFragment() {
     }
 
     private fun checkButtonState() {
-        positiveButton.enable(date != null)
+        positiveButton.enable(name != null)
     }
 
     private fun prepareSaveDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -114,17 +116,19 @@ class AddEditDayPlanDialog : DialogFragment() {
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         checkButtonState()
-        positiveButton.setOnClickListener { ConfirmationDialog.show(requireActivity().supportFragmentManager) { saveDayPlan() } }
+        positiveButton.setOnClickListener { saveDayPlan() }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
 
     private fun saveDayPlan() {
         dayPlan?.let {
-            viewModel.update(dayPlan!!.id, UpdateDayPlanRequest(date!!))
-                .observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
+            ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                viewModel.update(dayPlan!!.id, UpdateDayPlanRequest(name!!, description, date))
+                    .observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
+            }
         } ?: kotlin.run {
             viewModel.add(
-                AddDayPlanRequest(localStorageService.getId(), date!!)
+                AddDayPlanRequest(name!!, description, localStorageService.getId(), date)
             ).observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
         }
     }
@@ -138,6 +142,16 @@ class AddEditDayPlanDialog : DialogFragment() {
         get() {
             val asString = binding.dayPlanDate.text.toString()
             return if (LocalDateUtils.parsable(asString)) LocalDateUtils.parse(asString) else null
+        }
+
+    private val name: String?
+        get() {
+            return binding.dayPlanName.text.toString().ifEmpty { return null }
+        }
+
+    private val description: String?
+        get() {
+            return binding.dayPlanDescription.text.toString().ifEmpty { return null }
         }
 
 }

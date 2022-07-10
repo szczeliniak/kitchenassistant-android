@@ -60,6 +60,7 @@ class ReceiptsByCategoryFragment : Fragment() {
     private lateinit var binding: FragmentReceiptsByCategoryBinding
     private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<ReceiptsResponse>
     private lateinit var doActionAndResetReceiptsLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var doActionLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -99,11 +100,12 @@ class ReceiptsByCategoryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
-        doActionAndResetReceiptsLoadingStateHandler = prepareAddRemoveFromFavoritesLoadingStateHandler()
+        doActionAndResetReceiptsLoadingStateHandler = prepareDoActionAndResetReceiptsLoadingStateHandler()
+        doActionLoadingStateHandler = prepareDoActionLoadingStateHandler()
         viewModel.receipts.observe(viewLifecycleOwner) { receiptsLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareAddRemoveFromFavoritesLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareDoActionAndResetReceiptsLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -115,6 +117,21 @@ class ReceiptsByCategoryFragment : Fragment() {
 
             override fun onSuccess(data: Int) {
                 resetReceipts()
+            }
+        })
+    }
+
+    private fun prepareDoActionLoadingStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.layout.showProgressSpinner(requireActivity())
+            }
+
+            override fun onFinish() {
+                binding.layout.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: Int) {
             }
         })
     }
@@ -161,7 +178,7 @@ class ReceiptsByCategoryFragment : Fragment() {
                                 ChooseDayPlanForReceiptDialog.OnDayPlanChosen { dayPlanId, receiptId ->
                                     viewModel.assignReceiptToDayPlan(receiptId, dayPlanId)
                                         .observe(viewLifecycleOwner) { r ->
-                                            doActionAndResetReceiptsLoadingStateHandler.handle(r)
+                                            doActionLoadingStateHandler.handle(r)
                                         }
                                 })
                         }))

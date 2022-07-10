@@ -19,6 +19,7 @@ class DayPlanItem constructor(
 
     override fun bind(binding: ListItemDayPlanBinding, position: Int) {
         binding.dayPlanDate.text = LocalDateUtils.stringify(dayPlan.date)
+        binding.dayPlanName.text = dayPlan.name
         binding.root.setOnClickListener { onClick.onClick(dayPlan) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }

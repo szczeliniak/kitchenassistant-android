@@ -20,6 +20,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActi
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan.ChooseReceiptToDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanReceiptItem
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -96,6 +97,8 @@ class DayPlanActivity : AppCompatActivity() {
                 val date = LocalDateUtils.stringify(data.date) ?: ""
                 binding.toolbarLayout.toolbar.init(this@DayPlanActivity, date)
                 binding.dayPlanDate.text = date
+                binding.dayPlanName.text = data.name
+                binding.dayPlanDescription.fillOrHide(data.description, binding.dayPlanDescriptionLayout)
 
                 receiptsAdapter.clear()
                 if (data.receipts.isEmpty()) {

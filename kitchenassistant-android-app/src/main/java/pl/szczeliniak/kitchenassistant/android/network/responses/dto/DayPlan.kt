@@ -7,5 +7,6 @@ import java.time.LocalDate
 @Parcelize
 data class DayPlan(
     val id: Int,
-    val date: LocalDate
+    val name: String,
+    val date: LocalDate?
 ) : Parcelable

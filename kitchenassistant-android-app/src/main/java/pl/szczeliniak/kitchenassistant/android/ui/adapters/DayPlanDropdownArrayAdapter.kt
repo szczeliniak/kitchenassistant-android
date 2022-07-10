@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownDayPlanBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class DayPlanDropdownArrayAdapter(context: Context) : ArrayAdapter<DayPlan?>(context, 0, ArrayList()) {
@@ -18,7 +19,7 @@ class DayPlanDropdownArrayAdapter(context: Context) : ArrayAdapter<DayPlan?>(con
 
         if (convertView == null) {
             binding = DropdownDayPlanBinding.inflate(LayoutInflater.from(context))
-            viewHolder = ViewHolder(binding.dayPlanDate)
+            viewHolder = ViewHolder(binding.dayPlanDate, binding.dayPlanName)
             binding.root.tag = viewHolder
         } else {
             binding = DropdownDayPlanBinding.bind(convertView)
@@ -26,9 +27,11 @@ class DayPlanDropdownArrayAdapter(context: Context) : ArrayAdapter<DayPlan?>(con
         }
 
         getItem(position)?.let {
-            viewHolder.dateTextView.text = LocalDateUtils.stringify(it.date)
+            viewHolder.dateTextView.fillOrHide(LocalDateUtils.stringify(it.date), viewHolder.dateTextView)
+            viewHolder.nameTextView.text = it.name
         } ?: kotlin.run {
-            viewHolder.dateTextView.text = "---"
+            viewHolder.dateTextView.visibility = View.GONE
+            viewHolder.nameTextView.text = "---"
         }
 
         return binding.root
@@ -39,7 +42,8 @@ class DayPlanDropdownArrayAdapter(context: Context) : ArrayAdapter<DayPlan?>(con
     }
 
     data class ViewHolder(
-        val dateTextView: AppCompatTextView
+        val dateTextView: AppCompatTextView,
+        val nameTextView: AppCompatTextView
     )
 
 }

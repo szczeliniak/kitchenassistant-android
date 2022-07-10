@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@style/ContentLayout"
@@ -14,11 +14,44 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterMaxLength="@integer/max_length_day_plan_name"
+            style="@style/InputLayoutWithCounter"
+            android:id="@+id/receipt_name_layout"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                style="@style/EditTextText"
+                android:hint="@string/label_day_plan_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_day_plan_name"
+                android:id="@+id/day_plan_name"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <androidx.appcompat.widget.AppCompatButton
             android:layout_width="match_parent"
             android:id="@+id/day_plan_date"
             android:text="@string/label_button_select_date"
             android:layout_height="wrap_content"
             style="@style/ButtonPrimary"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            app:counterMaxLength="@integer/max_length_day_plan_description"
+            style="@style/InputLayoutWithCounter"
+            android:layout_height="wrap_content">
+
+        <com.google.android.material.textfield.TextInputEditText
+                android:hint="@string/label_day_plan_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_day_plan_description"
+                style="@style/EditTextUrl"
+                android:id="@+id/day_plan_description"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

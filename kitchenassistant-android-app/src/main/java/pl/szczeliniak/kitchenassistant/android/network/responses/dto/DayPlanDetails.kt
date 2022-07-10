@@ -7,6 +7,8 @@ import java.time.LocalDate
 @Parcelize
 data class DayPlanDetails(
     val id: Int,
+    val name: String,
+    val description: String?,
     val date: LocalDate?,
     val receipts: List<DayPlanReceipt>
 ) : Parcelable
