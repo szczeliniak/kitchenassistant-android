@@ -21,13 +21,12 @@ class ShoppingListItem constructor(
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
         binding.shoppingListName.text = shoppingList.name
         binding.shoppingListDescription.fillOrHide(shoppingList.description, binding.shoppingListDescription)
+        binding.shoppingListDate.fillOrHide(
+            LocalDateUtils.stringify(shoppingList.date),
+            binding.shoppingListDate
+        )
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
-        shoppingList.date?.let {
-            binding.shoppingListDate.text = LocalDateUtils.stringify(it)
-        } ?: run {
-            binding.shoppingListDate.visibility = View.GONE
-        }
     }
 
     override fun getLayout(): Int {

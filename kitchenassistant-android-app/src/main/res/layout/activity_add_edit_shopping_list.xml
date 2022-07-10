@@ -65,6 +65,12 @@
                     android:layout_height="wrap_content"
                     style="@style/ButtonPrimary"/>
 
+            <androidx.appcompat.widget.AppCompatCheckBox
+                    android:text="@string/label_shopping_list_automatic_archiving"
+                    android:id="@+id/shopping_list_automatic_archiving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.core.widget.NestedScrollView>

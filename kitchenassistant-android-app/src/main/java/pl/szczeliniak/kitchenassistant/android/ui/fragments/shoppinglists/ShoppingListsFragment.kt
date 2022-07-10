@@ -130,7 +130,7 @@ class ShoppingListsFragment : Fragment() {
                                     deleteShoppingListLoadingStateHandler.handle(r)
                                 }
                             }, {
-                                AddEditShoppingListActivity.start(requireActivity(), it)
+                                AddEditShoppingListActivity.start(requireActivity(), it.id)
                             }))
                         }
                     }

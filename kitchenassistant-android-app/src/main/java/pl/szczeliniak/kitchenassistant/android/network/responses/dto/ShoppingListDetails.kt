@@ -10,5 +10,6 @@ data class ShoppingListDetails(
     val name: String,
     val description: String?,
     val date: LocalDate?,
-    val items: List<ShoppingListItem>
+    val items: List<ShoppingListItem>,
+    val automaticArchiving: Boolean
 ) : Parcelable

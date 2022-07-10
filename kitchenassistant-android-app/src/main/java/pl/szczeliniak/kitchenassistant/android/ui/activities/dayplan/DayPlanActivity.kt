@@ -94,9 +94,8 @@ class DayPlanActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: DayPlanDetails) {
-                val date = LocalDateUtils.stringify(data.date) ?: ""
-                binding.toolbarLayout.toolbar.init(this@DayPlanActivity, date)
-                binding.dayPlanDate.text = date
+                binding.toolbarLayout.toolbar.init(this@DayPlanActivity, data.name)
+                binding.dayPlanDate.fillOrHide(LocalDateUtils.stringify(data.date), binding.dayPlanDate)
                 binding.dayPlanName.text = data.name
                 binding.dayPlanDescription.fillOrHide(data.description, binding.dayPlanDescriptionLayout)
 

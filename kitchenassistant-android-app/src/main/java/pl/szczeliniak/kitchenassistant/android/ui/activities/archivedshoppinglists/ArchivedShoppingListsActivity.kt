@@ -107,7 +107,7 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
                                 deleteShoppingListLoadingStateHandler.handle(r)
                             }
                         }, {
-                            AddEditShoppingListActivity.start(this@ArchivedShoppingListsActivity, it)
+                            AddEditShoppingListActivity.start(this@ArchivedShoppingListsActivity, it.id)
                         }))
                     }
                 }

@@ -18,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
@@ -33,11 +33,11 @@ import javax.inject.Inject
 class AddEditShoppingListActivity : AppCompatActivity() {
 
     companion object {
-        private const val SHOPPING_LIST_EXTRA = "SHOPPING_LIST_EXTRA"
+        private const val SHOPPING_LIST_ID_EXTRA = "SHOPPING_LIST_ID_EXTRA"
 
-        fun start(context: Context, shoppingList: ShoppingList? = null) {
+        fun start(context: Context, shoppingListId: Int? = null) {
             val intent = Intent(context, AddEditShoppingListActivity::class.java)
-            shoppingList?.let { intent.putExtra(SHOPPING_LIST_EXTRA, it) }
+            shoppingListId?.let { intent.putExtra(SHOPPING_LIST_ID_EXTRA, it) }
             context.startActivity(intent)
         }
     }
@@ -48,14 +48,23 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: AddEditShoppingListActivityViewModel by viewModels()
+    @Inject
+    lateinit var factory: AddEditShoppingListActivityViewModel.Factory
+
+    private val viewModel: AddEditShoppingListActivityViewModel by viewModels {
+        AddEditShoppingListActivityViewModel.provideFactory(factory, shoppingListId)
+    }
+
     private val saveShoppingListLoadingStateHandler = prepareSaveShoppingListLoadingStateHandler()
+    private val loadShoppingListLoadingStateHandler = prepareLoadShoppingListLoadingStateHandler()
 
     private lateinit var binding: ActivityAddEditShoppingListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
+
+        viewModel.shoppingList.observe(this) { loadShoppingListLoadingStateHandler.handle(it) }
     }
 
     private fun initLayout() {
@@ -72,22 +81,8 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }
             dialog.show()
         }
-        shoppingList?.let {
-            binding.shoppingListName.setText(it.name)
-            binding.shoppingListDescription.setText(it.description)
-            it.date?.let { date ->
-                binding.shoppingListDate.text = LocalDateUtils.stringify(
-                    LocalDate.of(
-                        date.year,
-                        date.monthValue,
-                        date.dayOfMonth
-                    )
-                )
-            }
-            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_edit_shopping_list)
-        } ?: kotlin.run {
-            binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
-        }
+
+        binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
         binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
             if (name.isNullOrEmpty()) {
                 binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
@@ -122,10 +117,41 @@ class AddEditShoppingListActivity : AppCompatActivity() {
 
             override fun onSuccess(data: Int) {
                 eventBus.post(ReloadShoppingListsEvent())
-                if (shoppingList == null) {
+                if (shoppingListId == null) {
                     ShoppingListActivity.start(this@AddEditShoppingListActivity, data)
                 }
                 finish()
+            }
+        })
+    }
+
+    private fun prepareLoadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListDetails> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListDetails> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@AddEditShoppingListActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: ShoppingListDetails) {
+                binding.shoppingListName.setText(data.name)
+                binding.shoppingListDescription.setText(data.description)
+                data.date?.let { date ->
+                    binding.shoppingListDate.text = LocalDateUtils.stringify(
+                        LocalDate.of(
+                            date.year,
+                            date.monthValue,
+                            date.dayOfMonth
+                        )
+                    )
+                }
+                binding.toolbarLayout.toolbar.init(
+                    this@AddEditShoppingListActivity,
+                    R.string.title_activity_edit_shopping_list
+                )
+                binding.shoppingListAutomaticArchiving.isChecked = data.automaticArchiving
             }
         })
     }
@@ -134,11 +160,19 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         if (name.isNullOrEmpty()) {
             return
         }
-        shoppingList?.let { list ->
-            viewModel.updateShoppingList(list.id, UpdateShoppingListRequest(name!!, description, date))
-                .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
+        shoppingListId?.let {
+            viewModel.updateShoppingList(it, UpdateShoppingListRequest(name!!, description, date, automaticArchiving))
+                .observe(this) { state -> saveShoppingListLoadingStateHandler.handle(state) }
         } ?: kotlin.run {
-            viewModel.addShoppingList(AddShoppingListRequest(name!!, description, localStorageService.getId(), date))
+            viewModel.addShoppingList(
+                AddShoppingListRequest(
+                    name!!,
+                    description,
+                    localStorageService.getId(),
+                    date,
+                    automaticArchiving
+                )
+            )
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         }
     }
@@ -159,9 +193,15 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             return if (LocalDateUtils.parsable(asString)) LocalDateUtils.parse(asString) else null
         }
 
-    private val shoppingList: ShoppingList?
+    private val shoppingListId: Int?
         get() {
-            return intent.getParcelableExtra(SHOPPING_LIST_EXTRA)
+            val id = intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
+            return if (id <= 0) null else id
+        }
+
+    private val automaticArchiving: Boolean
+        get() {
+            return binding.shoppingListAutomaticArchiving.isChecked
         }
 
 }
