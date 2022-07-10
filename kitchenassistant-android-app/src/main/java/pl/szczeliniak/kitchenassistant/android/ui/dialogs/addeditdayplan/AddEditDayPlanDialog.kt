@@ -18,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
@@ -35,9 +35,9 @@ class AddEditDayPlanDialog : DialogFragment() {
         private const val DAY_PLAN_EXTRA = "DAY_PLAN_EXTRA"
         private const val TAG = "AddEditDayPlanDialog"
 
-        fun show(fragmentManager: FragmentManager, dayPlan: DayPlan? = null) {
+        fun show(fragmentManager: FragmentManager, dayPlanId: Int? = null) {
             val bundle = Bundle()
-            dayPlan?.let { bundle.putParcelable(DAY_PLAN_EXTRA, it) }
+            dayPlanId?.let { bundle.putInt(DAY_PLAN_EXTRA, it) }
             val dialog = AddEditDayPlanDialog()
             dialog.arguments = bundle
             dialog.show(fragmentManager, TAG)
@@ -46,6 +46,7 @@ class AddEditDayPlanDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddEditDayPlanBinding
     private lateinit var saveDayPlanLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var loadDayPlanLoadingStateHandler: LoadingStateHandler<DayPlanDetails>
     private lateinit var positiveButton: Button
 
     @Inject
@@ -54,7 +55,12 @@ class AddEditDayPlanDialog : DialogFragment() {
     @Inject
     lateinit var localStorageService: LocalStorageService
 
-    private val viewModel: AddEditDayPlanDialogViewModel by viewModels()
+    @Inject
+    lateinit var addEditDayPlanDialogViewModel: AddEditDayPlanDialogViewModel.Factory
+
+    private val viewModel: AddEditDayPlanDialogViewModel by viewModels {
+        AddEditDayPlanDialogViewModel.provideFactory(addEditDayPlanDialogViewModel, dayPlanId)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditDayPlanBinding.inflate(layoutInflater)
@@ -72,20 +78,12 @@ class AddEditDayPlanDialog : DialogFragment() {
             dialog.show()
         }
 
-        var dialogTitle = R.string.title_dialog_add_day_plan
-        var buttonLabel = R.string.label_button_add
-        dayPlan?.let {
-            binding.dayPlanDate.text = LocalDateUtils.stringify(it.date)
-            dialogTitle = R.string.title_dialog_edit_day_plan
-            buttonLabel = R.string.title_button_edit
-        }
-        binding.title.text = getString(dialogTitle)
-
         saveDayPlanLoadingStateHandler = prepareSaveDayPlanLoadingStateHandler()
+        loadDayPlanLoadingStateHandler = prepareLoadDayPlanLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
-        builder.setPositiveButton(buttonLabel) { _, _ -> }
+        builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
     }
@@ -111,9 +109,33 @@ class AddEditDayPlanDialog : DialogFragment() {
         })
     }
 
+    private fun prepareLoadDayPlanLoadingStateHandler(): LoadingStateHandler<DayPlanDetails> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<DayPlanDetails> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(requireActivity())
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: DayPlanDetails) {
+                binding.title.text = getString(R.string.title_dialog_edit_day_plan)
+                positiveButton.text = getString(R.string.title_button_edit)
+
+                binding.dayPlanName.setText(data.name)
+                binding.dayPlanDescription.setText(data.description)
+                LocalDateUtils.stringify(data.date)?.let { date -> binding.dayPlanDate.text = date }
+            }
+        })
+    }
+
     override fun onResume() {
         super.onResume()
         val dialog = dialog as AlertDialog
+
+        viewModel.dayPlan.observe(this) { loadDayPlanLoadingStateHandler.handle(it) }
+
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         checkButtonState()
         positiveButton.setOnClickListener { saveDayPlan() }
@@ -121,9 +143,9 @@ class AddEditDayPlanDialog : DialogFragment() {
     }
 
     private fun saveDayPlan() {
-        dayPlan?.let {
+        dayPlanId?.let {
             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                viewModel.update(dayPlan!!.id, UpdateDayPlanRequest(name!!, description, date))
+                viewModel.update(dayPlanId!!, UpdateDayPlanRequest(name!!, description, date))
                     .observe(this) { saveDayPlanLoadingStateHandler.handle(it) }
             }
         } ?: kotlin.run {
@@ -133,9 +155,10 @@ class AddEditDayPlanDialog : DialogFragment() {
         }
     }
 
-    private val dayPlan: DayPlan?
+    private val dayPlanId: Int?
         get() {
-            return requireArguments().getParcelable(DAY_PLAN_EXTRA)
+            val id = requireArguments().getInt(DAY_PLAN_EXTRA)
+            return if (id <= 0) return null else id
         }
 
     private val date: LocalDate?

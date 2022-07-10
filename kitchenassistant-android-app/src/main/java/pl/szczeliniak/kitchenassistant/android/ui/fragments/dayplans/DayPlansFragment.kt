@@ -120,7 +120,7 @@ class DayPlansFragment : Fragment() {
                                     deleteDayPlanLoadingStateHandler.handle(r)
                                 }
                             }, {
-                                AddEditDayPlanDialog.show(parentFragmentManager, it)
+                                AddEditDayPlanDialog.show(parentFragmentManager, it.id)
                             }))
                         }
                     }

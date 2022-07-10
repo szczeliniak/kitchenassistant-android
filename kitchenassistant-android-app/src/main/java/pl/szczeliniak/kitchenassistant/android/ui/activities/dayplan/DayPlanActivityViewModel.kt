@@ -33,16 +33,6 @@ class DayPlanActivityViewModel @AssistedInject constructor(
         }
     }
 
-    fun unassignReceipt(dayPlanId: Int, receiptId: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            dayPlanService.unassignReceipt(dayPlanId, receiptId)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
     fun archive(dayPlanId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
