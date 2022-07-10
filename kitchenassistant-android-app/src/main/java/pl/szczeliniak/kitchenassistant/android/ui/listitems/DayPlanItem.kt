@@ -7,6 +7,7 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
+import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class DayPlanItem constructor(
@@ -18,7 +19,7 @@ class DayPlanItem constructor(
 ) : BindableItem<ListItemDayPlanBinding>() {
 
     override fun bind(binding: ListItemDayPlanBinding, position: Int) {
-        binding.dayPlanDate.text = LocalDateUtils.stringify(dayPlan.date)
+        binding.dayPlanDate.fillOrHide(LocalDateUtils.stringify(dayPlan.date), binding.dayPlanDate)
         binding.dayPlanName.text = dayPlan.name
         binding.root.setOnClickListener { onClick.onClick(dayPlan) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
