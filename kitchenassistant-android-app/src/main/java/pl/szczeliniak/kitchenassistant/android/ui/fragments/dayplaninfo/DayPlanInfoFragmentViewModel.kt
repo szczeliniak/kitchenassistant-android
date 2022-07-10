@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan
+package pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplaninfo
 
 import androidx.lifecycle.*
 import dagger.assisted.Assisted
@@ -11,7 +11,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
 
-class DayPlanActivityViewModel @AssistedInject constructor(
+class DayPlanInfoFragmentViewModel @AssistedInject constructor(
     private val dayPlanService: DayPlanService,
     @Assisted private val dayPlanId: Int
 ) : ViewModel() {
@@ -43,7 +43,7 @@ class DayPlanActivityViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun deassignReceipt(dayPlanId: Int, receiptId: Int): LiveData<LoadingState<Int>> {
+    fun deassignReceipt(receiptId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
             dayPlanService.unassignReceipt(dayPlanId, receiptId)
@@ -65,7 +65,7 @@ class DayPlanActivityViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(shoppingListId: Int): DayPlanActivityViewModel
+        fun create(dayPlanId: Int): DayPlanInfoFragmentViewModel
     }
 
     companion object {
