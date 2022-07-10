@@ -30,9 +30,9 @@ class DayPlansFragmentViewModel @Inject constructor(
         reload(1)
     }
 
-    fun reload(page: Int) {
+    fun reload(page: Int, name: String? = null) {
         viewModelScope.launch {
-            dayPlansService.findAll(false, page, LIMIT)
+            dayPlansService.findAll(false, name, page, LIMIT)
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }

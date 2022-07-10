@@ -17,7 +17,8 @@ interface DayPlanRepository {
         @Query("page") page: Int? = null,
         @Query("limit") limit: Int? = null,
         @Query("since") since: LocalDate? = null,
-        @Query("to") to: LocalDate? = null
+        @Query("to") to: LocalDate? = null,
+        @Query("name") name: String? = null
     ): DayPlansResponse
 
     @GET("/dayplans/{id}")

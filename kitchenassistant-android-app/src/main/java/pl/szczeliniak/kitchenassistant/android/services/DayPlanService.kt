@@ -18,6 +18,7 @@ class DayPlanService constructor(
 
     suspend fun findAll(
         archived: Boolean? = null,
+        name: String? = null,
         page: Int? = null,
         limit: Int? = null,
         since: LocalDate? = null,
@@ -34,7 +35,8 @@ class DayPlanService constructor(
                             page,
                             limit,
                             since,
-                            to
+                            to,
+                            name
                         )
                     )
                 )

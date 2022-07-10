@@ -27,9 +27,9 @@ class ChooseDayPlanForReceiptDialogViewModel @Inject constructor(
         reloadDayPlans()
     }
 
-    fun reloadDayPlans() {
+    private fun reloadDayPlans() {
         viewModelScope.launch {
-            dayPlanService.findAll(false, 0, 20)
+            dayPlanService.findAll(false, null, 0, 20)
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }
