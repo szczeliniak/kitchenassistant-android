@@ -4,8 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class DayPlanReceipt(
+data class DayPlanIngredientGroup(
     val name: String,
-    val ingredientGroups: List<DayPlanIngredientGroup>,
-    val author: String?
+    val ingredients: List<DayPlanIngredient>
 ) : Parcelable

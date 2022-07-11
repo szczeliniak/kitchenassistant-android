@@ -8,6 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanReques
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanReceipt
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import java.time.LocalDate
 
@@ -131,6 +132,19 @@ class DayPlanService constructor(
             emit(LoadingState.InProgress)
             try {
                 emit(LoadingState.Success(repository.assignReceipt(dayPlanId, receiptId).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun getReceipts(dayPlanId: Int): Flow<LoadingState<List<DayPlanReceipt>>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(LoadingState.Success(repository.getReceipts(dayPlanId).receipts))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

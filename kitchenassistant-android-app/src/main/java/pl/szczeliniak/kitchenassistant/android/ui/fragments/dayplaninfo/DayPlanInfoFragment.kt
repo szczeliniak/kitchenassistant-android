@@ -18,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDeta
 import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan.ChooseReceiptToDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
-import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanReceiptItem
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanSimpleReceiptItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -174,7 +174,7 @@ class DayPlanInfoFragment : Fragment() {
                 binding.dayPlanReceiptsLayout.hideEmptyIcon()
                 it.receipts.forEach { item ->
                     receiptsAdapter.add(
-                        DayPlanReceiptItem(
+                        DayPlanSimpleReceiptItem(
                             requireContext(), item, { receipt ->
                                 ReceiptActivity.start(requireContext(), receipt.id)
                             }, { receipt ->

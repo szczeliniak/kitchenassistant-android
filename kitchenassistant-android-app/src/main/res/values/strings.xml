@@ -23,6 +23,7 @@
     <string name="message_confirm_action">Are you sure?</string>
     <string name="message_cannot_load_youtube_video">Cannot load YouTube video</string>
     <string name="message_login_with_facebook_error">Cannot log in with Facebook. Try again</string>
+    <string name="message_default_day_plan_prefix">Day Plan for</string>
 
     <string name="form_login_email">Email</string>
     <string name="form_login_password">Password</string>
@@ -59,6 +60,8 @@
     <string name="title_fragment_receipt_steps">Steps</string>
     <string name="title_fragment_shopping_lists">Shopping lists</string>
     <string name="title_fragment_day_plans">Day plans</string>
+    <string name="title_fragment_day_plan_info">Info</string>
+    <string name="title_fragment_day_plan_ingredients">Ingredients</string>
     <string name="title_dialog_add_ingredient">Add ingredient</string>
     <string name="title_dialog_edit_ingredient">Edit ingredient</string>
     <string name="title_dialog_add_step">Add step</string>
@@ -74,6 +77,7 @@
     <string name="title_dialog_edit_day_plan">Edit day plan</string>
     <string name="title_dialog_day_plans_filter">Filter day plans</string>
     <string name="title_dialog_add_receipt_to_day_plan">Add receipt to day plan</string>
+    <string name="title_dialog_choose_day_plan">Choose day plan</string>
 
     <string name="label_button_add">Add</string>
     <string name="title_button_edit">Edit</string>
@@ -119,6 +123,10 @@
     <string name="label_day_plan_date">Date</string>
     <string name="label_day_plan_receipts">Receipts</string>
     <string name="label_day_plan_name">Name</string>
+    <string name="label_shopping_list_automatic_archiving">Archive automatically when selected date passes</string>
+    <string name="label_day_plan_automatic_archiving">Archive automatically when selected date passes</string>
+    <string name="label_day_plan_description">Description</string>
+    <string name="label_button_add_to_day_plan">Add to day plan</string>
 
     <string name="placeholder_receipt_author">Pawkens</string>
     <string name="placeholder_receipt_category">Some category</string>
@@ -140,14 +148,5 @@
     <string name="placeholder_shopping_list_item_receipt_name">Shopping list item receipt name</string>
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
     <string name="placeholder_day_plan_name">Some day plan name</string>
-    <string name="label_button_add_to_day_plan">Add to day plan</string>
-    <string name="title_dialog_choose_day_plan">Choose day plan</string>
-    <string name="label_day_plan_description">Description</string>
     <string name="placeholder_day_plan_description">Some day plan description</string>
-    <string name="message_default_day_plan_prefix">Day Plan for</string>
-    <string name="label_shopping_list_automatic_archiving">Archive automatically when selected date pass</string>
-    <string name="label_day_plan_automatic_archiving">Archive automatically when selected date pass</string>
-    <string name="title_fragment_day_plan_info">Info</string>
-    <string name="title_fragment_day_plan_ingredients">Ingredients</string>
-
 </resources>

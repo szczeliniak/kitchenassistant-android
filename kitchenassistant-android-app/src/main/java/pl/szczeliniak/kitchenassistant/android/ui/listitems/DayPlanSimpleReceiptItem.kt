@@ -5,18 +5,18 @@ import android.view.View
 import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
-import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanReceiptBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanReceipt
+import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanSimpleReceiptBinding
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanSimpleReceipt
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
-class DayPlanReceiptItem constructor(
+class DayPlanSimpleReceiptItem constructor(
     private val context: Context,
-    private val receipt: DayPlanReceipt,
+    private val receipt: DayPlanSimpleReceipt,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick
-) : BindableItem<ListItemDayPlanReceiptBinding>() {
+) : BindableItem<ListItemDayPlanSimpleReceiptBinding>() {
 
-    override fun bind(binding: ListItemDayPlanReceiptBinding, position: Int) {
+    override fun bind(binding: ListItemDayPlanSimpleReceiptBinding, position: Int) {
         binding.receiptName.text = receipt.name
         receipt.category?.let { binding.receiptCategory.fillOrHide(it, binding.receiptCategory) }
         binding.author.fillOrHide(receipt.author, binding.author)
@@ -25,11 +25,11 @@ class DayPlanReceiptItem constructor(
     }
 
     override fun getLayout(): Int {
-        return R.layout.list_item_day_plan_receipt
+        return R.layout.list_item_day_plan_simple_receipt
     }
 
-    override fun initializeViewBinding(view: View): ListItemDayPlanReceiptBinding {
-        return ListItemDayPlanReceiptBinding.bind(view)
+    override fun initializeViewBinding(view: View): ListItemDayPlanSimpleReceiptBinding {
+        return ListItemDayPlanSimpleReceiptBinding.bind(view)
     }
 
     private fun showPopupMenu(view: View): Boolean {
@@ -50,7 +50,7 @@ class DayPlanReceiptItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(receipt: DayPlanReceipt)
+        fun onClick(receipt: DayPlanSimpleReceipt)
     }
 
 }

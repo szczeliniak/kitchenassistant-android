@@ -2,6 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanReceiptsResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
@@ -41,5 +42,8 @@ interface DayPlanRepository {
 
     @POST("/dayplans/{id}/receipts/{receiptId}")
     suspend fun assignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
+
+    @GET("/dayplans/{id}/receipts")
+    suspend fun getReceipts(@Path("id") dayPlanId: Int): DayPlanReceiptsResponse
 
 }

@@ -2,14 +2,11 @@ package pl.szczeliniak.kitchenassistant.android.network.responses.dto
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 
 @Parcelize
-data class DayPlanDetails(
+data class DayPlanSimpleReceipt(
     val id: Int,
     val name: String,
-    val description: String?,
-    val date: LocalDate?,
-    val receipts: List<DayPlanSimpleReceipt>,
-    val automaticArchiving: Boolean
+    val author: String?,
+    val category: String?
 ) : Parcelable

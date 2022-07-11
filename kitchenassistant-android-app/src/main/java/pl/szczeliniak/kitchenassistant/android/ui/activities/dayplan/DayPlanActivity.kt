@@ -13,6 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityDayPlanBindin
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanReloadedEvent
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplaninfo.DayPlanInfoFragment
+import pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplaningredients.DayPlanIngredientsFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import javax.inject.Inject
 
@@ -42,9 +43,10 @@ class DayPlanActivity : AppCompatActivity() {
     }
 
     private fun initPager() {
+        val dayPlanId = intent.getIntExtra(DAY_PLAN_ID_EXTRA, -1)
         binding.viewPager.adapter = FragmentPagerAdapter(
             arrayOf(
-                DayPlanInfoFragment.create(intent.getIntExtra(DAY_PLAN_ID_EXTRA, -1))
+                DayPlanInfoFragment.create(dayPlanId), DayPlanIngredientsFragment.create(dayPlanId)
             ), supportFragmentManager, lifecycle
         )
 
@@ -52,6 +54,9 @@ class DayPlanActivity : AppCompatActivity() {
             val nameId = when (position) {
                 0 -> {
                     R.string.title_fragment_day_plan_info
+                }
+                1 -> {
+                    R.string.title_fragment_day_plan_ingredients
                 }
                 else -> {
                     throw UnsupportedOperationException()
