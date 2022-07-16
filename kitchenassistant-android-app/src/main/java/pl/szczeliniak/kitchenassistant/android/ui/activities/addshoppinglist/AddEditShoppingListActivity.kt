@@ -84,11 +84,15 @@ class AddEditShoppingListActivity : AppCompatActivity() {
 
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
         binding.shoppingListName.doOnTextChanged { _, _, _, _ ->
-            if (name.isNullOrEmpty()) {
-                binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
-            } else {
-                binding.shoppingListNameLayout.error = null
-            }
+            checkName()
+        }
+    }
+
+    private fun checkName() {
+        if (name.isNullOrEmpty()) {
+            binding.shoppingListNameLayout.error = getString(R.string.message_shopping_list_name_is_empty)
+        } else {
+            binding.shoppingListNameLayout.error = null
         }
     }
 
@@ -157,7 +161,8 @@ class AddEditShoppingListActivity : AppCompatActivity() {
     }
 
     private fun saveShoppingList() {
-        if (name.isNullOrEmpty()) {
+        checkName()
+        if (binding.shoppingListNameLayout.error != null) {
             return
         }
         shoppingListId?.let {

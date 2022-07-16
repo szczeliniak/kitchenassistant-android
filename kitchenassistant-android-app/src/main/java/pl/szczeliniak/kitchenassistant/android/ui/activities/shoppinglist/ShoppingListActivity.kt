@@ -121,14 +121,12 @@ class ShoppingListActivity : AppCompatActivity() {
                                         shoppingListItem
                                     )
                                 }, { shoppingListId, shoppingListItem, isChecked ->
-                                    ConfirmationDialog.show(supportFragmentManager) {
-                                        viewModel.changeItemState(
-                                            shoppingListId,
-                                            shoppingListItem.id,
-                                            isChecked
-                                        ).observe(this@ShoppingListActivity) {
-                                            changeShoppingListItemStateStateHandler.handle(it)
-                                        }
+                                    viewModel.changeItemState(
+                                        shoppingListId,
+                                        shoppingListItem.id,
+                                        isChecked
+                                    ).observe(this@ShoppingListActivity) {
+                                        changeShoppingListItemStateStateHandler.handle(it)
                                     }
                                 }
                             ))
@@ -149,7 +147,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                viewModel.reload()
+                eventBus.post(ReloadShoppingListEvent())
             }
         })
     }
@@ -164,9 +162,7 @@ class ShoppingListActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: Int) {
-                viewModel.reload()
-            }
+            override fun onSuccess(data: Int) {}
         })
     }
 
