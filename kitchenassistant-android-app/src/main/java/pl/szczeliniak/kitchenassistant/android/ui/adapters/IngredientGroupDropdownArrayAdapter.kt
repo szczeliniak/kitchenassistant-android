@@ -52,7 +52,7 @@ class IngredientGroupDropdownArrayAdapter(context: Context) : ArrayAdapter<Ingre
                 val results = FilterResults()
                 var items = getItems()
                 if (constraint != null) {
-                    items = allIngredientGroups.filter { it.name.contains(constraint) }
+                    items = allIngredientGroups.filter { it.name.lowercase().contains(constraint.toString().lowercase()) }
                 }
                 results.values = items
                 results.count = items.size

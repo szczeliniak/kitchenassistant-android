@@ -77,12 +77,14 @@ class AddEditIngredientDialog : DialogFragment() {
 
         ingredientGroupDropdownArrayAdapter.refresh(ingredientGroups)
 
-        ingredientGroupId?.let {
-            ingredientGroupDropdownArrayAdapter.getIngredientGroupById(it)?.let {
-                binding.ingredientGroupName.setText(it.name)
+        if (ingredientGroupDropdownArrayAdapter.count <= 1) {
+            ingredientGroupId?.let { id ->
+                ingredientGroupDropdownArrayAdapter.getIngredientGroupById(id)?.let {
+                    binding.ingredientGroupName.setText(it.name)
+                }
+            } ?: kotlin.run {
+                ingredientGroupDropdownArrayAdapter.getItem(0)?.let { binding.ingredientGroupName.setText(it.name) }
             }
-        } ?: kotlin.run {
-            ingredientGroupDropdownArrayAdapter.getItem(0)?.let { binding.ingredientGroupName.setText(it.name) }
         }
 
         ingredient?.let {
