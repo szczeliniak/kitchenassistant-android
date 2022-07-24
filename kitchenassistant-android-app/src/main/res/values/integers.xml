@@ -5,7 +5,7 @@
     <integer name="max_length_receipt_url">500</integer>
     <integer name="max_length_receipt_description">1000</integer>
     <integer name="max_length_ingredient_name">100</integer>
-    <integer name="max_length_ingredient_quantity">10</integer>
+    <integer name="max_length_ingredient_quantity">50</integer>
     <integer name="max_length_step_name">100</integer>
     <integer name="max_length_step_description">1000</integer>
     <integer name="max_length_step_sequence">10</integer>

@@ -107,6 +107,9 @@ class AddEditCategoryDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        category?.let {
+            positiveButton.setText(R.string.title_button_edit)
+        }
         checkButtonState()
         positiveButton.setOnClickListener {
             category?.let { c ->

@@ -43,7 +43,14 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentReceiptStepsBinding.inflate(inflater)
         binding.recyclerView.adapter = stepsAdapter
-        binding.buttonAddStep.setOnClickListener { showAddStepDialog() }
+        binding.buttonAddStep.setOnClickListener {
+            receipt?.let {
+                AddEditStepDialog.show(
+                    requireActivity().supportFragmentManager,
+                    it.id
+                )
+            }
+        }
         return binding.root
     }
 
@@ -66,10 +73,6 @@ class ReceiptStepsFragment : ReceiptActivityFragment() {
                 eventBus.post(ReloadReceiptEvent())
             }
         })
-    }
-
-    private fun showAddStepDialog() {
-        receipt?.let { AddEditStepDialog.show(requireActivity().supportFragmentManager, it.id) }
     }
 
     private fun loadData() {

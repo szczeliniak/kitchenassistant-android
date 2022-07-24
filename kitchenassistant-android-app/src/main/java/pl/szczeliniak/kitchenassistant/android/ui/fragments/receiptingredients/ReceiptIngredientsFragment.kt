@@ -51,10 +51,12 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
 
     private fun showAddIngredientDialog() {
         receipt?.let {
+            val group = it.ingredientGroups.first()
             AddEditIngredientDialog.show(
                 requireActivity().supportFragmentManager,
                 it.id,
-                it.ingredientGroups.first().id,
+                group.id,
+                group.name,
                 ArrayList(it.ingredientGroups)
             )
         }
@@ -103,6 +105,7 @@ class ReceiptIngredientsFragment : ReceiptActivityFragment() {
                                     requireActivity().supportFragmentManager,
                                     receiptId,
                                     ingredientGroup.id,
+                                    ingredientGroup.name,
                                     ArrayList(r.ingredientGroups),
                                     i
                                 )

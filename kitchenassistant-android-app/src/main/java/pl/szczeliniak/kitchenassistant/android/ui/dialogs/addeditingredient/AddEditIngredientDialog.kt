@@ -20,7 +20,6 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateIngredient
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.IngredientGroup
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.IngredientGroupDropdownArrayAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -32,6 +31,7 @@ class AddEditIngredientDialog : DialogFragment() {
     companion object {
         private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
         private const val INGREDIENT_GROUP_ID_EXTRA = "INGREDIENT_GROUP_ID_EXTRA"
+        private const val INGREDIENT_GROUP_NAME_EXTRA = "INGREDIENT_GROUP_NAME_EXTRA"
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
         private const val INGREDIENT_GROUPS_EXTRA = "INGREDIENT_GROUPS_EXTRA"
 
@@ -41,12 +41,14 @@ class AddEditIngredientDialog : DialogFragment() {
             fragmentManager: FragmentManager,
             receiptId: Int,
             ingredientGroupId: Int?,
+            ingredientGroupName: String?,
             ingredientGroups: ArrayList<IngredientGroup>,
             ingredient: Ingredient? = null,
         ) {
             val bundle = Bundle()
             bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
             ingredientGroupId?.let { bundle.putInt(INGREDIENT_GROUP_ID_EXTRA, it) }
+            ingredientGroupName?.let { bundle.putString(INGREDIENT_GROUP_NAME_EXTRA, it) }
             bundle.putParcelableArrayList(INGREDIENT_GROUPS_EXTRA, ingredientGroups)
             ingredient?.let { bundle.putParcelable(INGREDIENT_EXTRA, it) }
             val dialog = AddEditIngredientDialog()
@@ -88,6 +90,7 @@ class AddEditIngredientDialog : DialogFragment() {
         }
 
         ingredient?.let {
+            binding.ingredientGroupName.setText(groupName)
             binding.ingredientName.setText(it.name)
             it.quantity?.let { quantity -> binding.ingredientQuantity.setText(quantity) }
             binding.title.text = getString(R.string.title_dialog_edit_ingredient)
@@ -168,16 +171,19 @@ class AddEditIngredientDialog : DialogFragment() {
         super.onResume()
         val dialog = dialog as AlertDialog
         positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+
+        ingredient?.let {
+            positiveButton.setText(R.string.title_button_edit)
+        }
+
         checkButtonState()
         positiveButton.setOnClickListener {
-            ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                ingredientGroupDropdownArrayAdapter.getIngredientGroupByName(ingredientGroupName)
-                    ?.let { saveIngredient(it.id) } ?: kotlin.run {
-                    viewModel.addIngredientGroup(receiptId, AddIngredientGroupRequest(ingredientGroupName))
-                        .observe(this) {
-                            saveIngredientGroupLoadingStateHandler.handle(it)
-                        }
-                }
+            ingredientGroupDropdownArrayAdapter.getIngredientGroupByName(ingredientGroupName)
+                ?.let { saveIngredient(it.id) } ?: kotlin.run {
+                viewModel.addIngredientGroup(receiptId, AddIngredientGroupRequest(ingredientGroupName))
+                    .observe(this) {
+                        saveIngredientGroupLoadingStateHandler.handle(it)
+                    }
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
@@ -225,6 +231,11 @@ class AddEditIngredientDialog : DialogFragment() {
                 return null
             }
             return id
+        }
+
+    private val groupName: String?
+        get() {
+            return requireArguments().getString(INGREDIENT_GROUP_NAME_EXTRA, null)
         }
 
     private val ingredient: Ingredient?
