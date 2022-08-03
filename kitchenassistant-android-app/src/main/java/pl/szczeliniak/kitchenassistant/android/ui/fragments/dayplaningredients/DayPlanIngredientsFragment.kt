@@ -14,10 +14,10 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentDayPlanIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanReloadedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanReceipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanRecipe
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientGroupHeaderItem
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientItem
-import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanReceiptHeaderItem
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanRecipeHeaderItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -48,24 +48,24 @@ class DayPlanIngredientsFragment : Fragment() {
     private val viewModel: DayPlanIngredientsFragmentViewModel by viewModels {
         DayPlanIngredientsFragmentViewModel.provideFactory(factory, dayPlanId)
     }
-    private val receiptsAdapter = GroupAdapter<GroupieViewHolder>()
-    private lateinit var receiptsLoadingStateHandler: LoadingStateHandler<List<DayPlanReceipt>>
+    private val recipesAdapter = GroupAdapter<GroupieViewHolder>()
+    private lateinit var recipesLoadingStateHandler: LoadingStateHandler<List<DayPlanRecipe>>
     private lateinit var binding: FragmentDayPlanIngredientsBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDayPlanIngredientsBinding.inflate(inflater)
-        binding.recyclerView.adapter = receiptsAdapter
+        binding.recyclerView.adapter = recipesAdapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        receiptsLoadingStateHandler = prepareReceiptsLoadingStateHandler()
-        viewModel.receipts.observe(requireActivity()) { receiptsLoadingStateHandler.handle(it) }
+        recipesLoadingStateHandler = prepareRecipesLoadingStateHandler()
+        viewModel.recipes.observe(requireActivity()) { recipesLoadingStateHandler.handle(it) }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun prepareReceiptsLoadingStateHandler(): LoadingStateHandler<List<DayPlanReceipt>> {
-        return LoadingStateHandler(requireContext(), object : LoadingStateHandler.OnStateChanged<List<DayPlanReceipt>> {
+    private fun prepareRecipesLoadingStateHandler(): LoadingStateHandler<List<DayPlanRecipe>> {
+        return LoadingStateHandler(requireContext(), object : LoadingStateHandler.OnStateChanged<List<DayPlanRecipe>> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(requireActivity())
             }
@@ -74,20 +74,20 @@ class DayPlanIngredientsFragment : Fragment() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: List<DayPlanReceipt>) {
-                receiptsAdapter.clear()
+            override fun onSuccess(data: List<DayPlanRecipe>) {
+                recipesAdapter.clear()
                 if (data.isEmpty()) {
                     binding.root.showEmptyIcon(requireActivity())
                 } else {
                     binding.root.hideEmptyIcon()
                 }
-                data.forEach { receipt ->
-                    receiptsAdapter.add(DayPlanReceiptHeaderItem(receipt))
-                    receipt.ingredientGroups.forEach { ingredientGroup ->
+                data.forEach { recipe ->
+                    recipesAdapter.add(DayPlanRecipeHeaderItem(recipe))
+                    recipe.ingredientGroups.forEach { ingredientGroup ->
                         if (ingredientGroup.ingredients.isNotEmpty()) {
-                            receiptsAdapter.add(DayPlanIngredientGroupHeaderItem(ingredientGroup))
+                            recipesAdapter.add(DayPlanIngredientGroupHeaderItem(ingredientGroup))
                             ingredientGroup.ingredients.forEach { ingredient ->
-                                receiptsAdapter.add(DayPlanIngredientItem(ingredient))
+                                recipesAdapter.add(DayPlanIngredientItem(ingredient))
                             }
                         }
                     }

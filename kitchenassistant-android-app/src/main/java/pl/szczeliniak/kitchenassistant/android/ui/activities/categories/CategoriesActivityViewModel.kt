@@ -10,12 +10,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
+import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import javax.inject.Inject
 
 @HiltViewModel
 class CategoriesActivityViewModel @Inject constructor(
-    private val receiptService: ReceiptService
+    private val recipeService: RecipeService
 ) : ViewModel() {
 
     private val _categories = MutableLiveData<LoadingState<List<Category>>>()
@@ -29,7 +29,7 @@ class CategoriesActivityViewModel @Inject constructor(
 
     fun reloadCategories() {
         viewModelScope.launch {
-            receiptService.findAllCategories()
+            recipeService.findAllCategories()
                 .onEach { _categories.value = it }
                 .launchIn(viewModelScope)
         }
@@ -38,7 +38,7 @@ class CategoriesActivityViewModel @Inject constructor(
     fun delete(id: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.deleteCategory(id)
+            recipeService.deleteCategory(id)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditIngredientBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipeEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
@@ -29,7 +29,7 @@ import javax.inject.Inject
 class AddEditIngredientDialog : DialogFragment() {
 
     companion object {
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val RECIPE_ID_EXTRA = "RECIPE_ID_EXTRA"
         private const val INGREDIENT_GROUP_ID_EXTRA = "INGREDIENT_GROUP_ID_EXTRA"
         private const val INGREDIENT_GROUP_NAME_EXTRA = "INGREDIENT_GROUP_NAME_EXTRA"
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
@@ -39,14 +39,14 @@ class AddEditIngredientDialog : DialogFragment() {
 
         fun show(
             fragmentManager: FragmentManager,
-            receiptId: Int,
+            recipeId: Int,
             ingredientGroupId: Int?,
             ingredientGroupName: String?,
             ingredientGroups: ArrayList<IngredientGroup>,
             ingredient: Ingredient? = null,
         ) {
             val bundle = Bundle()
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
+            bundle.putInt(RECIPE_ID_EXTRA, recipeId)
             ingredientGroupId?.let { bundle.putInt(INGREDIENT_GROUP_ID_EXTRA, it) }
             ingredientGroupName?.let { bundle.putString(INGREDIENT_GROUP_NAME_EXTRA, it) }
             bundle.putParcelableArrayList(INGREDIENT_GROUPS_EXTRA, ingredientGroups)
@@ -145,7 +145,7 @@ class AddEditIngredientDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadReceiptEvent())
+                eventBus.post(ReloadRecipeEvent())
                 dismiss()
             }
         })
@@ -180,7 +180,7 @@ class AddEditIngredientDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             ingredientGroupDropdownArrayAdapter.getIngredientGroupByName(ingredientGroupName)
                 ?.let { saveIngredient(it.id) } ?: kotlin.run {
-                viewModel.addIngredientGroup(receiptId, AddIngredientGroupRequest(ingredientGroupName))
+                viewModel.addIngredientGroup(recipeId, AddIngredientGroupRequest(ingredientGroupName))
                     .observe(this) {
                         saveIngredientGroupLoadingStateHandler.handle(it)
                     }
@@ -192,13 +192,13 @@ class AddEditIngredientDialog : DialogFragment() {
     private fun saveIngredient(groupId: Int) {
         ingredient?.let { ingredient ->
             viewModel.updateIngredient(
-                receiptId,
+                recipeId,
                 ingredientGroupId ?: throw IllegalArgumentException("Ingredient group id not found"),
                 ingredient.id,
                 UpdateIngredientRequest(name, quantity, groupId)
             ).observe(this) { saveIngredientLoadingStateHandler.handle(it) }
         } ?: kotlin.run {
-            viewModel.addIngredient(receiptId, groupId, AddIngredientRequest(name, quantity))
+            viewModel.addIngredient(recipeId, groupId, AddIngredientRequest(name, quantity))
                 .observe(this) { saveIngredientLoadingStateHandler.handle(it) }
         }
     }
@@ -219,9 +219,9 @@ class AddEditIngredientDialog : DialogFragment() {
             return binding.ingredientGroupName.text.toString()
         }
 
-    private val receiptId: Int
+    private val recipeId: Int
         get() {
-            return requireArguments().getInt(RECEIPT_ID_EXTRA)
+            return requireArguments().getInt(RECIPE_ID_EXTRA)
         }
 
     private val ingredientGroupId: Int?

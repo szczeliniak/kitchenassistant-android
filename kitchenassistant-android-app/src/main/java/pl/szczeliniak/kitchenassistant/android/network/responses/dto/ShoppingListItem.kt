@@ -10,5 +10,5 @@ data class ShoppingListItem(
     val completed: Boolean,
     val quantity: String?,
     val sequence: String,
-    val receipt: SimpleReceipt?
+    val recipe: SimpleRecipe?
 ) : Parcelable

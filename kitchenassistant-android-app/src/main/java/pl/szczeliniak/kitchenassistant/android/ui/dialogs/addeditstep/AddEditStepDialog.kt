@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditStepBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadReceiptEvent
+import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipeEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
@@ -27,13 +27,13 @@ import javax.inject.Inject
 class AddEditStepDialog : DialogFragment() {
 
     companion object {
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val RECIPE_ID_EXTRA = "RECIPE_ID_EXTRA"
         private const val STEP_EXTRA = "STEP_EXTRA"
         private const val TAG = "AddEditStepDialog"
 
-        fun show(fragmentManager: FragmentManager, receiptId: Int, step: Step? = null) {
+        fun show(fragmentManager: FragmentManager, recipeId: Int, step: Step? = null) {
             val bundle = Bundle()
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
+            bundle.putInt(RECIPE_ID_EXTRA, recipeId)
             step?.let { bundle.putParcelable(STEP_EXTRA, it) }
             val dialog = AddEditStepDialog()
             dialog.arguments = bundle
@@ -100,7 +100,7 @@ class AddEditStepDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadReceiptEvent())
+                eventBus.post(ReloadRecipeEvent())
                 dismiss()
             }
         })
@@ -114,11 +114,11 @@ class AddEditStepDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             step?.let { step ->
                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                    viewModel.updateStep(receiptId, step.id, UpdateStepRequest(name, description, sequence))
+                    viewModel.updateStep(recipeId, step.id, UpdateStepRequest(name, description, sequence))
                         .observe(this) { addStepLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
-                viewModel.addStep(receiptId, AddStepRequest(name, description, sequence))
+                viewModel.addStep(recipeId, AddStepRequest(name, description, sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
             }
         }
@@ -144,9 +144,9 @@ class AddEditStepDialog : DialogFragment() {
             return asString.toInt()
         }
 
-    private val receiptId: Int
+    private val recipeId: Int
         get() {
-            return requireArguments().getInt(RECEIPT_ID_EXTRA)
+            return requireArguments().getInt(RECIPE_ID_EXTRA)
         }
 
     private val step: Step?

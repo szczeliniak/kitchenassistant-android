@@ -4,5 +4,5 @@ data class UpdateShoppingListItemRequest(
     val name: String,
     val quantity: String?,
     val sequence: Int?,
-    val receiptId: Int?
+    val recipeId: Int?
 )

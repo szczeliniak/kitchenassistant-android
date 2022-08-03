@@ -36,13 +36,13 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:screenOrientation="portrait"
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditreceipt.AddEditReceiptActivity"
+                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:screenOrientation="portrait"
                 android:exported="false">

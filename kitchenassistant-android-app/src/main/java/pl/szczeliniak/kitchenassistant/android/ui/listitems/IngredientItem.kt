@@ -10,7 +10,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 
 class IngredientItem constructor(
     private val context: Context,
-    private val receiptId: Int,
+    private val recipeId: Int,
     private val ingredient: Ingredient,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick,
@@ -30,15 +30,15 @@ class IngredientItem constructor(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(receiptId, ingredient)
+                    onDeleteClick.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.edit -> {
-                    onEditClick.onClick(receiptId, ingredient)
+                    onEditClick.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.add_to_shopping_list -> {
-                    onAddToShoppingListItem.onClick(receiptId, ingredient)
+                    onAddToShoppingListItem.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -57,7 +57,7 @@ class IngredientItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(receiptId: Int, ingredient: Ingredient)
+        fun onClick(recipeId: Int, ingredient: Ingredient)
     }
 
 }

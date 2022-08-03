@@ -11,18 +11,18 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
-import pl.szczeliniak.kitchenassistant.android.services.ReceiptService
+import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import javax.inject.Inject
 
 @HiltViewModel
 class AddEditCategoryDialogViewModel @Inject constructor(
-    private val receiptService: ReceiptService,
+    private val recipeService: RecipeService,
 ) : ViewModel() {
 
     fun addCategory(request: AddCategoryRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.addCategory(request)
+            recipeService.addCategory(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
@@ -32,7 +32,7 @@ class AddEditCategoryDialogViewModel @Inject constructor(
     fun updateCategory(categoryId: Int, request: UpdateCategoryRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            receiptService.updateCategory(categoryId, request)
+            recipeService.updateCategory(categoryId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

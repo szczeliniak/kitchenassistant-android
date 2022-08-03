@@ -2,9 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/receipts"
-            android:icon="@drawable/icon_receipt"
-            android:title="@string/title_fragment_receipts"/>
+            android:id="@+id/recipes"
+            android:icon="@drawable/icon_recipe"
+            android:title="@string/title_fragment_recipes"/>
 
     <item
             android:id="@+id/shopping_lists"

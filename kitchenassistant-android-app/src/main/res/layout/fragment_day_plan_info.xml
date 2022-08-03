@@ -86,14 +86,14 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:text="@string/label_day_plan_receipts"
+                    android:text="@string/label_day_plan_recipes"
                     style="@style/TextViewSubheader"
                     android:textColor="@color/secondary_dark"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/day_plan_receipts_layout"
+                    android:id="@+id/day_plan_recipes_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -116,11 +116,11 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_add_receipt_to_day_plan"
+            android:id="@+id/button_add_recipe_to_day_plan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/icon_add"
-            android:contentDescription="@string/description_add_receipt_to_day_plan"
+            android:contentDescription="@string/description_add_recipe_to_day_plan"
             style="@style/ButtonFloatingAction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>

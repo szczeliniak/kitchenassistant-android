@@ -26,14 +26,14 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
 
     companion object {
         private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
-        private const val RECEIPT_ID_EXTRA = "RECEIPT_ID_EXTRA"
+        private const val RECIPE_ID_EXTRA = "RECIPE_ID_EXTRA"
 
         private const val TAG = "AddIngredientToShoppingListDialog"
 
-        fun show(fragmentManager: FragmentManager, ingredient: Ingredient, receiptId: Int) {
+        fun show(fragmentManager: FragmentManager, ingredient: Ingredient, recipeId: Int) {
             val bundle = Bundle()
             bundle.putParcelable(INGREDIENT_EXTRA, ingredient)
-            bundle.putInt(RECEIPT_ID_EXTRA, receiptId)
+            bundle.putInt(RECIPE_ID_EXTRA, recipeId)
             val dialog = AddIngredientToShoppingListDialog()
             dialog.arguments = bundle
             dialog.show(fragmentManager, TAG)
@@ -111,7 +111,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             viewModel.addItem(
                 shoppingListsDropdownAdapter.getItem(binding.shoppingListName.selectedItemPosition)?.id!!,
-                AddShoppingListItemRequest(ingredient.name, ingredient.quantity, sequence, receiptId)
+                AddShoppingListItemRequest(ingredient.name, ingredient.quantity, sequence, recipeId)
             ).observe(this) { addIngredientToShoppingListStateHandler.handle(it) }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
@@ -129,9 +129,9 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
                 ?: throw java.lang.IllegalStateException("Ingredient cannot be null")
         }
 
-    private val receiptId: Int
+    private val recipeId: Int
         get() {
-            return requireArguments().getInt(RECEIPT_ID_EXTRA)
+            return requireArguments().getInt(RECIPE_ID_EXTRA)
         }
 
 }

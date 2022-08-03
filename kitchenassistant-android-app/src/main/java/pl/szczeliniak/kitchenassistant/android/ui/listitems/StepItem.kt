@@ -11,7 +11,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.C
 
 class StepItem constructor(
     private val context: Context,
-    private val receiptId: Int,
+    private val recipeId: Int,
     private val step: Step,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick
@@ -30,11 +30,11 @@ class StepItem constructor(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(receiptId, step)
+                    onDeleteClick.onClick(recipeId, step)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.edit -> {
-                    onEditClick.onClick(receiptId, step)
+                    onEditClick.onClick(recipeId, step)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -53,7 +53,7 @@ class StepItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(receiptId: Int, step: Step)
+        fun onClick(recipeId: Int, step: Step)
     }
 
 }

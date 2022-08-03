@@ -15,10 +15,10 @@ import pl.szczeliniak.kitchenassistant.android.events.DayPlanReloadedEvent
 import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
-import pl.szczeliniak.kitchenassistant.android.ui.activities.receipt.ReceiptActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosereceipttodayplan.ChooseReceiptToDayPlanDialog
+import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.chooserecipetodayplan.ChooseRecipeToDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
-import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanSimpleReceiptItem
+import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanSimpleRecipeItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -51,22 +51,22 @@ class DayPlanInfoFragment : Fragment() {
     private val viewModel: DayPlanInfoFragmentViewModel by viewModels {
         DayPlanInfoFragmentViewModel.provideFactory(factory, dayPlanId)
     }
-    private val receiptsAdapter = GroupAdapter<GroupieViewHolder>()
+    private val recipesAdapter = GroupAdapter<GroupieViewHolder>()
     private lateinit var archiveDayPlanStateHandler: LoadingStateHandler<Int>
-    private lateinit var assignDeassignReceiptFromDayPlanStateHandler: LoadingStateHandler<Int>
+    private lateinit var assignDeassignRecipeFromDayPlanStateHandler: LoadingStateHandler<Int>
     private lateinit var dayPlanLoadingStateHandler: LoadingStateHandler<DayPlanDetails>
     private lateinit var binding: FragmentDayPlanInfoBinding
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDayPlanInfoBinding.inflate(inflater)
-        binding.recyclerView.adapter = receiptsAdapter
-        binding.buttonAddReceiptToDayPlan.setOnClickListener {
-            ChooseReceiptToDayPlanDialog.show(
+        binding.recyclerView.adapter = recipesAdapter
+        binding.buttonAddRecipeToDayPlan.setOnClickListener {
+            ChooseRecipeToDayPlanDialog.show(
                 childFragmentManager,
-                ChooseReceiptToDayPlanDialog.OnReceiptChosen { id ->
-                    viewModel.assignReceipt(id).observe(requireActivity()) {
-                        assignDeassignReceiptFromDayPlanStateHandler.handle(it)
+                ChooseRecipeToDayPlanDialog.OnRecipeChosen { id ->
+                    viewModel.assignRecipe(id).observe(requireActivity()) {
+                        assignDeassignRecipeFromDayPlanStateHandler.handle(it)
                     }
                 })
         }
@@ -75,13 +75,13 @@ class DayPlanInfoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         archiveDayPlanStateHandler = prepareArchiveDayPlanStateHandler()
-        assignDeassignReceiptFromDayPlanStateHandler = assignDeassignReceiptFromDayPlanStateHandler()
+        assignDeassignRecipeFromDayPlanStateHandler = assignDeassignRecipeFromDayPlanStateHandler()
         dayPlanLoadingStateHandler = prepareDayPlanLoadingStateHandler()
         viewModel.dayPlan.observe(requireActivity()) { dayPlanLoadingStateHandler.handle(it) }
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun assignDeassignReceiptFromDayPlanStateHandler(): LoadingStateHandler<Int> {
+    private fun assignDeassignRecipeFromDayPlanStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireContext(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(requireActivity())
@@ -167,21 +167,21 @@ class DayPlanInfoFragment : Fragment() {
             binding.dayPlanName.text = it.name
             binding.dayPlanDescription.fillOrHide(it.description, binding.dayPlanDescriptionLayout)
 
-            receiptsAdapter.clear()
-            if (it.receipts.isEmpty()) {
-                binding.dayPlanReceiptsLayout.showEmptyIcon(requireActivity())
+            recipesAdapter.clear()
+            if (it.recipes.isEmpty()) {
+                binding.dayPlanRecipesLayout.showEmptyIcon(requireActivity())
             } else {
-                binding.dayPlanReceiptsLayout.hideEmptyIcon()
-                it.receipts.forEach { item ->
-                    receiptsAdapter.add(
-                        DayPlanSimpleReceiptItem(
-                            requireContext(), item, { receipt ->
-                                ReceiptActivity.start(requireContext(), receipt.id)
-                            }, { receipt ->
+                binding.dayPlanRecipesLayout.hideEmptyIcon()
+                it.recipes.forEach { item ->
+                    recipesAdapter.add(
+                        DayPlanSimpleRecipeItem(
+                            requireContext(), item, { recipe ->
+                                RecipeActivity.start(requireContext(), recipe.id)
+                            }, { recipe ->
                                 ConfirmationDialog.show(childFragmentManager) {
-                                    viewModel.deassignReceipt(receipt.id)
+                                    viewModel.deassignRecipe(recipe.id)
                                         .observe(requireActivity()) {
-                                            assignDeassignReceiptFromDayPlanStateHandler.handle(it)
+                                            assignDeassignRecipeFromDayPlanStateHandler.handle(it)
                                         }
                                 }
                             }

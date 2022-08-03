@@ -5,8 +5,8 @@
 
     <group>
         <item
-                android:id="@+id/receipts"
-                android:title="@string/title_fragment_receipts"/>
+                android:id="@+id/recipes"
+                android:title="@string/title_fragment_recipes"/>
         <item
                 android:id="@+id/shopping_lists"
                 android:title="@string/title_fragment_shopping_lists"/>

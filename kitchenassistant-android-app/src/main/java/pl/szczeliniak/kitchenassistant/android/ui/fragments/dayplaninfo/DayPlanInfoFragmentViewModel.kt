@@ -43,20 +43,20 @@ class DayPlanInfoFragmentViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun deassignReceipt(receiptId: Int): LiveData<LoadingState<Int>> {
+    fun deassignRecipe(recipeId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.unassignReceipt(dayPlanId, receiptId)
+            dayPlanService.unassignRecipe(dayPlanId, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
         return liveData
     }
 
-    fun assignReceipt(receiptId: Int): LiveData<LoadingState<Int>> {
+    fun assignRecipe(recipeId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.assignReceipt(dayPlanId, receiptId)
+            dayPlanService.assignRecipe(dayPlanId, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

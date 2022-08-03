@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
 
         binding.navView.setNavigationItemSelectedListener { onDrawerItemClicked(it.itemId) }
 
-        binding.bottomNavView.selectedItemId = R.id.receipts
+        binding.bottomNavView.selectedItemId = R.id.recipes
     }
 
     private fun onDrawerItemClicked(itemId: Int): Boolean {
         binding.root.closeDrawers()
         when (itemId) {
-            R.id.receipts -> {
-                binding.bottomNavView.selectedItemId = R.id.receipts
+            R.id.recipes -> {
+                binding.bottomNavView.selectedItemId = R.id.recipes
                 return true
             }
             R.id.shopping_lists -> {

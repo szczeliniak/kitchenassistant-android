@@ -118,7 +118,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
                     viewModel.updateShoppingListItem(
                         shoppingListId,
                         item.id,
-                        UpdateShoppingListItemRequest(name, quantity, sequence, item.receipt?.id)
+                        UpdateShoppingListItemRequest(name, quantity, sequence, item.recipe?.id)
                     ).observe(this) { addShoppingListItemLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {

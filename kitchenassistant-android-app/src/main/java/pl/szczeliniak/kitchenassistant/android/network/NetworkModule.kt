@@ -18,7 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkCheck
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.NetworkConnectionChecker
 import pl.szczeliniak.kitchenassistant.android.network.interceptors.TokenInterceptor
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.ReceiptRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
@@ -99,8 +99,8 @@ class NetworkModule {
     }
 
     @Provides
-    fun receiptRepository(retrofitBuilder: Retrofit.Builder): ReceiptRepository {
-        return retrofitBuilder.build().create(ReceiptRepository::class.java)
+    fun recipeRepository(retrofitBuilder: Retrofit.Builder): RecipeRepository {
+        return retrofitBuilder.build().create(RecipeRepository::class.java)
     }
 
     @Provides

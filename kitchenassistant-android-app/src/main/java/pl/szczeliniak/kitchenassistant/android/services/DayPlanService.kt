@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanReques
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanReceipt
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanRecipe
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import java.time.LocalDate
 
@@ -114,11 +114,11 @@ class DayPlanService constructor(
         }
     }
 
-    suspend fun unassignReceipt(dayPlanId: Int, receiptId: Int): Flow<LoadingState<Int>> {
+    suspend fun unassignRecipe(dayPlanId: Int, recipeId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.deassignReceipt(dayPlanId, receiptId).id))
+                emit(LoadingState.Success(repository.deassignRecipe(dayPlanId, recipeId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -127,11 +127,11 @@ class DayPlanService constructor(
         }
     }
 
-    suspend fun assignReceipt(dayPlanId: Int, receiptId: Int): Flow<LoadingState<Int>> {
+    suspend fun assignRecipe(dayPlanId: Int, recipeId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.assignReceipt(dayPlanId, receiptId).id))
+                emit(LoadingState.Success(repository.assignRecipe(dayPlanId, recipeId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -140,11 +140,11 @@ class DayPlanService constructor(
         }
     }
 
-    suspend fun getReceipts(dayPlanId: Int): Flow<LoadingState<List<DayPlanReceipt>>> {
+    suspend fun getRecipes(dayPlanId: Int): Flow<LoadingState<List<DayPlanRecipe>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.getReceipts(dayPlanId).receipts))
+                emit(LoadingState.Success(repository.getRecipes(dayPlanId).recipes))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

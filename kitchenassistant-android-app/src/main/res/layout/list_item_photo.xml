@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:id="@+id/photo_image_view"
             android:layout_height="0dp"
-            android:contentDescription="@string/description_receipt_photo"
+            android:contentDescription="@string/description_recipe_photo"
             app:layout_constraintDimensionRatio="1:1"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

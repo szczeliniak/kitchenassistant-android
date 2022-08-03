@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="max_length_receipt_name">100</integer>
-    <integer name="max_length_receipt_author">50</integer>
-    <integer name="max_length_receipt_url">500</integer>
-    <integer name="max_length_receipt_description">1000</integer>
+    <integer name="max_length_recipe_name">100</integer>
+    <integer name="max_length_recipe_author">50</integer>
+    <integer name="max_length_recipe_url">500</integer>
+    <integer name="max_length_recipe_description">1000</integer>
     <integer name="max_length_ingredient_name">100</integer>
     <integer name="max_length_ingredient_quantity">50</integer>
     <integer name="max_length_step_name">100</integer>
@@ -15,11 +15,11 @@
     <integer name="max_length_shopping_list_item_quantity">20</integer>
     <integer name="max_length_shopping_list_item_sequence">10</integer>
     <integer name="max_length_category_name">100</integer>
-    <integer name="max_length_receipt_category">50</integer>
+    <integer name="max_length_recipe_category">50</integer>
     <integer name="max_length_email">100</integer>
     <integer name="max_length_password">50</integer>
     <integer name="max_length_name">50</integer>
-    <integer name="max_length_receipt_tag">50</integer>
+    <integer name="max_length_recipe_tag">50</integer>
     <integer name="max_length_ingredient_group_name">50</integer>
     <integer name="max_length_day_plan_name">100</integer>
     <integer name="max_length_day_plan_description">1000</integer>

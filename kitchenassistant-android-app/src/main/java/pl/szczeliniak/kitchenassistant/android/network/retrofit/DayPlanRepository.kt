@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanReceiptsResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
@@ -37,13 +37,13 @@ interface DayPlanRepository {
     @PUT("/dayplans/{id}/archive/{archive}")
     suspend fun archive(@Path("id") id: Int, @Path("archive") archive: Boolean): SuccessResponse
 
-    @DELETE("/dayplans/{id}/receipts/{receiptId}")
-    suspend fun deassignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
+    @DELETE("/dayplans/{id}/recipes/{recipeId}")
+    suspend fun deassignRecipe(@Path("id") dayPlanId: Int, @Path("recipeId") recipeId: Int): SuccessResponse
 
-    @POST("/dayplans/{id}/receipts/{receiptId}")
-    suspend fun assignReceipt(@Path("id") dayPlanId: Int, @Path("receiptId") receiptId: Int): SuccessResponse
+    @POST("/dayplans/{id}/recipes/{recipeId}")
+    suspend fun assignRecipe(@Path("id") dayPlanId: Int, @Path("recipeId") recipeId: Int): SuccessResponse
 
-    @GET("/dayplans/{id}/receipts")
-    suspend fun getReceipts(@Path("id") dayPlanId: Int): DayPlanReceiptsResponse
+    @GET("/dayplans/{id}/recipes")
+    suspend fun getRecipes(@Path("id") dayPlanId: Int): DayPlanRecipesResponse
 
 }

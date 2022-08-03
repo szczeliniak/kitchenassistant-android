@@ -159,7 +159,7 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun reloadReceiptEvent(event: ReloadShoppingListsEvent) {
+    fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
         resetShoppingLists()
     }
 

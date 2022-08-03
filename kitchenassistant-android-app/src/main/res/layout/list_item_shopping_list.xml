@@ -21,7 +21,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/shopping_list_date"
-                tools:text="@string/placeholder_receipt_date"
+                tools:text="@string/placeholder_recipe_date"
                 style="@style/TextViewSubheader"
                 android:textColor="@color/secondary_dark"
                 android:layout_width="match_parent"
