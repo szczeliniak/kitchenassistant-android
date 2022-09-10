@@ -60,7 +60,7 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
         viewModel.shoppingLists.observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
         viewModel.filter.observe(this) {
             this.filter = it
-            resetShoppingLists()
+            endlessScrollRecyclerViewListener.reset()
         }
     }
 
@@ -74,12 +74,14 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
         )
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.reloadShoppingLists(it, null, filter?.date) }
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            { viewModel.reloadShoppingLists(it, null, filter?.date) },
+            { adapter.clear() }
+        )
 
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
-        binding.refreshLayout.setOnRefreshListener { resetShoppingLists() }
+        binding.refreshLayout.setOnRefreshListener { endlessScrollRecyclerViewListener.reset() }
     }
 
     private fun prepareLoadShoppingListsStateHandler(): LoadingStateHandler<ShoppingListsResponse> {
@@ -94,7 +96,6 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
 
             override fun onSuccess(data: ShoppingListsResponse) {
                 endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
-
                 if (data.shoppingLists.isEmpty()) {
                     binding.layout.showEmptyIcon(this@ArchivedShoppingListsActivity)
                 } else {
@@ -128,7 +129,7 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(data: Int) {
-                    resetShoppingLists()
+                    endlessScrollRecyclerViewListener.reset()
                 }
             })
     }
@@ -160,11 +161,6 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
 
     @Subscribe
     fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
-        resetShoppingLists()
-    }
-
-    fun resetShoppingLists() {
-        adapter.clear()
         endlessScrollRecyclerViewListener.reset()
     }
 

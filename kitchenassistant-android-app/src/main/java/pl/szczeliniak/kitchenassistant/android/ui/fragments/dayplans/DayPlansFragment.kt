@@ -53,15 +53,17 @@ class DayPlansFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDayPlansBinding.inflate(inflater)
 
-        binding.root.setOnRefreshListener { reset() }
+        binding.root.setOnRefreshListener { endlessScrollRecyclerViewListener.reset() }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.reload(it, searchView.query.toString().ifEmpty { null }) }
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            { viewModel.reload(it, searchView.query.toString().ifEmpty { null }) },
+            { adapter.clear() }
+        )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddDayPlan.setOnClickListener { AddEditDayPlanDialog.show(parentFragmentManager) }
@@ -75,11 +77,6 @@ class DayPlansFragment : Fragment() {
         viewModel.dayPlans.observe(viewLifecycleOwner) { dayPlansLoadingStateHandler.handle(it) }
     }
 
-    private fun reset() {
-        adapter.clear()
-        endlessScrollRecyclerViewListener.reset()
-    }
-
     private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
@@ -91,7 +88,7 @@ class DayPlansFragment : Fragment() {
             }
 
             override fun onSuccess(data: Int) {
-                reset()
+                endlessScrollRecyclerViewListener.reset()
             }
         })
     }
@@ -109,7 +106,6 @@ class DayPlansFragment : Fragment() {
                 }
 
                 override fun onSuccess(data: DayPlansResponse) {
-                    adapter.clear()
                     endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                     if (data.dayPlans.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
@@ -151,7 +147,7 @@ class DayPlansFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                debounceExecutor.execute { reset() }
+                debounceExecutor.execute { endlessScrollRecyclerViewListener.reset() }
                 return true
             }
         })
@@ -161,7 +157,7 @@ class DayPlansFragment : Fragment() {
 
     @Subscribe
     fun reload(event: ReloadDayPlansEvent) {
-        reset()
+        endlessScrollRecyclerViewListener.reset()
     }
 
 }

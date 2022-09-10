@@ -84,8 +84,10 @@ class RecipesByCategoryFragment : Fragment() {
         )
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.loadRecipes(it, searchView.query.toString(), filter?.recipeTag) }
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            { viewModel.loadRecipes(it, searchView.query.toString(), filter?.recipeTag) },
+            { adapter.clear() }
+        )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         return binding.root
@@ -148,7 +150,6 @@ class RecipesByCategoryFragment : Fragment() {
             }
 
             override fun onSuccess(data: RecipesResponse) {
-                adapter.clear()
                 endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
                 if (data.recipes.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())

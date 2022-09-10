@@ -5,7 +5,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollRecyclerViewListener(
     private val linearLayoutManager: LinearLayoutManager,
-    var onLoad: OnLoad
+    var onLoad: OnLoad,
+    var onReset: OnReset
 ) : RecyclerView.OnScrollListener() {
 
     companion object {
@@ -26,6 +27,7 @@ class EndlessScrollRecyclerViewListener(
     }
 
     fun reset() {
+        onReset.onReset()
         page = 0
         maxPage = DEFAULT_PAGE
         load()
@@ -41,6 +43,10 @@ class EndlessScrollRecyclerViewListener(
 
     fun interface OnLoad {
         fun onLoad(page: Int)
+    }
+
+    fun interface OnReset {
+        fun onReset()
     }
 
 }

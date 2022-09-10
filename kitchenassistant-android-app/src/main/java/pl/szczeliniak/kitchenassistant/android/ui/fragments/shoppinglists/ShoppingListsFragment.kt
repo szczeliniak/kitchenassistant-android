@@ -67,8 +67,10 @@ class ShoppingListsFragment : Fragment() {
         )
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager
-        ) { viewModel.reloadShoppingLists(it, searchView.query.toString(), filter?.date) }
+            binding.recyclerView.layoutManager as LinearLayoutManager,
+            { viewModel.reloadShoppingLists(it, searchView.query.toString(), filter?.date) },
+            { adapter.clear() }
+        )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         binding.buttonAddShoppingList.setOnClickListener { AddEditShoppingListActivity.start(requireContext()) }
