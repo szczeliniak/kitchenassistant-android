@@ -21,4 +21,6 @@
     <dimen name="radius_button">10dp</dimen>
     <dimen name="login_header_min_height">300dp</dimen>
 
+    <dimen name="input_radius">10dp</dimen>
+
 </resources>

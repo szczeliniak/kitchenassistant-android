@@ -14,13 +14,16 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesByCategoryBinding
+import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipesEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
+import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforrecipe.ChooseDayPlanForRecipeDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforrecipe.ChooseDayForRecipeDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.recipesfilter.RecipesFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.RecipeItem
@@ -57,10 +60,13 @@ class RecipesByCategoryFragment : Fragment() {
     @Inject
     lateinit var eventBus: EventBus
 
+    @Inject
+    lateinit var localStorageService: LocalStorageService
+
     private lateinit var binding: FragmentRecipesByCategoryBinding
     private lateinit var recipesLoadingStateHandler: LoadingStateHandler<RecipesResponse>
     private lateinit var doActionAndResetRecipesLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var doActionLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var addRecipeToDayLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -103,7 +109,7 @@ class RecipesByCategoryFragment : Fragment() {
 
         recipesLoadingStateHandler = prepareRecipesLoadingStateHandler()
         doActionAndResetRecipesLoadingStateHandler = prepareDoActionAndResetRecipesLoadingStateHandler()
-        doActionLoadingStateHandler = prepareDoActionLoadingStateHandler()
+        addRecipeToDayLoadingStateHandler = prepareAddRecipeToDayLoadingStateHandler()
         viewModel.recipes.observe(viewLifecycleOwner) { recipesLoadingStateHandler.handle(it) }
     }
 
@@ -123,7 +129,7 @@ class RecipesByCategoryFragment : Fragment() {
         })
     }
 
-    private fun prepareDoActionLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareAddRecipeToDayLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -134,6 +140,7 @@ class RecipesByCategoryFragment : Fragment() {
             }
 
             override fun onSuccess(data: Int) {
+                eventBus.post(ReloadDayPlansEvent())
             }
         })
     }
@@ -173,13 +180,15 @@ class RecipesByCategoryFragment : Fragment() {
                                 }
                             }
                         }, {
-                            ChooseDayPlanForRecipeDialog.show(
+                            ChooseDayForRecipeDialog.show(
                                 requireActivity().supportFragmentManager,
-                                it.id,
-                                ChooseDayPlanForRecipeDialog.OnDayPlanChosen { dayPlanId, recipeId ->
-                                    viewModel.assignRecipeToDayPlan(recipeId, dayPlanId)
+                                ChooseDayForRecipeDialog.OnDayChosen { date ->
+                                    viewModel.assignRecipeToDayPlan(
+                                        recipe.id,
+                                        AddRecipeToDayPlanRequest(localStorageService.getId(), date)
+                                    )
                                         .observe(viewLifecycleOwner) { r ->
-                                            doActionLoadingStateHandler.handle(r)
+                                            addRecipeToDayLoadingStateHandler.handle(r)
                                         }
                                 })
                         }))

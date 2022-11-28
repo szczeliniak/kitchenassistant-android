@@ -4,11 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanRecipe
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import java.time.LocalDate
 
@@ -19,7 +18,6 @@ class DayPlanService constructor(
 
     suspend fun findAll(
         archived: Boolean? = null,
-        name: String? = null,
         page: Int? = null,
         limit: Int? = null,
         since: LocalDate? = null,
@@ -36,8 +34,7 @@ class DayPlanService constructor(
                             page,
                             limit,
                             since,
-                            to,
-                            name
+                            to
                         )
                     )
                 )
@@ -54,32 +51,6 @@ class DayPlanService constructor(
             emit(LoadingState.InProgress)
             try {
                 emit(LoadingState.Success(repository.delete(id).id))
-            } catch (e: KitchenAssistantNetworkException) {
-                emit(LoadingState.NoInternetException)
-            } catch (e: Exception) {
-                emit(LoadingState.Exception(e))
-            }
-        }
-    }
-
-    suspend fun add(request: AddDayPlanRequest): Flow<LoadingState<Int>> {
-        return flow {
-            emit(LoadingState.InProgress)
-            try {
-                emit(LoadingState.Success(repository.add(request).id))
-            } catch (e: KitchenAssistantNetworkException) {
-                emit(LoadingState.NoInternetException)
-            } catch (e: Exception) {
-                emit(LoadingState.Exception(e))
-            }
-        }
-    }
-
-    suspend fun update(dayPlanId: Int, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
-        return flow {
-            emit(LoadingState.InProgress)
-            try {
-                emit(LoadingState.Success(repository.update(dayPlanId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -127,11 +98,11 @@ class DayPlanService constructor(
         }
     }
 
-    suspend fun assignRecipe(dayPlanId: Int, recipeId: Int): Flow<LoadingState<Int>> {
+    suspend fun assignRecipe(recipeId: Int, request: AddRecipeToDayPlanRequest): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.assignRecipe(dayPlanId, recipeId).id))
+                emit(LoadingState.Success(repository.assignRecipe(recipeId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -140,11 +111,11 @@ class DayPlanService constructor(
         }
     }
 
-    suspend fun getRecipes(dayPlanId: Int): Flow<LoadingState<List<DayPlanRecipe>>> {
+    suspend fun update(dayPlanId: Int, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.getRecipes(dayPlanId).recipes))
+                emit(LoadingState.Success(repository.update(dayPlanId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

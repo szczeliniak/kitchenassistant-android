@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
@@ -65,10 +66,10 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun assignRecipeToDayPlan(recipeId: Int, dayPlanId: Int): LiveData<LoadingState<Int>> {
+    fun assignRecipeToDayPlan(recipeId: Int, request: AddRecipeToDayPlanRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.assignRecipe(dayPlanId, recipeId)
+            dayPlanService.assignRecipe(recipeId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

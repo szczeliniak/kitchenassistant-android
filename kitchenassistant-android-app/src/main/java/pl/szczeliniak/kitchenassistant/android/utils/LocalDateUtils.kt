@@ -1,7 +1,9 @@
 package pl.szczeliniak.kitchenassistant.android.utils
 
 import timber.log.Timber
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
 
@@ -49,6 +51,17 @@ class LocalDateUtils {
             return null
         }
 
+        fun toMillis(year: Int, month: Int, day: Int): Long {
+            return toMillis(LocalDate.of(year, month + 1, day))
+        }
+
+        fun toMillis(date: LocalDate): Long {
+            return date.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
+        }
+
+        fun toLocalDate(millis: Long): LocalDate {
+            return Instant.ofEpochMilli(millis).atOffset(ZoneOffset.UTC).toLocalDate()
+        }
     }
 
 }

@@ -15,12 +15,9 @@
     <integer name="max_length_shopping_list_item_quantity">20</integer>
     <integer name="max_length_shopping_list_item_sequence">10</integer>
     <integer name="max_length_category_name">100</integer>
-    <integer name="max_length_recipe_category">50</integer>
     <integer name="max_length_email">100</integer>
     <integer name="max_length_password">50</integer>
     <integer name="max_length_name">50</integer>
     <integer name="max_length_recipe_tag">50</integer>
     <integer name="max_length_ingredient_group_name">50</integer>
-    <integer name="max_length_day_plan_name">100</integer>
-    <integer name="max_length_day_plan_description">1000</integer>
 </resources>

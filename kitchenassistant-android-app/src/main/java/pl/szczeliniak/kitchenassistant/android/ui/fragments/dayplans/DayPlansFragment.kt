@@ -1,8 +1,9 @@
 package pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplans
 
 import android.os.Bundle
-import android.view.*
-import androidx.appcompat.widget.SearchView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -12,16 +13,14 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentDayPlansBinding
 import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditdayplan.AddEditDayPlanDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanItem
-import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
@@ -39,16 +38,14 @@ class DayPlansFragment : Fragment() {
 
     private val viewModel: DayPlansFragmentViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
-    private val debounceExecutor = DebounceExecutor(500)
 
     @Inject
     lateinit var eventBus: EventBus
 
     private lateinit var binding: FragmentDayPlansBinding
     private lateinit var dayPlansLoadingStateHandler: LoadingStateHandler<DayPlansResponse>
-    private lateinit var deleteDayPlanLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var deleteArchiveDayPlanLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
-    private lateinit var searchView: SearchView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentDayPlansBinding.inflate(inflater)
@@ -61,23 +58,22 @@ class DayPlansFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager,
-            { viewModel.reload(it, searchView.query.toString().ifEmpty { null }) },
+            { viewModel.reload(it) },
             { adapter.clear() }
         )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
-        binding.buttonAddDayPlan.setOnClickListener { AddEditDayPlanDialog.show(parentFragmentManager) }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dayPlansLoadingStateHandler = prepareDayPlansLoadingStateHandler()
-        deleteDayPlanLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
+        deleteArchiveDayPlanLoadingStateHandler = prepareDeleteArchiveDayPlanLoadingStateHandler()
         viewModel.dayPlans.observe(viewLifecycleOwner) { dayPlansLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareDeleteArchiveDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -116,10 +112,14 @@ class DayPlansFragment : Fragment() {
                                 DayPlanActivity.start(requireContext(), dayPlan.id)
                             }, {
                                 viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                    deleteDayPlanLoadingStateHandler.handle(r)
+                                    deleteArchiveDayPlanLoadingStateHandler.handle(r)
                                 }
                             }, {
-                                AddEditDayPlanDialog.show(parentFragmentManager, it.id)
+                                viewModel.archive(it.id).observe(viewLifecycleOwner) { r ->
+                                    deleteArchiveDayPlanLoadingStateHandler.handle(r)
+                                }
+                            }, {
+                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan)
                             }))
                         }
                     }
@@ -129,30 +129,12 @@ class DayPlansFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         eventBus.register(this)
     }
 
     override fun onDestroy() {
         eventBus.unregister(this)
         super.onDestroy()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_day_plans, menu)
-        searchView = menu.findItem(R.id.search).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                debounceExecutor.execute { endlessScrollRecyclerViewListener.reset() }
-                return true
-            }
-        })
-
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     @Subscribe

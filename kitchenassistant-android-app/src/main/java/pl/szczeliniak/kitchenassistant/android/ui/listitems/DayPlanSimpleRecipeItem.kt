@@ -6,12 +6,12 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanSimpleRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanSimpleRecipe
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanRecipe
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
 class DayPlanSimpleRecipeItem constructor(
     private val context: Context,
-    private val recipe: DayPlanSimpleRecipe,
+    private val recipe: DayPlanRecipe,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick
 ) : BindableItem<ListItemDayPlanSimpleRecipeBinding>() {
@@ -50,7 +50,7 @@ class DayPlanSimpleRecipeItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(recipe: DayPlanSimpleRecipe)
+        fun onClick(recipe: DayPlanRecipe)
     }
 
 }

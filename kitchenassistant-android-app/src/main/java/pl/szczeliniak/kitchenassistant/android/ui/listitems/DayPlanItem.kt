@@ -7,7 +7,6 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class DayPlanItem constructor(
@@ -15,12 +14,12 @@ class DayPlanItem constructor(
     private val dayPlan: DayPlan,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
+    private val onArchiveClick: OnClick,
     private val onEditClick: OnClick
 ) : BindableItem<ListItemDayPlanBinding>() {
 
     override fun bind(binding: ListItemDayPlanBinding, position: Int) {
-        binding.dayPlanDate.fillOrHide(LocalDateUtils.stringify(dayPlan.date), binding.dayPlanDate)
-        binding.dayPlanName.text = dayPlan.name
+        binding.dayPlanDate.text = LocalDateUtils.stringify(dayPlan.date)
         binding.root.setOnClickListener { onClick.onClick(dayPlan) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
@@ -35,11 +34,15 @@ class DayPlanItem constructor(
 
     private fun showPopupMenu(view: View): Boolean {
         val popupMenu = PopupMenu(context, view)
-        popupMenu.inflate(R.menu.shopping_list_item)
+        popupMenu.inflate(R.menu.dayplan_item)
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
                     onDeleteClick.onClick(dayPlan)
+                    return@setOnMenuItemClickListener true
+                }
+                R.id.archive -> {
+                    onArchiveClick.onClick(dayPlan)
                     return@setOnMenuItemClickListener true
                 }
                 R.id.edit -> {

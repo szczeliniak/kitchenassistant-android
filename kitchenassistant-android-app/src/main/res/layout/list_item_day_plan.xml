@@ -22,14 +22,6 @@
         <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/day_plan_date"
                 tools:text="@string/placeholder_day_plan_date"
-                style="@style/TextViewSubheader"
-                android:textColor="@color/secondary_dark"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/day_plan_name"
-                tools:text="@string/placeholder_day_plan_name"
                 style="@style/TextViewHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

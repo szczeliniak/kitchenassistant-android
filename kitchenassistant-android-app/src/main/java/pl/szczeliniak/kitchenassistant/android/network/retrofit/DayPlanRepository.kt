@@ -1,8 +1,7 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddDayPlanRequest
+import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanRecipesResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
@@ -18,8 +17,7 @@ interface DayPlanRepository {
         @Query("page") page: Int? = null,
         @Query("limit") limit: Int? = null,
         @Query("since") since: LocalDate? = null,
-        @Query("to") to: LocalDate? = null,
-        @Query("name") name: String? = null
+        @Query("to") to: LocalDate? = null
     ): DayPlansResponse
 
     @GET("/dayplans/{id}")
@@ -28,22 +26,16 @@ interface DayPlanRepository {
     @DELETE("/dayplans/{id}")
     suspend fun delete(@Path("id") id: Int): SuccessResponse
 
-    @POST("/dayplans")
-    suspend fun add(@Body request: AddDayPlanRequest): SuccessResponse
-
-    @PUT("/dayplans/{id}")
-    suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
-
     @PUT("/dayplans/{id}/archive/{archive}")
     suspend fun archive(@Path("id") id: Int, @Path("archive") archive: Boolean): SuccessResponse
 
     @DELETE("/dayplans/{id}/recipes/{recipeId}")
     suspend fun deassignRecipe(@Path("id") dayPlanId: Int, @Path("recipeId") recipeId: Int): SuccessResponse
 
-    @POST("/dayplans/{id}/recipes/{recipeId}")
-    suspend fun assignRecipe(@Path("id") dayPlanId: Int, @Path("recipeId") recipeId: Int): SuccessResponse
+    @POST("/dayplans/recipes/{recipeId}")
+    suspend fun assignRecipe(@Path("recipeId") recipeId: Int, @Body request: AddRecipeToDayPlanRequest): SuccessResponse
 
-    @GET("/dayplans/{id}/recipes")
-    suspend fun getRecipes(@Path("id") dayPlanId: Int): DayPlanRecipesResponse
+    @PUT("/dayplans/{id}")
+    suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
 
 }

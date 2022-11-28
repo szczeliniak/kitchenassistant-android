@@ -2,7 +2,7 @@ package pl.szczeliniak.kitchenassistant.android.network.requests
 
 import java.time.LocalDate
 
-data class UpdateDayPlanRequest(
-    val date: LocalDate,
-    val automaticArchiving: Boolean
+data class AddRecipeToDayPlanRequest(
+    val userId: Int,
+    val date: LocalDate
 )
