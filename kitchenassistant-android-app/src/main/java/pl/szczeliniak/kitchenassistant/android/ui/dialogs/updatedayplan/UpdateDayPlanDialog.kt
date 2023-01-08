@@ -48,7 +48,6 @@ class UpdateDayPlanDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogUpdateDayplanBinding.inflate(layoutInflater)
-        binding.calendar.minDate = System.currentTimeMillis() - 1000
         binding.calendar.date = LocalDateUtils.toMillis(dayPlan.date)
         binding.dayPlanAutomaticArchiving.isChecked = dayPlan.automaticArchiving
         binding.calendar.setOnDateChangeListener { calendarView, year, month, day ->
