@@ -22,6 +22,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
+import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -78,8 +79,16 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }, date.year, date.monthValue - 1, date.dayOfMonth)
             dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.label_button_cancel)) { _, _ ->
                 binding.shoppingListDate.text = getString(R.string.label_button_select_date)
+                binding.shoppingListAutomaticArchiving.isChecked = false
             }
             dialog.show()
+        }
+
+        binding.shoppingListAutomaticArchiving.setOnCheckedChangeListener { _, isChecked ->
+            if(date == null && isChecked) {
+                toast(R.string.message_cannot_auto_archive_shopping_list_without_date)
+                binding.shoppingListAutomaticArchiving.isChecked = false
+            }
         }
 
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
