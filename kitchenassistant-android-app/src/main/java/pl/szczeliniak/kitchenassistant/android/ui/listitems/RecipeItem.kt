@@ -24,15 +24,13 @@ class RecipeItem constructor(
 
     override fun bind(binding: ListItemRecipeBinding, position: Int) {
         binding.recipeName.text = recipe.name
-        if (showCategory) {
-            recipe.category?.let { binding.recipeCategory.fillOrHide(it.name, binding.recipeCategory) }
-        }
+        recipe.category?.let { binding.recipeCategory.fillOrHide(if (showCategory) it.name else "", binding.recipeCategory) }
         binding.recipeAuthor.fillOrHide(recipe.author, binding.recipeAuthor)
         binding.tagChips.removeAllViews()
         recipe.tags.forEach { binding.tagChips.add(LayoutInflater.from(context), it, false) }
         binding.root.setOnClickListener { onClick.onClick(recipe) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
-        binding.recipeIsFavorite.visibility = if (recipe.favorite) View.VISIBLE else View.GONE
+        binding.recipeIsFavorite.visibility = if (recipe.favorite) View.VISIBLE else View.INVISIBLE
     }
 
     override fun getLayout(): Int {
