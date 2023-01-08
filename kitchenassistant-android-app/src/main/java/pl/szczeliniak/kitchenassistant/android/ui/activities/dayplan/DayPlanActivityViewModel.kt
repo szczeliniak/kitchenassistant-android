@@ -51,7 +51,7 @@ class DayPlanActivityViewModel @AssistedInject constructor(
     companion object {
         fun provideFactory(factory: Factory, dayPlanId: Int): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return factory.create(dayPlanId) as T
                 }
             }

@@ -72,7 +72,7 @@ class ShoppingListActivityViewModel @AssistedInject constructor(
     companion object {
         fun provideFactory(factory: Factory, shoppingListId: Int): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return factory.create(shoppingListId) as T
                 }
             }

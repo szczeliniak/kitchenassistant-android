@@ -41,7 +41,7 @@ class RecipeActivityViewModel @AssistedInject constructor(
     companion object {
         fun provideFactory(factory: Factory, recipeId: Int): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
                     return factory.create(recipeId) as T
                 }
             }

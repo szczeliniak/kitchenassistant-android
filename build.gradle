@@ -1,16 +1,16 @@
 buildscript {
 
-    ext.kotlin_version = "1.6.10"
-    ext.gradle_version = '7.2.0'
+    ext.kotlin_version = '1.6.21'
+    ext.gradle_version = '7.3.0'
     ext.hilt_version = "2.42"
     ext.eventbus_version = "3.3.1"
     ext.timber_version = "5.0.1"
     ext.constraintlayout_version = "2.1.4"
     ext.swiperefreshlayout_version = "1.1.0"
-    ext.material_version = "1.6.1"
-    ext.appcompat_version = "1.4.2"
-    ext.ktx_version = "1.8.0"
-    ext.navigation_version = "2.4.2"
+    ext.material_version = "1.7.0"
+    ext.appcompat_version = "1.5.1"
+    ext.ktx_version = "1.9.0"
+    ext.navigation_version = "2.5.3"
     ext.http3_logging_version = "4.9.3"
     ext.retrofit_version = "2.9.0"
     ext.groupie_version = "2.9.0"
@@ -18,7 +18,7 @@ buildscript {
     ext.easyimage_version = "3.2.0"
     ext.ucrop_version = "2.2.6"
     ext.secrets_gradle_plugin_version = "2.0.1"
-    ext.facebook_sdk_version = "13.1.0"
+    ext.facebook_sdk_version = "15.2.0"
     ext.androidyoutubeplayer_version = "11.0.1"
 
     repositories {

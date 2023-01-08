@@ -96,7 +96,9 @@ class LoginActivity : AppCompatActivity() {
         binding.buttonLoginWithFacebook.setOnClickListener {
             val loginManager = LoginManager.getInstance()
             loginManager.registerCallback(facebookCallbackManager, object : FacebookCallback<LoginResult> {
-                override fun onCancel() {}
+                override fun onCancel() {
+                    System.out.println("dipa")
+                }
 
                 override fun onError(error: FacebookException) {
                     toast(R.string.message_login_with_facebook_error)
