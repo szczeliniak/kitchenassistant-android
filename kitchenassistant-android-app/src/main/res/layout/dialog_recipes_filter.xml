@@ -31,4 +31,10 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.appcompat.widget.AppCompatCheckBox
+            android:text="@string/label_filter_show_only_favorites"
+            android:id="@+id/only_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
 </androidx.appcompat.widget.LinearLayoutCompat>

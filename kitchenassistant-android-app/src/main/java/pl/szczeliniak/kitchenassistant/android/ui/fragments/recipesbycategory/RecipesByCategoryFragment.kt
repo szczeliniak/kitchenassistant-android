@@ -92,7 +92,7 @@ class RecipesByCategoryFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager,
-            { viewModel.loadRecipes(it, searchView.query.toString(), filter?.recipeTag) },
+            { viewModel.loadRecipes(it, searchView.query.toString(), filter?.recipeTag, filter?.onlyFavorites ?: false) },
             { adapter.clear() }
         )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
@@ -205,6 +205,7 @@ class RecipesByCategoryFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
+    @Deprecated("")
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_recipes, menu)
         searchView = menu.findItem(R.id.search).actionView as SearchView
@@ -222,12 +223,13 @@ class RecipesByCategoryFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    @Deprecated("")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.filter -> {
                 RecipesFilterDialog.show(
                     requireActivity().supportFragmentManager,
-                    RecipesFilterDialog.Filter(filter?.recipeTag),
+                    RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
                     RecipesFilterDialog.OnFilterChanged {
                         filter = it
                         resetRecipes()

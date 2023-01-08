@@ -47,6 +47,7 @@ class RecipesFilterDialog : DialogFragment() {
         }
         filter?.let {
             it.recipeTag?.let { name -> binding.recipeTagName.setText(name) }
+            binding.onlyFavorites.isChecked = it.onlyFavorites
         }
 
         loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
@@ -64,7 +65,7 @@ class RecipesFilterDialog : DialogFragment() {
 
         val dialog = dialog as AlertDialog
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-            val filter = Filter(recipeTag)
+            val filter = Filter(onlyFavorites, recipeTag)
             onFilterChanged.onFilterChanged(filter)
             dismiss()
         }
@@ -85,7 +86,7 @@ class RecipesFilterDialog : DialogFragment() {
     }
 
     @Parcelize
-    data class Filter(val recipeTag: String?) : Parcelable
+    data class Filter(val onlyFavorites: Boolean, val recipeTag: String?) : Parcelable
 
     private val onFilterChanged: OnFilterChanged
         get() {
@@ -95,6 +96,11 @@ class RecipesFilterDialog : DialogFragment() {
     private val recipeTag: String?
         get() {
             return binding.recipeTagName.text.toString().ifEmpty { null }
+        }
+
+    private val onlyFavorites: Boolean
+        get() {
+            return binding.onlyFavorites.isChecked
         }
 
     private val filter: Filter?

@@ -35,12 +35,12 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
     val recipes: LiveData<LoadingState<RecipesResponse>> get() = _recipes
 
     init {
-        loadRecipes(1, null, null)
+        loadRecipes(1, null, null, false)
     }
 
-    fun loadRecipes(page: Int, recipeName: String?, tag: String?) {
+    fun loadRecipes(page: Int, recipeName: String?, tag: String?, onlyFavorites: Boolean) {
         viewModelScope.launch {
-            recipeService.findAll(categoryId, recipeName, tag, page, LIMIT)
+            recipeService.findAll(categoryId, recipeName, tag, onlyFavorites, page, LIMIT)
                 .onEach { _recipes.value = it }
                 .launchIn(viewModelScope)
         }

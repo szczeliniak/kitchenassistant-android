@@ -28,6 +28,7 @@ class RecipeService constructor(
         categoryId: Int? = null,
         recipeName: String? = null,
         tag: String? = null,
+        onlyFavorites: Boolean = false,
         page: Int? = null,
         limit: Int? = null
     ): Flow<LoadingState<RecipesResponse>> {
@@ -40,7 +41,7 @@ class RecipeService constructor(
                             localStorageService.getId(),
                             categoryId,
                             recipeName,
-                            tag, page, limit
+                            tag, onlyFavorites, page, limit
                         )
                     )
                 )

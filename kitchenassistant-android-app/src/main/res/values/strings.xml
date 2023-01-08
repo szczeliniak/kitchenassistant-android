@@ -116,6 +116,7 @@
     <string name="label_day_plan_automatic_archiving">Archive automatically when selected date passes</string>
     <string name="label_day_plan_description">Description</string>
     <string name="label_button_add_to_day_plan">Add to day plan</string>
+    <string name="label_filter_show_only_favorites">Show only favorites</string>
 
     <string name="placeholder_recipe_author">Pawkens</string>
     <string name="placeholder_recipe_category">Some category</string>
