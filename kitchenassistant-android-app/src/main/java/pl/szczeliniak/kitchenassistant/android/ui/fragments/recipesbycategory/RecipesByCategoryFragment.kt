@@ -85,6 +85,7 @@ class RecipesByCategoryFragment : Fragment() {
         binding = FragmentRecipesByCategoryBinding.inflate(inflater)
         binding.root.setOnRefreshListener { resetRecipes() }
         binding.recyclerView.adapter = adapter
+        adapter.clear()
         binding.recyclerView.addItemDecoration(
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
