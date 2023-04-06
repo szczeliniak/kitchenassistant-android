@@ -15,8 +15,8 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesByCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
@@ -65,9 +65,9 @@ class RecipesByCategoryFragment : Fragment() {
     lateinit var localStorageService: LocalStorageService
 
     private lateinit var binding: FragmentRecipesByCategoryBinding
-    private lateinit var recipesLoadingStateHandler: LoadingStateHandler<RecipesResponse>
-    private lateinit var doActionAndResetRecipesLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var addRecipeToDayLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var loadRecipesLoadingStateHandler: LoadingStateHandler<RecipesResponse>
+    private lateinit var reloadRecipesLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var addRecipeToDayPlanLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -116,13 +116,13 @@ class RecipesByCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        recipesLoadingStateHandler = prepareRecipesLoadingStateHandler()
-        doActionAndResetRecipesLoadingStateHandler = prepareDoActionAndResetRecipesLoadingStateHandler()
-        addRecipeToDayLoadingStateHandler = prepareAddRecipeToDayLoadingStateHandler()
-        viewModel.recipes.observe(viewLifecycleOwner) { recipesLoadingStateHandler.handle(it) }
+        loadRecipesLoadingStateHandler = loadRecipesLoadingStateHandler()
+        reloadRecipesLoadingStateHandler = deleteRecipeLoadingStateHandler()
+        addRecipeToDayPlanLoadingStateHandler = addRecipeToDayPlanLoadingStateHandler()
+        viewModel.recipes.observe(viewLifecycleOwner) { loadRecipesLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareDoActionAndResetRecipesLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun deleteRecipeLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -138,7 +138,7 @@ class RecipesByCategoryFragment : Fragment() {
         })
     }
 
-    private fun prepareAddRecipeToDayLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun addRecipeToDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -154,7 +154,7 @@ class RecipesByCategoryFragment : Fragment() {
         })
     }
 
-    private fun prepareRecipesLoadingStateHandler(): LoadingStateHandler<RecipesResponse> {
+    private fun loadRecipesLoadingStateHandler(): LoadingStateHandler<RecipesResponse> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<RecipesResponse> {
             override fun onInProgress() {
                 binding.root.isRefreshing = true
@@ -177,7 +177,7 @@ class RecipesByCategoryFragment : Fragment() {
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                                 viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                    doActionAndResetRecipesLoadingStateHandler.handle(r)
+                                    reloadRecipesLoadingStateHandler.handle(r)
                                 }
                             }
                         }, {
@@ -185,7 +185,7 @@ class RecipesByCategoryFragment : Fragment() {
                         }, {
                             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                                 viewModel.setFavorite(it.id, !it.favorite).observe(viewLifecycleOwner) { r ->
-                                    doActionAndResetRecipesLoadingStateHandler.handle(r)
+                                    reloadRecipesLoadingStateHandler.handle(r)
                                 }
                             }
                         }, {
@@ -197,7 +197,7 @@ class RecipesByCategoryFragment : Fragment() {
                                         AddRecipeToDayPlanRequest(localStorageService.getId(), date)
                                     )
                                         .observe(viewLifecycleOwner) { r ->
-                                            addRecipeToDayLoadingStateHandler.handle(r)
+                                            addRecipeToDayPlanLoadingStateHandler.handle(r)
                                         }
                                 })
                         }))

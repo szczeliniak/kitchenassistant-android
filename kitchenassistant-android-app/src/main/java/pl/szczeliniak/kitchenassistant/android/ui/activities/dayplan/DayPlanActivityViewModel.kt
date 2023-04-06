@@ -43,6 +43,26 @@ class DayPlanActivityViewModel @AssistedInject constructor(
         return liveData
     }
 
+    fun delete(dayPlanId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            dayPlanService.delete(dayPlanId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+    fun archive(dayPlanId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            dayPlanService.archive(dayPlanId, true)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(dayPlanId: Int): DayPlanActivityViewModel
