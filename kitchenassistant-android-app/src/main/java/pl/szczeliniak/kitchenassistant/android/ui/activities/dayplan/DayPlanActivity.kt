@@ -10,7 +10,7 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityDayPlanBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientGroupHeaderItem
@@ -117,7 +117,7 @@ class DayPlanActivity : AppCompatActivity() {
                 if (numberOfRecipesForDayPlan > 1) {
                     viewModel.reload()
                 } else {
-                    eventBus.post(ReloadDayPlansEvent())
+                    eventBus.post(DayPlanDeletedEvent())
                     finish()
                 }
             }

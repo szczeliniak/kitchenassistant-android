@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditIngredientBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipeEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientRequest
@@ -145,7 +145,7 @@ class AddEditIngredientDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadRecipeEvent())
+                eventBus.post(RecipeSavedEvent())
                 dismiss()
             }
         })

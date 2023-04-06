@@ -12,7 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditCategoryBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
+import pl.szczeliniak.kitchenassistant.android.events.CategorySavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
@@ -42,7 +42,7 @@ class AddEditCategoryDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddEditCategoryBinding
     private lateinit var positiveButton: Button
-    private lateinit var addStepLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var addEditCategoryLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
     lateinit var eventBus: EventBus
@@ -69,7 +69,7 @@ class AddEditCategoryDialog : DialogFragment() {
             checkButtonState()
         }
 
-        addStepLoadingStateHandler = prepareSaveStepLoadingStateHandler()
+        addEditCategoryLoadingStateHandler = prepareAddEditCategoryLoadingStateHandler()
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
@@ -86,7 +86,7 @@ class AddEditCategoryDialog : DialogFragment() {
         return name.isNotEmpty()
     }
 
-    private fun prepareSaveStepLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareAddEditCategoryLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(requireActivity())
@@ -97,7 +97,7 @@ class AddEditCategoryDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadCategoriesEvent())
+                eventBus.post(CategorySavedEvent())
                 dismiss()
             }
         })
@@ -115,11 +115,11 @@ class AddEditCategoryDialog : DialogFragment() {
             category?.let { c ->
                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                     viewModel.updateCategory(c.id, UpdateCategoryRequest(name, sequence))
-                        .observe(this) { addStepLoadingStateHandler.handle(it) }
+                        .observe(this) { addEditCategoryLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
                 viewModel.addCategory(AddCategoryRequest(name, localStorageService.getId(), sequence))
-                    .observe(this) { addStepLoadingStateHandler.handle(it) }
+                    .observe(this) { addEditCategoryLoadingStateHandler.handle(it) }
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }

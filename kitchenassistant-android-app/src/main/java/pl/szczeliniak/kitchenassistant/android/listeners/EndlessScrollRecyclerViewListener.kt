@@ -27,6 +27,7 @@ class EndlessScrollRecyclerViewListener(
     }
 
     fun reset() {
+        linearLayoutManager.scrollToPosition(0)
         onReset.onReset()
         page = 0
         maxPage = DEFAULT_PAGE

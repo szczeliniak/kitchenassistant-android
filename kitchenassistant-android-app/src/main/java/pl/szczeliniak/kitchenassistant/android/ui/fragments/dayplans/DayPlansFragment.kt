@@ -14,7 +14,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentDayPlansBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
@@ -138,7 +139,12 @@ class DayPlansFragment : Fragment() {
     }
 
     @Subscribe
-    fun reload(event: ReloadDayPlansEvent) {
+    fun onDayPlanDeleted(event: DayPlanDeletedEvent) {
+        endlessScrollRecyclerViewListener.reset()
+    }
+
+    @Subscribe
+    fun onDayPlanEdited(event: DayPlanEditedEvent) {
         endlessScrollRecyclerViewListener.reset()
     }
 

@@ -14,8 +14,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListEvent
-import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
@@ -147,7 +147,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadShoppingListEvent())
+                eventBus.post(ShoppingListDeletedEvent())
             }
         })
     }
@@ -177,7 +177,7 @@ class ShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadShoppingListsEvent())
+                eventBus.post(ShoppingListSavedEvent())
                 finish()
             }
         })
@@ -212,7 +212,12 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun reloadShoppingListEvent(event: ReloadShoppingListEvent) {
+    fun onShoppingListDeleted(event: ShoppingListDeletedEvent) {
+        viewModel.reload()
+    }
+
+    @Subscribe
+    fun onShoppingListSaved(event: ShoppingListSavedEvent) {
         viewModel.reload()
     }
 

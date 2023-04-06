@@ -11,7 +11,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogUpdateDayplanBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
@@ -75,7 +75,7 @@ class UpdateDayPlanDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadDayPlansEvent())
+                eventBus.post(DayPlanEditedEvent())
                 dismiss()
             }
         })

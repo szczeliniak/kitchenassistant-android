@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadCategoriesEvent
+import pl.szczeliniak.kitchenassistant.android.events.CategorySavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
@@ -100,7 +100,7 @@ class RecipesFragment : Fragment() {
     }
 
     @Subscribe
-    fun reloadCategories(event: ReloadCategoriesEvent) {
+    fun onCategorySaved(event: CategorySavedEvent) {
         viewModel.reloadCategories()
     }
 

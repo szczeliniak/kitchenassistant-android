@@ -19,7 +19,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.aprilapps.easyphotopicker.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipesEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeRequest
@@ -176,7 +176,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 if (recipeId == null) {
                     RecipeActivity.start(this@AddEditRecipeActivity, data)
                 }
-                eventBus.post(ReloadRecipesEvent())
+                eventBus.post(RecipeSavedEvent())
                 finish()
             }
         })

@@ -3,6 +3,8 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.recipe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
@@ -11,10 +13,13 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipeEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipeinfo.RecipeInfoFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipeingredients.RecipeIngredientsFragment
@@ -45,16 +50,19 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
     private val recipeLoadingStateHandler: LoadingStateHandler<RecipeDetails> = prepareRecipeLoadingStateHandler()
+    private val deleteRecipeLoadingStateHandler: LoadingStateHandler<Int> = deleteRecipesLoadingStateHandler()
     private val observers = mutableListOf<RecipeActivityFragment>()
 
     private val viewModel: RecipeActivityViewModel by viewModels {
         RecipeActivityViewModel.provideFactory(
             recipeActivityViewModelFactory,
-            intent.getIntExtra(RECIPE_ID_EXTRA, -1)
+            recipeId
         )
     }
 
     var recipe: RecipeDetails? = null
+
+    val recipeId get() = intent.getIntExtra(RECIPE_ID_EXTRA, -1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +70,7 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(binding.root)
         initPager()
         viewModel.recipe.observe(this) { recipeLoadingStateHandler.handle(it) }
+        eventBus.register(this)
     }
 
     private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeDetails> {
@@ -94,12 +103,15 @@ class RecipeActivity : AppCompatActivity() {
                 0 -> {
                     R.string.title_fragment_recipe_info
                 }
+
                 1 -> {
                     R.string.title_fragment_recipe_ingredients
                 }
+
                 2 -> {
                     R.string.title_fragment_recipe_steps
                 }
+
                 else -> {
                     throw UnsupportedOperationException()
                 }
@@ -116,19 +128,52 @@ class RecipeActivity : AppCompatActivity() {
         observers.remove(fragment)
     }
 
-    override fun onStart() {
-        eventBus.register(this)
-        super.onStart()
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
     }
 
-    override fun onStop() {
-        eventBus.unregister(this)
-        super.onStop()
+    private fun deleteRecipesLoadingStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@RecipeActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: Int) {
+                eventBus.post(RecipeDeletedEvent())
+                viewModel.reload()
+                finish()
+            }
+        })
     }
 
     @Subscribe
-    fun reloadRecipesEvent(event: ReloadRecipeEvent) {
+    fun onRecipeSaved(event: RecipeSavedEvent) {
         viewModel.reload()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_recipe, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.edit -> {
+                AddEditRecipeActivity.start(this, recipeId)
+            }
+
+            R.id.delete -> {
+                ConfirmationDialog.show(supportFragmentManager) {
+                    viewModel.delete(recipeId).observe(this) { deleteRecipeLoadingStateHandler.handle(it) }
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
 }

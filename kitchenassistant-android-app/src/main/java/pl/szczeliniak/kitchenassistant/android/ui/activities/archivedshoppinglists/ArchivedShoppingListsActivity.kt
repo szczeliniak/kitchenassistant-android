@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityArchviedShoppingListsBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
@@ -160,7 +160,7 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun reloadShoppingListsEvent(event: ReloadShoppingListsEvent) {
+    fun onShoppingListSaved(event: ShoppingListSavedEvent) {
         endlessScrollRecyclerViewListener.reset()
     }
 

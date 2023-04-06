@@ -14,8 +14,9 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesByCategoryBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadDayPlansEvent
-import pl.szczeliniak.kitchenassistant.android.events.ReloadRecipesEvent
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
@@ -92,7 +93,14 @@ class RecipesByCategoryFragment : Fragment() {
 
         endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
             binding.recyclerView.layoutManager as LinearLayoutManager,
-            { viewModel.loadRecipes(it, searchView.query.toString(), filter?.recipeTag, filter?.onlyFavorites ?: false) },
+            {
+                viewModel.loadRecipes(
+                    it,
+                    searchView.query.toString(),
+                    filter?.recipeTag,
+                    filter?.onlyFavorites ?: false
+                )
+            },
             { adapter.clear() }
         )
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
@@ -141,7 +149,7 @@ class RecipesByCategoryFragment : Fragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadDayPlansEvent())
+                eventBus.post(DayPlanEditedEvent())
             }
         })
     }
@@ -257,7 +265,12 @@ class RecipesByCategoryFragment : Fragment() {
     }
 
     @Subscribe
-    fun reloadRecipes(event: ReloadRecipesEvent) {
+    fun onRecipeSaved(event: RecipeSavedEvent) {
+        endlessScrollRecyclerViewListener.reset()
+    }
+
+    @Subscribe
+    fun onRecipeDeleted(event: RecipeDeletedEvent) {
         endlessScrollRecyclerViewListener.reset()
     }
 

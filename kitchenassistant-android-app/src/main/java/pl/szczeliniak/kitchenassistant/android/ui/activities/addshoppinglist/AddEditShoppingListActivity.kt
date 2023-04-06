@@ -14,7 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.ReloadShoppingListsEvent
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
@@ -129,7 +129,7 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(ReloadShoppingListsEvent())
+                eventBus.post(ShoppingListSavedEvent())
                 if (shoppingListId == null) {
                     ShoppingListActivity.start(this@AddEditShoppingListActivity, data)
                 }
