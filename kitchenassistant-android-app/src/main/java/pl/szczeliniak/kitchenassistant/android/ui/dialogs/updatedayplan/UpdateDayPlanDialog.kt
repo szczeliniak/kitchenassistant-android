@@ -14,7 +14,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.DialogUpdateDayplanBi
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -25,12 +25,12 @@ import javax.inject.Inject
 class UpdateDayPlanDialog : DialogFragment() {
 
     companion object {
-        private const val DAY_PLAN_EXTRA = "DAY_PLAN_EXTRA"
+        private const val DAY_PLAN_ID_EXTRA = "DAY_PLAN_EXTRA"
         private const val TAG = "UpdateDayPlanDialog"
 
-        fun show(fragmentManager: FragmentManager, dayPlan: DayPlan) {
+        fun show(fragmentManager: FragmentManager, dayPlanId: Int) {
             val bundle = Bundle()
-            bundle.putParcelable(DAY_PLAN_EXTRA, dayPlan)
+            bundle.putInt(DAY_PLAN_ID_EXTRA, dayPlanId)
             val dialog = UpdateDayPlanDialog()
             dialog.arguments = bundle
             dialog.show(fragmentManager, TAG)
@@ -42,16 +42,20 @@ class UpdateDayPlanDialog : DialogFragment() {
     private lateinit var updateDayPlanLoadingStateHandler: LoadingStateHandler<Int>
 
     @Inject
+    lateinit var factory: UpdateDayPlanDialogViewModel.Factory
+
+    @Inject
     lateinit var eventBus: EventBus
 
-    private val viewModel: UpdateDayPlanDialogViewModel by viewModels()
+    private val viewModel: UpdateDayPlanDialogViewModel by viewModels {
+        UpdateDayPlanDialogViewModel.provideFactory(factory, dayPlanId)
+    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogUpdateDayplanBinding.inflate(layoutInflater)
-        binding.calendar.date = LocalDateUtils.toMillis(dayPlan.date)
-        binding.dayPlanAutomaticArchiving.isChecked = dayPlan.automaticArchiving
-        binding.calendar.setOnDateChangeListener { calendarView, year, month, day ->
-            calendarView.date = LocalDateUtils.toMillis(year, month, day)
+
+        viewModel.dayPlan.observe(requireActivity()) {
+            loadDayPlanLoadingStateHandler().handle(it)
         }
 
         updateDayPlanLoadingStateHandler = prepareUpdateDayPlanLoadingStateHandler()
@@ -63,6 +67,26 @@ class UpdateDayPlanDialog : DialogFragment() {
         return builder.create()
     }
 
+    private fun loadDayPlanLoadingStateHandler(): LoadingStateHandler<DayPlanDetails> {
+        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<DayPlanDetails> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(requireActivity())
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: DayPlanDetails) {
+                binding.calendar.date = LocalDateUtils.toMillis(data.date)
+                binding.dayPlanAutomaticArchiving.isChecked = data.automaticArchiving
+
+                binding.calendar.setOnDateChangeListener { calendarView, year, month, day ->
+                    calendarView.date = LocalDateUtils.toMillis(year, month, day)
+                }
+            }
+        })
+    }
 
     private fun prepareUpdateDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
@@ -88,7 +112,7 @@ class UpdateDayPlanDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                 viewModel.update(
-                    dayPlan.id, UpdateDayPlanRequest(
+                    dayPlanId, UpdateDayPlanRequest(
                         LocalDateUtils.toLocalDate(binding.calendar.date), binding.dayPlanAutomaticArchiving.isChecked
                     )
                 ).observe(this) { updateDayPlanLoadingStateHandler.handle(it) }
@@ -97,9 +121,9 @@ class UpdateDayPlanDialog : DialogFragment() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
 
-    private val dayPlan: DayPlan
+    private val dayPlanId: Int
         get() {
-            return requireArguments().getParcelable(DAY_PLAN_EXTRA)!!
+            return requireArguments().getInt(DAY_PLAN_ID_EXTRA)!!
         }
 
 }

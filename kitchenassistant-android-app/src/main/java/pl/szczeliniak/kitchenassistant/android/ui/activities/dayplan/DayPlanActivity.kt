@@ -11,6 +11,7 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityDayPlanBinding
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
@@ -18,6 +19,7 @@ import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientGroupHeaderItem
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanRecipeHeaderItem
@@ -71,6 +73,12 @@ class DayPlanActivity : AppCompatActivity() {
         archiveDayPlanLoadingStateHandler = archiveDayPlanLoadingStateHandler()
         viewModel.dayPlan.observe(this) { recipesLoadingStateHandler.handle(it) }
         setContentView(binding.root)
+        eventBus.register(this)
+    }
+
+    override fun onDestroy() {
+        eventBus.unregister(this)
+        super.onDestroy()
     }
 
     private fun recipesLoadingStateHandler(): LoadingStateHandler<DayPlanDetails> {
@@ -197,9 +205,15 @@ class DayPlanActivity : AppCompatActivity() {
             }
 
             R.id.edit -> {
+                UpdateDayPlanDialog.show(supportFragmentManager, dayPlanId)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    @Subscribe
+    fun onDayPlanEdited(event: DayPlanEditedEvent) {
+        viewModel.reload()
     }
 
 }
