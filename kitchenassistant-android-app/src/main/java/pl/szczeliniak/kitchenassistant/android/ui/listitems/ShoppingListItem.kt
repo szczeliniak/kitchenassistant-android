@@ -15,7 +15,8 @@ class ShoppingListItem constructor(
     private val shoppingList: ShoppingList,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick
+    private val onEditClick: OnClick,
+    private val onArchiveClick: OnClick?
 ) : BindableItem<ListItemShoppingListBinding>() {
 
     override fun bind(binding: ListItemShoppingListBinding, position: Int) {
@@ -40,14 +41,25 @@ class ShoppingListItem constructor(
     private fun showPopupMenu(view: View): Boolean {
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.shopping_list_item)
+
+        if (onArchiveClick == null) {
+            popupMenu.menu.removeItem(R.id.archive)
+        }
+
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
                     onDeleteClick.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
                     onEditClick.onClick(shoppingList)
+                    return@setOnMenuItemClickListener true
+                }
+
+                R.id.archive -> {
+                    onArchiveClick?.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
             }

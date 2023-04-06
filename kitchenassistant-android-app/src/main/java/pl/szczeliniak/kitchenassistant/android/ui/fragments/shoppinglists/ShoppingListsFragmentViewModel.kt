@@ -49,4 +49,14 @@ class ShoppingListsFragmentViewModel @Inject constructor(
         return liveData
     }
 
+    fun archive(id: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            shoppingListService.archive(id, true)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
 }

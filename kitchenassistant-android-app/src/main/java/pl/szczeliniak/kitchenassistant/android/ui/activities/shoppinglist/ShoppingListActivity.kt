@@ -14,10 +14,11 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.events.ShoppingListDeletedEvent
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
+import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItemItem
@@ -54,14 +55,16 @@ class ShoppingListActivity : AppCompatActivity() {
     lateinit var shoppingListActivityViewModelFactory: ShoppingListActivityViewModel.Factory
 
     private lateinit var binding: ActivityShoppingListBinding
-    private val shoppingListLoadingStateHandler: LoadingStateHandler<ShoppingListDetails> =
-        prepareShoppingListLoadingStateHandler()
+    private val loadShoppingListLoadingStateHandler: LoadingStateHandler<ShoppingListDetails> =
+        loadShoppingListLoadingStateHandler()
     private val deleteShoppingListItemStateHandler: LoadingStateHandler<Int> =
-        prepareDeleteShoppingListItemStateHandler()
+        deleteShoppingListItemStateHandler()
+    private val deleteShoppingListStateHandler: LoadingStateHandler<Int> =
+        deleteShoppingListStateHandler()
     private val archiveShoppingListStateHandler: LoadingStateHandler<Int> =
-        prepareArchiveShoppingListStateHandler()
+        archiveShoppingListStateHandler()
     private val changeShoppingListItemStateStateHandler: LoadingStateHandler<Int> =
-        prepareChangeShoppingListItemStateStateHandler()
+        changeShoppingListItemStateStateHandler()
 
     private val viewModel: ShoppingListActivityViewModel by viewModels {
         ShoppingListActivityViewModel.provideFactory(shoppingListActivityViewModelFactory, shoppingListId)
@@ -70,7 +73,8 @@ class ShoppingListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initLayout()
-        viewModel.shoppingList.observe(this) { shoppingListLoadingStateHandler.handle(it) }
+        viewModel.shoppingList.observe(this) { loadShoppingListLoadingStateHandler.handle(it) }
+        eventBus.register(this)
     }
 
     private fun initLayout() {
@@ -84,7 +88,7 @@ class ShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListDetails> {
+    private fun loadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListDetails> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListDetails> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
@@ -136,7 +140,7 @@ class ShoppingListActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareDeleteShoppingListItemStateHandler(): LoadingStateHandler<Int> {
+    private fun deleteShoppingListItemStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
@@ -152,7 +156,7 @@ class ShoppingListActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareChangeShoppingListItemStateStateHandler(): LoadingStateHandler<Int> {
+    private fun changeShoppingListItemStateStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
@@ -166,7 +170,24 @@ class ShoppingListActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareArchiveShoppingListStateHandler(): LoadingStateHandler<Int> {
+    private fun deleteShoppingListStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@ShoppingListActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: Int) {
+                eventBus.post(ShoppingListDeletedEvent())
+                finish()
+            }
+        })
+    }
+
+    private fun archiveShoppingListStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
@@ -183,14 +204,9 @@ class ShoppingListActivity : AppCompatActivity() {
         })
     }
 
-    override fun onStart() {
-        eventBus.register(this)
-        super.onStart()
-    }
-
-    override fun onStop() {
+    override fun onDestroy() {
         eventBus.unregister(this)
-        super.onStop()
+        super.onDestroy()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -202,18 +218,25 @@ class ShoppingListActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.archive) {
-            ConfirmationDialog.show(supportFragmentManager) {
-                viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
+        when (item.itemId) {
+            R.id.archive -> {
+                ConfirmationDialog.show(supportFragmentManager) {
+                    viewModel.archive(shoppingListId).observe(this) { archiveShoppingListStateHandler.handle(it) }
+                }
             }
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
 
-    @Subscribe
-    fun onShoppingListDeleted(event: ShoppingListDeletedEvent) {
-        viewModel.reload()
+            R.id.delete -> {
+                ConfirmationDialog.show(supportFragmentManager) {
+                    viewModel.delete(shoppingListId).observe(this) { deleteShoppingListStateHandler.handle(it) }
+                }
+            }
+
+            R.id.edit -> {
+                AddEditShoppingListActivity.start(this, shoppingListId)
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     @Subscribe

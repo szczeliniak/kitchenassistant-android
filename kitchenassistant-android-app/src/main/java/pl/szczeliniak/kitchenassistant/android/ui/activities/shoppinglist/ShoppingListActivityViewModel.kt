@@ -64,6 +64,17 @@ class ShoppingListActivityViewModel @AssistedInject constructor(
 
     }
 
+    fun delete(shoppingListId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            shoppingListService.delete(shoppingListId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+
+    }
+
     @AssistedFactory
     interface Factory {
         fun create(shoppingListId: Int): ShoppingListActivityViewModel

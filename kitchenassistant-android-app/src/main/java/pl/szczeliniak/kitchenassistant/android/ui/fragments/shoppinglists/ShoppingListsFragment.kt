@@ -14,12 +14,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentShoppingListsBinding
+import pl.szczeliniak.kitchenassistant.android.events.ShoppingListDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
@@ -47,8 +49,8 @@ class ShoppingListsFragment : Fragment() {
     lateinit var eventBus: EventBus
 
     private lateinit var binding: FragmentShoppingListsBinding
-    private lateinit var shoppingListsLoadingStateHandler: LoadingStateHandler<ShoppingListsResponse>
-    private lateinit var deleteShoppingListLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var loadShoppingListsLoadingStateHandler: LoadingStateHandler<ShoppingListsResponse>
+    private lateinit var deleteArchiveShoppingListLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
@@ -79,9 +81,9 @@ class ShoppingListsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        shoppingListsLoadingStateHandler = prepareShoppingListsLoadingStateHandler()
-        deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
-        viewModel.shoppingLists.observe(viewLifecycleOwner) { shoppingListsLoadingStateHandler.handle(it) }
+        loadShoppingListsLoadingStateHandler = loadShoppingListsLoadingStateHandler()
+        deleteArchiveShoppingListLoadingStateHandler = deleteArchiveShoppingListLoadingStateHandler()
+        viewModel.shoppingLists.observe(viewLifecycleOwner) { loadShoppingListsLoadingStateHandler.handle(it) }
     }
 
     private fun resetShoppingLists() {
@@ -89,7 +91,7 @@ class ShoppingListsFragment : Fragment() {
         endlessScrollRecyclerViewListener.reset()
     }
 
-    private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun deleteArchiveShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -105,7 +107,7 @@ class ShoppingListsFragment : Fragment() {
         })
     }
 
-    private fun prepareShoppingListsLoadingStateHandler(): LoadingStateHandler<ShoppingListsResponse> {
+    private fun loadShoppingListsLoadingStateHandler(): LoadingStateHandler<ShoppingListsResponse> {
         return LoadingStateHandler(
             requireActivity(),
             object : LoadingStateHandler.OnStateChanged<ShoppingListsResponse> {
@@ -128,11 +130,19 @@ class ShoppingListsFragment : Fragment() {
                             adapter.add(ShoppingListItem(requireContext(), shoppingList, {
                                 ShoppingListActivity.start(requireContext(), shoppingList.id)
                             }, {
-                                viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                    deleteShoppingListLoadingStateHandler.handle(r)
+                                ConfirmationDialog.show(parentFragmentManager) {
+                                    viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
+                                        deleteArchiveShoppingListLoadingStateHandler.handle(r)
+                                    }
                                 }
                             }, {
                                 AddEditShoppingListActivity.start(requireActivity(), it.id)
+                            }, {
+                                ConfirmationDialog.show(parentFragmentManager) {
+                                    viewModel.archive(it.id).observe(viewLifecycleOwner) { r ->
+                                        deleteArchiveShoppingListLoadingStateHandler.handle(r)
+                                    }
+                                }
                             }))
                         }
                     }
@@ -186,6 +196,11 @@ class ShoppingListsFragment : Fragment() {
 
     @Subscribe
     fun onShoppingListSaved(event: ShoppingListSavedEvent) {
+        resetShoppingLists()
+    }
+
+    @Subscribe
+    fun onShoppingListDeletedEvent(event: ShoppingListDeletedEvent) {
         resetShoppingLists()
     }
 

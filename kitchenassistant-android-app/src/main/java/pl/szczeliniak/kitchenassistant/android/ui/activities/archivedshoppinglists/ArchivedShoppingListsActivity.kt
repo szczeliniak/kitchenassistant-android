@@ -22,6 +22,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -104,12 +105,14 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
                         adapter.add(ShoppingListItem(this@ArchivedShoppingListsActivity, shoppingList, {
                             ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id, false)
                         }, {
-                            viewModel.delete(it.id).observe(this@ArchivedShoppingListsActivity) { r ->
-                                deleteShoppingListLoadingStateHandler.handle(r)
+                            ConfirmationDialog.show(supportFragmentManager) {
+                                viewModel.delete(it.id).observe(this@ArchivedShoppingListsActivity) { r ->
+                                    deleteShoppingListLoadingStateHandler.handle(r)
+                                }
                             }
                         }, {
                             AddEditShoppingListActivity.start(this@ArchivedShoppingListsActivity, it.id)
-                        }))
+                        }, null))
                     }
                 }
             }
