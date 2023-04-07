@@ -11,7 +11,6 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Photo
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import java.io.File
@@ -95,8 +94,8 @@ class AddEditRecipeActivityViewModel @AssistedInject constructor(
         }
     }
 
-    fun uploadPhotos(file: List<File>): LiveData<LoadingState<List<Int>>> {
-        val liveData = MutableLiveData<LoadingState<List<Int>>>()
+    fun uploadPhoto(file: File): LiveData<LoadingState<String>> {
+        val liveData = MutableLiveData<LoadingState<String>>()
         viewModelScope.launch {
             recipeService.uploadPhoto(file)
                 .onEach { liveData.value = it }
@@ -105,10 +104,10 @@ class AddEditRecipeActivityViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun loadPhoto(photo: Photo): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
+    fun loadPhoto(photoName: String, recipeId: Int): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
         val liveData = MutableLiveData<LoadingState<RecipeService.DownloadedPhoto>>()
         viewModelScope.launch {
-            recipeService.downloadPhoto(photo)
+            recipeService.downloadPhoto(photoName, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

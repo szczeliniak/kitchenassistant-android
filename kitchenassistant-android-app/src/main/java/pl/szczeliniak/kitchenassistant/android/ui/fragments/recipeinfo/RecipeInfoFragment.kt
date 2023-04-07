@@ -8,14 +8,12 @@ import androidx.core.net.toUri
 import androidx.fragment.app.viewModels
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeInfoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
-import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import java.util.regex.Pattern
@@ -33,16 +31,13 @@ class RecipeInfoFragment : RecipeActivityFragment() {
     }
 
     private val viewModel: RecipeInfoFragmentViewModel by viewModels()
-    private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
     private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<RecipeService.DownloadedPhoto>
     private lateinit var binding: FragmentRecipeInfoBinding
 
     private var player: YouTubePlayer? = null
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRecipeInfoBinding.inflate(inflater)
-        binding.photosRecyclerView.adapter = photosAdapter
         return binding.root
     }
 
@@ -73,9 +68,8 @@ class RecipeInfoFragment : RecipeActivityFragment() {
             }
 
             binding.recipeCategory.setTextOrDefault(r.category?.name)
-            photosAdapter.clear()
-            r.photos.forEach { photo ->
-                viewModel.loadPhoto(photo).observe(viewLifecycleOwner) {
+            r.photoName?.let {
+                viewModel.loadPhoto(r.id, it).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
                 }
             }
@@ -121,7 +115,8 @@ class RecipeInfoFragment : RecipeActivityFragment() {
             requireContext(),
             object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
                 override fun onSuccess(data: RecipeService.DownloadedPhoto) {
-                    photosAdapter.add(PhotoItem(requireContext(), data.file.toUri()))
+                    Picasso.get().load(data.file.toUri()).fit().centerCrop().into(binding.recipePhoto)
+                    binding.recipePhotoContainer.visibility = View.VISIBLE
                 }
             })
     }

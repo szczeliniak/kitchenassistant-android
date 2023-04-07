@@ -129,20 +129,25 @@
                     app:enableAutomaticInitialization="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-
         </FrameLayout>
 
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:nestedScrollingEnabled="false"
-                app:layout_constraintTop_toBottomOf="@id/button_add_photos"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/recipe_photo_container"
                 android:layout_width="match_parent"
-                android:id="@+id/photos_recycler_view"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                style="@style/ContentLayout"
+                android:visibility="gone"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_width="match_parent"
+                    android:id="@+id/recipe_photo"
+                    android:layout_height="0dp"
+                    android:contentDescription="@string/description_recipe_photo"
+                    app:layout_constraintDimensionRatio="1:1"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

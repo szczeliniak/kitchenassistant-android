@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Photo
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import javax.inject.Inject
 
@@ -18,10 +17,10 @@ class RecipeInfoFragmentViewModel @Inject constructor(
     private val recipeService: RecipeService
 ) : ViewModel() {
 
-    fun loadPhoto(photo: Photo): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
+    fun loadPhoto(recipeId: Int, photoName: String): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
         val liveData = MutableLiveData<LoadingState<RecipeService.DownloadedPhoto>>()
         viewModelScope.launch {
-            recipeService.downloadPhoto(photo)
+            recipeService.downloadPhoto(photoName, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

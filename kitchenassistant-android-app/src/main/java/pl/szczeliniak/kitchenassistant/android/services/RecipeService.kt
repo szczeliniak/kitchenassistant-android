@@ -12,7 +12,6 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Photo
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
 import java.io.File
@@ -300,19 +299,18 @@ class RecipeService constructor(
         }
     }
 
-    suspend fun downloadPhoto(photo: Photo): Flow<LoadingState<DownloadedPhoto>> {
+    suspend fun downloadPhoto(photoName: String, recipeId: Int): Flow<LoadingState<DownloadedPhoto>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                val cachedPhoto = getFromCache(photo.name)
-                if (cachedPhoto != null) {
-                    emit(LoadingState.Success(DownloadedPhoto(photo.id, cachedPhoto)))
-                } else {
-                    val inputStream = recipeRepository.downloadPhoto(photo.id).body()?.byteStream()
+                getFromCache(photoName)?.let {
+                    emit(LoadingState.Success(DownloadedPhoto(photoName, it)))
+                } ?: run {
+                    val inputStream = recipeRepository.downloadPhoto(recipeId).body()?.byteStream()
                     if (inputStream == null) {
                         emit(LoadingState.Exception(KitchenAssistantException("Cannot load photo.")))
                     } else {
-                        emit(LoadingState.Success(DownloadedPhoto(photo.id, saveInCache(inputStream, photo.name))))
+                        emit(LoadingState.Success(DownloadedPhoto(photoName, saveInCache(inputStream, photoName))))
                     }
                 }
             } catch (e: KitchenAssistantNetworkException) {
@@ -323,20 +321,16 @@ class RecipeService constructor(
         }
     }
 
-    suspend fun uploadPhoto(files: List<File>): Flow<LoadingState<List<Int>>> {
+    suspend fun uploadPhoto(file: File): Flow<LoadingState<String>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                val ids = files.map {
-                    val filePart = MultipartBody.Part.createFormData(
-                        "file",
-                        it.name,
-                        it.asRequestBody("image/*".toMediaTypeOrNull())
-                    )
-                    recipeRepository.uploadPhoto(localStorageService.getId(), filePart).id
-                }
-
-                emit(LoadingState.Success(ids))
+                val filePart = MultipartBody.Part.createFormData(
+                    "file",
+                    file.name,
+                    file.asRequestBody("image/*".toMediaTypeOrNull())
+                )
+                emit(LoadingState.Success(recipeRepository.uploadPhoto(filePart).name))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -373,6 +367,6 @@ class RecipeService constructor(
         }
     }
 
-    data class DownloadedPhoto(val fileId: Int, val file: File)
+    data class DownloadedPhoto(val photoName: String, val file: File)
 
 }

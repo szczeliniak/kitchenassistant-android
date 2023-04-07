@@ -8,6 +8,6 @@ data class AddRecipeRequest(
     val userId: Int,
     val categoryId: Int?,
     val tags: List<String>,
-    val photos: List<Int>,
+    val photoName: String?,
     val ingredientGroups: List<AddIngredientGroupRequest>
 )

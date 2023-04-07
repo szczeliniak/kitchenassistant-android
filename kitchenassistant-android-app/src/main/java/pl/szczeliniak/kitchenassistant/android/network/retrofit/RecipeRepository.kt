@@ -95,11 +95,11 @@ interface RecipeRepository {
     suspend fun setFavorite(@Path("id") id: Int, @Path("isFavorite") isFavorite: Boolean): SuccessResponse
 
     @Streaming
-    @GET("/recipes/photos/{id}")
+    @GET("/recipes/{id}/photo")
     suspend fun downloadPhoto(@Path("id") id: Int): Response<ResponseBody>
 
     @Multipart
-    @POST("/recipes/photos")
-    suspend fun uploadPhoto(@Query("userId") userId: Int, @Part part: MultipartBody.Part): SuccessResponse
+    @POST("/recipes/photo")
+    suspend fun uploadPhoto(@Part part: MultipartBody.Part): UploadPhotoResponse
 
 }

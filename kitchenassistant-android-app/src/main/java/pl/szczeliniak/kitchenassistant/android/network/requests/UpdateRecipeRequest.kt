@@ -6,6 +6,5 @@ data class UpdateRecipeRequest(
     val source: String?,
     val description: String?,
     val categoryId: Int?,
-    val tags: List<String>,
-    val photos: List<Int>
+    val tags: List<String>
 )

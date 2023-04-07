@@ -15,5 +15,5 @@ data class RecipeDetails(
     val ingredientGroups: List<IngredientGroup>,
     val steps: List<Step>,
     val tags: List<String>,
-    val photos: MutableList<Photo>
+    val photoName: String?
 ) : Parcelable

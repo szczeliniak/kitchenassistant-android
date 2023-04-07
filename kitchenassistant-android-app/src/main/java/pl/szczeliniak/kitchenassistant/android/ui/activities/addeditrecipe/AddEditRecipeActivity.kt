@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.widget.doOnTextChanged
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
+import com.squareup.picasso.Picasso
 import com.yalantis.ucrop.UCrop
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -32,13 +32,11 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivi
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.AuthorDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.TagDropdownArrayAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.listitems.PhotoItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatAutoCompleteTextViewUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.getTextInChips
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
-import pl.szczeliniak.kitchenassistant.android.ui.utils.GroupAdapterUtils.Companion.getItems
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -65,13 +63,12 @@ class AddEditRecipeActivity : AppCompatActivity() {
     }
 
     private val saveRecipeLoadingStateHandler = prepareSaveRecipeLoadingStateHandler()
-    private val uploadPhotosLoadingStateHandler = prepareUploadPhotosLoadingStateHandler()
+    private val uploadPhotoLoadingStateHandler = prepareUploadPhotoLoadingStateHandler()
     private val loadCategoriesLoadingStateHandler = prepareLoadCategoriesLoadingStateHandler()
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
     private val loadAuthorsLoadingStateHandler = prepareLoadAuthorsLoadingStateHandler()
     private val downloadPhotoFileLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
     private val recipeLoadingStateHandler: LoadingStateHandler<RecipeDetails> = prepareRecipeLoadingStateHandler()
-    private val photosAdapter = GroupAdapter<GroupieViewHolder>()
 
     @Inject
     lateinit var eventBus: EventBus
@@ -89,6 +86,19 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private lateinit var easyImage: EasyImage
 
     private var recipe: RecipeDetails? = null
+    private var photoUri: Uri? = null
+        set(value) {
+            field = value
+            value?.let {
+                binding.recipePhotoContainer.visibility = View.VISIBLE
+                Picasso.get().load(value).fit().centerCrop().into(binding.recipePhoto)
+                binding.buttonChangePhoto.setText(R.string.label_button_change_photo)
+            } ?: run {
+                binding.recipePhotoContainer.visibility = View.GONE
+                binding.buttonChangePhoto.setText(R.string.label_button_add_photo)
+
+            }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -121,6 +131,13 @@ class AddEditRecipeActivity : AppCompatActivity() {
             addTagChip(tagsArrayAdapter.getItem(position)!!)
         }
 
+        if (recipeId == null) {
+            binding.recipePhoto.setOnLongClickListener {
+                photoUri = null
+                true
+            }
+        }
+
         binding.recipeAuthor.setAdapter(authorsArrayAdapter)
         binding.recipeAuthor.setOnItemClickListener { _, _, position, _ ->
             binding.recipeAuthor.setText(authorsArrayAdapter.getItem(position))
@@ -138,12 +155,10 @@ class AddEditRecipeActivity : AppCompatActivity() {
 
         easyImage = EasyImage.Builder(this)
             .setChooserType(ChooserType.CAMERA_AND_GALLERY)
-            .allowMultiple(true)
+            .allowMultiple(false)
             .build()
 
-        binding.buttonAddPhotos.setOnClickListener { easyImage.openChooser(this) }
-
-        binding.photosRecyclerView.adapter = photosAdapter
+        binding.buttonChangePhoto.setOnClickListener { easyImage.openChooser(this) }
     }
 
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
@@ -182,8 +197,8 @@ class AddEditRecipeActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareUploadPhotosLoadingStateHandler(): LoadingStateHandler<List<Int>> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<Int>> {
+    private fun prepareUploadPhotoLoadingStateHandler(): LoadingStateHandler<String> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<String> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@AddEditRecipeActivity)
             }
@@ -192,42 +207,44 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: List<Int>) {
+            override fun onSuccess(data: String) {
                 recipeId?.let {
-                    val photoIds =
-                        ArrayList(photosAdapter.getItems<PhotoItem>().filter { photo -> photo.fileId != null }
-                            .map { photo -> photo.fileId!! })
-                    photoIds.addAll(data)
-                    viewModel.updateRecipe(
-                        it,
-                        UpdateRecipeRequest(
-                            name!!,
-                            author,
-                            url,
-                            description,
-                            categoryId,
-                            tags,
-                            photoIds
-                        )
-                    )
-                        .observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
+                    updateRecipe(it)
                 } ?: kotlin.run {
-                    viewModel.addRecipe(
-                        AddRecipeRequest(
-                            name!!,
-                            author,
-                            url,
-                            description,
-                            localStorageService.getId(),
-                            categoryId,
-                            tags,
-                            data,
-                            Collections.singletonList(AddIngredientGroupRequest("default"))
-                        )
-                    ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
+                    addRecipe(data)
                 }
             }
         })
+    }
+
+    private fun addRecipe(photoName: String?) {
+        viewModel.addRecipe(
+            AddRecipeRequest(
+                name!!,
+                author,
+                url,
+                description,
+                localStorageService.getId(),
+                categoryId,
+                tags,
+                photoName,
+                Collections.singletonList(AddIngredientGroupRequest("default"))
+            )
+        ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
+    }
+
+    private fun updateRecipe(recipeId: Int) {
+        viewModel.updateRecipe(
+            recipeId,
+            UpdateRecipeRequest(
+                name!!,
+                author,
+                url,
+                description,
+                categoryId,
+                tags
+            )
+        ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
     }
 
     private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
@@ -270,9 +287,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<RecipeService.DownloadedPhoto> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
             override fun onSuccess(data: RecipeService.DownloadedPhoto) {
-                photosAdapter.add(PhotoItem(this@AddEditRecipeActivity, data.file.toUri(), data.fileId) { item ->
-                    photosAdapter.remove(item)
-                })
+                photoUri = data.file.toUri()
             }
         })
     }
@@ -302,12 +317,13 @@ class AddEditRecipeActivity : AppCompatActivity() {
             binding.recipeAuthor.setText(it.author)
             binding.recipeUrl.setText(it.source)
             it.tags.forEach { tag -> addTagChip(tag) }
-            it.photos.forEach { photo ->
-                viewModel.loadPhoto(photo).observe(this@AddEditRecipeActivity) { downloadedPhoto ->
+            it.photoName?.let { photoName ->
+                viewModel.loadPhoto(photoName, it.id).observe(this@AddEditRecipeActivity) { downloadedPhoto ->
                     downloadPhotoFileLoadingStateHandler.handle(downloadedPhoto)
                 }
             }
             setCurrentCategory()
+            binding.buttonChangePhoto.visibility = View.GONE
         }
     }
 
@@ -316,12 +332,17 @@ class AddEditRecipeActivity : AppCompatActivity() {
             return
         }
 
-        viewModel.uploadPhotos(photosAdapter.getItems<PhotoItem>()
-            .filter { it.fileId == null }
-            .map { File(URI.create(it.uri.toString())) })
-            .observe(this) {
-                uploadPhotosLoadingStateHandler.handle(it)
+        recipeId?.let {
+            updateRecipe(it)
+        } ?: run {
+            photoUri?.let {
+                viewModel.uploadPhoto(File(URI.create(photoUri.toString()))).observe(this) {
+                    uploadPhotoLoadingStateHandler.handle(it)
+                }
+            } ?: run {
+                addRecipe(null)
             }
+        }
     }
 
     private val name: String?
@@ -381,11 +402,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
             if (resultCode == RESULT_OK) {
                 data?.let {
                     UCrop.getOutput(data)?.let {
-                        photosAdapter.add(
-                            PhotoItem(
-                                this@AddEditRecipeActivity,
-                                it
-                            ) { item -> photosAdapter.remove(item) })
+                        photoUri = it
                     }
                 }
                 return
