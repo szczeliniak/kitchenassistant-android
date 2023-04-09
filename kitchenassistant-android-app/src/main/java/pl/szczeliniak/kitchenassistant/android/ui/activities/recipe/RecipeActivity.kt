@@ -13,8 +13,8 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
@@ -50,7 +50,7 @@ class RecipeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeBinding
     private val recipeLoadingStateHandler: LoadingStateHandler<RecipeDetails> = prepareRecipeLoadingStateHandler()
-    private val deleteRecipeLoadingStateHandler: LoadingStateHandler<Int> = deleteRecipesLoadingStateHandler()
+    private val deleteRecipeLoadingStateHandler: LoadingStateHandler<Int> = deleteRecipeLoadingStateHandler()
     private val observers = mutableListOf<RecipeActivityFragment>()
 
     private val viewModel: RecipeActivityViewModel by viewModels {
@@ -133,7 +133,7 @@ class RecipeActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun deleteRecipesLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun deleteRecipeLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@RecipeActivity)
@@ -145,7 +145,6 @@ class RecipeActivity : AppCompatActivity() {
 
             override fun onSuccess(data: Int) {
                 eventBus.post(RecipeDeletedEvent())
-                viewModel.reload()
                 finish()
             }
         })
