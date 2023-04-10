@@ -1,17 +1,17 @@
 package pl.szczeliniak.kitchenassistant.android.ui.listitems
 
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.widget.PopupMenu
+import com.squareup.picasso.Picasso
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemRecipeBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Recipe
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
+import java.io.File
 
-class RecipeItem constructor(
+class RecipeItem(
     private val context: Context,
     private val recipe: Recipe,
     private val showCategory: Boolean = false,
@@ -22,15 +22,25 @@ class RecipeItem constructor(
     private val onAssignToDayPan: OnClick
 ) : BindableItem<ListItemRecipeBinding>() {
 
+    var photo: File? = null
+
     override fun bind(binding: ListItemRecipeBinding, position: Int) {
         binding.recipeName.text = recipe.name
-        recipe.category?.let { binding.recipeCategory.fillOrHide(if (showCategory) it.name else "", binding.recipeCategory) }
+        recipe.category?.let {
+            binding.recipeCategory.fillOrHide(
+                if (showCategory) it.name else "",
+                binding.recipeCategory
+            )
+        }
         binding.recipeAuthor.fillOrHide(recipe.author, binding.recipeAuthor)
-        binding.tagChips.removeAllViews()
-        recipe.tags.forEach { binding.tagChips.add(LayoutInflater.from(context), it, false) }
         binding.root.setOnClickListener { onClick.onClick(recipe) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
         binding.recipeIsFavorite.visibility = if (recipe.favorite) View.VISIBLE else View.INVISIBLE
+        photo?.let {
+            Picasso.get().load(it).centerCrop().fit().into(binding.recipePhoto)
+        } ?: run {
+            binding.recipePhoto.setImageDrawable(null)
+        }
     }
 
     override fun getLayout(): Int {
@@ -54,14 +64,17 @@ class RecipeItem constructor(
                     onDeleteClick.onClick(recipe)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
                     onEditClick.onClick(recipe)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.add_remove_from_favorites -> {
                     onAddRemoveFromFavourites.onClick(recipe)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.add_to_day_plan -> {
                     onAssignToDayPan.onClick(recipe)
                     return@setOnMenuItemClickListener true
@@ -76,5 +89,10 @@ class RecipeItem constructor(
     fun interface OnClick {
         fun onClick(recipe: Recipe)
     }
+
+    val photoName: String?
+        get() {
+            return recipe.photoName
+        }
 
 }

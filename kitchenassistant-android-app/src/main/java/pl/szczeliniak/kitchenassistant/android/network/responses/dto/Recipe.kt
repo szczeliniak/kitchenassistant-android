@@ -11,4 +11,5 @@ data class Recipe(
     val favorite: Boolean,
     val category: Category?,
     val tags: List<String>,
+    val photoName: String?,
 ) : Parcelable

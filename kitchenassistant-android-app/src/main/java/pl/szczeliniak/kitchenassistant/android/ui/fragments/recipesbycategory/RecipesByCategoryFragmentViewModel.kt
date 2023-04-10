@@ -56,6 +56,16 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         return liveData
     }
 
+    fun loadPhoto(recipeId: Int, photoName: String): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
+        val liveData = MutableLiveData<LoadingState<RecipeService.DownloadedPhoto>>()
+        viewModelScope.launch {
+            recipeService.downloadPhoto(photoName, recipeId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData;
+    }
+
     fun setFavorite(id: Int, isFavorite: Boolean): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
