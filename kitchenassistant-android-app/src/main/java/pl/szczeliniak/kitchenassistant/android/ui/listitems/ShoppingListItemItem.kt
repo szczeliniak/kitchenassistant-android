@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListItemBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
 
-class ShoppingListItemItem constructor(
+class ShoppingListItemItem(
     private val context: Context,
     private val shoppingListId: Int,
     private val shoppingListItem: ShoppingListItem,
@@ -45,6 +45,7 @@ class ShoppingListItemItem constructor(
                     onDeleteClick.onClick(shoppingListId, shoppingListItem)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
                     onEditClick.onClick(shoppingListId, shoppingListItem)
                     return@setOnMenuItemClickListener true

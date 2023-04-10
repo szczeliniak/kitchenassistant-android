@@ -6,7 +6,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemHeaderDayPlanIngredientGroupBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanIngredientGroup
 
-class DayPlanIngredientGroupHeaderItem constructor(
+class DayPlanIngredientGroupHeaderItem(
     private val ingredientGroup: DayPlanIngredientGroup
 ) : BindableItem<ListItemHeaderDayPlanIngredientGroupBinding>() {
 

@@ -15,7 +15,6 @@ import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.ShoppingListDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -25,14 +24,18 @@ import javax.inject.Inject
 class AddIngredientToShoppingListDialog : DialogFragment() {
 
     companion object {
-        private const val INGREDIENT_EXTRA = "INGREDIENT_EXTRA"
+        private const val INGREDIENT_NAME_EXTRA = "INGREDIENT_NAME_EXTRA"
+        private const val INGREDIENT_QUANTITY_EXTRA = "INGREDIENT_QUANTITY_EXTRA"
         private const val RECIPE_ID_EXTRA = "RECIPE_ID_EXTRA"
 
         private const val TAG = "AddIngredientToShoppingListDialog"
 
-        fun show(fragmentManager: FragmentManager, ingredient: Ingredient, recipeId: Int) {
+        fun show(fragmentManager: FragmentManager, ingredientName: String, ingredientQuantity: String?, recipeId: Int) {
             val bundle = Bundle()
-            bundle.putParcelable(INGREDIENT_EXTRA, ingredient)
+            bundle.putString(INGREDIENT_NAME_EXTRA, ingredientName)
+            ingredientQuantity?.let {
+                bundle.putString(INGREDIENT_QUANTITY_EXTRA, ingredientQuantity)
+            }
             bundle.putInt(RECIPE_ID_EXTRA, recipeId)
             val dialog = AddIngredientToShoppingListDialog()
             dialog.arguments = bundle
@@ -111,7 +114,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             viewModel.addItem(
                 shoppingListsDropdownAdapter.getItem(binding.shoppingListName.selectedItemPosition)?.id!!,
-                AddShoppingListItemRequest(ingredient.name, ingredient.quantity, sequence, recipeId)
+                AddShoppingListItemRequest(ingredientName, ingredientQuantity, sequence, recipeId)
             ).observe(this) { addIngredientToShoppingListStateHandler.handle(it) }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
@@ -123,10 +126,15 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
             return if (asString.isEmpty()) null else asString.toInt()
         }
 
-    private val ingredient: Ingredient
+    private val ingredientName: String
         get() {
-            return requireArguments().getParcelable(INGREDIENT_EXTRA)
-                ?: throw java.lang.IllegalStateException("Ingredient cannot be null")
+            return requireArguments().getString(INGREDIENT_NAME_EXTRA)
+                ?: throw java.lang.IllegalStateException("Ingredient name cannot be null")
+        }
+
+    private val ingredientQuantity: String?
+        get() {
+            return requireArguments().getString(INGREDIENT_QUANTITY_EXTRA)
         }
 
     private val recipeId: Int

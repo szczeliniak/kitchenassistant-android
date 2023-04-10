@@ -18,6 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientGroupHeaderItem
@@ -111,7 +112,19 @@ class DayPlanActivity : AppCompatActivity() {
                         if (ingredientGroup.ingredients.isNotEmpty()) {
                             recipesAdapter.add(DayPlanIngredientGroupHeaderItem(ingredientGroup))
                             ingredientGroup.ingredients.forEach { ingredient ->
-                                recipesAdapter.add(DayPlanIngredientItem(ingredient))
+                                recipesAdapter.add(
+                                    DayPlanIngredientItem(
+                                        this@DayPlanActivity,
+                                        ingredient,
+                                        recipe.id
+                                    ) { i, recipeId ->
+                                        AddIngredientToShoppingListDialog.show(
+                                            supportFragmentManager,
+                                            i.name,
+                                            i.quantity,
+                                            recipeId
+                                        )
+                                    })
                             }
                         }
                     }

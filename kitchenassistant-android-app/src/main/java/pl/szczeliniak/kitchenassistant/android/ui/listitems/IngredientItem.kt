@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemIngredientBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
 
-class IngredientItem constructor(
+class IngredientItem(
     private val context: Context,
     private val recipeId: Int,
     private val ingredient: Ingredient,
@@ -33,10 +33,12 @@ class IngredientItem constructor(
                     onDeleteClick.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
                     onEditClick.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.add_to_shopping_list -> {
                     onAddToShoppingListItem.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true

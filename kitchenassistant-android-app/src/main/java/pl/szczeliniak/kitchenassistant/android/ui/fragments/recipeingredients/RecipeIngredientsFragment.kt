@@ -112,7 +112,8 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
                             }, { _, i ->
                                 AddIngredientToShoppingListDialog.show(
                                     requireActivity().supportFragmentManager,
-                                    i,
+                                    i.name,
+                                    i.quantity,
                                     r.id
                                 )
                             }))
