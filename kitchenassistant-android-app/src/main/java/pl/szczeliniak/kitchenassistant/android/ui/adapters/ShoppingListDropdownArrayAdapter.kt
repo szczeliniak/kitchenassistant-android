@@ -13,10 +13,10 @@ import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        return prepareView(position, convertView, parent)
+        return prepareView(position, convertView)
     }
 
-    private fun prepareView(position: Int, convertView: View?, parent: ViewGroup): View {
+    private fun prepareView(position: Int, convertView: View?): View {
         val viewHolder: ViewHolder
         val binding: DropdownShoppingListBinding?
 
@@ -42,8 +42,8 @@ class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<Shopping
         return binding.root
     }
 
-    override fun getDropDownView( position: Int, convertView: View?, parent: ViewGroup): View {
-        return prepareView(position, convertView, parent)
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        return prepareView(position, convertView)
     }
 
     data class ViewHolder(

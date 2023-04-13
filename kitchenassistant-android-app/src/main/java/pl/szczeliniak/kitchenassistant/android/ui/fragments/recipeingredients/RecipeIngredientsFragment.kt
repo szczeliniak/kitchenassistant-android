@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeIngredientsBinding
 import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientGroupDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
@@ -40,26 +40,17 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
     lateinit var eventBus: EventBus
 
     private val viewModel: RecipeIngredientsFragmentViewModel by viewModels()
-    private val ingredientsAdapter = GroupAdapter<GroupieViewHolder>()
+    private val ingredientGroupsAdapter = GroupAdapter<GroupieViewHolder>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRecipeIngredientsBinding.inflate(inflater)
-        binding.recyclerView.adapter = ingredientsAdapter
-        binding.buttonAddIngredient.setOnClickListener { showAddIngredientDialog() }
+        binding.recyclerView.adapter = ingredientGroupsAdapter
+        binding.buttonAddIngredient.setOnClickListener { showAddIngredientGroupDialog() }
         return binding.root
     }
 
-    private fun showAddIngredientDialog() {
-        recipe?.let {
-            val group = it.ingredientGroups.first()
-            AddEditIngredientDialog.show(
-                requireActivity().supportFragmentManager,
-                it.id,
-                group.id,
-                group.name,
-                ArrayList(it.ingredientGroups)
-            )
-        }
+    private fun showAddIngredientGroupDialog() {
+        recipe?.let { AddEditIngredientGroupDialog.show(requireActivity().supportFragmentManager, it.id, null) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,38 +76,36 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
 
     private fun loadData() {
         recipe?.let { r ->
-            ingredientsAdapter.clear()
+            ingredientGroupsAdapter.clear()
             if (r.ingredientGroups.flatMap { it.ingredients }.none()) {
                 binding.root.showEmptyIcon(requireActivity())
             } else {
                 binding.root.hideEmptyIcon()
                 r.ingredientGroups.forEach { ingredientGroup ->
                     if (ingredientGroup.ingredients.isNotEmpty()) {
-                        ingredientsAdapter.add(IngredientGroupHeaderItem(ingredientGroup))
+                        ingredientGroupsAdapter.add(
+                            IngredientGroupHeaderItem(
+                                ingredientGroup.id, ingredientGroup.name, r.id, requireActivity().supportFragmentManager
+                            )
+                        )
                         ingredientGroup.ingredients.forEach { ingredient ->
-                            ingredientsAdapter.add(IngredientItem(requireContext(), r.id, ingredient, { recipeId, i ->
-                                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                                    viewModel.delete(recipeId, ingredientGroup.id, i.id).observe(viewLifecycleOwner) {
-                                        deleteIngredientStateHandler.handle(it)
+                            ingredientGroupsAdapter.add(IngredientItem(requireContext(),
+                                r.id,
+                                ingredient,
+                                { recipeId, i ->
+                                    ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                                        viewModel.delete(recipeId, ingredientGroup.id, i.id)
+                                            .observe(viewLifecycleOwner) {
+                                                deleteIngredientStateHandler.handle(it)
+                                            }
                                     }
-                                }
-                            }, { recipeId, i ->
-                                AddEditIngredientDialog.show(
-                                    requireActivity().supportFragmentManager,
-                                    recipeId,
-                                    ingredientGroup.id,
-                                    ingredientGroup.name,
-                                    ArrayList(r.ingredientGroups),
-                                    i
-                                )
-                            }, { _, i ->
-                                AddIngredientToShoppingListDialog.show(
-                                    requireActivity().supportFragmentManager,
-                                    i.name,
-                                    i.quantity,
-                                    r.id
-                                )
-                            }))
+                                },
+                                { recipeId, i ->
+                                    AddIngredientToShoppingListDialog.show(
+                                        requireActivity().supportFragmentManager, i.name, i.quantity, recipeId
+                                    )
+                                })
+                            )
                         }
                     }
                 }

@@ -123,7 +123,7 @@ class UpdateDayPlanDialog : DialogFragment() {
 
     private val dayPlanId: Int
         get() {
-            return requireArguments().getInt(DAY_PLAN_ID_EXTRA)!!
+            return requireArguments().getInt(DAY_PLAN_ID_EXTRA)
         }
 
 }

@@ -12,12 +12,13 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.dto.IngredientGroup
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
 import java.io.File
 import java.io.InputStream
 
-class RecipeService constructor(
+class RecipeService(
     private val recipeRepository: RecipeRepository,
     private val localStorageService: LocalStorageService,
     private val context: Context,
@@ -138,15 +139,14 @@ class RecipeService constructor(
         }
     }
 
-    suspend fun addIngredient(
+    suspend fun addIngredientGroup(
         recipeId: Int,
-        ingredientGroupId: Int,
-        request: AddIngredientRequest
+        request: AddIngredientGroupRequest
     ): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(recipeRepository.addIngredient(recipeId, ingredientGroupId, request).id))
+                emit(LoadingState.Success(recipeRepository.addIngredientGroup(recipeId, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -155,21 +155,19 @@ class RecipeService constructor(
         }
     }
 
-    suspend fun updateIngredient(
+    suspend fun editIngredientGroup(
         recipeId: Int,
         ingredientGroupId: Int,
-        ingredientId: Int,
-        request: UpdateIngredientRequest
+        request: EditIngredientGroupRequest
     ): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
                 emit(
                     LoadingState.Success(
-                        recipeRepository.updateIngredient(
+                        recipeRepository.editIngredientGroup(
                             recipeId,
                             ingredientGroupId,
-                            ingredientId,
                             request
                         ).id
                     )
@@ -354,11 +352,18 @@ class RecipeService constructor(
         return file
     }
 
-    fun addIngredientGroup(recipeId: Int, request: AddIngredientGroupRequest): Flow<LoadingState<Int>> {
+    fun getIngredientGroupById(recipeId: Int, ingredientGroupId: Int): Flow<LoadingState<IngredientGroup>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(recipeRepository.addIngredientGroup(recipeId, request).id))
+                emit(
+                    LoadingState.Success(
+                        recipeRepository.getIngredientGroupById(
+                            recipeId,
+                            ingredientGroupId
+                        ).ingredientGroup
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

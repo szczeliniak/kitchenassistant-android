@@ -38,19 +38,11 @@ interface RecipeRepository {
         @Body request: AddIngredientGroupRequest
     ): SuccessResponse
 
-    @POST("/recipes/{id}/ingredientGroups/{ingredientGroupId}/ingredients")
-    suspend fun addIngredient(
+    @PUT("/recipes/{id}/ingredientGroups/{ingredientGroupId}")
+    suspend fun editIngredientGroup(
         @Path("id") recipeId: Int,
         @Path("ingredientGroupId") ingredientGroupId: Int,
-        @Body request: AddIngredientRequest
-    ): SuccessResponse
-
-    @PUT("/recipes/{id}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
-    suspend fun updateIngredient(
-        @Path("id") recipeId: Int,
-        @Path("ingredientGroupId") ingredientGroupId: Int,
-        @Path("ingredientId") ingredientId: Int,
-        @Body request: UpdateIngredientRequest
+        @Body request: EditIngredientGroupRequest
     ): SuccessResponse
 
     @DELETE("/recipes/{id}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}")
@@ -101,5 +93,11 @@ interface RecipeRepository {
     @Multipart
     @POST("/recipes/photo")
     suspend fun uploadPhoto(@Part part: MultipartBody.Part): UploadPhotoResponse
+
+    @GET("/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}")
+    suspend fun getIngredientGroupById(
+        @Path("recipeId") recipeId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int
+    ): IngredientGroupResponse
 
 }

@@ -21,7 +21,6 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditRecipeBinding
 import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
@@ -42,7 +41,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import java.io.File
 import java.net.URI
-import java.util.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -227,8 +225,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 localStorageService.getId(),
                 categoryId,
                 tags,
-                photoName,
-                Collections.singletonList(AddIngredientGroupRequest("default"))
+                photoName
             )
         ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
     }

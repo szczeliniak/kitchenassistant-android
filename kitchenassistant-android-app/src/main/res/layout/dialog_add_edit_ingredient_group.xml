@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        style="@style/ContentLayout"
+        android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:text="@string/title_dialog_add_ingredient_group"
+            style="@style/TextViewTitle"
+            android:textColor="@color/primary_dark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:id="@+id/ingredient_group_name_layout"
+            app:counterMaxLength="@integer/max_length_ingredient_group_name"
+            style="@style/InputLayoutWithCounter"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                style="@style/TextViewAutocomplete"
+                android:hint="@string/label_recipe_ingredient_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLength="@integer/max_length_ingredient_group_name"
+                android:id="@+id/ingredient_group_name"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:paddingVertical="@dimen/padding_margin_tiny"
+            android:layout_width="match_parent"
+            android:clipToPadding="false"
+            android:id="@+id/recycler_view"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginVertical="@dimen/padding_margin_tiny"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/add_ingredient"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/padding_margin_tiny"
+            android:backgroundTint="@color/primary"
+            android:src="@drawable/icon_add"/>
+
+</androidx.appcompat.widget.LinearLayoutCompat>

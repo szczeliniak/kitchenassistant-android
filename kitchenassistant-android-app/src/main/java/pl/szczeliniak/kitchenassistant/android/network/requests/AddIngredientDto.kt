@@ -1,6 +1,6 @@
 package pl.szczeliniak.kitchenassistant.android.network.requests
 
-data class AddIngredientGroupRequest(
+data class AddIngredientDto(
     val name: String,
-    val ingredients: List<AddIngredientDto>
+    val quantity: String?
 )

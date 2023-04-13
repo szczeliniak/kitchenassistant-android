@@ -57,8 +57,8 @@
     <string name="title_fragment_recipe_steps">Steps</string>
     <string name="title_fragment_shopping_lists">Shopping lists</string>
     <string name="title_fragment_day_plans">Day plans</string>
-    <string name="title_dialog_add_ingredient">Add ingredient</string>
-    <string name="title_dialog_edit_ingredient">Edit ingredient</string>
+    <string name="title_dialog_add_ingredient_group">Add ingredient group</string>
+    <string name="title_dialog_edit_ingredient_group">Edit ingredient group</string>
     <string name="title_dialog_add_step">Add step</string>
     <string name="title_dialog_edit_step">Edit step</string>
     <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
@@ -140,4 +140,5 @@
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
     <string name="placeholder_day_plan_name">Some day plan name</string>
     <string name="placeholder_day_plan_description">Some day plan description</string>
+    <string name="label_button_add_ingredient">Add ingredient</string>
 </resources>
