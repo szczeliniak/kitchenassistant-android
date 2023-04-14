@@ -159,7 +159,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
 
     private val shoppingListItem: ShoppingListItem?
         get() {
-            return requireArguments().getParcelable(SHOPPING_LIST_ITEM_EXTRA)
+            return requireArguments().getParcelable(SHOPPING_LIST_ITEM_EXTRA, ShoppingListItem::class.java)
         }
 
 }

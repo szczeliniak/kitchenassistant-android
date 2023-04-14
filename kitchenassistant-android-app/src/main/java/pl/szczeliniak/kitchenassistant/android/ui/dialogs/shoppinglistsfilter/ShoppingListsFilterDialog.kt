@@ -24,9 +24,7 @@ class ShoppingListsFilterDialog : DialogFragment() {
         private const val TAG = "ShoppingListsFilterDialog"
 
         fun show(
-            fragmentManager: FragmentManager,
-            filter: Filter?,
-            onFilterChanged: OnFilterChanged
+            fragmentManager: FragmentManager, filter: Filter?, onFilterChanged: OnFilterChanged
         ) {
             val dialog = ShoppingListsFilterDialog()
             val bundle = Bundle()
@@ -83,12 +81,12 @@ class ShoppingListsFilterDialog : DialogFragment() {
 
     private val onFilterChanged: OnFilterChanged
         get() {
-            return requireArguments().getParcelable(CALLBACK_EXTRA)!!
+            return requireArguments().getParcelable(CALLBACK_EXTRA, OnFilterChanged::class.java)!!
         }
 
     private val filter: Filter?
         get() {
-            return requireArguments().getParcelable(FILTER_EXTRA)
+            return requireArguments().getParcelable(FILTER_EXTRA, Filter::class.java)
         }
 
     private val date: LocalDate?

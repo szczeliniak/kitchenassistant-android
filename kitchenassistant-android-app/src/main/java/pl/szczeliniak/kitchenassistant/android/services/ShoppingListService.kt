@@ -13,7 +13,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingLis
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import java.time.LocalDate
 
-class ShoppingListService constructor(
+class ShoppingListService(
     private val repository: ShoppingListRepository,
     private val localStorageService: LocalStorageService
 ) {

@@ -43,14 +43,6 @@ class LocalStorageService constructor(private val context: Context) {
         return openSharedPrefs().getInt(ID, -1)
     }
 
-    fun getValidTo(): ZonedDateTime {
-        val asString = openSharedPrefs().getString(VALID_TO, "")
-        if (asString.isNullOrEmpty()) {
-            return ZonedDateTime.now()
-        }
-        return ZonedDateTimeUtils.parse(asString) ?: ZonedDateTime.now()
-    }
-
     private fun openSharedPrefs(): SharedPreferences {
         return context.getSharedPreferences(SHARED_PREFS_NAME, MODE_PRIVATE)
     }

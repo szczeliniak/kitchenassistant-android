@@ -138,7 +138,7 @@ class AddEditCategoryDialog : DialogFragment() {
 
     private val category: Category?
         get() {
-            return requireArguments().getParcelable(CATEGORY_EXTRA)
+            return requireArguments().getParcelable(CATEGORY_EXTRA, Category::class.java)
         }
 
 }

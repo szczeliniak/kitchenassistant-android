@@ -73,7 +73,7 @@ class ChooseDayForRecipeDialog : DialogFragment() {
 
     private val onDayChosen: OnDayChosen
         get() {
-            return requireArguments().getParcelable(ON_DAY_CHOSEN_CALLBACK_EXTRA)!!
+            return requireArguments().getParcelable(ON_DAY_CHOSEN_CALLBACK_EXTRA, OnDayChosen::class.java)!!
         }
 
 }

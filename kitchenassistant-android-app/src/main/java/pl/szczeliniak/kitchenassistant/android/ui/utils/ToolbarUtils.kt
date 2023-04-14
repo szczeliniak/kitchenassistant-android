@@ -21,14 +21,14 @@ class ToolbarUtils {
         fun Toolbar.init(activity: AppCompatActivity, resId: Int) {
             this.title = activity.getString(resId)
             init(activity, R.drawable.icon_arrow_back) {
-                activity.onBackPressed()
+                activity.onBackPressedDispatcher.onBackPressed()
             }
         }
 
         fun Toolbar.init(activity: AppCompatActivity, name: String) {
             this.title = name
             init(activity, R.drawable.icon_arrow_back) {
-                activity.onBackPressed()
+                activity.onBackPressedDispatcher.onBackPressed()
             }
         }
     }

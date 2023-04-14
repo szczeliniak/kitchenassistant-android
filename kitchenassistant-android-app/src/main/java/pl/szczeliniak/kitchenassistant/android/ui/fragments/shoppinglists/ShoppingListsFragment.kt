@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.fragments.shoppinglists
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -57,7 +58,7 @@ class ShoppingListsFragment : Fragment() {
     private var filter: ShoppingListsFilterDialog.Filter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        savedInstanceState?.getParcelable<ShoppingListsFilterDialog.Filter?>(FILTER_SAVED_STATE_EXTRA)?.let {
+        savedInstanceState?.getParcelable(FILTER_SAVED_STATE_EXTRA, ShoppingListsFilterDialog.Filter::class.java)?.let {
             filter = it
         }
         binding = FragmentShoppingListsBinding.inflate(inflater)
@@ -152,46 +153,44 @@ class ShoppingListsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+        activity?.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.fragment_shopping_lists, menu)
+                searchView = menu.findItem(R.id.search).actionView as SearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return true
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        debounceExecutor.execute { resetShoppingLists() }
+                        return true
+                    }
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.filter -> {
+                        ShoppingListsFilterDialog.show(
+                            requireActivity().supportFragmentManager,
+                            ShoppingListsFilterDialog.Filter(filter?.date),
+                            ShoppingListsFilterDialog.OnFilterChanged {
+                                filter = it
+                                resetShoppingLists()
+                            })
+                        return true
+                    }
+                }
+                return false
+            }
+        })
         eventBus.register(this)
     }
 
     override fun onDestroy() {
         eventBus.unregister(this)
         super.onDestroy()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_shopping_lists, menu)
-        searchView = menu.findItem(R.id.search).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                debounceExecutor.execute { resetShoppingLists() }
-                return true
-            }
-        })
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.filter -> {
-                ShoppingListsFilterDialog.show(
-                    requireActivity().supportFragmentManager,
-                    ShoppingListsFilterDialog.Filter(filter?.date),
-                    ShoppingListsFilterDialog.OnFilterChanged {
-                        filter = it
-                        resetShoppingLists()
-                    })
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     @Subscribe

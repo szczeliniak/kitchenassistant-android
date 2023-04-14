@@ -31,7 +31,7 @@ class ConfirmationDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        onConfirm = requireArguments().getSerializable(CALLBACK_EXTRA) as OnConfirm
+        onConfirm = requireArguments().getParcelable(CALLBACK_EXTRA, OnConfirm::class.java)!!
 
         binding = DialogConfirmationBinding.inflate(layoutInflater)
         val builder = AlertDialog.Builder(requireContext())

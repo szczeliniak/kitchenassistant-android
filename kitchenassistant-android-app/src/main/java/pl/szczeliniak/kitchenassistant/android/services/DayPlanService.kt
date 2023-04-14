@@ -11,7 +11,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDeta
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import java.time.LocalDate
 
-class DayPlanService constructor(
+class DayPlanService(
     private val repository: DayPlanRepository,
     private val localStorageService: LocalStorageService
 ) {

@@ -144,7 +144,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
         binding.recipeCategory.adapter = categoriesDropdownAdapter
 
         binding.recipeName.doOnTextChanged { _, _, _, _ ->
-            if (name.isNullOrEmpty()) {
+            if (!isNameValid()) {
                 binding.recipeNameLayout.error = getString(R.string.message_recipe_name_is_empty)
             } else {
                 binding.recipeNameLayout.error = null
@@ -157,6 +157,10 @@ class AddEditRecipeActivity : AppCompatActivity() {
             .build()
 
         binding.buttonChangePhoto.setOnClickListener { easyImage.openChooser(this) }
+    }
+
+    private fun isNameValid(): Boolean {
+        return name.isNullOrEmpty()
     }
 
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {
@@ -325,7 +329,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
     }
 
     private fun saveRecipe() {
-        if (name.isNullOrEmpty()) {
+        if (!isNameValid()) {
             return
         }
 

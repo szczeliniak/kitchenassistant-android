@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.fragments.recipesbycategory
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -76,7 +77,7 @@ class RecipesByCategoryFragment : Fragment() {
     private var filter: RecipesFilterDialog.Filter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        savedInstanceState?.getParcelable<RecipesFilterDialog.Filter?>(FILTER_SAVED_STATE_EXTRA)?.let {
+        savedInstanceState?.getParcelable(FILTER_SAVED_STATE_EXTRA, RecipesFilterDialog.Filter::class.java)?.let {
             filter = it
         }
 
@@ -93,18 +94,12 @@ class RecipesByCategoryFragment : Fragment() {
             DividerItemDecoration(binding.recyclerView.context, DividerItemDecoration.VERTICAL)
         )
 
-        endlessScrollRecyclerViewListener = EndlessScrollRecyclerViewListener(
-            binding.recyclerView.layoutManager as LinearLayoutManager,
-            {
+        endlessScrollRecyclerViewListener =
+            EndlessScrollRecyclerViewListener(binding.recyclerView.layoutManager as LinearLayoutManager, {
                 viewModel.loadRecipes(
-                    it,
-                    searchView.query.toString(),
-                    filter?.recipeTag,
-                    filter?.onlyFavorites ?: false
+                    it, searchView.query.toString(), filter?.recipeTag, filter?.onlyFavorites ?: false
                 )
-            },
-            { adapter.clear() }
-        )
+            }, { adapter.clear() })
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
         return binding.root
@@ -158,8 +153,7 @@ class RecipesByCategoryFragment : Fragment() {
     }
 
     private fun loadPhotoLoadingStateHandler(): LoadingStateHandler<RecipeService.DownloadedPhoto> {
-        return LoadingStateHandler(
-            requireActivity(),
+        return LoadingStateHandler(requireActivity(),
             object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
                 override fun onInProgress() {}
                 override fun onFinish() {}
@@ -216,16 +210,13 @@ class RecipesByCategoryFragment : Fragment() {
                                 }
                             }
                         }, {
-                            ChooseDayForRecipeDialog.show(
-                                requireActivity().supportFragmentManager,
+                            ChooseDayForRecipeDialog.show(requireActivity().supportFragmentManager,
                                 ChooseDayForRecipeDialog.OnDayChosen { date ->
                                     viewModel.assignRecipeToDayPlan(
-                                        recipe.id,
-                                        AddRecipeToDayPlanRequest(localStorageService.getId(), date)
-                                    )
-                                        .observe(viewLifecycleOwner) { r ->
-                                            addRecipeToDayPlanLoadingStateHandler.handle(r)
-                                        }
+                                        recipe.id, AddRecipeToDayPlanRequest(localStorageService.getId(), date)
+                                    ).observe(viewLifecycleOwner) { r ->
+                                        addRecipeToDayPlanLoadingStateHandler.handle(r)
+                                    }
                                 })
                         }))
                     }
@@ -245,43 +236,37 @@ class RecipesByCategoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         eventBus.register(this)
-        setHasOptionsMenu(true)
-    }
+        activity?.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.fragment_recipes, menu)
+                searchView = menu.findItem(R.id.search).actionView as SearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return true
+                    }
 
-    @Deprecated("")
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_recipes, menu)
-        searchView = menu.findItem(R.id.search).actionView as SearchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        debounceExecutor.execute { resetRecipes() }
+                        return true
+                    }
+                })
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                debounceExecutor.execute { resetRecipes() }
-                return true
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId) {
+                    R.id.filter -> {
+                        RecipesFilterDialog.show(requireActivity().supportFragmentManager,
+                            RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
+                            RecipesFilterDialog.OnFilterChanged {
+                                filter = it
+                                resetRecipes()
+                            })
+                        return true
+                    }
+                }
+                return false
             }
         })
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    @Deprecated("")
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.filter -> {
-                RecipesFilterDialog.show(
-                    requireActivity().supportFragmentManager,
-                    RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
-                    RecipesFilterDialog.OnFilterChanged {
-                        filter = it
-                        resetRecipes()
-                    }
-                )
-                return true
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -291,7 +276,8 @@ class RecipesByCategoryFragment : Fragment() {
 
     private val categoryId: Int?
         get() {
-            return requireArguments().get(CATEGORY_ID_EXTRA) as Int?
+            val id = requireArguments().getInt(CATEGORY_ID_EXTRA, -1)
+            return if (id > 0) id else null
         }
 
     override fun onDestroy() {

@@ -90,7 +90,7 @@ class RecipesFilterDialog : DialogFragment() {
 
     private val onFilterChanged: OnFilterChanged
         get() {
-            return requireArguments().getParcelable(CALLBACK_EXTRA)!!
+            return requireArguments().getParcelable(CALLBACK_EXTRA, OnFilterChanged::class.java)!!
         }
 
     private val recipeTag: String?
@@ -105,7 +105,7 @@ class RecipesFilterDialog : DialogFragment() {
 
     private val filter: Filter?
         get() {
-            return requireArguments().getParcelable(FILTER_EXTRA)
+            return requireArguments().getParcelable(FILTER_EXTRA, Filter::class.java)
         }
 
 }

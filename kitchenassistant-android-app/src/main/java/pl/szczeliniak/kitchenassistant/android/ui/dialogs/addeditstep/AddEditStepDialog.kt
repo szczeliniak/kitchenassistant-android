@@ -151,7 +151,7 @@ class AddEditStepDialog : DialogFragment() {
 
     private val step: Step?
         get() {
-            return requireArguments().getParcelable(STEP_EXTRA)
+            return requireArguments().getParcelable(STEP_EXTRA, Step::class.java)
         }
 
 }
