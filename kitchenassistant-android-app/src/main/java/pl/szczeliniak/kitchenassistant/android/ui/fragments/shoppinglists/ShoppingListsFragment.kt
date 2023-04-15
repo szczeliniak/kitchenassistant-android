@@ -57,6 +57,39 @@ class ShoppingListsFragment : Fragment() {
 
     private var filter: ShoppingListsFilterDialog.Filter? = null
 
+    private val menuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.fragment_shopping_lists, menu)
+            searchView = menu.findItem(R.id.search).actionView as SearchView
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    debounceExecutor.execute { resetShoppingLists() }
+                    return true
+                }
+            })
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            when (menuItem.itemId) {
+                R.id.filter -> {
+                    ShoppingListsFilterDialog.show(
+                        requireActivity().supportFragmentManager,
+                        ShoppingListsFilterDialog.Filter(filter?.date),
+                        ShoppingListsFilterDialog.OnFilterChanged {
+                            filter = it
+                            resetShoppingLists()
+                        })
+                    return true
+                }
+            }
+            return false
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         savedInstanceState?.getParcelable(FILTER_SAVED_STATE_EXTRA, ShoppingListsFilterDialog.Filter::class.java)?.let {
             filter = it
@@ -151,40 +184,18 @@ class ShoppingListsFragment : Fragment() {
             })
     }
 
+    override fun onResume() {
+        super.onResume()
+        activity?.addMenuProvider(menuProvider)
+    }
+
+    override fun onPause() {
+        activity?.removeMenuProvider(menuProvider)
+        super.onPause()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        activity?.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.fragment_shopping_lists, menu)
-                searchView = menu.findItem(R.id.search).actionView as SearchView
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return true
-                    }
-
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        debounceExecutor.execute { resetShoppingLists() }
-                        return true
-                    }
-                })
-            }
-
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.filter -> {
-                        ShoppingListsFilterDialog.show(
-                            requireActivity().supportFragmentManager,
-                            ShoppingListsFilterDialog.Filter(filter?.date),
-                            ShoppingListsFilterDialog.OnFilterChanged {
-                                filter = it
-                                resetShoppingLists()
-                            })
-                        return true
-                    }
-                }
-                return false
-            }
-        })
         eventBus.register(this)
     }
 

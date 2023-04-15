@@ -76,6 +76,39 @@ class RecipesByCategoryFragment : Fragment() {
 
     private var filter: RecipesFilterDialog.Filter? = null
 
+    private val menuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.fragment_recipes, menu)
+            searchView = menu.findItem(R.id.search).actionView as SearchView
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    debounceExecutor.execute { resetRecipes() }
+                    return true
+                }
+            })
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            when (menuItem.itemId) {
+                R.id.filter -> {
+                    RecipesFilterDialog.show(requireActivity().supportFragmentManager,
+                        RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
+                        RecipesFilterDialog.OnFilterChanged {
+                            filter = it
+                            resetRecipes()
+                        })
+                    return true
+                }
+            }
+            return false
+        }
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         savedInstanceState?.getParcelable(FILTER_SAVED_STATE_EXTRA, RecipesFilterDialog.Filter::class.java)?.let {
             filter = it
@@ -236,37 +269,16 @@ class RecipesByCategoryFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         eventBus.register(this)
-        activity?.addMenuProvider(object : MenuProvider {
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menuInflater.inflate(R.menu.fragment_recipes, menu)
-                searchView = menu.findItem(R.id.search).actionView as SearchView
-                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return true
-                    }
+    }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        debounceExecutor.execute { resetRecipes() }
-                        return true
-                    }
-                })
-            }
+    override fun onResume() {
+        super.onResume()
+        activity?.addMenuProvider(menuProvider)
+    }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                when (menuItem.itemId) {
-                    R.id.filter -> {
-                        RecipesFilterDialog.show(requireActivity().supportFragmentManager,
-                            RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
-                            RecipesFilterDialog.OnFilterChanged {
-                                filter = it
-                                resetRecipes()
-                            })
-                        return true
-                    }
-                }
-                return false
-            }
-        })
+    override fun onPause() {
+        activity?.removeMenuProvider(menuProvider)
+        super.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
