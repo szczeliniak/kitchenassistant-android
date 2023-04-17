@@ -6,10 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
-import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
+import pl.szczeliniak.kitchenassistant.android.network.retrofit.*
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -25,8 +22,7 @@ class ServiceModule {
     fun recipeService(
         recipeRepository: RecipeRepository,
         localStorageService: LocalStorageService,
-        @ApplicationContext context: Context,
-    ): RecipeService = RecipeService(recipeRepository, localStorageService, context)
+    ): RecipeService = RecipeService(recipeRepository, localStorageService)
 
     @Provides
     fun shoppingListService(
@@ -39,5 +35,11 @@ class ServiceModule {
         dayPlanRepository: DayPlanRepository,
         localStorageService: LocalStorageService
     ): DayPlanService = DayPlanService(dayPlanRepository, localStorageService)
+
+    @Provides
+    fun photoService(
+        photoRepository: PhotoRepository,
+        @ApplicationContext context: Context
+    ): PhotoService = PhotoService(photoRepository, context)
 
 }

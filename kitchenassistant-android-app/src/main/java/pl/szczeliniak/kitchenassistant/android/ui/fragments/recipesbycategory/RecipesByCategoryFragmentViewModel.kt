@@ -11,11 +11,13 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
+import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 
 class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
     private val recipeService: RecipeService,
     private val dayPlanService: DayPlanService,
+    private val photoService: PhotoService,
     @Assisted private val categoryId: Int?
 ) : ViewModel() {
 
@@ -56,10 +58,10 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun loadPhoto(recipeId: Int, photoName: String): LiveData<LoadingState<RecipeService.DownloadedPhoto>> {
-        val liveData = MutableLiveData<LoadingState<RecipeService.DownloadedPhoto>>()
+    fun loadPhoto(photoName: String): LiveData<LoadingState<PhotoService.DownloadedPhoto>> {
+        val liveData = MutableLiveData<LoadingState<PhotoService.DownloadedPhoto>>()
         viewModelScope.launch {
-            recipeService.downloadPhoto(photoName, recipeId)
+            photoService.downloadPhoto(photoName)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

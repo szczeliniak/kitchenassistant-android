@@ -26,7 +26,7 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateRecipeRequ
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
-import pl.szczeliniak.kitchenassistant.android.services.RecipeService
+import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.AuthorDropdownArrayAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.CategoryDropdownArrayAdapter
@@ -285,9 +285,9 @@ class AddEditRecipeActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<RecipeService.DownloadedPhoto> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
-            override fun onSuccess(data: RecipeService.DownloadedPhoto) {
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<PhotoService.DownloadedPhoto> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<PhotoService.DownloadedPhoto> {
+            override fun onSuccess(data: PhotoService.DownloadedPhoto) {
                 photoUri = data.file.toUri()
             }
         })
@@ -319,7 +319,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
             binding.recipeUrl.setText(it.source)
             it.tags.forEach { tag -> addTagChip(tag) }
             it.photoName?.let { photoName ->
-                viewModel.loadPhoto(photoName, it.id).observe(this@AddEditRecipeActivity) { downloadedPhoto ->
+                viewModel.loadPhoto(photoName).observe(this@AddEditRecipeActivity) { downloadedPhoto ->
                     downloadPhotoFileLoadingStateHandler.handle(downloadedPhoto)
                 }
             }

@@ -23,7 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
-import pl.szczeliniak.kitchenassistant.android.services.RecipeService
+import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforrecipe.ChooseDayForRecipeDialog
@@ -68,7 +68,7 @@ class RecipesByCategoryFragment : Fragment() {
 
     private lateinit var binding: FragmentRecipesByCategoryBinding
     private lateinit var loadRecipesLoadingStateHandler: LoadingStateHandler<RecipesResponse>
-    private lateinit var loadPhotoLoadingStateHandler: LoadingStateHandler<RecipeService.DownloadedPhoto>
+    private lateinit var loadPhotoLoadingStateHandler: LoadingStateHandler<PhotoService.DownloadedPhoto>
     private lateinit var reloadRecipesLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var addRecipeToDayPlanLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
@@ -185,12 +185,12 @@ class RecipesByCategoryFragment : Fragment() {
         })
     }
 
-    private fun loadPhotoLoadingStateHandler(): LoadingStateHandler<RecipeService.DownloadedPhoto> {
+    private fun loadPhotoLoadingStateHandler(): LoadingStateHandler<PhotoService.DownloadedPhoto> {
         return LoadingStateHandler(requireActivity(),
-            object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
+            object : LoadingStateHandler.OnStateChanged<PhotoService.DownloadedPhoto> {
                 override fun onInProgress() {}
                 override fun onFinish() {}
-                override fun onSuccess(data: RecipeService.DownloadedPhoto) {
+                override fun onSuccess(data: PhotoService.DownloadedPhoto) {
                     findRecipeItemByPhotoName(data.photoName)?.let {
                         (adapter.getItem(it) as RecipeItem).photo = data.file
                         adapter.notifyItemChanged(it)
@@ -256,7 +256,7 @@ class RecipesByCategoryFragment : Fragment() {
 
                     data.recipes.forEach { recipe ->
                         recipe.photoName?.let { photoName ->
-                            viewModel.loadPhoto(recipe.id, photoName).observe(viewLifecycleOwner) {
+                            viewModel.loadPhoto(photoName).observe(viewLifecycleOwner) {
                                 loadPhotoLoadingStateHandler.handle(it)
                             }
                         }

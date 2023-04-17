@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeInfoBinding
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.services.RecipeService
+import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
@@ -32,7 +32,7 @@ class RecipeInfoFragment : RecipeActivityFragment() {
 
     private val viewModel: RecipeInfoFragmentViewModel by viewModels()
 
-    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<RecipeService.DownloadedPhoto>
+    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<PhotoService.DownloadedPhoto>
     private lateinit var binding: FragmentRecipeInfoBinding
 
     private var player: YouTubePlayer? = null
@@ -69,7 +69,7 @@ class RecipeInfoFragment : RecipeActivityFragment() {
 
             binding.recipeCategory.setTextOrDefault(r.category?.name)
             r.photoName?.let {
-                viewModel.loadPhoto(r.id, it).observe(viewLifecycleOwner) {
+                viewModel.loadPhoto(it).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
                 }
             }
@@ -110,11 +110,11 @@ class RecipeInfoFragment : RecipeActivityFragment() {
         loadData()
     }
 
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<RecipeService.DownloadedPhoto> {
+    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<PhotoService.DownloadedPhoto> {
         return LoadingStateHandler(
             requireContext(),
-            object : LoadingStateHandler.OnStateChanged<RecipeService.DownloadedPhoto> {
-                override fun onSuccess(data: RecipeService.DownloadedPhoto) {
+            object : LoadingStateHandler.OnStateChanged<PhotoService.DownloadedPhoto> {
+                override fun onSuccess(data: PhotoService.DownloadedPhoto) {
                     Picasso.get().load(data.file.toUri()).fit().centerCrop().into(binding.recipePhoto)
                     binding.recipePhotoContainer.visibility = View.VISIBLE
                 }
