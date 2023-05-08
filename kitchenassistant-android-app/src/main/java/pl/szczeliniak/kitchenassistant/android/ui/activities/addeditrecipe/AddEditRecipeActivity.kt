@@ -160,7 +160,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
     }
 
     private fun isNameValid(): Boolean {
-        return name.isNullOrEmpty()
+        return !name.isNullOrEmpty()
     }
 
     private fun onKeyInTagPressed(keyCode: Int, event: KeyEvent): Boolean {

@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ListItemStepBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
-class StepItem constructor(
+class StepItem(
     private val context: Context,
     private val recipeId: Int,
     private val step: Step,
@@ -33,6 +33,7 @@ class StepItem constructor(
                     onDeleteClick.onClick(recipeId, step)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
                     onEditClick.onClick(recipeId, step)
                     return@setOnMenuItemClickListener true
