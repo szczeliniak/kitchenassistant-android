@@ -84,6 +84,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private lateinit var easyImage: EasyImage
 
     private var recipe: RecipeDetails? = null
+
     private var photoUri: Uri? = null
         set(value) {
             field = value
@@ -129,11 +130,9 @@ class AddEditRecipeActivity : AppCompatActivity() {
             addTagChip(tagsArrayAdapter.getItem(position)!!)
         }
 
-        if (recipeId == null) {
-            binding.recipePhoto.setOnLongClickListener {
-                photoUri = null
-                true
-            }
+        binding.recipePhoto.setOnLongClickListener {
+            photoUri = null
+            true
         }
 
         binding.recipeAuthor.setAdapter(authorsArrayAdapter)
@@ -211,7 +210,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
 
             override fun onSuccess(data: String) {
                 recipeId?.let {
-                    updateRecipe(it)
+                    updateRecipe(it, data)
                 } ?: kotlin.run {
                     addRecipe(data)
                 }
@@ -234,7 +233,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
         ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
     }
 
-    private fun updateRecipe(recipeId: Int) {
+    private fun updateRecipe(recipeId: Int, photoName: String?) {
         viewModel.updateRecipe(
             recipeId,
             UpdateRecipeRequest(
@@ -243,7 +242,8 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 url,
                 description,
                 categoryId,
-                tags
+                tags,
+                photoName
             )
         ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
     }
@@ -319,12 +319,13 @@ class AddEditRecipeActivity : AppCompatActivity() {
             binding.recipeUrl.setText(it.source)
             it.tags.forEach { tag -> addTagChip(tag) }
             it.photoName?.let { photoName ->
+                binding.recipePhotoName.text = photoName
                 viewModel.loadPhoto(photoName).observe(this@AddEditRecipeActivity) { downloadedPhoto ->
                     downloadPhotoFileLoadingStateHandler.handle(downloadedPhoto)
                 }
+                binding.buttonChangePhoto.setText(R.string.label_button_change_photo)
             }
             setCurrentCategory()
-            binding.buttonChangePhoto.visibility = View.GONE
         }
     }
 
@@ -333,8 +334,14 @@ class AddEditRecipeActivity : AppCompatActivity() {
             return
         }
 
-        recipeId?.let {
-            updateRecipe(it)
+        recipeId?.let { recipeId ->
+            if (photoUri != null && isPhotoUpdated()) {
+                viewModel.uploadPhoto(File(URI.create(photoUri.toString()))).observe(this) {
+                    uploadPhotoLoadingStateHandler.handle(it)
+                }
+            } else {
+                updateRecipe(recipeId, if(photoUri == null) null else photoName)
+            }
         } ?: run {
             photoUri?.let {
                 viewModel.uploadPhoto(File(URI.create(photoUri.toString()))).observe(this) {
@@ -344,6 +351,10 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 addRecipe(null)
             }
         }
+    }
+
+    private fun isPhotoUpdated(): Boolean {
+        return photoUri?.lastPathSegment?.startsWith(PhotoService.CACHED_FILE_PREFIX)?.not() ?: true
     }
 
     private val name: String?
@@ -364,6 +375,11 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private val description: String?
         get() {
             return binding.recipeDescription.getTextOrNull()
+        }
+
+    private val photoName: String?
+        get() {
+            return binding.recipePhotoName.text.toString().ifEmpty { null }
         }
 
     private val categoryId: Int?

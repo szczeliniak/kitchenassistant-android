@@ -18,6 +18,10 @@ class PhotoService(
     private val context: Context,
 ) {
 
+    companion object {
+        const val CACHED_FILE_PREFIX: String = "file-"
+    }
+
     suspend fun downloadPhoto(photoName: String): Flow<LoadingState<DownloadedPhoto>> {
         return flow {
             emit(LoadingState.InProgress)
@@ -64,7 +68,7 @@ class PhotoService(
     }
 
     private fun getFile(name: String): File {
-        return File(context.cacheDir, "file-${name}")
+        return File(context.cacheDir, "$CACHED_FILE_PREFIX${name}")
     }
 
     private fun saveInCache(inputStream: InputStream, name: String): File {
