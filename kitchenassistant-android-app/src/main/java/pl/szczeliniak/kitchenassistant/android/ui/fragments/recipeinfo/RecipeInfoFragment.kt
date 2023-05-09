@@ -48,6 +48,7 @@ class RecipeInfoFragment : RecipeActivityFragment() {
 
     private fun loadData() {
         recipe?.let { r ->
+            binding.recipeName.setTextOrDefault(r.name)
             binding.recipeDescription.setTextOrDefault(r.description)
             binding.recipeAuthor.setTextOrDefault(r.author)
             binding.recipeUrl.setTextOrDefault(r.source)

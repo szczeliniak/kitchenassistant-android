@@ -19,6 +19,27 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:text="@string/label_recipe_name"
+                    style="@style/TextViewSubheader"
+                    android:textColor="@color/secondary_dark"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/recipe_name"
+                    tools:text="@string/placeholder_recipe_name"
+                    style="@style/TextViewHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
                     android:text="@string/label_recipe_author"
                     style="@style/TextViewSubheader"
                     android:textColor="@color/secondary_dark"

@@ -33,9 +33,7 @@ class AddEditIngredientItem(
             onFormChanged.onFormChanged()
         }
 
-        quantity?.let { quantity ->
-            binding.ingredientQuantity.setText(quantity)
-        }
+        binding.ingredientQuantity.setText(quantity)
         binding.ingredientQuantity.doOnTextChanged { text, _, _, _ ->
             quantity = text.toString()
             onFormChanged.onFormChanged()
