@@ -4,5 +4,6 @@ import java.time.LocalDate
 
 data class AddRecipeToDayPlanRequest(
     val userId: Int,
-    val date: LocalDate
+    val date: LocalDate,
+    val recipeId: Int
 )

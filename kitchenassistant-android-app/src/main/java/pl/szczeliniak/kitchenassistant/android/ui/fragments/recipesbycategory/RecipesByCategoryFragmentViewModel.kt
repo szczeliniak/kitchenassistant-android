@@ -78,10 +78,10 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         return liveData
     }
 
-    fun assignRecipeToDayPlan(recipeId: Int, request: AddRecipeToDayPlanRequest): LiveData<LoadingState<Int>> {
+    fun assignRecipeToDayPlan(request: AddRecipeToDayPlanRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.assignRecipe(recipeId, request)
+            dayPlanService.assignRecipe(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

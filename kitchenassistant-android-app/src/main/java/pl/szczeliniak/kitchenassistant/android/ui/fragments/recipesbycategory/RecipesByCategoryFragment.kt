@@ -245,8 +245,7 @@ class RecipesByCategoryFragment : Fragment() {
                         }, {
                             ChooseDayForRecipeDialog.show(requireActivity().supportFragmentManager,
                                 ChooseDayForRecipeDialog.OnDayChosen { date ->
-                                    viewModel.assignRecipeToDayPlan(
-                                        recipe.id, AddRecipeToDayPlanRequest(localStorageService.getId(), date)
+                                    viewModel.assignRecipeToDayPlan(AddRecipeToDayPlanRequest(localStorageService.getId(), date, recipe.id)
                                     ).observe(viewLifecycleOwner) { r ->
                                         addRecipeToDayPlanLoadingStateHandler.handle(r)
                                     }

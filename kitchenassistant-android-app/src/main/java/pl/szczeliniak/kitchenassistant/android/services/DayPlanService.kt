@@ -98,11 +98,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun assignRecipe(recipeId: Int, request: AddRecipeToDayPlanRequest): Flow<LoadingState<Int>> {
+    suspend fun assignRecipe(request: AddRecipeToDayPlanRequest): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.assignRecipe(recipeId, request).id))
+                emit(LoadingState.Success(repository.assignRecipe(request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

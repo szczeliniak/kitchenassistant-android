@@ -32,8 +32,8 @@ interface DayPlanRepository {
     @DELETE("/dayplans/{id}/recipes/{recipeId}")
     suspend fun deassignRecipe(@Path("id") dayPlanId: Int, @Path("recipeId") recipeId: Int): SuccessResponse
 
-    @POST("/dayplans/recipes/{recipeId}")
-    suspend fun assignRecipe(@Path("recipeId") recipeId: Int, @Body request: AddRecipeToDayPlanRequest): SuccessResponse
+    @POST("/dayplans")
+    suspend fun assignRecipe(@Body request: AddRecipeToDayPlanRequest): SuccessResponse
 
     @PUT("/dayplans/{id}")
     suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
