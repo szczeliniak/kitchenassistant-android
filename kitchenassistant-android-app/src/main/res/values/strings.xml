@@ -91,7 +91,6 @@
     <string name="label_recipe_ingredient_group_name">Ingredient group name</string>
     <string name="label_ingredient_name">Ingredient name</string>
     <string name="label_ingredient_quantity">Quantity</string>
-    <string name="label_step_name">Step name</string>
     <string name="label_step_description">Description</string>
     <string name="label_step_sequence">Sequence</string>
     <string name="label_shopping_list_name">List name</string>
@@ -122,7 +121,6 @@
 
     <string name="placeholder_recipe_author">Pawkens</string>
     <string name="placeholder_recipe_category">Some category</string>
-    <string name="placeholder_step_name">Some step</string>
     <string name="placeholder_step_description">Some step description</string>
     <string name="placeholder_shopping_list_description">Shopping list description</string>
     <string name="placeholder_shopping_list_date">2022&#8211;01&#8211;01</string>

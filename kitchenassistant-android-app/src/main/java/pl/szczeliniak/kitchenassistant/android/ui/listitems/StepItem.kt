@@ -19,8 +19,7 @@ class StepItem(
     BindableItem<ListItemStepBinding>() {
 
     override fun bind(binding: ListItemStepBinding, position: Int) {
-        binding.stepName.text = String.format("%s. %s", position + 1, step.name)
-        binding.stepDescription.fillOrHide(step.description, binding.stepDescription)
+        binding.stepDescription.text = String.format("%s. %s", position + 1, step.description)
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 

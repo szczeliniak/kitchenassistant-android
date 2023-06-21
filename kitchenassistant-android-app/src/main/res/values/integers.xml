@@ -6,7 +6,6 @@
     <integer name="max_length_recipe_description">1000</integer>
     <integer name="max_length_ingredient_name">100</integer>
     <integer name="max_length_ingredient_quantity">50</integer>
-    <integer name="max_length_step_name">100</integer>
     <integer name="max_length_step_description">1000</integer>
     <integer name="max_length_step_sequence">10</integer>
     <integer name="max_length_shopping_list_description">1000</integer>

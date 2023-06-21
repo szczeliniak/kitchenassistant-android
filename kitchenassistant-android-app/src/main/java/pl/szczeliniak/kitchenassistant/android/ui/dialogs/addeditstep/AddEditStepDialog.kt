@@ -4,7 +4,6 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
-import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -53,10 +52,7 @@ class AddEditStepDialog : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         binding = DialogAddEditStepBinding.inflate(layoutInflater)
         step?.let { step ->
-            binding.stepName.setText(step.name)
-            step.description?.let {
-                binding.stepDescription.setText(it)
-            }
+            binding.stepDescription.setText(step.description)
             step.sequence?.let {
                 binding.stepSequence.setText(it.toString())
             }
@@ -64,15 +60,6 @@ class AddEditStepDialog : DialogFragment() {
         }
 
         addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
-
-        binding.stepName.doOnTextChanged { _, _, _, _ ->
-            if (!isNameValid()) {
-                binding.stepNameLayout.error = getString(R.string.message_step_name_is_empty)
-            } else {
-                binding.stepNameLayout.error = null
-            }
-            checkButtonState()
-        }
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
@@ -82,11 +69,11 @@ class AddEditStepDialog : DialogFragment() {
     }
 
     private fun checkButtonState() {
-        positiveButton.enable(isNameValid())
+        positiveButton.enable(isDescriptionValid())
     }
 
-    private fun isNameValid(): Boolean {
-        return name.isNotEmpty()
+    private fun isDescriptionValid(): Boolean {
+        return description.isNotEmpty()
     }
 
     private fun prepareAddStepLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -114,21 +101,16 @@ class AddEditStepDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             step?.let { step ->
                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                    viewModel.updateStep(recipeId, step.id, UpdateStepRequest(name, description, sequence))
+                    viewModel.updateStep(recipeId, step.id, UpdateStepRequest(description, sequence))
                         .observe(this) { addStepLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
-                viewModel.addStep(recipeId, AddStepRequest(name, description, sequence))
+                viewModel.addStep(recipeId, AddStepRequest(description, sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
             }
         }
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
-
-    private val name: String
-        get() {
-            return binding.stepName.text.toString()
-        }
 
     private val description: String
         get() {

@@ -17,23 +17,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            app:counterMaxLength="@integer/max_length_step_name"
-            style="@style/InputLayoutWithCounter"
-            android:id="@+id/step_name_layout"
-            android:layout_height="wrap_content">
-
-        <com.google.android.material.textfield.TextInputEditText
-                android:hint="@string/label_step_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:maxLength="@integer/max_length_step_name"
-                style="@style/EditTextText"
-                android:id="@+id/step_name"/>
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
             app:counterMaxLength="@integer/max_length_step_description"
             style="@style/InputLayoutWithCounter"
             android:layout_height="wrap_content">
