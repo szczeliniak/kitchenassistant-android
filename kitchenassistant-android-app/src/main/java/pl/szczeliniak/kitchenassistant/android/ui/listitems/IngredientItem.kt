@@ -6,12 +6,12 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemIngredientBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Ingredient
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 
 class IngredientItem(
     private val context: Context,
     private val recipeId: Int,
-    private val ingredient: Ingredient,
+    private val ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient,
     private val onDeleteClick: OnClick,
     private val onAddToShoppingListItem: OnClick
 ) :
@@ -53,7 +53,7 @@ class IngredientItem(
     }
 
     fun interface OnClick {
-        fun onClick(recipeId: Int, ingredient: Ingredient)
+        fun onClick(recipeId: Int, ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient)
     }
 
 }

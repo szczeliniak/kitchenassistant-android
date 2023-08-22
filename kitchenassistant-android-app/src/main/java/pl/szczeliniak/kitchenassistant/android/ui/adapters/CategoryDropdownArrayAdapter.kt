@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownCategoryBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 
-class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<Category>(context, 0, ArrayList()) {
+class CategoryDropdownArrayAdapter(context: Context) : ArrayAdapter<CategoriesResponse.Category>(context, 0, ArrayList()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder

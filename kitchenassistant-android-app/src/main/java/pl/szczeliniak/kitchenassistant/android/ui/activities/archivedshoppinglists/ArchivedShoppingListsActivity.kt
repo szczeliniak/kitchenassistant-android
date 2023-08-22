@@ -20,16 +20,12 @@ import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.shoppinglistsfilter.ShoppingListsFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.ShoppingListItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -49,7 +45,6 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
     private val viewModel: ArchivedShoppingListsActivityViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
     private val saveShoppingListLoadingStateHandler = prepareLoadShoppingListsStateHandler()
-    private val deleteShoppingListLoadingStateHandler = prepareDeleteShoppingListLoadingStateHandler()
 
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var binding: ActivityArchviedShoppingListsBinding
@@ -96,45 +91,19 @@ ArchivedShoppingListsActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: ShoppingListsResponse) {
-                endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
-                if (data.shoppingLists.isEmpty()) {
+                endlessScrollRecyclerViewListener.maxPage = data.shoppingLists.totalNumberOfPages
+                if (data.shoppingLists.items.isEmpty()) {
                     binding.layout.showEmptyIcon(this@ArchivedShoppingListsActivity)
                 } else {
                     binding.layout.hideEmptyIcon()
-                    data.shoppingLists.forEach { shoppingList ->
+                    data.shoppingLists.items.forEach { shoppingList ->
                         adapter.add(ShoppingListItem(this@ArchivedShoppingListsActivity, shoppingList, {
                             ShoppingListActivity.start(this@ArchivedShoppingListsActivity, shoppingList.id, false)
-                        }, {
-                            ConfirmationDialog.show(supportFragmentManager) {
-                                viewModel.delete(it.id).observe(this@ArchivedShoppingListsActivity) { r ->
-                                    deleteShoppingListLoadingStateHandler.handle(r)
-                                }
-                            }
-                        }, {
-                            AddEditShoppingListActivity.start(this@ArchivedShoppingListsActivity, it.id)
-                        }, null))
+                        }, null, null, null))
                     }
                 }
             }
         })
-    }
-
-    private fun prepareDeleteShoppingListLoadingStateHandler(): LoadingStateHandler<Int> {
-        return LoadingStateHandler(
-            this@ArchivedShoppingListsActivity,
-            object : LoadingStateHandler.OnStateChanged<Int> {
-                override fun onInProgress() {
-                    binding.layout.showProgressSpinner(this@ArchivedShoppingListsActivity)
-                }
-
-                override fun onFinish() {
-                    binding.layout.hideProgressSpinner()
-                }
-
-                override fun onSuccess(data: Int) {
-                    endlessScrollRecyclerViewListener.reset()
-                }
-            })
     }
 
     override fun onStart() {

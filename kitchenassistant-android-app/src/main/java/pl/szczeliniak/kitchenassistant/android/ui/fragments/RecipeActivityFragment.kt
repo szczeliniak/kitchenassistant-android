@@ -1,12 +1,12 @@
 package pl.szczeliniak.kitchenassistant.android.ui.fragments
 
 import androidx.fragment.app.Fragment
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
 
 abstract class RecipeActivityFragment : Fragment() {
 
-    val recipe: RecipeDetails?
+    val recipe: RecipeResponse.Recipe?
         get() {
             val activity = requireActivity()
             if (activity is RecipeActivity) {

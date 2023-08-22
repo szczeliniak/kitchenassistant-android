@@ -7,13 +7,13 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Recipe
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import java.io.File
 
 class RecipeItem(
     private val context: Context,
-    private val recipe: Recipe,
+    private val recipe: RecipesResponse.Recipe,
     private val showCategory: Boolean = false,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
@@ -87,7 +87,7 @@ class RecipeItem(
     }
 
     fun interface OnClick {
-        fun onClick(recipe: Recipe)
+        fun onClick(recipe: RecipesResponse.Recipe)
     }
 
     val photoName: String?

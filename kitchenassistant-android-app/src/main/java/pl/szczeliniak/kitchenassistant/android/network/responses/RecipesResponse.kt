@@ -1,9 +1,26 @@
 package pl.szczeliniak.kitchenassistant.android.network.responses
 
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Pagination
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Recipe
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 
 data class RecipesResponse(
-    val recipes: List<Recipe>,
-    val pagination: Pagination
-)
+    val recipes: Page<Recipe>,
+) {
+    @Parcelize
+    data class Recipe(
+        val id: Int,
+        val name: String,
+        val author: String?,
+        val favorite: Boolean,
+        val category: Category?,
+        val tags: List<String>,
+        val photoName: String?,
+    ) : Parcelable {
+        @Parcelize
+        data class Category(
+            val id: Int,
+            val name: String,
+            val sequence: Int?
+        ) : Parcelable
+    }
+}

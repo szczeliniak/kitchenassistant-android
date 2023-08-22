@@ -8,8 +8,8 @@ import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListI
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.ShoppingListRepository
 import java.time.LocalDate
 
@@ -48,7 +48,7 @@ class ShoppingListService(
         }
     }
 
-    suspend fun findById(shoppingListId: Int): Flow<LoadingState<ShoppingListDetails>> {
+    suspend fun findById(shoppingListId: Int): Flow<LoadingState<ShoppingListResponse.ShoppingList>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -78,7 +78,7 @@ class ShoppingListService(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.changeItemState(shoppingListId, shoppingListItemId, state).id))
+                emit(LoadingState.Success(repository.markItemAsDone(shoppingListId, shoppingListItemId, state).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

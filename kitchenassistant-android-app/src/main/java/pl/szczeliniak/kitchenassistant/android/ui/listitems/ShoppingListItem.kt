@@ -6,16 +6,16 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
-class ShoppingListItem constructor(
+class ShoppingListItem(
     private val context: Context,
-    private val shoppingList: ShoppingList,
+    private val shoppingList: ShoppingListsResponse.ShoppingList,
     private val onClick: OnClick,
-    private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick,
+    private val onDeleteClick: OnClick?,
+    private val onEditClick: OnClick?,
     private val onArchiveClick: OnClick?
 ) : BindableItem<ListItemShoppingListBinding>() {
 
@@ -26,8 +26,14 @@ class ShoppingListItem constructor(
             LocalDateUtils.stringify(shoppingList.date),
             binding.shoppingListDate
         )
+
         binding.root.setOnClickListener { onClick.onClick(shoppingList) }
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+
+        if (onDeleteClick == null && onEditClick == null && onArchiveClick == null) {
+            binding.buttonMore.visibility = View.GONE
+        } else {
+            binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        }
     }
 
     override fun getLayout(): Int {
@@ -46,15 +52,23 @@ class ShoppingListItem constructor(
             popupMenu.menu.removeItem(R.id.archive)
         }
 
+        if (onDeleteClick == null) {
+            popupMenu.menu.removeItem(R.id.delete)
+        }
+
+        if (onEditClick == null) {
+            popupMenu.menu.removeItem(R.id.edit)
+        }
+
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(shoppingList)
+                    onDeleteClick?.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.edit -> {
-                    onEditClick.onClick(shoppingList)
+                    onEditClick?.onClick(shoppingList)
                     return@setOnMenuItemClickListener true
                 }
 
@@ -70,7 +84,7 @@ class ShoppingListItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(shoppingList: ShoppingList)
+        fun onClick(shoppingList: ShoppingListsResponse.ShoppingList)
     }
 
 }

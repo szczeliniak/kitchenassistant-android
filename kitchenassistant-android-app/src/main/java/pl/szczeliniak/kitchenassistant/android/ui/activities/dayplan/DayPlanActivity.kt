@@ -17,7 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityDayPlanBindin
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
@@ -30,17 +30,18 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class DayPlanActivity : AppCompatActivity() {
 
     companion object {
-        private const val DAY_PLAN_ID_EXTRA = "DAY_PLAN_ID_EXTRA"
+        private const val DAY_PLAN_DATE_EXTRA = "DAY_PLAN_DATE_EXTRA"
 
-        fun start(context: Context, dayPlanId: Int) {
+        fun start(context: Context, date: LocalDate) {
             val intent = Intent(context, DayPlanActivity::class.java)
-            intent.putExtra(DAY_PLAN_ID_EXTRA, dayPlanId)
+            intent.putExtra(DAY_PLAN_DATE_EXTRA, date)
             context.startActivity(intent)
         }
     }
@@ -53,15 +54,14 @@ class DayPlanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDayPlanBinding
     private val recipesAdapter = GroupAdapter<GroupieViewHolder>()
-    private lateinit var recipesLoadingStateHandler: LoadingStateHandler<DayPlanDetails>
+    private lateinit var recipesLoadingStateHandler: LoadingStateHandler<DayPlanResponse.DayPlan>
     private lateinit var deleteRecipeLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var deleteDayPlanLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var archiveDayPlanLoadingStateHandler: LoadingStateHandler<Int>
 
     private var numberOfRecipesForDayPlan = 0
 
     private val viewModel: DayPlanActivityViewModel by viewModels {
-        DayPlanActivityViewModel.provideFactory(factory, dayPlanId)
+        DayPlanActivityViewModel.provideFactory(factory, date)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +71,6 @@ class DayPlanActivity : AppCompatActivity() {
         recipesLoadingStateHandler = recipesLoadingStateHandler()
         deleteRecipeLoadingStateHandler = deleteRecipeLoadingStateHandler()
         deleteDayPlanLoadingStateHandler = deleteDayPlanLoadingStateHandler()
-        archiveDayPlanLoadingStateHandler = archiveDayPlanLoadingStateHandler()
         viewModel.dayPlan.observe(this) { recipesLoadingStateHandler.handle(it) }
         setContentView(binding.root)
         eventBus.register(this)
@@ -82,8 +81,8 @@ class DayPlanActivity : AppCompatActivity() {
         super.onDestroy()
     }
 
-    private fun recipesLoadingStateHandler(): LoadingStateHandler<DayPlanDetails> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<DayPlanDetails> {
+    private fun recipesLoadingStateHandler(): LoadingStateHandler<DayPlanResponse.DayPlan> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<DayPlanResponse.DayPlan> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@DayPlanActivity)
             }
@@ -92,7 +91,7 @@ class DayPlanActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: DayPlanDetails) {
+            override fun onSuccess(data: DayPlanResponse.DayPlan) {
                 binding.toolbarLayout.toolbar.init(this@DayPlanActivity, LocalDateUtils.stringify(data.date) ?: "")
 
                 recipesAdapter.clear()
@@ -104,7 +103,7 @@ class DayPlanActivity : AppCompatActivity() {
                 numberOfRecipesForDayPlan = data.recipes.size
                 data.recipes.forEach { recipe ->
                     recipesAdapter.add(DayPlanRecipeHeaderItem(recipe, this@DayPlanActivity) { recipeId ->
-                        viewModel.deleteRecipe(data.id, recipeId).observe(this@DayPlanActivity) {
+                        viewModel.deleteRecipe(data.date, recipeId).observe(this@DayPlanActivity) {
                             deleteRecipeLoadingStateHandler.handle(it)
                         }
                     })
@@ -171,27 +170,10 @@ class DayPlanActivity : AppCompatActivity() {
         })
     }
 
-    private fun archiveDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@DayPlanActivity)
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: Int) {
-                eventBus.post(DayPlanEditedEvent())
-                finish()
-            }
-        })
-    }
-
-
-    private val dayPlanId: Int
+    private val date: LocalDate
         get() {
-            return intent.getIntExtra(DAY_PLAN_ID_EXTRA, -1)
+            return intent.getParcelableExtra(DAY_PLAN_DATE_EXTRA, LocalDate::class.java)
+                ?: throw IllegalArgumentException("Date cannot be null")
         }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
@@ -203,22 +185,14 @@ class DayPlanActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.delete -> {
                 ConfirmationDialog.show(supportFragmentManager) {
-                    viewModel.delete(dayPlanId).observe(this) {
+                    viewModel.delete(date).observe(this) {
                         deleteDayPlanLoadingStateHandler.handle(it)
                     }
                 }
             }
 
-            R.id.archive -> {
-                ConfirmationDialog.show(supportFragmentManager) {
-                    viewModel.archive(dayPlanId).observe(this) {
-                        archiveDayPlanLoadingStateHandler.handle(it)
-                    }
-                }
-            }
-
             R.id.edit -> {
-                UpdateDayPlanDialog.show(supportFragmentManager, dayPlanId)
+                UpdateDayPlanDialog.show(supportFragmentManager, date)
             }
         }
         return super.onOptionsItemSelected(item)

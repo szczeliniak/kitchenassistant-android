@@ -12,11 +12,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditCategoryBinding
-import pl.szczeliniak.kitchenassistant.android.events.CategorySavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.CategoriesChangedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddCategoryRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateCategoryRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
@@ -31,7 +31,7 @@ class AddEditCategoryDialog : DialogFragment() {
         private const val CATEGORY_EXTRA = "CATEGORY_EXTRA"
         private const val TAG = "AddEditCategoryDialog"
 
-        fun show(fragmentManager: FragmentManager, category: Category? = null) {
+        fun show(fragmentManager: FragmentManager, category: CategoriesResponse.Category? = null) {
             val bundle = Bundle()
             category?.let { bundle.putParcelable(CATEGORY_EXTRA, it) }
             val dialog = AddEditCategoryDialog()
@@ -97,7 +97,7 @@ class AddEditCategoryDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(CategorySavedEvent())
+                eventBus.post(CategoriesChangedEvent())
                 dismiss()
             }
         })
@@ -118,7 +118,7 @@ class AddEditCategoryDialog : DialogFragment() {
                         .observe(this) { addEditCategoryLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
-                viewModel.addCategory(AddCategoryRequest(name, localStorageService.getId(), sequence))
+                viewModel.addCategory(AddCategoryRequest(name, sequence))
                     .observe(this) { addEditCategoryLoadingStateHandler.handle(it) }
             }
         }
@@ -136,9 +136,9 @@ class AddEditCategoryDialog : DialogFragment() {
             return if (asString.isEmpty()) null else asString.toInt()
         }
 
-    private val category: Category?
+    private val category: CategoriesResponse.Category?
         get() {
-            return requireArguments().getParcelable(CATEGORY_EXTRA, Category::class.java)
+            return requireArguments().getParcelable(CATEGORY_EXTRA, CategoriesResponse.Category::class.java)
         }
 
 }

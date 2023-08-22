@@ -6,11 +6,11 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanIngredientBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanIngredient
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 
 class DayPlanIngredientItem(
     private val context: Context,
-    private val ingredient: DayPlanIngredient,
+    private val ingredient: DayPlanResponse.DayPlan.Recipe.IngredientGroup.Ingredient,
     private val recipeId: Int,
     private val onAddToShoppingListItem: OnClick
 ) : BindableItem<ListItemDayPlanIngredientBinding>() {
@@ -46,7 +46,7 @@ class DayPlanIngredientItem(
     }
 
     fun interface OnClick {
-        fun onClick(ingredient: DayPlanIngredient, recipeId: Int)
+        fun onClick(ingredient: DayPlanResponse.DayPlan.Recipe.IngredientGroup.Ingredient, recipeId: Int)
     }
 
 }

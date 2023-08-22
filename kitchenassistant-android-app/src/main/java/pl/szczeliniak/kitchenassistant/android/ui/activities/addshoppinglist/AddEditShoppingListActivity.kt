@@ -18,11 +18,10 @@ import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.shoppinglist.ShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatEditTextUtils.Companion.getTextOrNull
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
@@ -79,16 +78,8 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             }, date.year, date.monthValue - 1, date.dayOfMonth)
             dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.label_button_cancel)) { _, _ ->
                 binding.shoppingListDate.text = getString(R.string.label_button_select_date)
-                binding.shoppingListAutomaticArchiving.isChecked = false
             }
             dialog.show()
-        }
-
-        binding.shoppingListAutomaticArchiving.setOnCheckedChangeListener { _, isChecked ->
-            if(date == null && isChecked) {
-                toast(R.string.message_cannot_auto_archive_shopping_list_without_date)
-                binding.shoppingListAutomaticArchiving.isChecked = false
-            }
         }
 
         binding.toolbarLayout.toolbar.init(this, R.string.title_activity_new_shopping_list)
@@ -138,35 +129,36 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareLoadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListDetails> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListDetails> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@AddEditShoppingListActivity)
-            }
+    private fun prepareLoadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListResponse.ShoppingList> {
+        return LoadingStateHandler(
+            this,
+            object : LoadingStateHandler.OnStateChanged<ShoppingListResponse.ShoppingList> {
+                override fun onInProgress() {
+                    binding.root.showProgressSpinner(this@AddEditShoppingListActivity)
+                }
 
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
+                override fun onFinish() {
+                    binding.root.hideProgressSpinner()
+                }
 
-            override fun onSuccess(data: ShoppingListDetails) {
-                binding.shoppingListName.setText(data.name)
-                binding.shoppingListDescription.setText(data.description)
-                data.date?.let { date ->
-                    binding.shoppingListDate.text = LocalDateUtils.stringify(
-                        LocalDate.of(
-                            date.year,
-                            date.monthValue,
-                            date.dayOfMonth
+                override fun onSuccess(data: ShoppingListResponse.ShoppingList) {
+                    binding.shoppingListName.setText(data.name)
+                    binding.shoppingListDescription.setText(data.description)
+                    data.date?.let { date ->
+                        binding.shoppingListDate.text = LocalDateUtils.stringify(
+                            LocalDate.of(
+                                date.year,
+                                date.monthValue,
+                                date.dayOfMonth
+                            )
                         )
+                    }
+                    binding.toolbarLayout.toolbar.init(
+                        this@AddEditShoppingListActivity,
+                        R.string.title_activity_edit_shopping_list
                     )
                 }
-                binding.toolbarLayout.toolbar.init(
-                    this@AddEditShoppingListActivity,
-                    R.string.title_activity_edit_shopping_list
-                )
-                binding.shoppingListAutomaticArchiving.isChecked = data.automaticArchiving
-            }
-        })
+            })
     }
 
     private fun saveShoppingList() {
@@ -175,16 +167,14 @@ class AddEditShoppingListActivity : AppCompatActivity() {
             return
         }
         shoppingListId?.let {
-            viewModel.updateShoppingList(it, UpdateShoppingListRequest(name!!, description, date, automaticArchiving))
+            viewModel.updateShoppingList(it, UpdateShoppingListRequest(name!!, description, date))
                 .observe(this) { state -> saveShoppingListLoadingStateHandler.handle(state) }
         } ?: kotlin.run {
             viewModel.addShoppingList(
                 AddShoppingListRequest(
                     name!!,
                     description,
-                    localStorageService.getId(),
-                    date,
-                    automaticArchiving
+                    date
                 )
             )
                 .observe(this) { saveShoppingListLoadingStateHandler.handle(it) }
@@ -211,11 +201,6 @@ class AddEditShoppingListActivity : AppCompatActivity() {
         get() {
             val id = intent.getIntExtra(SHOPPING_LIST_ID_EXTRA, -1)
             return if (id <= 0) null else id
-        }
-
-    private val automaticArchiving: Boolean
-        get() {
-            return binding.shoppingListAutomaticArchiving.isChecked
         }
 
 }

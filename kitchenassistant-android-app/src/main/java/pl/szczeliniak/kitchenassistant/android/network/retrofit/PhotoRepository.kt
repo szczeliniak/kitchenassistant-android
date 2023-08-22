@@ -15,6 +15,6 @@ interface PhotoRepository {
 
     @Multipart
     @POST("/photos")
-    suspend fun uploadPhoto(@Part part: MultipartBody.Part): UploadPhotoResponse
+    suspend fun uploadPhoto(@Part("file") part: MultipartBody.Part): UploadPhotoResponse
 
 }

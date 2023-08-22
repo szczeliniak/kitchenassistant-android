@@ -1,9 +1,14 @@
 package pl.szczeliniak.kitchenassistant.android.network.responses
 
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Pagination
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 
 data class DayPlansResponse(
-    val dayPlans: List<DayPlan>,
-    val pagination: Pagination
-)
+    val dayPlans: Page<DayPlan>
+) {
+    @Parcelize
+    data class DayPlan(
+        val date: LocalDate,
+    ) : Parcelable
+}

@@ -8,17 +8,18 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
+import java.time.LocalDate
 
 class DayPlanActivityViewModel @AssistedInject constructor(
     private val dayPlanService: DayPlanService,
-    @Assisted private val dayPlanId: Int
+    @Assisted private val date: LocalDate
 ) : ViewModel() {
 
-    private val _dayPlan = MutableLiveData<LoadingState<DayPlanDetails>>()
+    private val _dayPlan = MutableLiveData<LoadingState<DayPlanResponse.DayPlan>>()
 
-    val dayPlan: LiveData<LoadingState<DayPlanDetails>>
+    val dayPlan: LiveData<LoadingState<DayPlanResponse.DayPlan>>
         get() = _dayPlan
 
     init {
@@ -27,36 +28,26 @@ class DayPlanActivityViewModel @AssistedInject constructor(
 
     fun reload() {
         viewModelScope.launch {
-            dayPlanService.findById(dayPlanId)
+            dayPlanService.findById(date)
                 .onEach { _dayPlan.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    fun deleteRecipe(dayPlanId: Int, recipeId: Int): LiveData<LoadingState<Int>> {
+    fun deleteRecipe(date: LocalDate, recipeId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.unassignRecipe(dayPlanId, recipeId)
+            dayPlanService.unassignRecipe(date, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
         return liveData
     }
 
-    fun delete(dayPlanId: Int): LiveData<LoadingState<Int>> {
+    fun delete(date: LocalDate): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.delete(dayPlanId)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
-    fun archive(dayPlanId: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            dayPlanService.archive(dayPlanId, true)
+            dayPlanService.delete(date)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
@@ -65,14 +56,14 @@ class DayPlanActivityViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(dayPlanId: Int): DayPlanActivityViewModel
+        fun create(date: LocalDate): DayPlanActivityViewModel
     }
 
     companion object {
-        fun provideFactory(factory: Factory, dayPlanId: Int): ViewModelProvider.Factory =
+        fun provideFactory(factory: Factory, date: LocalDate): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return factory.create(dayPlanId) as T
+                    return factory.create(date) as T
                 }
             }
     }

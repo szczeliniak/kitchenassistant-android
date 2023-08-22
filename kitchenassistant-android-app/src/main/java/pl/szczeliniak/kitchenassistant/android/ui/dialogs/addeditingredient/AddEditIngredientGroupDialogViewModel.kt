@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.EditIngredientGroupRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.IngredientGroup
+import pl.szczeliniak.kitchenassistant.android.network.responses.IngredientGroupResponse
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 
 class AddEditIngredientGroupDialogViewModel @AssistedInject constructor(
@@ -19,9 +19,9 @@ class AddEditIngredientGroupDialogViewModel @AssistedInject constructor(
     @Assisted val ingredientGroupId: Int?
 ) : ViewModel() {
 
-    private val _ingredientGroup = MutableLiveData<LoadingState<IngredientGroup>>()
+    private val _ingredientGroup = MutableLiveData<LoadingState<IngredientGroupResponse.IngredientGroup>>()
 
-    val ingredientGroup: LiveData<LoadingState<IngredientGroup>>
+    val ingredientGroup: LiveData<LoadingState<IngredientGroupResponse.IngredientGroup>>
         get() = _ingredientGroup
 
     init {

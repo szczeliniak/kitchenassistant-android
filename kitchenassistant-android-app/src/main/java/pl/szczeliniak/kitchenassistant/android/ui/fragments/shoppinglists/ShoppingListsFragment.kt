@@ -155,12 +155,12 @@ class ShoppingListsFragment : Fragment() {
 
                 override fun onSuccess(data: ShoppingListsResponse) {
                     adapter.clear()
-                    endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
-                    if (data.shoppingLists.isEmpty()) {
+                    endlessScrollRecyclerViewListener.maxPage = data.shoppingLists.totalNumberOfPages
+                    if (data.shoppingLists.items.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
                     } else {
                         binding.layout.hideEmptyIcon()
-                        data.shoppingLists.forEach { shoppingList ->
+                        data.shoppingLists.items.forEach { shoppingList ->
                             adapter.add(ShoppingListItem(requireContext(), shoppingList, {
                                 ShoppingListActivity.start(requireContext(), shoppingList.id)
                             }, {

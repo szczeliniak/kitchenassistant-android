@@ -6,10 +6,6 @@
             android:title="@string/label_button_delete"/>
 
     <item
-            android:id="@+id/archive"
-            android:title="@string/label_button_archive"/>
-
-    <item
             android:id="@+id/edit"
             android:title="@string/label_button_edit"/>
 

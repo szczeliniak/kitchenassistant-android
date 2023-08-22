@@ -63,14 +63,6 @@ class RegisterActivity : AppCompatActivity() {
             }
             checkButtonState()
         }
-        binding.registerName.doOnTextChanged { _, _, _, _ ->
-            if (!isNameValid()) {
-                binding.registerNameLayout.error = getString(R.string.message_empty_name)
-            } else {
-                binding.registerNameLayout.error = null
-            }
-            checkButtonState()
-        }
         binding.registerPassword.doOnTextChanged { _, _, _, _ ->
             if (!isPasswordValid()) {
                 binding.registerPasswordLayout.error = getString(R.string.message_wrong_password)
@@ -93,20 +85,16 @@ class RegisterActivity : AppCompatActivity() {
         return password.isNotEmpty() && password == password2
     }
 
-    private fun isNameValid(): Boolean {
-        return name.isNotEmpty()
-    }
-
     private fun isEmailValid(): Boolean {
         return email.isNotEmpty() && ValidationUtils.isEmail(email)
     }
 
     private fun checkButtonState() {
-        binding.buttonRegister.enable(isEmailValid() && isNameValid() && isPasswordValid())
+        binding.buttonRegister.enable(isEmailValid() && isPasswordValid())
     }
 
     private fun handleRegisterButtonClick() {
-        viewModel.login(RegisterRequest(email, name, password, password2))
+        viewModel.login(RegisterRequest(email, password))
             .observe(this@RegisterActivity) { registerStateHandler.handle(it) }
     }
 
@@ -140,11 +128,6 @@ class RegisterActivity : AppCompatActivity() {
     private val email: String
         get() {
             return binding.registerEmail.text.toString()
-        }
-
-    private val name: String
-        get() {
-            return binding.registerName.text.toString()
         }
 
     private val password: String

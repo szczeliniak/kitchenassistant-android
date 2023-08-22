@@ -13,13 +13,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditIngredientGroupBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientDto
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddIngredientGroupRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.EditIngredientDto
 import pl.szczeliniak.kitchenassistant.android.network.requests.EditIngredientGroupRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.IngredientGroup
+import pl.szczeliniak.kitchenassistant.android.network.responses.IngredientGroupResponse
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.AddEditIngredientItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.GroupAdapterUtils.Companion.getItems
@@ -51,7 +49,7 @@ class AddEditIngredientGroupDialog : DialogFragment() {
 
     private lateinit var binding: DialogAddEditIngredientGroupBinding
     private lateinit var saveIngredientGroupLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var loadIngredientGroupLoadingStateHandler: LoadingStateHandler<IngredientGroup>
+    private lateinit var loadIngredientGroupLoadingStateHandler: LoadingStateHandler<IngredientGroupResponse.IngredientGroup>
     private lateinit var positiveButton: Button
     private var ingredientsAdapter = GroupieAdapter()
 
@@ -121,41 +119,43 @@ class AddEditIngredientGroupDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(RecipeSavedEvent())
+                eventBus.post(RecipeChanged())
                 dismiss()
             }
         })
     }
 
-    private fun loadIngredientGroupLoadingStateHandler(): LoadingStateHandler<IngredientGroup> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<IngredientGroup> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(requireActivity())
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: IngredientGroup) {
-                binding.title.text = getString(R.string.title_dialog_edit_ingredient_group)
-                binding.ingredientGroupName.setText(data.name)
-                data.ingredients.forEach {
-                    ingredientsAdapter.add(
-                        AddEditIngredientItem(
-                            requireContext(),
-                            it.id,
-                            it.name,
-                            it.quantity, { item ->
-                                ingredientsAdapter.remove(item)
-                            }, {
-                                checkButtonState()
-                            })
-                    )
+    private fun loadIngredientGroupLoadingStateHandler(): LoadingStateHandler<IngredientGroupResponse.IngredientGroup> {
+        return LoadingStateHandler(
+            requireActivity(),
+            object : LoadingStateHandler.OnStateChanged<IngredientGroupResponse.IngredientGroup> {
+                override fun onInProgress() {
+                    binding.root.showProgressSpinner(requireActivity())
                 }
-                checkButtonState()
-            }
-        })
+
+                override fun onFinish() {
+                    binding.root.hideProgressSpinner()
+                }
+
+                override fun onSuccess(data: IngredientGroupResponse.IngredientGroup) {
+                    binding.title.text = getString(R.string.title_dialog_edit_ingredient_group)
+                    binding.ingredientGroupName.setText(data.name)
+                    data.ingredients.forEach {
+                        ingredientsAdapter.add(
+                            AddEditIngredientItem(
+                                requireContext(),
+                                it.id,
+                                it.name,
+                                it.quantity, { item ->
+                                    ingredientsAdapter.remove(item)
+                                }, {
+                                    checkButtonState()
+                                })
+                        )
+                    }
+                    checkButtonState()
+                }
+            })
     }
 
     override fun onResume() {
@@ -187,15 +187,15 @@ class AddEditIngredientGroupDialog : DialogFragment() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
 
-    private fun prepareIngredientToAdd(): List<AddIngredientDto> {
+    private fun prepareIngredientToAdd(): List<AddIngredientGroupRequest.AddIngredientDto> {
         return ingredientsAdapter.getItems<AddEditIngredientItem>().map {
-            AddIngredientDto(it.ingredientName, it.ingredientQuantity)
+            AddIngredientGroupRequest.AddIngredientDto(it.ingredientName, it.ingredientQuantity)
         }
     }
 
-    private fun prepareIngredientToEdit(): List<EditIngredientDto> {
+    private fun prepareIngredientToEdit(): List<EditIngredientGroupRequest.EditIngredientDto> {
         return ingredientsAdapter.getItems<AddEditIngredientItem>().map {
-            EditIngredientDto(it.ingredientId, it.ingredientName, it.ingredientQuantity)
+            EditIngredientGroupRequest.EditIngredientDto(it.ingredientId, it.ingredientName, it.ingredientQuantity)
         }
     }
 

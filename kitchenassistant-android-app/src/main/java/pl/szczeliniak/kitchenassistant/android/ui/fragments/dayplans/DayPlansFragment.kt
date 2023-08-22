@@ -103,24 +103,20 @@ class DayPlansFragment : Fragment() {
                 }
 
                 override fun onSuccess(data: DayPlansResponse) {
-                    endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
-                    if (data.dayPlans.isEmpty()) {
+                    endlessScrollRecyclerViewListener.maxPage = data.dayPlans.totalNumberOfPages
+                    if (data.dayPlans.items.isEmpty()) {
                         binding.layout.showEmptyIcon(requireActivity())
                     } else {
                         binding.layout.hideEmptyIcon()
-                        data.dayPlans.forEach { dayPlan ->
+                        data.dayPlans.items.forEach { dayPlan ->
                             adapter.add(DayPlanItem(requireContext(), dayPlan, {
-                                DayPlanActivity.start(requireContext(), dayPlan.id)
+                                DayPlanActivity.start(requireContext(), dayPlan.date)
                             }, {
-                                viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
+                                viewModel.delete(it.date).observe(viewLifecycleOwner) { r ->
                                     deleteArchiveDayPlanLoadingStateHandler.handle(r)
                                 }
                             }, {
-                                viewModel.archive(it.id).observe(viewLifecycleOwner) { r ->
-                                    deleteArchiveDayPlanLoadingStateHandler.handle(r)
-                                }
-                            }, {
-                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan.id)
+                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan.date)
                             }))
                         }
                     }

@@ -9,10 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityCategoriesBinding
+import pl.szczeliniak.kitchenassistant.android.events.CategoriesChangedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditcategory.AddEditCategoryDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.CategoryItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
@@ -20,6 +23,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class CategoriesActivity : AppCompatActivity() {
@@ -30,6 +34,9 @@ class CategoriesActivity : AppCompatActivity() {
             context.startActivity(intent)
         }
     }
+
+    @Inject
+    lateinit var eventBus: EventBus
 
     private val viewModel: CategoriesActivityViewModel by viewModels()
     private val adapter = GroupAdapter<GroupieViewHolder>()
@@ -60,35 +67,37 @@ class CategoriesActivity : AppCompatActivity() {
         }
     }
 
-    private fun prepareLoadCategoriesStateHandler(): LoadingStateHandler<List<Category>> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<Category>> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@CategoriesActivity)
-            }
+    private fun prepareLoadCategoriesStateHandler(): LoadingStateHandler<List<CategoriesResponse.Category>> {
+        return LoadingStateHandler(
+            this,
+            object : LoadingStateHandler.OnStateChanged<List<CategoriesResponse.Category>> {
+                override fun onInProgress() {
+                    binding.root.showProgressSpinner(this@CategoriesActivity)
+                }
 
-            override fun onFinish() {
-                binding.root.isRefreshing = false
-                binding.root.hideProgressSpinner()
-            }
+                override fun onFinish() {
+                    binding.root.isRefreshing = false
+                    binding.root.hideProgressSpinner()
+                }
 
-            override fun onSuccess(data: List<Category>) {
-                adapter.clear()
-                if (data.isEmpty()) {
-                    binding.layout.showEmptyIcon(this@CategoriesActivity)
-                } else {
-                    binding.layout.hideEmptyIcon()
-                    data.forEach { category ->
-                        adapter.add(CategoryItem(this@CategoriesActivity, category, {
-                            viewModel.delete(it.id).observe(this@CategoriesActivity) { r ->
-                                deleteCategoryLoadingStateHandler.handle(r)
-                            }
-                        }, {
-                            AddEditCategoryDialog.show(supportFragmentManager, it)
-                        }))
+                override fun onSuccess(data: List<CategoriesResponse.Category>) {
+                    adapter.clear()
+                    if (data.isEmpty()) {
+                        binding.layout.showEmptyIcon(this@CategoriesActivity)
+                    } else {
+                        binding.layout.hideEmptyIcon()
+                        data.forEach { category ->
+                            adapter.add(CategoryItem(this@CategoriesActivity, category, {
+                                viewModel.delete(it.id).observe(this@CategoriesActivity) { r ->
+                                    deleteCategoryLoadingStateHandler.handle(r)
+                                }
+                            }, {
+                                AddEditCategoryDialog.show(supportFragmentManager, it)
+                            }))
+                        }
                     }
                 }
-            }
-        })
+            })
     }
 
     private fun prepareDeleteCategoryLoadingStateHandler(): LoadingStateHandler<Int> {
@@ -104,9 +113,25 @@ class CategoriesActivity : AppCompatActivity() {
                 }
 
                 override fun onSuccess(data: Int) {
-                    viewModel.reloadCategories()
+                    eventBus.post(CategoriesChangedEvent())
+
                 }
             })
+    }
+
+    override fun onStart() {
+        eventBus.register(this)
+        super.onStart()
+    }
+
+    override fun onStop() {
+        eventBus.unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe
+    fun categoriesChangedEvent(event: CategoriesChangedEvent) {
+        viewModel.reloadCategories()
     }
 
 }

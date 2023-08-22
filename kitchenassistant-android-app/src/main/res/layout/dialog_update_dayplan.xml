@@ -11,10 +11,4 @@
             android:layout_height="wrap_content"
             android:id="@+id/calendar"/>
 
-    <androidx.appcompat.widget.AppCompatCheckBox
-            android:text="@string/label_day_plan_automatic_archiving"
-            android:id="@+id/day_plan_automatic_archiving"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,9 +1,17 @@
 package pl.szczeliniak.kitchenassistant.android.network.responses
 
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Pagination
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+import java.time.LocalDate
 
 data class ShoppingListsResponse(
-    val shoppingLists: List<ShoppingList>,
-    val pagination: Pagination
-)
+    val shoppingLists: Page<ShoppingList>,
+) {
+    @Parcelize
+    data class ShoppingList(
+        val id: Int,
+        val name: String,
+        val description: String?,
+        val date: LocalDate?
+    ) : Parcelable
+}

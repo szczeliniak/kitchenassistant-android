@@ -102,7 +102,7 @@ class AddIngredientToShoppingListDialog : DialogFragment() {
                 }
 
                 override fun onSuccess(data: ShoppingListsResponse) {
-                    shoppingListsDropdownAdapter.addAll(data.shoppingLists)
+                    shoppingListsDropdownAdapter.addAll(data.shoppingLists.items)
                 }
             })
     }

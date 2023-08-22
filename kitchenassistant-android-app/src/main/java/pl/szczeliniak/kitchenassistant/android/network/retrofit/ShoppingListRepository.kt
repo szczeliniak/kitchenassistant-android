@@ -54,7 +54,7 @@ interface ShoppingListRepository {
     ): SuccessResponse
 
     @POST("/shoppinglists/{id}/items/{itemId}/completed/{isCompleted}")
-    suspend fun changeItemState(
+    suspend fun markItemAsDone(
         @Path("id") shoppingListId: Int,
         @Path("itemId") shoppingListItemId: Int,
         @Path("isCompleted") isCompleted: Boolean

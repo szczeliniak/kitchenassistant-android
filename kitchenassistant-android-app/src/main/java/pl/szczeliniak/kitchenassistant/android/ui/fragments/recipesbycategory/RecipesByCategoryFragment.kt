@@ -17,7 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesByCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
@@ -220,12 +220,12 @@ class RecipesByCategoryFragment : Fragment() {
             }
 
             override fun onSuccess(data: RecipesResponse) {
-                endlessScrollRecyclerViewListener.maxPage = data.pagination.numberOfPages
-                if (data.recipes.isEmpty()) {
+                endlessScrollRecyclerViewListener.maxPage = data.recipes.totalNumberOfPages
+                if (data.recipes.items.isEmpty()) {
                     binding.layout.showEmptyIcon(requireActivity())
                 } else {
                     binding.layout.hideEmptyIcon()
-                    data.recipes.forEach { recipe ->
+                    data.recipes.items.forEach { recipe ->
                         adapter.add(RecipeItem(requireContext(), recipe, categoryId == null, {
                             RecipeActivity.start(requireContext(), it.id)
                         }, {
@@ -245,7 +245,8 @@ class RecipesByCategoryFragment : Fragment() {
                         }, {
                             ChooseDayForRecipeDialog.show(requireActivity().supportFragmentManager,
                                 ChooseDayForRecipeDialog.OnDayChosen { date ->
-                                    viewModel.assignRecipeToDayPlan(AddRecipeToDayPlanRequest(localStorageService.getId(), date, recipe.id)
+                                    viewModel.assignRecipeToDayPlan(
+                                        AddRecipeToDayPlanRequest(date, recipe.id)
                                     ).observe(viewLifecycleOwner) { r ->
                                         addRecipeToDayPlanLoadingStateHandler.handle(r)
                                     }
@@ -253,7 +254,7 @@ class RecipesByCategoryFragment : Fragment() {
                         }))
                     }
 
-                    data.recipes.forEach { recipe ->
+                    data.recipes.items.forEach { recipe ->
                         recipe.photoName?.let { photoName ->
                             viewModel.loadPhoto(photoName).observe(viewLifecycleOwner) {
                                 loadPhotoLoadingStateHandler.handle(it)
@@ -297,7 +298,7 @@ class RecipesByCategoryFragment : Fragment() {
     }
 
     @Subscribe
-    fun onRecipeSaved(event: RecipeSavedEvent) {
+    fun onRecipeSaved(event: RecipeChanged) {
         endlessScrollRecyclerViewListener.reset()
     }
 

@@ -8,12 +8,12 @@ import android.widget.ArrayAdapter
 import android.widget.Filter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Recipe
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
 
-class RecipeDropdownArrayAdapter(context: Context) : ArrayAdapter<Recipe>(context, 0, ArrayList()) {
+class RecipeDropdownArrayAdapter(context: Context) : ArrayAdapter<RecipesResponse.Recipe>(context, 0, ArrayList()) {
 
-    private val allRecipes = ArrayList<Recipe>()
+    private val allRecipes = ArrayList<RecipesResponse.Recipe>()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val viewHolder: ViewHolder
@@ -55,7 +55,7 @@ class RecipeDropdownArrayAdapter(context: Context) : ArrayAdapter<Recipe>(contex
                 return results
             }
 
-            private fun filterRecipes(constraint: CharSequence): ArrayList<Recipe> {
+            private fun filterRecipes(constraint: CharSequence): ArrayList<RecipesResponse.Recipe> {
                 return ArrayList(allRecipes.filter { r ->
                     r.name.lowercase().contains(constraint.toString().lowercase())
                 })
@@ -66,7 +66,7 @@ class RecipeDropdownArrayAdapter(context: Context) : ArrayAdapter<Recipe>(contex
                     val items = it as ArrayList<*>
                     if (items.isNotEmpty()) {
                         clear()
-                        items.forEach { r -> add(r as Recipe) }
+                        items.forEach { r -> add(r as RecipesResponse.Recipe) }
                         notifyDataSetChanged()
                     }
                 }
@@ -74,7 +74,7 @@ class RecipeDropdownArrayAdapter(context: Context) : ArrayAdapter<Recipe>(contex
         }
     }
 
-    fun refresh(recipes: List<Recipe>) {
+    fun refresh(recipes: List<RecipesResponse.Recipe>) {
         allRecipes.clear()
         allRecipes.addAll(recipes)
     }

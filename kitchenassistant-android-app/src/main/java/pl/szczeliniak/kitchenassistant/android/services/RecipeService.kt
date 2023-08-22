@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.flow
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.*
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.IngredientGroupResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.IngredientGroup
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
 
 class RecipeService(
@@ -45,7 +45,7 @@ class RecipeService(
         }
     }
 
-    suspend fun findById(recipeId: Int): Flow<LoadingState<RecipeDetails>> {
+    suspend fun findById(recipeId: Int): Flow<LoadingState<RecipeResponse.Recipe>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -198,7 +198,7 @@ class RecipeService(
         }
     }
 
-    suspend fun findAllCategories(): Flow<LoadingState<List<Category>>> {
+    suspend fun findAllCategories(): Flow<LoadingState<List<CategoriesResponse.Category>>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
@@ -289,7 +289,10 @@ class RecipeService(
         }
     }
 
-    fun getIngredientGroupById(recipeId: Int, ingredientGroupId: Int): Flow<LoadingState<IngredientGroup>> {
+    fun getIngredientGroupById(
+        recipeId: Int,
+        ingredientGroupId: Int
+    ): Flow<LoadingState<IngredientGroupResponse.IngredientGroup>> {
         return flow {
             emit(LoadingState.InProgress)
             try {

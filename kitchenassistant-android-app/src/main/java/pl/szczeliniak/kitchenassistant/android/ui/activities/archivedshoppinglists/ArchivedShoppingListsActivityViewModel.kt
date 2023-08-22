@@ -42,16 +42,6 @@ class ArchivedShoppingListsActivityViewModel @Inject constructor(
         }
     }
 
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            shoppingListService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
     fun changeFilter(filter: ShoppingListsFilterDialog.Filter) {
         _filter.value = filter
     }

@@ -5,6 +5,5 @@ import java.time.LocalDate
 data class UpdateShoppingListRequest(
     val name: String,
     val description: String?,
-    val date: LocalDate?,
-    val automaticArchiving: Boolean
+    val date: LocalDate?
 )

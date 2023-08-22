@@ -6,8 +6,8 @@ import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetwor
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanDetails
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepository
 import java.time.LocalDate
 
@@ -17,7 +17,6 @@ class DayPlanService(
 ) {
 
     suspend fun findAll(
-        archived: Boolean? = null,
         page: Int? = null,
         limit: Int? = null,
         since: LocalDate? = null,
@@ -30,7 +29,6 @@ class DayPlanService(
                     LoadingState.Success(
                         repository.findAll(
                             localStorageService.getId(),
-                            archived,
                             page,
                             limit,
                             since,
@@ -46,11 +44,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun delete(id: Int): Flow<LoadingState<Int>> {
+    suspend fun delete(date: LocalDate): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.delete(id).id))
+                emit(LoadingState.Success(repository.delete(date).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -59,11 +57,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun archive(id: Int, archive: Boolean): Flow<LoadingState<Int>> {
+    suspend fun findById(date: LocalDate): Flow<LoadingState<DayPlanResponse.DayPlan>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.archive(id, archive).id))
+                emit(LoadingState.Success(repository.findById(date).dayPlan))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -72,24 +70,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun findById(id: Int): Flow<LoadingState<DayPlanDetails>> {
+    suspend fun unassignRecipe(date: LocalDate, recipeId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findById(id).dayPlan))
-            } catch (e: KitchenAssistantNetworkException) {
-                emit(LoadingState.NoInternetException)
-            } catch (e: Exception) {
-                emit(LoadingState.Exception(e))
-            }
-        }
-    }
-
-    suspend fun unassignRecipe(dayPlanId: Int, recipeId: Int): Flow<LoadingState<Int>> {
-        return flow {
-            emit(LoadingState.InProgress)
-            try {
-                emit(LoadingState.Success(repository.deassignRecipe(dayPlanId, recipeId).id))
+                emit(LoadingState.Success(repository.deassignRecipe(date, recipeId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -111,11 +96,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun update(dayPlanId: Int, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
+    suspend fun update(date: LocalDate, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.update(dayPlanId, request).id))
+                emit(LoadingState.Success(repository.update(date, request).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 
 class RecipeActivityViewModel @AssistedInject constructor(
@@ -16,9 +16,9 @@ class RecipeActivityViewModel @AssistedInject constructor(
     @Assisted private val recipeId: Int
 ) : ViewModel() {
 
-    private val _recipe = MutableLiveData<LoadingState<RecipeDetails>>()
+    private val _recipe = MutableLiveData<LoadingState<RecipeResponse.Recipe>>()
 
-    val recipe: LiveData<LoadingState<RecipeDetails>>
+    val recipe: LiveData<LoadingState<RecipeResponse.Recipe>>
         get() = _recipe
 
     fun reload() {

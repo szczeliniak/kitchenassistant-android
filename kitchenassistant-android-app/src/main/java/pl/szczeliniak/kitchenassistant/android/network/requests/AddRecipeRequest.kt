@@ -5,7 +5,6 @@ data class AddRecipeRequest(
     val author: String?,
     val source: String?,
     val description: String?,
-    val userId: Int,
     val categoryId: Int?,
     val tags: List<String>,
     val photoName: String?

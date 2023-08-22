@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import javax.inject.Inject
 
@@ -18,9 +18,9 @@ class RecipesFragmentViewModel @Inject constructor(
     private val recipeService: RecipeService
 ) : ViewModel() {
 
-    private val _categories = MutableLiveData<LoadingState<List<Category>>>()
+    private val _categories = MutableLiveData<LoadingState<List<CategoriesResponse.Category>>>()
 
-    val categories: LiveData<LoadingState<List<Category>>> get() = _categories
+    val categories: LiveData<LoadingState<List<CategoriesResponse.Category>>> get() = _categories
 
     init {
         reloadCategories()

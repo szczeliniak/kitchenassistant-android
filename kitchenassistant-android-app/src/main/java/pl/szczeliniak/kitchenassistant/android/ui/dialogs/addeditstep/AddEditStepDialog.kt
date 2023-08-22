@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -11,11 +12,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.DialogAddEditStepBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddStepRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateStepRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -30,7 +31,7 @@ class AddEditStepDialog : DialogFragment() {
         private const val STEP_EXTRA = "STEP_EXTRA"
         private const val TAG = "AddEditStepDialog"
 
-        fun show(fragmentManager: FragmentManager, recipeId: Int, step: Step? = null) {
+        fun show(fragmentManager: FragmentManager, recipeId: Int, step: RecipeResponse.Recipe.Step? = null) {
             val bundle = Bundle()
             bundle.putInt(RECIPE_ID_EXTRA, recipeId)
             step?.let { bundle.putParcelable(STEP_EXTRA, it) }
@@ -57,6 +58,10 @@ class AddEditStepDialog : DialogFragment() {
                 binding.stepSequence.setText(it.toString())
             }
             binding.title.text = getString(R.string.title_dialog_edit_step)
+        }
+
+        binding.stepDescription.doOnTextChanged { _, _, _, _ ->
+            checkButtonState()
         }
 
         addStepLoadingStateHandler = prepareAddStepLoadingStateHandler()
@@ -87,7 +92,7 @@ class AddEditStepDialog : DialogFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(RecipeSavedEvent())
+                eventBus.post(RecipeChanged())
                 dismiss()
             }
         })
@@ -101,11 +106,11 @@ class AddEditStepDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             step?.let { step ->
                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                    viewModel.updateStep(recipeId, step.id, UpdateStepRequest(description, sequence))
+                    viewModel.updateStep(recipeId, step.id, UpdateStepRequest(description, null, sequence))
                         .observe(this) { addStepLoadingStateHandler.handle(it) }
                 }
             } ?: kotlin.run {
-                viewModel.addStep(recipeId, AddStepRequest(description, sequence))
+                viewModel.addStep(recipeId, AddStepRequest(description, null, sequence))
                     .observe(this) { addStepLoadingStateHandler.handle(it) }
             }
         }
@@ -131,9 +136,9 @@ class AddEditStepDialog : DialogFragment() {
             return requireArguments().getInt(RECIPE_ID_EXTRA)
         }
 
-    private val step: Step?
+    private val step: RecipeResponse.Recipe.Step?
         get() {
-            return requireArguments().getParcelable(STEP_EXTRA, Step::class.java)
+            return requireArguments().getParcelable(STEP_EXTRA, RecipeResponse.Recipe.Step::class.java)
         }
 
 }

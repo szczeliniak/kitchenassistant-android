@@ -69,10 +69,13 @@ class RecipeInfoFragment : RecipeActivityFragment() {
             }
 
             binding.recipeCategory.setTextOrDefault(r.category?.name)
+
             r.photoName?.let {
                 viewModel.loadPhoto(it).observe(viewLifecycleOwner) {
                     downloadPhotoLoadingStateHandler.handle(it)
                 }
+            } ?: {
+                binding.recipePhoto.setImageResource(0)
             }
         }
     }

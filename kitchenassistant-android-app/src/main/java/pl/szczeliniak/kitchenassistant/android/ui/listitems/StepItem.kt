@@ -6,13 +6,12 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemStepBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Step
-import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.fillOrHide
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 
 class StepItem(
     private val context: Context,
     private val recipeId: Int,
-    private val step: Step,
+    private val step: RecipeResponse.Recipe.Step,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick
 ) :
@@ -53,7 +52,7 @@ class StepItem(
     }
 
     fun interface OnClick {
-        fun onClick(recipeId: Int, step: Step)
+        fun onClick(recipeId: Int, step: RecipeResponse.Recipe.Step)
     }
 
 }

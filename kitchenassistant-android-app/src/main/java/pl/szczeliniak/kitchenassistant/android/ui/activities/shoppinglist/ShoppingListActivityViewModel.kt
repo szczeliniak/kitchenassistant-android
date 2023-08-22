@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.services.ShoppingListService
 
 class ShoppingListActivityViewModel @AssistedInject constructor(
@@ -16,9 +16,9 @@ class ShoppingListActivityViewModel @AssistedInject constructor(
     @Assisted private val shoppingListId: Int
 ) : ViewModel() {
 
-    private val _shoppingList = MutableLiveData<LoadingState<ShoppingListDetails>>()
+    private val _shoppingList = MutableLiveData<LoadingState<ShoppingListResponse.ShoppingList>>()
 
-    val shoppingList: LiveData<LoadingState<ShoppingListDetails>>
+    val shoppingList: LiveData<LoadingState<ShoppingListResponse.ShoppingList>>
         get() = _shoppingList
 
     init {

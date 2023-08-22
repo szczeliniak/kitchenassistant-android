@@ -17,7 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ActivityShoppingListB
 import pl.szczeliniak.kitchenassistant.android.events.ShoppingListDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addshoppinglist.AddEditShoppingListActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditshoppinglistitem.AddEditShoppingListItemDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
@@ -55,7 +55,7 @@ class ShoppingListActivity : AppCompatActivity() {
     lateinit var shoppingListActivityViewModelFactory: ShoppingListActivityViewModel.Factory
 
     private lateinit var binding: ActivityShoppingListBinding
-    private val loadShoppingListLoadingStateHandler: LoadingStateHandler<ShoppingListDetails> =
+    private val loadShoppingListLoadingStateHandler: LoadingStateHandler<ShoppingListResponse.ShoppingList> =
         loadShoppingListLoadingStateHandler()
     private val deleteShoppingListItemStateHandler: LoadingStateHandler<Int> =
         deleteShoppingListItemStateHandler()
@@ -88,8 +88,8 @@ class ShoppingListActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListDetails> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListDetails> {
+    private fun loadShoppingListLoadingStateHandler(): LoadingStateHandler<ShoppingListResponse.ShoppingList> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<ShoppingListResponse.ShoppingList> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@ShoppingListActivity)
             }
@@ -98,7 +98,7 @@ class ShoppingListActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: ShoppingListDetails) {
+            override fun onSuccess(data: ShoppingListResponse.ShoppingList) {
                 binding.toolbarLayout.toolbar.init(this@ShoppingListActivity, data.name)
                 binding.shoppingListDescription.setTextOrDefault(data.description)
                 binding.shoppingListDate.setTextOrDefault(LocalDateUtils.stringify(data.date))

@@ -6,15 +6,14 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlan
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
 class DayPlanItem constructor(
     private val context: Context,
-    private val dayPlan: DayPlan,
+    private val dayPlan: DayPlansResponse.DayPlan,
     private val onClick: OnClick,
     private val onDeleteClick: OnClick,
-    private val onArchiveClick: OnClick,
     private val onEditClick: OnClick
 ) : BindableItem<ListItemDayPlanBinding>() {
 
@@ -41,10 +40,7 @@ class DayPlanItem constructor(
                     onDeleteClick.onClick(dayPlan)
                     return@setOnMenuItemClickListener true
                 }
-                R.id.archive -> {
-                    onArchiveClick.onClick(dayPlan)
-                    return@setOnMenuItemClickListener true
-                }
+
                 R.id.edit -> {
                     onEditClick.onClick(dayPlan)
                     return@setOnMenuItemClickListener true
@@ -57,7 +53,7 @@ class DayPlanItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(dayPlan: DayPlan)
+        fun onClick(dayPlan: DayPlansResponse.DayPlan)
     }
 
 }

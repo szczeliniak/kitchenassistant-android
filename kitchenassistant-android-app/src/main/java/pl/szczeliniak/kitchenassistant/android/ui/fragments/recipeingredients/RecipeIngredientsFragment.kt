@@ -10,7 +10,7 @@ import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeIngredientsBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientGroupDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
@@ -69,7 +69,7 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
             }
 
             override fun onSuccess(data: Int) {
-                eventBus.post(RecipeSavedEvent())
+                eventBus.post(RecipeChanged())
             }
         })
     }

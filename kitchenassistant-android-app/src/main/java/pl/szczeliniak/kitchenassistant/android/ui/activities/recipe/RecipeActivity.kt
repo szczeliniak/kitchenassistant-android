@@ -14,9 +14,9 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRecipeBinding
 import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
@@ -49,7 +49,8 @@ class RecipeActivity : AppCompatActivity() {
     lateinit var recipeActivityViewModelFactory: RecipeActivityViewModel.Factory
 
     private lateinit var binding: ActivityRecipeBinding
-    private val recipeLoadingStateHandler: LoadingStateHandler<RecipeDetails> = prepareRecipeLoadingStateHandler()
+    private val recipeLoadingStateHandler: LoadingStateHandler<RecipeResponse.Recipe> =
+        prepareRecipeLoadingStateHandler()
     private val deleteRecipeLoadingStateHandler: LoadingStateHandler<Int> = deleteRecipeLoadingStateHandler()
     private val observers = mutableListOf<RecipeActivityFragment>()
 
@@ -60,7 +61,7 @@ class RecipeActivity : AppCompatActivity() {
         )
     }
 
-    var recipe: RecipeDetails? = null
+    var recipe: RecipeResponse.Recipe? = null
 
     val recipeId get() = intent.getIntExtra(RECIPE_ID_EXTRA, -1)
 
@@ -73,8 +74,8 @@ class RecipeActivity : AppCompatActivity() {
         eventBus.register(this)
     }
 
-    private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeDetails> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeDetails> {
+    private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeResponse.Recipe> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeResponse.Recipe> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@RecipeActivity)
             }
@@ -83,7 +84,7 @@ class RecipeActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: RecipeDetails) {
+            override fun onSuccess(data: RecipeResponse.Recipe) {
                 binding.toolbarLayout.toolbar.init(this@RecipeActivity, data.name)
                 recipe = data
                 observers.forEach { it.onRecipeChanged() }
@@ -151,7 +152,7 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     @Subscribe
-    fun onRecipeSaved(event: RecipeSavedEvent) {
+    fun onRecipeSaved(event: RecipeChanged) {
         viewModel.reload()
     }
 

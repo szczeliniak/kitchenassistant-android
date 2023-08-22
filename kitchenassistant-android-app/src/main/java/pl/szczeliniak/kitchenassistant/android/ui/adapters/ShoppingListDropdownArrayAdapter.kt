@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatTextView
 import pl.szczeliniak.kitchenassistant.android.databinding.DropdownShoppingListBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingList
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListsResponse
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
-class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingList>(context, 0, ArrayList()) {
+class ShoppingListDropdownArrayAdapter(context: Context) : ArrayAdapter<ShoppingListsResponse.ShoppingList>(context, 0, ArrayList()) {
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return prepareView(position, convertView)

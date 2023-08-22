@@ -12,15 +12,14 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesBinding
-import pl.szczeliniak.kitchenassistant.android.events.CategorySavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.CategoriesChangedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipesbycategory.RecipesByCategoryFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import javax.inject.Inject
 
@@ -39,7 +38,7 @@ class RecipesFragment : Fragment() {
     private val viewModel: RecipesFragmentViewModel by viewModels()
 
     private lateinit var binding: FragmentRecipesBinding
-    private lateinit var categoriesLoadingStateHandler: LoadingStateHandler<List<Category>>
+    private lateinit var categoriesLoadingStateHandler: LoadingStateHandler<List<CategoriesResponse.Category>>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRecipesBinding.inflate(inflater)
@@ -54,28 +53,26 @@ class RecipesFragment : Fragment() {
         viewModel.categories.observe(viewLifecycleOwner) { categoriesLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
-        return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<List<Category>> {
-            override fun onInProgress() {
-                binding.layout.showProgressSpinner(activity)
-                binding.layout.hideEmptyIcon()
-            }
-
-            override fun onFinish() {
-                binding.layout.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: List<Category>) {
-                if (data.isEmpty()) {
-                    binding.layout.showEmptyIcon(requireActivity())
-                } else {
+    private fun prepareCategoriesLoadingStateHandler(): LoadingStateHandler<List<CategoriesResponse.Category>> {
+        return LoadingStateHandler(
+            requireActivity(),
+            object : LoadingStateHandler.OnStateChanged<List<CategoriesResponse.Category>> {
+                override fun onInProgress() {
+                    binding.layout.showProgressSpinner(activity)
                     binding.layout.hideEmptyIcon()
-                    val tabs = data.map { CategoryTab(it.id, it.name) }.toMutableList()
+                }
+
+                override fun onFinish() {
+                    binding.layout.hideProgressSpinner()
+                }
+
+                override fun onSuccess(data: List<CategoriesResponse.Category>) {
+                    val tabs = mutableListOf<CategoryTab>()
+                    tabs.addAll(data.map { CategoryTab(it.id, it.name) })
                     tabs.add(CategoryTab(null, getString(R.string.label_category_tab_all)))
                     initPager(tabs)
                 }
-            }
-        })
+            })
     }
 
     private fun initPager(tabs: List<CategoryTab>) {
@@ -100,7 +97,7 @@ class RecipesFragment : Fragment() {
     }
 
     @Subscribe
-    fun onCategorySaved(event: CategorySavedEvent) {
+    fun categoriesChangedEvent(event: CategoriesChangedEvent) {
         viewModel.reloadCategories()
     }
 

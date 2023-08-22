@@ -22,12 +22,10 @@
     <string name="message_token_expired">Token expired or invalid. Log in again</string>
     <string name="message_confirm_action">Are you sure?</string>
     <string name="message_login_with_facebook_error">Cannot log in with Facebook. Try again</string>
-    <string name="message_cannot_auto_archive_shopping_list_without_date">Cannot auto-archive shopping list without selected date</string>
 
     <string name="form_login_email">Email</string>
     <string name="form_login_password">Password</string>
     <string name="form_register_email">Email</string>
-    <string name="form_register_name">Name</string>
     <string name="from_register_password">Password</string>
     <string name="form_register_password2">Repeat password</string>
 
@@ -113,8 +111,6 @@
     <string name="label_day_plan_date">Date</string>
     <string name="label_day_plan_recipes">Recipes</string>
     <string name="label_day_plan_name">Name</string>
-    <string name="label_shopping_list_automatic_archiving">Archive automatically when selected date passes</string>
-    <string name="label_day_plan_automatic_archiving">Archive automatically when selected date passes</string>
     <string name="label_day_plan_description">Description</string>
     <string name="label_button_add_to_day_plan">Add to day plan</string>
     <string name="label_filter_show_only_favorites">Show only favorites</string>

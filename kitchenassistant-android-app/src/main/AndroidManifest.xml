@@ -13,6 +13,7 @@
             android:supportsRtl="true"
             android:name="pl.szczeliniak.kitchenassistant.android.KitchenAssistantApplication"
             android:fullBackupContent="true"
+            android:networkSecurityConfig="@xml/network"
             tools:ignore="LockedOrientationActivity"
             android:theme="@style/Theme.KitchenAssistant">
 

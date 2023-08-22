@@ -6,11 +6,11 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemCategoryBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 
 class CategoryItem constructor(
     private val context: Context,
-    private val category: Category,
+    private val category: CategoriesResponse.Category,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick
 ) :
@@ -50,7 +50,7 @@ class CategoryItem constructor(
     }
 
     fun interface OnClick {
-        fun onClick(category: Category)
+        fun onClick(category: CategoriesResponse.Category)
     }
 
 }

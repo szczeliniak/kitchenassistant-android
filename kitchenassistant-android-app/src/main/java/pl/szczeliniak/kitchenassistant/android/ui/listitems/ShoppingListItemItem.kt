@@ -6,12 +6,12 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemShoppingListItemBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 
 class ShoppingListItemItem(
     private val context: Context,
     private val shoppingListId: Int,
-    private val shoppingListItem: ShoppingListItem,
+    private val shoppingListItem: ShoppingListResponse.ShoppingList.Item,
     private val onDeleteClick: OnClick,
     private val onEditClick: OnClick,
     private val onCheckClick: OnCheckboxClick
@@ -66,11 +66,11 @@ class ShoppingListItemItem(
     }
 
     fun interface OnClick {
-        fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListItem)
+        fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListResponse.ShoppingList.Item)
     }
 
     fun interface OnCheckboxClick {
-        fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListItem, state: Boolean)
+        fun onClick(shoppingListId: Int, shoppingListItem: ShoppingListResponse.ShoppingList.Item, state: Boolean)
     }
 
 }

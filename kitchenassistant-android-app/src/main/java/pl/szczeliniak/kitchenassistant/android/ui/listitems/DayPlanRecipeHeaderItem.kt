@@ -6,10 +6,10 @@ import androidx.appcompat.widget.PopupMenu
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemHeaderDayPlanRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.DayPlanRecipe
+import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 
 class DayPlanRecipeHeaderItem constructor(
-    private val recipe: DayPlanRecipe,
+    private val recipe: DayPlanResponse.DayPlan.Recipe,
     private val context: Context,
     private val onDeleteClick: OnClick
 ) : BindableItem<ListItemHeaderDayPlanRecipeBinding>() {

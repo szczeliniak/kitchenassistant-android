@@ -19,12 +19,12 @@ import org.greenrobot.eventbus.EventBus
 import pl.aprilapps.easyphotopicker.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityAddEditRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeSavedEvent
+import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateRecipeRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
@@ -66,7 +66,8 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private val loadTagsLoadingStateHandler = prepareLoadTagsLoadingStateHandler()
     private val loadAuthorsLoadingStateHandler = prepareLoadAuthorsLoadingStateHandler()
     private val downloadPhotoFileLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
-    private val recipeLoadingStateHandler: LoadingStateHandler<RecipeDetails> = prepareRecipeLoadingStateHandler()
+    private val recipeLoadingStateHandler: LoadingStateHandler<RecipeResponse.Recipe> =
+        prepareRecipeLoadingStateHandler()
 
     @Inject
     lateinit var eventBus: EventBus
@@ -83,7 +84,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
     private lateinit var authorsArrayAdapter: AuthorDropdownArrayAdapter
     private lateinit var easyImage: EasyImage
 
-    private var recipe: RecipeDetails? = null
+    private var recipe: RecipeResponse.Recipe? = null
 
     private var photoUri: Uri? = null
         set(value) {
@@ -192,7 +193,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 if (recipeId == null) {
                     RecipeActivity.start(this@AddEditRecipeActivity, data)
                 }
-                eventBus.post(RecipeSavedEvent())
+                eventBus.post(RecipeChanged())
                 finish()
             }
         })
@@ -225,7 +226,6 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 author,
                 url,
                 description,
-                localStorageService.getId(),
                 categoryId,
                 tags,
                 photoName
@@ -248,15 +248,17 @@ class AddEditRecipeActivity : AppCompatActivity() {
         ).observe(this@AddEditRecipeActivity) { saveRecipeLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<Category>> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<List<Category>> {
-            override fun onSuccess(data: List<Category>) {
-                categoriesDropdownAdapter.clear()
-                categoriesDropdownAdapter.add(null)
-                categoriesDropdownAdapter.addAll(data)
-                setCurrentCategory()
-            }
-        })
+    private fun prepareLoadCategoriesLoadingStateHandler(): LoadingStateHandler<List<CategoriesResponse.Category>> {
+        return LoadingStateHandler(
+            this,
+            object : LoadingStateHandler.OnStateChanged<List<CategoriesResponse.Category>> {
+                override fun onSuccess(data: List<CategoriesResponse.Category>) {
+                    categoriesDropdownAdapter.clear()
+                    categoriesDropdownAdapter.add(null)
+                    categoriesDropdownAdapter.addAll(data)
+                    setCurrentCategory()
+                }
+            })
     }
 
     private fun setCurrentCategory() {
@@ -293,8 +295,8 @@ class AddEditRecipeActivity : AppCompatActivity() {
         })
     }
 
-    private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeDetails> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeDetails> {
+    private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeResponse.Recipe> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RecipeResponse.Recipe> {
             override fun onInProgress() {
                 binding.root.showProgressSpinner(this@AddEditRecipeActivity)
             }
@@ -303,7 +305,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
                 binding.root.hideProgressSpinner()
             }
 
-            override fun onSuccess(data: RecipeDetails) {
+            override fun onSuccess(data: RecipeResponse.Recipe) {
                 recipe = data
                 fillRecipe()
             }
@@ -340,7 +342,7 @@ class AddEditRecipeActivity : AppCompatActivity() {
                     uploadPhotoLoadingStateHandler.handle(it)
                 }
             } else {
-                updateRecipe(recipeId, if(photoUri == null) null else photoName)
+                updateRecipe(recipeId, if (photoUri == null) null else photoName)
             }
         } ?: run {
             photoUri?.let {

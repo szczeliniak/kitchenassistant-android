@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateRecipeRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.Category
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.RecipeDetails
+import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
+import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
 import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 import java.io.File
@@ -22,15 +22,15 @@ class AddEditRecipeActivityViewModel @AssistedInject constructor(
     @Assisted private val recipeId: Int?
 ) : ViewModel() {
 
-    private val _categories = MutableLiveData<LoadingState<List<Category>>>()
+    private val _categories = MutableLiveData<LoadingState<List<CategoriesResponse.Category>>>()
     private val _tags = MutableLiveData<LoadingState<List<String>>>()
     private val _authors = MutableLiveData<LoadingState<List<String>>>()
-    private val _recipe = MutableLiveData<LoadingState<RecipeDetails>>()
+    private val _recipe = MutableLiveData<LoadingState<RecipeResponse.Recipe>>()
 
-    val recipe: LiveData<LoadingState<RecipeDetails>>
+    val recipe: LiveData<LoadingState<RecipeResponse.Recipe>>
         get() = _recipe
 
-    val categories: LiveData<LoadingState<List<Category>>>
+    val categories: LiveData<LoadingState<List<CategoriesResponse.Category>>>
         get() {
             return _categories
         }

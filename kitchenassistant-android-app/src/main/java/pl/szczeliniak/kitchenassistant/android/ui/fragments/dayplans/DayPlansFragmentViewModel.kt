@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
+import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,26 +33,16 @@ class DayPlansFragmentViewModel @Inject constructor(
 
     fun reload(page: Int) {
         viewModelScope.launch {
-            dayPlansService.findAll(false, page, LIMIT)
+            dayPlansService.findAll(page, LIMIT)
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
+    fun delete(date: LocalDate): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlansService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
-    fun archive(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            dayPlansService.archive(id, true)
+            dayPlansService.delete(date)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

@@ -16,7 +16,7 @@ import pl.szczeliniak.kitchenassistant.android.events.ShoppingListSavedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddShoppingListItemRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateShoppingListItemRequest
-import pl.szczeliniak.kitchenassistant.android.network.responses.dto.ShoppingListItem
+import pl.szczeliniak.kitchenassistant.android.network.responses.ShoppingListResponse
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -34,7 +34,7 @@ class AddEditShoppingListItemDialog : DialogFragment() {
         fun show(
             fragmentManager: FragmentManager,
             shoppingListId: Int,
-            shoppingListItem: ShoppingListItem? = null
+            shoppingListItem: ShoppingListResponse.ShoppingList.Item? = null
         ) {
             val bundle = Bundle()
             bundle.putInt(SHOPPING_LIST_ID_EXTRA, shoppingListId)
@@ -157,9 +157,12 @@ class AddEditShoppingListItemDialog : DialogFragment() {
             return requireArguments().getInt(SHOPPING_LIST_ID_EXTRA)
         }
 
-    private val shoppingListItem: ShoppingListItem?
+    private val shoppingListItem: ShoppingListResponse.ShoppingList.Item?
         get() {
-            return requireArguments().getParcelable(SHOPPING_LIST_ITEM_EXTRA, ShoppingListItem::class.java)
+            return requireArguments().getParcelable(
+                SHOPPING_LIST_ITEM_EXTRA,
+                ShoppingListResponse.ShoppingList.Item::class.java
+            )
         }
 
 }
