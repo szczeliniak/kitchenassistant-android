@@ -9,7 +9,7 @@ interface RecipeRepository {
     @GET("/recipes")
     suspend fun findAll(
         @Query("categoryId") categoryId: Int?,
-        @Query("name") name: String?,
+        @Query("search") search: String?,
         @Query("tag") tag: String?,
         @Query("onlyFavorites") onlyFavorites: Boolean?,
         @Query("page") page: Int?,

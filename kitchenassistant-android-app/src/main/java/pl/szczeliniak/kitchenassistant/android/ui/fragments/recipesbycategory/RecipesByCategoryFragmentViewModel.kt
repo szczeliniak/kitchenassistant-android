@@ -40,9 +40,9 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         loadRecipes(1, null, null, false)
     }
 
-    fun loadRecipes(page: Int, recipeName: String?, tag: String?, onlyFavorites: Boolean) {
+    fun loadRecipes(page: Int, search: String?, tag: String?, onlyFavorites: Boolean) {
         viewModelScope.launch {
-            recipeService.findAll(categoryId, recipeName, tag, onlyFavorites, page, LIMIT)
+            recipeService.findAll(categoryId, search, tag, onlyFavorites, page, LIMIT)
                 .onEach { _recipes.value = it }
                 .launchIn(viewModelScope)
         }

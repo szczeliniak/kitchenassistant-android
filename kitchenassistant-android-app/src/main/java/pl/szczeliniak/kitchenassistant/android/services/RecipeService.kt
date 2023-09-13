@@ -17,7 +17,7 @@ class RecipeService(
 
     suspend fun findAll(
         categoryId: Int? = null,
-        recipeName: String? = null,
+        search: String? = null,
         tag: String? = null,
         onlyFavorites: Boolean = false,
         page: Int? = null,
@@ -28,7 +28,7 @@ class RecipeService(
             try {
                 emit(
                     LoadingState.Success(
-                        recipeRepository.findAll(categoryId, recipeName, tag, onlyFavorites, page, limit)
+                        recipeRepository.findAll(categoryId, search, tag, onlyFavorites, page, limit)
                     )
                 )
             } catch (e: KitchenAssistantNetworkException) {
