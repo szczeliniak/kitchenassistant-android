@@ -11,11 +11,10 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
-import java.time.LocalDate
 
 class UpdateDayPlanDialogViewModel @AssistedInject constructor(
     private val dayPlanService: DayPlanService,
-    @Assisted private val date: LocalDate
+    @Assisted private val dayPlanId: Int
 ) : ViewModel() {
 
     private val _dayPlan = MutableLiveData<LoadingState<DayPlanResponse.DayPlan>>()
@@ -29,16 +28,16 @@ class UpdateDayPlanDialogViewModel @AssistedInject constructor(
 
     private fun reload() {
         viewModelScope.launch {
-            dayPlanService.findById(date)
+            dayPlanService.findById(dayPlanId)
                 .onEach { _dayPlan.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    fun update(date: LocalDate, request: UpdateDayPlanRequest): LiveData<LoadingState<Int>> {
+    fun update(dayPlanId: Int, request: UpdateDayPlanRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.update(date, request)
+            dayPlanService.update(dayPlanId, request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
@@ -47,14 +46,14 @@ class UpdateDayPlanDialogViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(date: LocalDate): UpdateDayPlanDialogViewModel
+        fun create(dayPlanId: Int): UpdateDayPlanDialogViewModel
     }
 
     companion object {
-        fun provideFactory(factory: Factory, date: LocalDate): ViewModelProvider.Factory =
+        fun provideFactory(factory: Factory, dayPlanId: Int): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return factory.create(date) as T
+                    return factory.create(dayPlanId) as T
                 }
             }
     }

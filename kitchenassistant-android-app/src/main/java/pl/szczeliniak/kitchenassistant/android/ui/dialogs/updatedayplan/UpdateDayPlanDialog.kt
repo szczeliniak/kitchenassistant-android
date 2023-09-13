@@ -26,12 +26,12 @@ import javax.inject.Inject
 class UpdateDayPlanDialog : DialogFragment() {
 
     companion object {
-        private const val DAY_PLAN_DATE_EXTRA = "DAY_PLAN_DATE_EXTRA"
+        private const val DAY_PLAN_ID_EXTRA = "DAY_PLAN_ID_EXTRA"
         private const val TAG = "UpdateDayPlanDialog"
 
-        fun show(fragmentManager: FragmentManager, date: LocalDate) {
+        fun show(fragmentManager: FragmentManager, dayPlanId: Int) {
             val bundle = Bundle()
-            bundle.putSerializable(DAY_PLAN_DATE_EXTRA, date)
+            bundle.putInt(DAY_PLAN_ID_EXTRA, dayPlanId)
             val dialog = UpdateDayPlanDialog()
             dialog.arguments = bundle
             dialog.show(fragmentManager, TAG)
@@ -49,7 +49,7 @@ class UpdateDayPlanDialog : DialogFragment() {
     lateinit var eventBus: EventBus
 
     private val viewModel: UpdateDayPlanDialogViewModel by viewModels {
-        UpdateDayPlanDialogViewModel.provideFactory(factory, date)
+        UpdateDayPlanDialogViewModel.provideFactory(factory, dayPlanId)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -114,7 +114,7 @@ class UpdateDayPlanDialog : DialogFragment() {
         positiveButton.setOnClickListener {
             ConfirmationDialog.show(requireActivity().supportFragmentManager) {
                 viewModel.update(
-                    date,
+                    dayPlanId,
                     UpdateDayPlanRequest(LocalDateUtils.toLocalDate(binding.calendar.date))
                 ).observe(this) { updateDayPlanLoadingStateHandler.handle(it) }
             }
@@ -122,10 +122,13 @@ class UpdateDayPlanDialog : DialogFragment() {
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener { dismiss() }
     }
 
-    private val date: LocalDate
+    private val dayPlanId: Int
         get() {
-            return requireArguments().getSerializable(DAY_PLAN_DATE_EXTRA, LocalDate::class.java)
-                ?: throw IllegalArgumentException("Date cannot be null")
+            val id = requireArguments().getInt(DAY_PLAN_ID_EXTRA, -1)
+            if(id < 0) {
+                throw IllegalArgumentException("Dayplan id cannot be null")
+            }
+            return id
         }
 
 }

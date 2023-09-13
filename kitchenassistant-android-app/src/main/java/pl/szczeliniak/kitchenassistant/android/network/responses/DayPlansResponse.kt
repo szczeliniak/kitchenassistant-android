@@ -9,6 +9,7 @@ data class DayPlansResponse(
 ) {
     @Parcelize
     data class DayPlan(
+        val id: Int,
         val date: LocalDate,
     ) : Parcelable
 }

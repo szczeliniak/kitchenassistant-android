@@ -13,7 +13,6 @@ class IngredientItem(
     private val recipeId: Int,
     private val ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient,
     private val onDeleteClick: OnClick,
-    private val onAddToShoppingListItem: OnClick
 ) :
     BindableItem<ListItemIngredientBinding>() {
 
@@ -30,11 +29,6 @@ class IngredientItem(
             when (it.itemId) {
                 R.id.delete -> {
                     onDeleteClick.onClick(recipeId, ingredient)
-                    return@setOnMenuItemClickListener true
-                }
-
-                R.id.add_to_shopping_list -> {
-                    onAddToShoppingListItem.onClick(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
             }

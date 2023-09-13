@@ -3,7 +3,4 @@
     <item
             android:id="@+id/delete"
             android:title="@string/label_button_delete"/>
-    <item
-            android:id="@+id/add_to_shopping_list"
-            android:title="@string/label_button_add_to_shopping_list"/>
 </menu>

@@ -8,17 +8,14 @@
                 android:id="@+id/recipes"
                 android:title="@string/title_fragment_recipes"/>
         <item
-                android:id="@+id/shopping_lists"
-                android:title="@string/title_fragment_shopping_lists"/>
-        <item
                 android:id="@+id/day_plans"
                 android:title="@string/title_fragment_day_plans"/>
     </group>
 
     <group>
         <item
-                android:id="@+id/archived_shopping_lists"
-                android:title="@string/title_activity_archived_shopping_lists"/>
+                android:id="@+id/day_plans_history"
+                android:title="@string/title_activity_dayplans_history"/>
         <item
                 android:id="@+id/categories"
                 android:title="@string/title_activity_categories"/>

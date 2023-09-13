@@ -101,11 +101,6 @@ class NetworkModule {
     }
 
     @Provides
-    fun shoppingListsRepository(retrofitBuilder: Retrofit.Builder): ShoppingListRepository {
-        return retrofitBuilder.build().create(ShoppingListRepository::class.java)
-    }
-
-    @Provides
     fun dayPlanRepository(retrofitBuilder: Retrofit.Builder): DayPlanRepository {
         return retrofitBuilder.build().create(DayPlanRepository::class.java)
     }

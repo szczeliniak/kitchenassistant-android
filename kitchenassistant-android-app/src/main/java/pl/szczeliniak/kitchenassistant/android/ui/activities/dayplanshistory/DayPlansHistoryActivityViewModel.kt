@@ -1,4 +1,4 @@
-package pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplans
+package pl.szczeliniak.kitchenassistant.android.ui.activities.dayplanshistory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,8 +16,8 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class DayPlansFragmentViewModel @Inject constructor(
-    private val dayPlansService: DayPlanService
+class DayPlansHistoryActivityViewModel @Inject constructor(
+    private val dayPlanService: DayPlanService
 ) : ViewModel() {
 
     companion object {
@@ -29,12 +29,12 @@ class DayPlansFragmentViewModel @Inject constructor(
     val dayPlans: LiveData<LoadingState<DayPlansResponse>> get() = _dayPlans
 
     init {
-        reload(1)
+        reloadDayPlans(1)
     }
 
-    fun reload(page: Int) {
+    fun reloadDayPlans(page: Int) {
         viewModelScope.launch {
-            dayPlansService.findAll(page, LIMIT, LocalDate.now(), sort = DayPlanRepository.Sort.ASC)
+            dayPlanService.findAll(page, LIMIT, to = LocalDate.now().minusDays(1), sort = DayPlanRepository.Sort.DESC)
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }
@@ -43,7 +43,7 @@ class DayPlansFragmentViewModel @Inject constructor(
     fun delete(dayPlanId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlansService.delete(dayPlanId)
+            dayPlanService.delete(dayPlanId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

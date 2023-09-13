@@ -9,7 +9,7 @@ import pl.szczeliniak.kitchenassistant.android.databinding.ListItemDayPlanBindin
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 
-class DayPlanItem constructor(
+class DayPlanItem(
     private val context: Context,
     private val dayPlan: DayPlansResponse.DayPlan,
     private val onClick: OnClick,

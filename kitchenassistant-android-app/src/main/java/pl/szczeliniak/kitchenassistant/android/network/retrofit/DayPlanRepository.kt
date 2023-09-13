@@ -12,26 +12,39 @@ interface DayPlanRepository {
 
     @GET("/dayplans")
     suspend fun findAll(
-        @Query("userId") userId: Int? = null,
         @Query("page") page: Int? = null,
         @Query("limit") limit: Int? = null,
         @Query("since") since: LocalDate? = null,
-        @Query("to") to: LocalDate? = null
+        @Query("to") to: LocalDate? = null,
+        @Query("sort") sort: Sort? = null
     ): DayPlansResponse
 
-    @GET("/dayplans/{date}")
-    suspend fun findById(@Path("date") date: LocalDate): DayPlanResponse
+    @GET("/dayplans/{id}")
+    suspend fun findById(@Path("id") id: Int): DayPlanResponse
 
-    @DELETE("/dayplans/{date}")
-    suspend fun delete(@Path("date") date: LocalDate): SuccessResponse
+    @DELETE("/dayplans/{id}")
+    suspend fun delete(@Path("id") id: Int): SuccessResponse
 
-    @DELETE("/dayplans/{date}/recipes/{recipeId}")
-    suspend fun deassignRecipe(@Path("date") date: LocalDate, @Path("recipeId") recipeId: Int): SuccessResponse
+    @DELETE("/dayplans/{id}/recipes/{recipeId}")
+    suspend fun deassignRecipe(@Path("id") id: Int, @Path("recipeId") recipeId: Int): SuccessResponse
 
     @POST("/dayplans")
     suspend fun assignRecipe(@Body request: AddRecipeToDayPlanRequest): SuccessResponse
 
-    @PUT("/dayplans/{date}")
-    suspend fun update(@Path("date") date: LocalDate, @Body request: UpdateDayPlanRequest): SuccessResponse
+    @PUT("/dayplans/{id}")
+    suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
+
+    @PUT("/dayplans/{dayPlanId}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
+    suspend fun changeIngredientState(
+        @Path("dayPlanId") dayPlanId: Int,
+        @Path("recipeId") recipeId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int,
+        @Path("ingredientId") ingredientId: Int,
+        @Path("isChecked") isChecked: Boolean
+    ): SuccessResponse
+
+    enum class Sort {
+        ASC, DESC
+    }
 
 }

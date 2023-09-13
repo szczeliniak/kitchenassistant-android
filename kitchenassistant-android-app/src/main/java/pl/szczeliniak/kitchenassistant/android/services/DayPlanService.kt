@@ -12,15 +12,15 @@ import pl.szczeliniak.kitchenassistant.android.network.retrofit.DayPlanRepositor
 import java.time.LocalDate
 
 class DayPlanService(
-    private val repository: DayPlanRepository,
-    private val localStorageService: LocalStorageService
+    private val repository: DayPlanRepository
 ) {
 
     suspend fun findAll(
         page: Int? = null,
         limit: Int? = null,
         since: LocalDate? = null,
-        to: LocalDate? = null
+        to: LocalDate? = null,
+        sort: DayPlanRepository.Sort? = null
     ): Flow<LoadingState<DayPlansResponse>> {
         return flow {
             emit(LoadingState.InProgress)
@@ -28,11 +28,7 @@ class DayPlanService(
                 emit(
                     LoadingState.Success(
                         repository.findAll(
-                            localStorageService.getId(),
-                            page,
-                            limit,
-                            since,
-                            to
+                            page, limit, since, to, sort
                         )
                     )
                 )
@@ -44,11 +40,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun delete(date: LocalDate): Flow<LoadingState<Int>> {
+    suspend fun delete(dayPlanId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.delete(date).id))
+                emit(LoadingState.Success(repository.delete(dayPlanId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -57,11 +53,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun findById(date: LocalDate): Flow<LoadingState<DayPlanResponse.DayPlan>> {
+    suspend fun findById(dayPlanId: Int): Flow<LoadingState<DayPlanResponse.DayPlan>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.findById(date).dayPlan))
+                emit(LoadingState.Success(repository.findById(dayPlanId).dayPlan))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -70,11 +66,11 @@ class DayPlanService(
         }
     }
 
-    suspend fun unassignRecipe(date: LocalDate, recipeId: Int): Flow<LoadingState<Int>> {
+    suspend fun unassignRecipe(dayPlanId: Int, recipeId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.deassignRecipe(date, recipeId).id))
+                emit(LoadingState.Success(repository.deassignRecipe(dayPlanId, recipeId).id))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -96,11 +92,32 @@ class DayPlanService(
         }
     }
 
-    suspend fun update(date: LocalDate, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
+    suspend fun update(dayPlanId: Int, request: UpdateDayPlanRequest): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(repository.update(date, request).id))
+                emit(LoadingState.Success(repository.update(dayPlanId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun changeIngredientState(
+        dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, isChecked: Boolean
+    ): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(
+                    LoadingState.Success(
+                        repository.changeIngredientState(
+                            dayPlanId, recipeId, ingredientGroupId, ingredientId, isChecked
+                        ).id
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

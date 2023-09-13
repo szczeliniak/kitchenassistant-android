@@ -7,9 +7,6 @@
     <fragment android:id="@+id/recipes"
               android:name="pl.szczeliniak.kitchenassistant.android.ui.fragments.recipes.RecipesFragment"
               android:label="@string/title_fragment_recipes"/>
-    <fragment android:id="@+id/shopping_lists"
-              android:name="pl.szczeliniak.kitchenassistant.android.ui.fragments.shoppinglists.ShoppingListsFragment"
-              android:label="@string/title_fragment_shopping_lists"/>
     <fragment android:id="@+id/day_plans"
               android:name="pl.szczeliniak.kitchenassistant.android.ui.fragments.dayplans.DayPlansFragment"
               android:label="@string/title_fragment_day_plans"/>
