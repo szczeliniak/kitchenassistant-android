@@ -45,7 +45,7 @@ class DayPlansFragment : Fragment() {
 
     private lateinit var binding: FragmentDayPlansBinding
     private lateinit var dayPlansLoadingStateHandler: LoadingStateHandler<DayPlansResponse>
-    private lateinit var deleteArchiveDayPlanLoadingStateHandler: LoadingStateHandler<Int>
+    private lateinit var deleteDayPlanLoadingStateHandler: LoadingStateHandler<Int>
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -70,11 +70,11 @@ class DayPlansFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dayPlansLoadingStateHandler = prepareDayPlansLoadingStateHandler()
-        deleteArchiveDayPlanLoadingStateHandler = prepareDeleteArchiveDayPlanLoadingStateHandler()
+        deleteDayPlanLoadingStateHandler = prepareDeleteDayPlanLoadingStateHandler()
         viewModel.dayPlans.observe(viewLifecycleOwner) { dayPlansLoadingStateHandler.handle(it) }
     }
 
-    private fun prepareDeleteArchiveDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
+    private fun prepareDeleteDayPlanLoadingStateHandler(): LoadingStateHandler<Int> {
         return LoadingStateHandler(requireActivity(), object : LoadingStateHandler.OnStateChanged<Int> {
             override fun onInProgress() {
                 binding.layout.showProgressSpinner(requireActivity())
@@ -110,13 +110,13 @@ class DayPlansFragment : Fragment() {
                         binding.layout.hideEmptyIcon()
                         data.dayPlans.items.forEach { dayPlan ->
                             adapter.add(DayPlanItem(requireContext(), dayPlan, {
-                                DayPlanActivity.start(requireContext(), dayPlan.date)
+                                DayPlanActivity.start(requireContext(), dayPlan.id)
                             }, {
-                                viewModel.delete(it.date).observe(viewLifecycleOwner) { r ->
-                                    deleteArchiveDayPlanLoadingStateHandler.handle(r)
+                                viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
+                                    deleteDayPlanLoadingStateHandler.handle(r)
                                 }
                             }, {
-                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan.date)
+                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan.id)
                             }))
                         }
                     }

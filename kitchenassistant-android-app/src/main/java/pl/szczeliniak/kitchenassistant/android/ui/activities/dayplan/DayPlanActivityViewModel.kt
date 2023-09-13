@@ -10,11 +10,10 @@ import kotlinx.coroutines.launch
 import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
-import java.time.LocalDate
 
 class DayPlanActivityViewModel @AssistedInject constructor(
     private val dayPlanService: DayPlanService,
-    @Assisted private val date: LocalDate
+    @Assisted private val dayPlanId: Int
 ) : ViewModel() {
 
     private val _dayPlan = MutableLiveData<LoadingState<DayPlanResponse.DayPlan>>()
@@ -28,26 +27,26 @@ class DayPlanActivityViewModel @AssistedInject constructor(
 
     fun reload() {
         viewModelScope.launch {
-            dayPlanService.findById(date)
+            dayPlanService.findById(dayPlanId)
                 .onEach { _dayPlan.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    fun deleteRecipe(date: LocalDate, recipeId: Int): LiveData<LoadingState<Int>> {
+    fun deleteRecipe(dayPlanId: Int, recipeId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.unassignRecipe(date, recipeId)
+            dayPlanService.unassignRecipe(dayPlanId, recipeId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
         return liveData
     }
 
-    fun delete(date: LocalDate): LiveData<LoadingState<Int>> {
+    fun delete(dayPlanId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.delete(date)
+            dayPlanService.delete(dayPlanId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }
@@ -56,14 +55,14 @@ class DayPlanActivityViewModel @AssistedInject constructor(
 
     @AssistedFactory
     interface Factory {
-        fun create(date: LocalDate): DayPlanActivityViewModel
+        fun create(dayPlanId: Int): DayPlanActivityViewModel
     }
 
     companion object {
-        fun provideFactory(factory: Factory, date: LocalDate): ViewModelProvider.Factory =
+        fun provideFactory(factory: Factory, dayPlanId: Int): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return factory.create(date) as T
+                    return factory.create(dayPlanId) as T
                 }
             }
     }

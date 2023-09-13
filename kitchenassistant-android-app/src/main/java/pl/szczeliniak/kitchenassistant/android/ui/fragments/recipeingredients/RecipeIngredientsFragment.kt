@@ -13,7 +13,6 @@ import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeIngredi
 import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientGroupDialog
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addingredienttoshoppinglist.AddIngredientToShoppingListDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.IngredientGroupHeaderItem
@@ -89,22 +88,18 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
                             )
                         )
                         ingredientGroup.ingredients.forEach { ingredient ->
-                            ingredientGroupsAdapter.add(IngredientItem(requireContext(),
+                            ingredientGroupsAdapter.add(IngredientItem(
+                                requireContext(),
                                 r.id,
-                                ingredient,
-                                { recipeId, i ->
-                                    ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                                        viewModel.delete(recipeId, ingredientGroup.id, i.id)
-                                            .observe(viewLifecycleOwner) {
-                                                deleteIngredientStateHandler.handle(it)
-                                            }
-                                    }
-                                },
-                                { recipeId, i ->
-                                    AddIngredientToShoppingListDialog.show(
-                                        requireActivity().supportFragmentManager, i.name, i.quantity, recipeId
-                                    )
-                                })
+                                ingredient
+                            ) { recipeId, i ->
+                                ConfirmationDialog.show(requireActivity().supportFragmentManager) {
+                                    viewModel.delete(recipeId, ingredientGroup.id, i.id)
+                                        .observe(viewLifecycleOwner) {
+                                            deleteIngredientStateHandler.handle(it)
+                                        }
+                                }
+                            }
                             )
                         }
                     }

@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Kitchen Assistant</string>
     <string name="app_description">Recipes management</string>
+<!--    local-->
+<!--    <string name="app_api_host">http://10.0.2.2:8080</string>-->
+<!--    remote-->
     <string name="app_api_host">https://www.api.kitchenassistant.szczeliniak.pl</string>
 
     <string name="message_login_data_does_not_match">User and password does not match</string>
@@ -12,8 +15,6 @@
     <string name="message_no_internet_connection">No Internet connection. Try again later</string>
     <string name="message_cannot_execute_operation">Operation cannot be executed. Try again later</string>
     <string name="message_step_name_is_empty">Step name cannot be empty</string>
-    <string name="message_shopping_list_name_is_empty">Shopping list name cannot be empty</string>
-    <string name="message_shopping_list_item_name_is_empty">Item name cannot be empty</string>
     <string name="message_empty_name">Name cannot be empty</string>
     <string name="message_register_email_exists">Email exists</string>
     <string name="message_empty_list">Empty list</string>
@@ -36,48 +37,36 @@
     <string name="description_add_recipe">Add recipe</string>
     <string name="description_add_ingredient">Add ingredient</string>
     <string name="description_add_step">Add step</string>
-    <string name="description_add_shopping_list">Add shopping list</string>
-    <string name="description_add_shopping_list_item">Add shopping list item</string>
     <string name="description_add_category">Add category</string>
     <string name="description_recipe_photo">Recipe photo</string>
     <string name="description_recipe_is_favorite">Recipe is marked as favorite</string>
 
     <string name="title_activity_new_recipe">New recipe</string>
     <string name="title_activity_edit_recipe">Edit recipe</string>
-    <string name="title_activity_new_shopping_list">Add shopping list</string>
-    <string name="title_activity_edit_shopping_list">Edit shopping list</string>
-    <string name="title_activity_archived_shopping_lists">Archived shopping lists</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_categories">Categories</string>
     <string name="title_fragment_recipes">Recipes</string>
     <string name="title_fragment_recipe_info">Info</string>
     <string name="title_fragment_recipe_ingredients">Ingredients</string>
     <string name="title_fragment_recipe_steps">Steps</string>
-    <string name="title_fragment_shopping_lists">Shopping lists</string>
     <string name="title_fragment_day_plans">Day plans</string>
     <string name="title_dialog_add_ingredient_group">Add ingredient group</string>
     <string name="title_dialog_edit_ingredient_group">Edit ingredient group</string>
     <string name="title_dialog_add_step">Add step</string>
     <string name="title_dialog_edit_step">Edit step</string>
-    <string name="title_dialog_add_shopping_list_item">Add shopping list item</string>
-    <string name="title_dialog_edit_shopping_list_item">Edit shopping list item</string>
     <string name="title_dialog_edit_category">Edit category</string>
     <string name="title_dialog_add_category">Add category</string>
-    <string name="title_dialog_add_ingredient_to_shopping_list">Add to shopping list</string>
     <string name="title_dialog_recipes_filter">Filter recipes</string>
-    <string name="title_dialog_shopping_lists_filter">Filter shopping lists</string>
 
     <string name="label_button_add">Add</string>
     <string name="title_button_edit">Edit</string>
     <string name="label_button_cancel">Cancel</string>
     <string name="label_button_save">Save</string>
     <string name="label_button_delete">Delete</string>
-    <string name="label_button_archive">Archive</string>
     <string name="label_button_register">Register</string>
     <string name="label_button_login">Login</string>
     <string name="label_button_select_date">Select date</string>
     <string name="label_button_edit">Edit</string>
-    <string name="label_button_add_to_shopping_list">Add to shopping list</string>
     <string name="label_button_filter">Filter</string>
     <string name="label_button_login_with_facebook">Login with Facebook</string>
     <string name="label_recipe_name">Recipe name</string>
@@ -91,13 +80,6 @@
     <string name="label_ingredient_quantity">Quantity</string>
     <string name="label_step_description">Description</string>
     <string name="label_step_sequence">Sequence</string>
-    <string name="label_shopping_list_name">List name</string>
-    <string name="label_shopping_list_description">Description</string>
-    <string name="label_shopping_list_date">Date</string>
-    <string name="label_shopping_list_items">Items</string>
-    <string name="label_shopping_list_item_name">Item name</string>
-    <string name="label_shopping_list_item_quantity">Quantity</string>
-    <string name="label_shopping_list_item_sequence">Sequence</string>
     <string name="label_category_name">Category name</string>
     <string name="label_category_sequence">Sequence</string>
     <string name="label_recipe_tag">Tag</string>
@@ -118,9 +100,6 @@
     <string name="placeholder_recipe_author">Pawkens</string>
     <string name="placeholder_recipe_category">Some category</string>
     <string name="placeholder_step_description">Some step description</string>
-    <string name="placeholder_shopping_list_description">Shopping list description</string>
-    <string name="placeholder_shopping_list_date">2022&#8211;01&#8211;01</string>
-    <string name="placeholder_shopping_list_name">Shopping list name</string>
     <string name="placeholder_recipe_url">https://www.google.pl</string>
     <string name="placeholder_recipe_description">Some recipe description</string>
     <string name="placeholder_ingredient_name">Ingredient name</string>
@@ -128,9 +107,6 @@
     <string name="placeholder_ingredient_description">Ingredient description</string>
     <string name="placeholder_recipe_name">Recipe name</string>
     <string name="placeholder_recipe_date">2022&#8211;03&#8211;02</string>
-    <string name="placeholder_shopping_list_item_name">Shopping list item name</string>
-    <string name="placeholder_shopping_list_item_quantity">Shopping list item quantity</string>
-    <string name="placeholder_shopping_list_item_recipe_name">Shopping list item recipe name</string>
     <string name="placeholder_day_plan_date">2222&#8211;02&#8211;02</string>
     <string name="placeholder_day_plan_name">Some day plan name</string>
     <string name="placeholder_day_plan_description">Some day plan description</string>

@@ -20,21 +20,13 @@ class ServiceModule {
 
     @Provides
     fun recipeService(
-        recipeRepository: RecipeRepository,
-        localStorageService: LocalStorageService,
-    ): RecipeService = RecipeService(recipeRepository, localStorageService)
-
-    @Provides
-    fun shoppingListService(
-        shoppingListRepository: ShoppingListRepository,
-        localStorageService: LocalStorageService
-    ): ShoppingListService = ShoppingListService(shoppingListRepository, localStorageService)
+        recipeRepository: RecipeRepository
+    ): RecipeService = RecipeService(recipeRepository)
 
     @Provides
     fun dayPlansService(
-        dayPlanRepository: DayPlanRepository,
-        localStorageService: LocalStorageService
-    ): DayPlanService = DayPlanService(dayPlanRepository, localStorageService)
+        dayPlanRepository: DayPlanRepository
+    ): DayPlanService = DayPlanService(dayPlanRepository)
 
     @Provides
     fun photoService(

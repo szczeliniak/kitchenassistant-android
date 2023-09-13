@@ -12,8 +12,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.RecipeRepository
 
 class RecipeService(
-    private val recipeRepository: RecipeRepository,
-    private val localStorageService: LocalStorageService
+    private val recipeRepository: RecipeRepository
 ) {
 
     suspend fun findAll(
@@ -29,12 +28,7 @@ class RecipeService(
             try {
                 emit(
                     LoadingState.Success(
-                        recipeRepository.findAll(
-                            localStorageService.getId(),
-                            categoryId,
-                            recipeName,
-                            tag, onlyFavorites, page, limit
-                        )
+                        recipeRepository.findAll(categoryId, recipeName, tag, onlyFavorites, page, limit)
                     )
                 )
             } catch (e: KitchenAssistantNetworkException) {
@@ -202,7 +196,7 @@ class RecipeService(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(recipeRepository.findAllCategories(localStorageService.getId()).categories))
+                emit(LoadingState.Success(recipeRepository.findAllCategories().categories))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -215,7 +209,7 @@ class RecipeService(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(recipeRepository.findAllTags(localStorageService.getId()).tags))
+                emit(LoadingState.Success(recipeRepository.findAllTags().tags))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
@@ -228,7 +222,7 @@ class RecipeService(
         return flow {
             emit(LoadingState.InProgress)
             try {
-                emit(LoadingState.Success(recipeRepository.findAllAuthors(localStorageService.getId()).authors))
+                emit(LoadingState.Success(recipeRepository.findAllAuthors().authors))
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {

@@ -33,16 +33,16 @@ class DayPlansFragmentViewModel @Inject constructor(
 
     fun reload(page: Int) {
         viewModelScope.launch {
-            dayPlansService.findAll(page, LIMIT)
+            dayPlansService.findAll(page, LIMIT, LocalDate.now())
                 .onEach { _dayPlans.value = it }
                 .launchIn(viewModelScope)
         }
     }
 
-    fun delete(date: LocalDate): LiveData<LoadingState<Int>> {
+    fun delete(dayPlanId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlansService.delete(date)
+            dayPlansService.delete(dayPlanId)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

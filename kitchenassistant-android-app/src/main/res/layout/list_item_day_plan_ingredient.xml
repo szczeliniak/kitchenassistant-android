@@ -28,12 +28,4 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"/>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-            android:layout_gravity="center"
-            style="@style/ButtonTransparentImage"
-            android:src="@drawable/icon_more"
-            android:id="@+id/button_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
 </androidx.appcompat.widget.LinearLayoutCompat>

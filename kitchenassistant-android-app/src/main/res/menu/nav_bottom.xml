@@ -5,12 +5,6 @@
             android:id="@+id/recipes"
             android:icon="@drawable/icon_recipe"
             android:title="@string/title_fragment_recipes"/>
-
-    <item
-            android:id="@+id/shopping_lists"
-            android:icon="@drawable/icon_shopping_cart"
-            android:title="@string/title_fragment_shopping_lists"/>
-
     <item
             android:id="@+id/day_plans"
             android:icon="@drawable/icon_calendar"

@@ -8,7 +8,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 
-class CategoryItem constructor(
+class CategoryItem(
     private val context: Context,
     private val category: CategoriesResponse.Category,
     private val onDeleteClick: OnClick,

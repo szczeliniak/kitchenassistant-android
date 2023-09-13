@@ -8,7 +8,6 @@ interface RecipeRepository {
 
     @GET("/recipes")
     suspend fun findAll(
-        @Query("userId") userId: Int?,
         @Query("categoryId") categoryId: Int?,
         @Query("name") name: String?,
         @Query("tag") tag: String?,
@@ -63,13 +62,13 @@ interface RecipeRepository {
     suspend fun deleteStep(@Path("id") recipeId: Int, @Path("stepId") stepId: Int): SuccessResponse
 
     @GET("/recipes/categories")
-    suspend fun findAllCategories(@Query("userId") userId: Int?): CategoriesResponse
+    suspend fun findAllCategories(): CategoriesResponse
 
     @GET("/recipes/tags")
-    suspend fun findAllTags(@Query("userId") userId: Int?): TagsResponse
+    suspend fun findAllTags(): TagsResponse
 
     @GET("/recipes/authors")
-    suspend fun findAllAuthors(@Query("userId") userId: Int?): AuthorsResponse
+    suspend fun findAllAuthors(): AuthorsResponse
 
     @DELETE("/recipes/categories/{id}")
     suspend fun deleteCategory(@Path("id") id: Int): SuccessResponse
