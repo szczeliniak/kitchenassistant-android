@@ -19,7 +19,8 @@ class DayPlanService(
         page: Int? = null,
         limit: Int? = null,
         since: LocalDate? = null,
-        to: LocalDate? = null
+        to: LocalDate? = null,
+        sort: DayPlanRepository.Sort? = null
     ): Flow<LoadingState<DayPlansResponse>> {
         return flow {
             emit(LoadingState.InProgress)
@@ -30,7 +31,8 @@ class DayPlanService(
                             page,
                             limit,
                             since,
-                            to
+                            to,
+                            sort
                         )
                     )
                 )

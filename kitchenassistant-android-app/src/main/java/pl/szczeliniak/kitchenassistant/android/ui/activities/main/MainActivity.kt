@@ -12,6 +12,7 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity
+import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplanshistory.DayPlansHistoryActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.login.LoginActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import javax.inject.Inject
@@ -58,14 +59,22 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomNavView.selectedItemId = R.id.recipes
                 return true
             }
+
             R.id.day_plans -> {
                 binding.bottomNavView.selectedItemId = R.id.day_plans
                 return true
             }
+
+            R.id.day_plans_history -> {
+                DayPlansHistoryActivity.start(this@MainActivity)
+                return true
+            }
+
             R.id.categories -> {
                 CategoriesActivity.start(this@MainActivity)
                 return true
             }
+
             R.id.logout -> {
                 if (localStorageService.logout()) {
                     LoginManager.getInstance().logOut()

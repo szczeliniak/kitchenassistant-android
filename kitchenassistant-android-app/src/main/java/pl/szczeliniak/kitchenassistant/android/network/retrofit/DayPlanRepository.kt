@@ -15,7 +15,8 @@ interface DayPlanRepository {
         @Query("page") page: Int? = null,
         @Query("limit") limit: Int? = null,
         @Query("since") since: LocalDate? = null,
-        @Query("to") to: LocalDate? = null
+        @Query("to") to: LocalDate? = null,
+        @Query("sort") sort: Sort? = null
     ): DayPlansResponse
 
     @GET("/dayplans/{id}")
@@ -32,5 +33,10 @@ interface DayPlanRepository {
 
     @PUT("/dayplans/{id}")
     suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
+
+    enum class Sort {
+        ASC,
+        DESC
+    }
 
 }

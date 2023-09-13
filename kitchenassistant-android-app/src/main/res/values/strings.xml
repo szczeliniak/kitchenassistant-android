@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">Kitchen Assistant</string>
     <string name="app_description">Recipes management</string>
-<!--    local-->
-<!--    <string name="app_api_host">http://10.0.2.2:8080</string>-->
-<!--    remote-->
+    <!--    local-->
+<!--        <string name="app_api_host">http://10.0.2.2:8080</string>-->
+    <!--    remote-->
     <string name="app_api_host">https://www.api.kitchenassistant.szczeliniak.pl</string>
 
     <string name="message_login_data_does_not_match">User and password does not match</string>
@@ -111,4 +111,5 @@
     <string name="placeholder_day_plan_name">Some day plan name</string>
     <string name="placeholder_day_plan_description">Some day plan description</string>
     <string name="label_button_add_ingredient">Add ingredient</string>
+    <string name="title_activity_dayplans_history">Dayplans history</string>
 </resources>
