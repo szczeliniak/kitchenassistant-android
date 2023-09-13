@@ -34,9 +34,17 @@ interface DayPlanRepository {
     @PUT("/dayplans/{id}")
     suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
 
+    @PUT("/dayplans/{dayPlanId}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
+    suspend fun changeIngredientState(
+        @Path("dayPlanId") dayPlanId: Int,
+        @Path("recipeId") recipeId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int,
+        @Path("ingredientId") ingredientId: Int,
+        @Path("isChecked") isChecked: Boolean
+    ): SuccessResponse
+
     enum class Sort {
-        ASC,
-        DESC
+        ASC, DESC
     }
 
 }

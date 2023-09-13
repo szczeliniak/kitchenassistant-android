@@ -53,6 +53,23 @@ class DayPlanActivityViewModel @AssistedInject constructor(
         return liveData
     }
 
+    fun changeIngredientState(
+        dayPlanId: Int,
+        recipeId: Int,
+        ingredientGroupId: Int,
+        ingredientId: Int,
+        isChecked: Boolean
+    ): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            dayPlanService.changeIngredientState(dayPlanId, recipeId, ingredientGroupId, ingredientId, isChecked)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
+
     @AssistedFactory
     interface Factory {
         fun create(dayPlanId: Int): DayPlanActivityViewModel

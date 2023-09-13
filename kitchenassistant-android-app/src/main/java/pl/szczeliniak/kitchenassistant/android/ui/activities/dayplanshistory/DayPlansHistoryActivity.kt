@@ -11,8 +11,10 @@ import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityDayPlansHistoryBinding
+import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
@@ -120,6 +122,21 @@ DayPlansHistoryActivity : AppCompatActivity() {
                 endlessScrollRecyclerViewListener.reset()
             }
         })
+    }
+
+    override fun onStart() {
+        eventBus.register(this)
+        super.onStart()
+    }
+
+    override fun onStop() {
+        eventBus.unregister(this)
+        super.onStop()
+    }
+
+    @Subscribe
+    fun onDayPlanEdited(event: DayPlanEditedEvent) {
+        endlessScrollRecyclerViewListener.reset()
     }
 
 }

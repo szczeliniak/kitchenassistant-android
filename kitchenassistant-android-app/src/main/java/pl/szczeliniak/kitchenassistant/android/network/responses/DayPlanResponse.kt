@@ -32,6 +32,7 @@ data class DayPlanResponse(
                     val id: Int,
                     val name: String,
                     val quantity: String?,
+                    val checked: Boolean
                 ) : Parcelable
             }
         }

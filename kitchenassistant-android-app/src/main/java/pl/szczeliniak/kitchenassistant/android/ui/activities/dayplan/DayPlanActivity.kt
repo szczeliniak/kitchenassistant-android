@@ -29,7 +29,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
-import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,9 +52,10 @@ class DayPlanActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDayPlanBinding
     private val recipesAdapter = GroupAdapter<GroupieViewHolder>()
-    private lateinit var recipesLoadingStateHandler: LoadingStateHandler<DayPlanResponse.DayPlan>
-    private lateinit var deleteRecipeLoadingStateHandler: LoadingStateHandler<Int>
-    private lateinit var deleteDayPlanLoadingStateHandler: LoadingStateHandler<Int>
+    private val recipesLoadingStateHandler = recipesLoadingStateHandler()
+    private val deleteRecipeLoadingStateHandler = deleteRecipeLoadingStateHandler()
+    private val deleteDayPlanLoadingStateHandler = deleteDayPlanLoadingStateHandler()
+    private val changeIngredientStateLoadingStateHandler = changeIngredientStateLoadingStateHandler()
 
     private var numberOfRecipesForDayPlan = 0
 
@@ -67,9 +67,6 @@ class DayPlanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDayPlanBinding.inflate(layoutInflater)
         binding.recyclerView.adapter = recipesAdapter
-        recipesLoadingStateHandler = recipesLoadingStateHandler()
-        deleteRecipeLoadingStateHandler = deleteRecipeLoadingStateHandler()
-        deleteDayPlanLoadingStateHandler = deleteDayPlanLoadingStateHandler()
         viewModel.dayPlan.observe(this) { recipesLoadingStateHandler.handle(it) }
         setContentView(binding.root)
         eventBus.register(this)
@@ -110,7 +107,23 @@ class DayPlanActivity : AppCompatActivity() {
                         if (ingredientGroup.ingredients.isNotEmpty()) {
                             recipesAdapter.add(DayPlanIngredientGroupHeaderItem(ingredientGroup))
                             ingredientGroup.ingredients.forEach { ingredient ->
-                                recipesAdapter.add(DayPlanIngredientItem(ingredient))
+                                recipesAdapter.add(
+                                    DayPlanIngredientItem(
+                                        ingredient,
+                                        data.id,
+                                        recipe.id,
+                                        ingredientGroup.id
+                                    ) { dayPlanId, recipeId, ingredientGroupId, ingredientId, state ->
+                                        viewModel.changeIngredientState(
+                                            dayPlanId,
+                                            recipeId,
+                                            ingredientGroupId,
+                                            ingredientId,
+                                            state
+                                        ).observe(this@DayPlanActivity) {
+                                            changeIngredientStateLoadingStateHandler.handle(it)
+                                        }
+                                    })
                             }
                         }
                     }
@@ -153,6 +166,21 @@ class DayPlanActivity : AppCompatActivity() {
             override fun onSuccess(data: Int) {
                 eventBus.post(DayPlanDeletedEvent())
                 finish()
+            }
+        })
+    }
+
+    private fun changeIngredientStateLoadingStateHandler(): LoadingStateHandler<Int> {
+        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
+            override fun onInProgress() {
+                binding.root.showProgressSpinner(this@DayPlanActivity)
+            }
+
+            override fun onFinish() {
+                binding.root.hideProgressSpinner()
+            }
+
+            override fun onSuccess(data: Int) {
             }
         })
     }

@@ -28,11 +28,7 @@ class DayPlanService(
                 emit(
                     LoadingState.Success(
                         repository.findAll(
-                            page,
-                            limit,
-                            since,
-                            to,
-                            sort
+                            page, limit, since, to, sort
                         )
                     )
                 )
@@ -101,6 +97,27 @@ class DayPlanService(
             emit(LoadingState.InProgress)
             try {
                 emit(LoadingState.Success(repository.update(dayPlanId, request).id))
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
+    suspend fun changeIngredientState(
+        dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, isChecked: Boolean
+    ): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(
+                    LoadingState.Success(
+                        repository.changeIngredientState(
+                            dayPlanId, recipeId, ingredientGroupId, ingredientId, isChecked
+                        ).id
+                    )
+                )
             } catch (e: KitchenAssistantNetworkException) {
                 emit(LoadingState.NoInternetException)
             } catch (e: Exception) {
