@@ -48,6 +48,12 @@ interface RecipeRepository {
         @Path("ingredientId") ingredientId: Int
     ): SuccessResponse
 
+    @DELETE("/recipes/{id}/ingredientGroups/{ingredientGroupId}")
+    suspend fun deleteIngredientGroup(
+        @Path("id") recipeId: Int,
+        @Path("ingredientGroupId") ingredientGroupId: Int
+    ): SuccessResponse
+
     @POST("/recipes/{id}/steps")
     suspend fun addStep(@Path("id") recipeId: Int, @Body request: AddStepRequest): SuccessResponse
 

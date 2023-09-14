@@ -6,12 +6,14 @@ import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemHeaderIngredientGroupBinding
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditingredient.AddEditIngredientGroupDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 
 class IngredientGroupHeaderItem(
     private val id: Int,
     private val name: String,
     private val recipeId: Int,
-    private val fragmentManager: FragmentManager
+    private val fragmentManager: FragmentManager,
+    private val onDeleteClicked: (recipeId: Int, ingredientGroupId: Int) -> Unit
 ) :
     BindableItem<ListItemHeaderIngredientGroupBinding>() {
 
@@ -19,6 +21,11 @@ class IngredientGroupHeaderItem(
         binding.ingredientGroupName.text = name
         binding.openEditDialog.setOnClickListener {
             AddEditIngredientGroupDialog.show(fragmentManager, recipeId, id)
+        }
+        binding.openDeleteDialog.setOnClickListener {
+            ConfirmationDialog.show(fragmentManager) {
+                onDeleteClicked(recipeId, id)
+            }
         }
     }
 

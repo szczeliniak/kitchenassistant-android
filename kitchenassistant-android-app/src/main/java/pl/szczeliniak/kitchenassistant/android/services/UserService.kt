@@ -12,7 +12,7 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.RefreshTokenRes
 import pl.szczeliniak.kitchenassistant.android.network.retrofit.UserRepository
 import retrofit2.HttpException
 
-class UserService constructor(private val repository: UserRepository) {
+class UserService(private val repository: UserRepository) {
 
     suspend fun login(request: LoginRequest): Flow<LoadingState<LoginResponse>> {
         return flow {

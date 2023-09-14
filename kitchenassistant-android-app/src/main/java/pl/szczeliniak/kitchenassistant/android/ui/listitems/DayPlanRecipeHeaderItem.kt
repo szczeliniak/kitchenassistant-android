@@ -8,10 +8,10 @@ import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ListItemHeaderDayPlanRecipeBinding
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 
-class DayPlanRecipeHeaderItem constructor(
+class DayPlanRecipeHeaderItem(
     private val recipe: DayPlanResponse.DayPlan.Recipe,
     private val context: Context,
-    private val onDeleteClick: OnClick
+    private val onDeleteClicked: (recipeId: Int) -> Unit
 ) : BindableItem<ListItemHeaderDayPlanRecipeBinding>() {
 
     override fun bind(binding: ListItemHeaderDayPlanRecipeBinding, position: Int) {
@@ -25,7 +25,7 @@ class DayPlanRecipeHeaderItem constructor(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(recipe.id)
+                    onDeleteClicked(recipe.id)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -41,10 +41,6 @@ class DayPlanRecipeHeaderItem constructor(
 
     override fun initializeViewBinding(view: View): ListItemHeaderDayPlanRecipeBinding {
         return ListItemHeaderDayPlanRecipeBinding.bind(view)
-    }
-
-    fun interface OnClick {
-        fun onClick(recipeId: Int)
     }
 
 }

@@ -12,14 +12,14 @@ import pl.szczeliniak.kitchenassistant.android.utils.LocalDateUtils
 class DayPlanItem(
     private val context: Context,
     private val dayPlan: DayPlansResponse.DayPlan,
-    private val onClick: OnClick,
-    private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick
+    private val onClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit,
+    private val onDeleteClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit,
+    private val onEditClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit
 ) : BindableItem<ListItemDayPlanBinding>() {
 
     override fun bind(binding: ListItemDayPlanBinding, position: Int) {
         binding.dayPlanDate.text = LocalDateUtils.stringify(dayPlan.date)
-        binding.root.setOnClickListener { onClick.onClick(dayPlan) }
+        binding.root.setOnClickListener { onClicked(dayPlan) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
     }
 
@@ -37,12 +37,12 @@ class DayPlanItem(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(dayPlan)
+                    onDeleteClicked(dayPlan)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.edit -> {
-                    onEditClick.onClick(dayPlan)
+                    onEditClicked(dayPlan)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -50,10 +50,6 @@ class DayPlanItem(
         }
         popupMenu.show()
         return true
-    }
-
-    fun interface OnClick {
-        fun onClick(dayPlan: DayPlansResponse.DayPlan)
     }
 
 }

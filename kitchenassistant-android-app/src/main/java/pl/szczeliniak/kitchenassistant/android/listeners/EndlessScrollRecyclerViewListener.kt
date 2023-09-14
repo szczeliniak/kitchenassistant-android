@@ -4,9 +4,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollRecyclerViewListener(
-    private val linearLayoutManager: LinearLayoutManager,
-    var onLoad: OnLoad,
-    var onReset: OnReset
+    private val linearLayoutManager: LinearLayoutManager, var onLoad: (page: Int) -> Unit, var onReset: () -> Unit
 ) : RecyclerView.OnScrollListener() {
 
     companion object {
@@ -20,15 +18,14 @@ class EndlessScrollRecyclerViewListener(
         if (dy < 1) {
             return
         }
-        if ((linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()) >= linearLayoutManager.itemCount
-        ) {
+        if ((linearLayoutManager.childCount + linearLayoutManager.findFirstVisibleItemPosition()) >= linearLayoutManager.itemCount) {
             load()
         }
     }
 
     fun reset() {
         linearLayoutManager.scrollToPosition(0)
-        onReset.onReset()
+        onReset()
         page = 0
         maxPage = DEFAULT_PAGE
         load()
@@ -39,15 +36,7 @@ class EndlessScrollRecyclerViewListener(
             return
         }
         page += 1
-        onLoad.onLoad(page)
-    }
-
-    fun interface OnLoad {
-        fun onLoad(page: Int)
-    }
-
-    fun interface OnReset {
-        fun onReset()
+        onLoad(page)
     }
 
 }

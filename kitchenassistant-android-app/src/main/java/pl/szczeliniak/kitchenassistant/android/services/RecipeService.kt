@@ -86,6 +86,26 @@ class RecipeService(
         }
     }
 
+    suspend fun deleteIngredientGroup(recipeId: Int, ingredientGroupId: Int): Flow<LoadingState<Int>> {
+        return flow {
+            emit(LoadingState.InProgress)
+            try {
+                emit(
+                    LoadingState.Success(
+                        recipeRepository.deleteIngredientGroup(
+                            recipeId,
+                            ingredientGroupId
+                        ).id
+                    )
+                )
+            } catch (e: KitchenAssistantNetworkException) {
+                emit(LoadingState.NoInternetException)
+            } catch (e: Exception) {
+                emit(LoadingState.Exception(e))
+            }
+        }
+    }
+
     suspend fun deleteStep(recipeId: Int, stepId: Int): Flow<LoadingState<Int>> {
         return flow {
             emit(LoadingState.InProgress)

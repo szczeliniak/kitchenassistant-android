@@ -12,7 +12,7 @@ class IngredientItem(
     private val context: Context,
     private val recipeId: Int,
     private val ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient,
-    private val onDeleteClick: OnClick,
+    private val onDeleteClicked: (recipeId: Int, ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient) -> Unit,
 ) :
     BindableItem<ListItemIngredientBinding>() {
 
@@ -28,7 +28,7 @@ class IngredientItem(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(recipeId, ingredient)
+                    onDeleteClicked(recipeId, ingredient)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -44,10 +44,6 @@ class IngredientItem(
 
     override fun initializeViewBinding(view: View): ListItemIngredientBinding {
         return ListItemIngredientBinding.bind(view)
-    }
-
-    fun interface OnClick {
-        fun onClick(recipeId: Int, ingredient: RecipeResponse.Recipe.IngredientGroup.Ingredient)
     }
 
 }

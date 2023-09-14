@@ -12,8 +12,8 @@ class StepItem(
     private val context: Context,
     private val recipeId: Int,
     private val step: RecipeResponse.Recipe.Step,
-    private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick
+    private val onDeleteClicked: (recipeId: Int, step: RecipeResponse.Recipe.Step) -> Unit,
+    private val onEditClicked: (recipeId: Int, step: RecipeResponse.Recipe.Step) -> Unit
 ) :
     BindableItem<ListItemStepBinding>() {
 
@@ -28,12 +28,12 @@ class StepItem(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(recipeId, step)
+                    onDeleteClicked(recipeId, step)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.edit -> {
-                    onEditClick.onClick(recipeId, step)
+                    onEditClicked(recipeId, step)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -49,10 +49,6 @@ class StepItem(
 
     override fun initializeViewBinding(view: View): ListItemStepBinding {
         return ListItemStepBinding.bind(view)
-    }
-
-    fun interface OnClick {
-        fun onClick(recipeId: Int, step: RecipeResponse.Recipe.Step)
     }
 
 }

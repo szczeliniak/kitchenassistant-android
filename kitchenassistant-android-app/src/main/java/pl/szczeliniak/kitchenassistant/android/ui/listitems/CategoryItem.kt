@@ -11,8 +11,8 @@ import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesRespo
 class CategoryItem(
     private val context: Context,
     private val category: CategoriesResponse.Category,
-    private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick
+    private val onDeleteClicked: (category: CategoriesResponse.Category) -> Unit,
+    private val onEditClicked: (category: CategoriesResponse.Category) -> Unit
 ) :
     BindableItem<ListItemCategoryBinding>() {
 
@@ -27,11 +27,12 @@ class CategoryItem(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(category)
+                    onDeleteClicked(category)
                     return@setOnMenuItemClickListener true
                 }
+
                 R.id.edit -> {
-                    onEditClick.onClick(category)
+                    onEditClicked(category)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -47,10 +48,6 @@ class CategoryItem(
 
     override fun initializeViewBinding(view: View): ListItemCategoryBinding {
         return ListItemCategoryBinding.bind(view)
-    }
-
-    fun interface OnClick {
-        fun onClick(category: CategoriesResponse.Category)
     }
 
 }

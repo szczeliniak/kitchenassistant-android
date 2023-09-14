@@ -17,7 +17,7 @@ class RecipeIngredientsFragmentViewModel @Inject constructor(
     private val recipeService: RecipeService,
 ) : ViewModel() {
 
-    fun delete(recipeId: Int, ingredientGroupId: Int, ingredientId: Int): LiveData<LoadingState<Int>> {
+    fun deleteRecipe(recipeId: Int, ingredientGroupId: Int, ingredientId: Int): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
             recipeService.deleteIngredient(recipeId, ingredientGroupId, ingredientId)
@@ -26,5 +26,16 @@ class RecipeIngredientsFragmentViewModel @Inject constructor(
         }
         return liveData
     }
+
+    fun deleteIngredientGroup(recipeId: Int, ingredientGroupId: Int): LiveData<LoadingState<Int>> {
+        val liveData = MutableLiveData<LoadingState<Int>>()
+        viewModelScope.launch {
+            recipeService.deleteIngredientGroup(recipeId, ingredientGroupId)
+                .onEach { liveData.value = it }
+                .launchIn(viewModelScope)
+        }
+        return liveData
+    }
+
 
 }

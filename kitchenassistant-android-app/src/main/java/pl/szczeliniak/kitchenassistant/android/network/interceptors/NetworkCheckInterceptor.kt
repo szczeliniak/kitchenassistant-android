@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantNetworkException
 
-class NetworkCheckInterceptor constructor(private val networkConnectionChecker: NetworkConnectionChecker) :
+class NetworkCheckInterceptor (private val networkConnectionChecker: NetworkConnectionChecker) :
     Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

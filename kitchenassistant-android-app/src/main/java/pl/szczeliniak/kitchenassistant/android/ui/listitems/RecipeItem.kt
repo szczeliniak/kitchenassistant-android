@@ -15,11 +15,11 @@ class RecipeItem(
     private val context: Context,
     private val recipe: RecipesResponse.Recipe,
     private val showCategory: Boolean = false,
-    private val onClick: OnClick,
-    private val onDeleteClick: OnClick,
-    private val onEditClick: OnClick,
-    private val onAddRemoveFromFavourites: OnClick,
-    private val onAssignToDayPan: OnClick
+    private val onClicked: (recipe: RecipesResponse.Recipe) -> Unit,
+    private val onDeleteClicked: (recipe: RecipesResponse.Recipe) -> Unit,
+    private val onEditClicked: (recipe: RecipesResponse.Recipe) -> Unit,
+    private val onAddRemoveFromFavouritesClicked: (recipe: RecipesResponse.Recipe) -> Unit,
+    private val onAssignToDayPanClicked: (recipe: RecipesResponse.Recipe) -> Unit
 ) : BindableItem<ListItemRecipeBinding>() {
 
     var photo: File? = null
@@ -33,7 +33,7 @@ class RecipeItem(
             )
         }
         binding.recipeAuthor.fillOrHide(recipe.author, binding.recipeAuthor)
-        binding.root.setOnClickListener { onClick.onClick(recipe) }
+        binding.root.setOnClickListener { onClicked(recipe) }
         binding.buttonMore.setOnClickListener { showPopupMenu(it) }
         binding.recipeIsFavorite.visibility = if (recipe.favorite) View.VISIBLE else View.INVISIBLE
         photo?.let {
@@ -61,22 +61,22 @@ class RecipeItem(
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClick.onClick(recipe)
+                    onDeleteClicked(recipe)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.edit -> {
-                    onEditClick.onClick(recipe)
+                    onEditClicked(recipe)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.add_remove_from_favorites -> {
-                    onAddRemoveFromFavourites.onClick(recipe)
+                    onAddRemoveFromFavouritesClicked(recipe)
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.add_to_day_plan -> {
-                    onAssignToDayPan.onClick(recipe)
+                    onAssignToDayPanClicked(recipe)
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -84,10 +84,6 @@ class RecipeItem(
         }
         popupMenu.show()
         return true
-    }
-
-    fun interface OnClick {
-        fun onClick(recipe: RecipesResponse.Recipe)
     }
 
     val photoName: String?

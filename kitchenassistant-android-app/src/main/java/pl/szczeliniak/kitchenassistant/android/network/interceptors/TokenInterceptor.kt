@@ -4,7 +4,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 
-class TokenInterceptor constructor(
+class TokenInterceptor (
     private var localStorageService: LocalStorageService,
 ) : Interceptor {
 

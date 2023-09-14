@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 import pl.szczeliniak.kitchenassistant.android.utils.ZonedDateTimeUtils
 import java.time.ZonedDateTime
 
-class LocalStorageService constructor(private val context: Context) {
+class LocalStorageService(private val context: Context) {
 
     companion object {
         private const val SHARED_PREFS_NAME = "kitchenassistant-shared-prefs"

@@ -12,14 +12,14 @@ class AddEditIngredientItem(
     private val id: Int?,
     private var name: String = "",
     private var quantity: String?,
-    private val onDeleteClicked: OnDeleteClicked,
-    private val onFormChanged: OnFormChanged
+    private val onDeleteClicked: (addEditIngredientItem: AddEditIngredientItem) -> Unit,
+    private val onFormChanged: () -> Unit
 ) : BindableItem<ListItemAddEditIngredientBinding>() {
 
     override fun bind(binding: ListItemAddEditIngredientBinding, position: Int) {
         binding.remove.setOnClickListener {
-            onDeleteClicked.onDeleteClicked(this@AddEditIngredientItem)
-            onFormChanged.onFormChanged()
+            onDeleteClicked(this@AddEditIngredientItem)
+            onFormChanged()
         }
 
         binding.ingredientName.setText(name)
@@ -30,16 +30,16 @@ class AddEditIngredientItem(
             } else {
                 binding.ingredientNameLayout.error = null
             }
-            onFormChanged.onFormChanged()
+            onFormChanged()
         }
 
         binding.ingredientQuantity.setText(quantity)
         binding.ingredientQuantity.doOnTextChanged { text, _, _, _ ->
             quantity = text.toString()
-            onFormChanged.onFormChanged()
+            onFormChanged()
         }
 
-        onFormChanged.onFormChanged()
+        onFormChanged()
     }
 
     override fun getLayout(): Int {
@@ -48,14 +48,6 @@ class AddEditIngredientItem(
 
     override fun initializeViewBinding(view: View): ListItemAddEditIngredientBinding {
         return ListItemAddEditIngredientBinding.bind(view)
-    }
-
-    fun interface OnDeleteClicked {
-        fun onDeleteClicked(addEditIngredientItem: AddEditIngredientItem)
-    }
-
-    fun interface OnFormChanged {
-        fun onFormChanged()
     }
 
     private fun isNameValid(): Boolean {

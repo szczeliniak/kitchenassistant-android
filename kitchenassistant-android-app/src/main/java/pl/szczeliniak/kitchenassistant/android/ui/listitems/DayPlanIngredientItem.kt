@@ -11,7 +11,7 @@ class DayPlanIngredientItem(
     private val dayPlanId: Int,
     private val recipeId: Int,
     private val ingredientGroupId: Int,
-    private val onCheckboxClick: OnCheckboxClick
+    private val onCheckboxClicked: (dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, state: Boolean) -> Unit
 ) : BindableItem<ListItemDayPlanIngredientBinding>() {
 
     override fun bind(binding: ListItemDayPlanIngredientBinding, position: Int) {
@@ -19,7 +19,7 @@ class DayPlanIngredientItem(
         binding.ingredientQuantity.text = ingredient.quantity
         binding.ingredientIsChecked.isChecked = ingredient.checked
         binding.ingredientIsChecked.setOnClickListener { _ ->
-            onCheckboxClick.onClick(
+            onCheckboxClicked(
                 dayPlanId,
                 recipeId,
                 ingredientGroupId,
@@ -35,10 +35,6 @@ class DayPlanIngredientItem(
 
     override fun initializeViewBinding(view: View): ListItemDayPlanIngredientBinding {
         return ListItemDayPlanIngredientBinding.bind(view)
-    }
-
-    fun interface OnCheckboxClick {
-        fun onClick(dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, state: Boolean)
     }
 
 }

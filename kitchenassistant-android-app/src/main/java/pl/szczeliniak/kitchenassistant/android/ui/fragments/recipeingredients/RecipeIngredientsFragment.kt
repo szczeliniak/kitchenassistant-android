@@ -85,7 +85,12 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
                         ingredientGroupsAdapter.add(
                             IngredientGroupHeaderItem(
                                 ingredientGroup.id, ingredientGroup.name, r.id, requireActivity().supportFragmentManager
-                            )
+                            ) { recipeId, ingredientGroupId ->
+                                viewModel.deleteIngredientGroup(recipeId, ingredientGroupId)
+                                    .observe(viewLifecycleOwner) {
+                                        deleteIngredientStateHandler.handle(it)
+                                    }
+                            }
                         )
                         ingredientGroup.ingredients.forEach { ingredient ->
                             ingredientGroupsAdapter.add(IngredientItem(
@@ -94,7 +99,7 @@ class RecipeIngredientsFragment : RecipeActivityFragment() {
                                 ingredient
                             ) { recipeId, i ->
                                 ConfirmationDialog.show(requireActivity().supportFragmentManager) {
-                                    viewModel.delete(recipeId, ingredientGroup.id, i.id)
+                                    viewModel.deleteRecipe(recipeId, ingredientGroup.id, i.id)
                                         .observe(viewLifecycleOwner) {
                                             deleteIngredientStateHandler.handle(it)
                                         }
