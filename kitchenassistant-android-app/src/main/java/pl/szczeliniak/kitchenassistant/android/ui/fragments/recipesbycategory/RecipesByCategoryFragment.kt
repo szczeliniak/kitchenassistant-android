@@ -130,7 +130,7 @@ class RecipesByCategoryFragment : Fragment() {
         endlessScrollRecyclerViewListener =
             EndlessScrollRecyclerViewListener(binding.recyclerView.layoutManager as LinearLayoutManager, {
                 viewModel.loadRecipes(
-                    it, searchView.query.toString(), filter?.recipeTag, filter?.onlyFavorites ?: false
+                    it, searchView.query.toString().ifEmpty { null }, filter?.recipeTag, filter?.onlyFavorites ?: false
                 )
             }, { adapter.clear() })
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
