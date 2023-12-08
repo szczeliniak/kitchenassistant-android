@@ -17,6 +17,7 @@ import pl.szczeliniak.kitchenassistant.android.events.CategoriesChangedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.addeditcategory.AddEditCategoryDialog
+import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.CategoryItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
@@ -88,8 +89,10 @@ class CategoriesActivity : AppCompatActivity() {
                         binding.layout.hideEmptyIcon()
                         data.forEach { category ->
                             adapter.add(CategoryItem(this@CategoriesActivity, category, {
-                                viewModel.delete(it.id).observe(this@CategoriesActivity) { r ->
-                                    deleteCategoryLoadingStateHandler.handle(r)
+                                ConfirmationDialog.show(supportFragmentManager) {
+                                    viewModel.delete(it.id).observe(this@CategoriesActivity) { r ->
+                                        deleteCategoryLoadingStateHandler.handle(r)
+                                    }
                                 }
                             }, {
                                 AddEditCategoryDialog.show(supportFragmentManager, it)

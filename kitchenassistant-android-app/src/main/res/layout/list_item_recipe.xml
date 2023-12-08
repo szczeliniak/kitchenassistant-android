@@ -19,10 +19,11 @@
             android:orientation="horizontal">
 
         <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
+                android:layout_width="@dimen/list_item_image_size"
+                android:layout_height="@dimen/list_item_image_size"
                 android:id="@+id/recipe_photo"
                 android:adjustViewBounds="true"
+                android:alpha="0.8"
                 app:layout_constraintDimensionRatio="1:1"
                 android:contentDescription="@string/description_recipe_photo"/>
 
@@ -56,6 +57,7 @@
                         android:id="@+id/recipe_name"
                         tools:text="@string/placeholder_recipe_name"
                         style="@style/TextViewHeader"
+                        android:maxLines="2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
