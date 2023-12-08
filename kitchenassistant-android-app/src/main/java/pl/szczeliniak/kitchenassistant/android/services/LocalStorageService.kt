@@ -11,6 +11,7 @@ class LocalStorageService(private val context: Context) {
     companion object {
         private const val SHARED_PREFS_NAME = "kitchenassistant-shared-prefs"
         private const val TOKEN = "TOKEN"
+        private const val EMAIL = "EMAIL"
         private const val ID = "ID"
         private const val VALID_TO = "VALID_TO"
     }
@@ -19,13 +20,14 @@ class LocalStorageService(private val context: Context) {
         return openSharedPrefs().contains(TOKEN)
     }
 
-    fun login(token: String, id: Int, validTo: ZonedDateTime) {
+    fun login(token: String, email: String?, id: Int, validTo: ZonedDateTime) {
         val editor = openSharedPrefs().edit()
         editor.clear()
         editor.putString(TOKEN, token)
         editor.putInt(ID, id)
+        email?.let { editor.putString(EMAIL, it) }
         editor.putString(VALID_TO, ZonedDateTimeUtils.stringify(validTo))
-        editor.apply()
+        editor.commit()
     }
 
     fun logout(): Boolean {
@@ -41,6 +43,10 @@ class LocalStorageService(private val context: Context) {
 
     fun getId(): Int {
         return openSharedPrefs().getInt(ID, -1)
+    }
+
+    fun getEmail(): String? {
+        return openSharedPrefs().getString(EMAIL, null)
     }
 
     private fun openSharedPrefs(): SharedPreferences {

@@ -105,7 +105,7 @@ class RegisterActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: LoginResponse) {
-                localStorageService.login(data.token, data.id, data.validTo)
+                localStorageService.login(data.token, data.email, data.id, data.validTo)
                 MainActivity.start(this@RegisterActivity)
                 finishAffinity()
             }

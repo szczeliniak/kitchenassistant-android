@@ -140,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: LoginResponse) {
-                localStorageService.login(data.token, data.id, data.validTo)
+                localStorageService.login(data.token, data.email, data.id, data.validTo)
                 goToMainActivity()
             }
 
@@ -167,7 +167,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: RefreshTokenResponse) {
-                localStorageService.login(data.token, localStorageService.getId(), data.validTo)
+                localStorageService.login(data.token, data.email, localStorageService.getId(), data.validTo)
                 goToMainActivity()
             }
 

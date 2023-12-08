@@ -3,6 +3,7 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -10,6 +11,7 @@ import com.facebook.login.LoginManager
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityMainBinding
+import pl.szczeliniak.kitchenassistant.android.databinding.IncludeNavViewHeaderBinding
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity
 import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplanshistory.DayPlansHistoryActivity
@@ -41,6 +43,17 @@ class MainActivity : AppCompatActivity() {
         binding.toolbarLayout.toolbar.init(this, R.drawable.icon_menu) {
             binding.drawerLayout.open()
         }
+
+        val viewHeader = IncludeNavViewHeaderBinding.inflate(layoutInflater)
+
+        localStorageService.getEmail()?.let {
+            viewHeader.navViewGreeting.visibility = View.VISIBLE
+            viewHeader.navViewGreeting.text = String.format(getString(R.string.message_greeting), it)
+        } ?: run {
+            viewHeader.navViewGreeting.visibility = View.GONE
+        }
+
+        binding.navView.addHeaderView(viewHeader.root)
 
         NavigationUI.setupWithNavController(
             binding.bottomNavView,
