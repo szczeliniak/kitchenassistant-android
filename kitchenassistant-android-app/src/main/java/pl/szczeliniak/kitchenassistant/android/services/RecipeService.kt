@@ -19,7 +19,7 @@ class RecipeService(
         categoryId: Int? = null,
         search: String? = null,
         tag: String? = null,
-        onlyFavorites: Boolean = false,
+        onlyFavorites: Boolean? = false,
         page: Int? = null,
         limit: Int? = null
     ): Flow<LoadingState<RecipesResponse>> {

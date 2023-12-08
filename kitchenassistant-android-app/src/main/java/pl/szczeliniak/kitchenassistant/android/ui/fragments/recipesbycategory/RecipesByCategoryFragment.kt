@@ -16,8 +16,8 @@ import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesByCategoryBinding
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
-import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
+import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
@@ -28,7 +28,6 @@ import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEd
 import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.choosedayplanforrecipe.ChooseDayForRecipeDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.recipesfilter.RecipesFilterDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.RecipeItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.DebounceExecutor
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
@@ -74,8 +73,6 @@ class RecipesByCategoryFragment : Fragment() {
     private lateinit var endlessScrollRecyclerViewListener: EndlessScrollRecyclerViewListener
     private lateinit var searchView: SearchView
 
-    private var filter: RecipesFilterDialog.Filter? = null
-
     private val menuProvider = object : MenuProvider {
         override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
             menuInflater.inflate(R.menu.fragment_recipes, menu)
@@ -93,27 +90,12 @@ class RecipesByCategoryFragment : Fragment() {
         }
 
         override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-            when (menuItem.itemId) {
-                R.id.filter -> {
-                    RecipesFilterDialog.show(requireActivity().supportFragmentManager,
-                        RecipesFilterDialog.Filter(filter?.onlyFavorites ?: false, filter?.recipeTag),
-                        RecipesFilterDialog.OnFilterChanged {
-                            filter = it
-                            resetRecipes()
-                        })
-                    return true
-                }
-            }
             return false
         }
 
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        savedInstanceState?.getParcelable(FILTER_SAVED_STATE_EXTRA, RecipesFilterDialog.Filter::class.java)?.let {
-            filter = it
-        }
-
         val viewModel: RecipesByCategoryFragmentViewModel by viewModels {
             RecipesByCategoryFragmentViewModel.provideFactory(recipesByCategoryFragmentViewModel, categoryId)
         }
@@ -129,9 +111,7 @@ class RecipesByCategoryFragment : Fragment() {
 
         endlessScrollRecyclerViewListener =
             EndlessScrollRecyclerViewListener(binding.recyclerView.layoutManager as LinearLayoutManager, {
-                viewModel.loadRecipes(
-                    it, searchView.query.toString().ifEmpty { null }, filter?.recipeTag, filter?.onlyFavorites ?: false
-                )
+                viewModel.loadRecipes(it, searchView.query.toString().ifEmpty { null })
             }, { adapter.clear() })
         binding.recyclerView.addOnScrollListener(endlessScrollRecyclerViewListener)
 
@@ -279,11 +259,6 @@ class RecipesByCategoryFragment : Fragment() {
     override fun onPause() {
         activity?.removeMenuProvider(menuProvider)
         super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelable(FILTER_SAVED_STATE_EXTRA, filter)
     }
 
     private val categoryId: Int?
