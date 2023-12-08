@@ -2,7 +2,6 @@ package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
-import pl.szczeliniak.kitchenassistant.android.network.requests.*
 import pl.szczeliniak.kitchenassistant.android.network.responses.*
 import retrofit2.Response
 import retrofit2.http.*
@@ -15,6 +14,6 @@ interface PhotoRepository {
 
     @Multipart
     @POST("/photos")
-    suspend fun uploadPhoto(@Part("file") part: MultipartBody.Part): UploadPhotoResponse
+    suspend fun uploadPhoto(@Part file: MultipartBody.Part): UploadPhotoResponse
 
 }
