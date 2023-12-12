@@ -10,14 +10,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <androidx.appcompat.widget.LinearLayoutCompat
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:id="@+id/recipe_name"
-            tools:text="@string/placeholder_recipe_name"
-            style="@style/TextViewHeader"
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            style="@style/ContentLayout"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:id="@+id/recipe_name"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                tools:text="@string/placeholder_recipe_name"
+                style="@style/TextViewHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:layout_width="wrap_content"
+                android:id="@+id/open_delete_dialog"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/padding_margin_tiny"
+                android:backgroundTint="@color/secondary"
+                android:src="@drawable/icon_trash"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -98,7 +98,7 @@ class DayPlanActivity : AppCompatActivity() {
                 }
                 numberOfRecipesForDayPlan = data.recipes.size
                 data.recipes.forEach { recipe ->
-                    recipesAdapter.add(DayPlanRecipeHeaderItem(recipe, this@DayPlanActivity) { recipeId ->
+                    recipesAdapter.add(DayPlanRecipeHeaderItem(recipe, this@DayPlanActivity, supportFragmentManager) { recipeId ->
                         viewModel.deleteRecipe(data.id, recipeId).observe(this@DayPlanActivity) {
                             deleteRecipeLoadingStateHandler.handle(it)
                         }
