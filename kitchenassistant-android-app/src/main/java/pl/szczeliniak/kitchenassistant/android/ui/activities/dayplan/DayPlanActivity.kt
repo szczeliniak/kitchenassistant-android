@@ -18,6 +18,7 @@ import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
+import pl.szczeliniak.kitchenassistant.android.ui.activities.recipe.RecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanIngredientGroupHeaderItem
@@ -101,7 +102,9 @@ class DayPlanActivity : AppCompatActivity() {
                 numberOfRecipesForDayPlan = data.recipes.size
                 data.recipes.forEach { recipe ->
                     recipesAdapter.add(DayPlanRecipeHeaderItem(recipe,
-                        supportFragmentManager,
+                        supportFragmentManager, {
+                            RecipeActivity.start(this@DayPlanActivity, it)
+                        },
                         if (isEditAllowed) {
                             { recipeId ->
                                 viewModel.deleteRecipe(data.id, recipeId).observe(this@DayPlanActivity) {
@@ -212,7 +215,7 @@ class DayPlanActivity : AppCompatActivity() {
         }
 
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        if(isEditAllowed) {
+        if (isEditAllowed) {
             menuInflater.inflate(R.menu.activity_day_plan, menu)
         }
         return super.onPrepareOptionsMenu(menu)

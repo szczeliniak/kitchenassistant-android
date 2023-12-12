@@ -1,8 +1,6 @@
 package pl.szczeliniak.kitchenassistant.android.ui.listitems
 
-import android.content.Context
 import android.view.View
-import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.FragmentManager
 import com.xwray.groupie.viewbinding.BindableItem
 import pl.szczeliniak.kitchenassistant.android.R
@@ -13,11 +11,18 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.Confirmat
 class DayPlanRecipeHeaderItem(
     private val recipe: DayPlanResponse.DayPlan.Recipe,
     private val fragmentManager: FragmentManager,
+    private val onClicked: ((recipeId: Int) -> Unit)? = null,
     private val onDeleteClicked: ((recipeId: Int) -> Unit)? = null
 ) : BindableItem<ListItemHeaderDayPlanRecipeBinding>() {
 
     override fun bind(binding: ListItemHeaderDayPlanRecipeBinding, position: Int) {
         binding.recipeName.text = recipe.name
+        recipe.originalRecipeId?.let { recipeId ->
+            onClicked?.let {
+                binding.root.setOnClickListener { it(recipeId) }
+            }
+        }
+
         onDeleteClicked?.let {
             binding.openDeleteDialog.visibility = View.VISIBLE
             binding.openDeleteDialog.setOnClickListener {
