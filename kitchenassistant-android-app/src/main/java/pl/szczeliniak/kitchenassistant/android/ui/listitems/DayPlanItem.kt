@@ -13,14 +13,19 @@ class DayPlanItem(
     private val context: Context,
     private val dayPlan: DayPlansResponse.DayPlan,
     private val onClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit,
-    private val onDeleteClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit,
-    private val onEditClicked: (dayPlan: DayPlansResponse.DayPlan) -> Unit
+    private val onDeleteClicked: ((dayPlan: DayPlansResponse.DayPlan) -> Unit)? = null,
+    private val onEditClicked: ((dayPlan: DayPlansResponse.DayPlan) -> Unit)? = null
 ) : BindableItem<ListItemDayPlanBinding>() {
 
     override fun bind(binding: ListItemDayPlanBinding, position: Int) {
         binding.dayPlanDate.text = LocalDateUtils.stringify(dayPlan.date)
         binding.root.setOnClickListener { onClicked(dayPlan) }
-        binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        if (showMenu) {
+            binding.buttonMore.visibility = View.VISIBLE
+            binding.buttonMore.setOnClickListener { showPopupMenu(it) }
+        } else {
+            binding.buttonMore.visibility = View.GONE
+        }
     }
 
     override fun getLayout(): Int {
@@ -34,15 +39,23 @@ class DayPlanItem(
     private fun showPopupMenu(view: View): Boolean {
         val popupMenu = PopupMenu(context, view)
         popupMenu.inflate(R.menu.dayplan_item)
+
+        if (onEditClicked == null) {
+            popupMenu.menu.removeItem(R.id.edit)
+        }
+        if (onDeleteClicked == null) {
+            popupMenu.menu.removeItem(R.id.delete)
+        }
+
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.delete -> {
-                    onDeleteClicked(dayPlan)
+                    onDeleteClicked?.let { it(dayPlan) }
                     return@setOnMenuItemClickListener true
                 }
 
                 R.id.edit -> {
-                    onEditClicked(dayPlan)
+                    onEditClicked?.let { it(dayPlan) }
                     return@setOnMenuItemClickListener true
                 }
             }
@@ -51,5 +64,8 @@ class DayPlanItem(
         popupMenu.show()
         return true
     }
+
+    private val showMenu: Boolean
+        get() = onDeleteClicked != null || onEditClicked != null
 
 }

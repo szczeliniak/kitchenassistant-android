@@ -36,10 +36,12 @@ class DayPlanActivity : AppCompatActivity() {
 
     companion object {
         private const val DAY_PLAN_ID_EXTRA = "DAY_PLAN_ID_EXTRA"
+        private const val DAY_PLAN_ALLOW_TO_EDIT = "DAY_PLAN_ALLOW_TO_EDIT_EXTRA"
 
-        fun start(context: Context, id: Int) {
+        fun start(context: Context, id: Int, allowToEdit: Boolean = true) {
             val intent = Intent(context, DayPlanActivity::class.java)
             intent.putExtra(DAY_PLAN_ID_EXTRA, id)
+            intent.putExtra(DAY_PLAN_ALLOW_TO_EDIT, allowToEdit)
             context.startActivity(intent)
         }
     }
@@ -98,11 +100,17 @@ class DayPlanActivity : AppCompatActivity() {
                 }
                 numberOfRecipesForDayPlan = data.recipes.size
                 data.recipes.forEach { recipe ->
-                    recipesAdapter.add(DayPlanRecipeHeaderItem(recipe, this@DayPlanActivity, supportFragmentManager) { recipeId ->
-                        viewModel.deleteRecipe(data.id, recipeId).observe(this@DayPlanActivity) {
-                            deleteRecipeLoadingStateHandler.handle(it)
-                        }
-                    })
+                    recipesAdapter.add(DayPlanRecipeHeaderItem(recipe,
+                        supportFragmentManager,
+                        if (isEditAllowed) {
+                            { recipeId ->
+                                viewModel.deleteRecipe(data.id, recipeId).observe(this@DayPlanActivity) {
+                                    deleteRecipeLoadingStateHandler.handle(it)
+                                }
+                            }
+                        } else {
+                            null
+                        }))
                     recipe.ingredientGroups.forEach { ingredientGroup ->
                         if (ingredientGroup.ingredients.isNotEmpty()) {
                             recipesAdapter.add(DayPlanIngredientGroupHeaderItem(ingredientGroup))
@@ -112,18 +120,22 @@ class DayPlanActivity : AppCompatActivity() {
                                         ingredient,
                                         data.id,
                                         recipe.id,
-                                        ingredientGroup.id
-                                    ) { dayPlanId, recipeId, ingredientGroupId, ingredientId, state ->
-                                        viewModel.changeIngredientState(
-                                            dayPlanId,
-                                            recipeId,
-                                            ingredientGroupId,
-                                            ingredientId,
-                                            state
-                                        ).observe(this@DayPlanActivity) {
-                                            changeIngredientStateLoadingStateHandler.handle(it)
+                                        ingredientGroup.id, if (isEditAllowed) {
+                                            { dayPlanId, recipeId, ingredientGroupId, ingredientId, state ->
+                                                viewModel.changeIngredientState(
+                                                    dayPlanId,
+                                                    recipeId,
+                                                    ingredientGroupId,
+                                                    ingredientId,
+                                                    state
+                                                ).observe(this@DayPlanActivity) {
+                                                    changeIngredientStateLoadingStateHandler.handle(it)
+                                                }
+                                            }
+                                        } else {
+                                            null
                                         }
-                                    })
+                                    ))
                             }
                         }
                     }
@@ -194,8 +206,15 @@ class DayPlanActivity : AppCompatActivity() {
             return id
         }
 
+    private val isEditAllowed: Boolean
+        get() {
+            return intent.getBooleanExtra(DAY_PLAN_ALLOW_TO_EDIT, true)
+        }
+
     override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_day_plan, menu)
+        if(isEditAllowed) {
+            menuInflater.inflate(R.menu.activity_day_plan, menu)
+        }
         return super.onPrepareOptionsMenu(menu)
     }
 

@@ -12,18 +12,23 @@ import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.Confirmat
 
 class DayPlanRecipeHeaderItem(
     private val recipe: DayPlanResponse.DayPlan.Recipe,
-    private val context: Context,
     private val fragmentManager: FragmentManager,
-    private val onDeleteClicked: (recipeId: Int) -> Unit
+    private val onDeleteClicked: ((recipeId: Int) -> Unit)? = null
 ) : BindableItem<ListItemHeaderDayPlanRecipeBinding>() {
 
     override fun bind(binding: ListItemHeaderDayPlanRecipeBinding, position: Int) {
         binding.recipeName.text = recipe.name
-        binding.openDeleteDialog.setOnClickListener {
-            ConfirmationDialog.show(fragmentManager) {
-                onDeleteClicked(recipe.id)
+        onDeleteClicked?.let {
+            binding.openDeleteDialog.visibility = View.VISIBLE
+            binding.openDeleteDialog.setOnClickListener {
+                ConfirmationDialog.show(fragmentManager) {
+                    it(recipe.id)
+                }
             }
+        } ?: run {
+            binding.openDeleteDialog.visibility = View.GONE
         }
+
     }
 
     override fun getLayout(): Int {

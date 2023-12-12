@@ -19,7 +19,6 @@ import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerVi
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ToolbarUtils.Companion.init
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
@@ -94,13 +93,7 @@ DayPlansHistoryActivity : AppCompatActivity() {
                     binding.layout.hideEmptyIcon()
                     data.dayPlans.items.forEach { dayPlan ->
                         adapter.add(DayPlanItem(this@DayPlansHistoryActivity, dayPlan, {
-                            DayPlanActivity.start(this@DayPlansHistoryActivity, dayPlan.id)
-                        }, {
-                            viewModel.delete(it.id).observe(this@DayPlansHistoryActivity) { r ->
-                                deleteDayPlanLoadingStateHandler.handle(r)
-                            }
-                        }, {
-                            UpdateDayPlanDialog.show(supportFragmentManager, dayPlan.id)
+                            DayPlanActivity.start(this@DayPlansHistoryActivity, dayPlan.id, false)
                         }))
                     }
                 }

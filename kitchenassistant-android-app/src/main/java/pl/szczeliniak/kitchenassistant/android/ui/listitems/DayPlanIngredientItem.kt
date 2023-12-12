@@ -11,22 +11,28 @@ class DayPlanIngredientItem(
     private val dayPlanId: Int,
     private val recipeId: Int,
     private val ingredientGroupId: Int,
-    private val onCheckboxClicked: (dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, state: Boolean) -> Unit
+    private val onCheckboxClicked: ((dayPlanId: Int, recipeId: Int, ingredientGroupId: Int, ingredientId: Int, state: Boolean) -> Unit)? = null
 ) : BindableItem<ListItemDayPlanIngredientBinding>() {
 
     override fun bind(binding: ListItemDayPlanIngredientBinding, position: Int) {
         binding.ingredientName.text = ingredient.name
         binding.ingredientQuantity.text = ingredient.quantity
         binding.ingredientIsChecked.isChecked = ingredient.checked
-        binding.ingredientIsChecked.setOnClickListener { _ ->
-            onCheckboxClicked(
-                dayPlanId,
-                recipeId,
-                ingredientGroupId,
-                ingredient.id,
-                binding.ingredientIsChecked.isChecked
-            )
+        onCheckboxClicked?.let {
+            binding.ingredientIsChecked.setOnClickListener { _ ->
+                binding.ingredientIsChecked.isEnabled = true
+                it(
+                    dayPlanId,
+                    recipeId,
+                    ingredientGroupId,
+                    ingredient.id,
+                    binding.ingredientIsChecked.isChecked
+                )
+            }
+        } ?: run {
+            binding.ingredientIsChecked.isEnabled = false
         }
+
     }
 
     override fun getLayout(): Int {
