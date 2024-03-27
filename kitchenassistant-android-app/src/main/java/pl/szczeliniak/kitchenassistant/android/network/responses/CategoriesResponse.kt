@@ -9,7 +9,6 @@ data class CategoriesResponse(
     @Parcelize
     data class Category(
         val id: Int,
-        val name: String,
-        val sequence: Int?
+        val name: String
     ) : Parcelable
 }

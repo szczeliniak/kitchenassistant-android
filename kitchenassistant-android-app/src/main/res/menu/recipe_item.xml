@@ -2,14 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-            android:id="@+id/delete"
-            android:title="@string/label_button_delete"/>
-
-    <item
-            android:id="@+id/edit"
-            android:title="@string/label_button_edit"/>
-
-    <item
             android:id="@+id/add_to_day_plan"
             android:title="@string/label_button_add_to_day_plan"/>
 

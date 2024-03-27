@@ -4,18 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
-import androidx.fragment.app.viewModels
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipeInfoBinding
-import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
-import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.AppCompatTextViewUtils.Companion.setTextOrDefault
-import pl.szczeliniak.kitchenassistant.android.ui.utils.ChipGroupUtils.Companion.add
 import java.util.regex.Pattern
 
 @AndroidEntryPoint
@@ -30,9 +24,6 @@ class RecipeInfoFragment : RecipeActivityFragment() {
         }
     }
 
-    private val viewModel: RecipeInfoFragmentViewModel by viewModels()
-
-    private lateinit var downloadPhotoLoadingStateHandler: LoadingStateHandler<PhotoService.DownloadedPhoto>
     private lateinit var binding: FragmentRecipeInfoBinding
 
     private var player: YouTubePlayer? = null
@@ -42,7 +33,6 @@ class RecipeInfoFragment : RecipeActivityFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        downloadPhotoLoadingStateHandler = prepareDownloadPhotoLoadingStateHandler()
         loadData()
     }
 
@@ -60,23 +50,7 @@ class RecipeInfoFragment : RecipeActivityFragment() {
                 binding.youtubePlayerLayout.visibility = View.GONE
             }
 
-            binding.tagChips.removeAllViews()
-            if (r.tags.isEmpty()) {
-                binding.tagsLayout.visibility = View.GONE
-            } else {
-                binding.tagsLayout.visibility = View.VISIBLE
-                r.tags.forEach { binding.tagChips.add(layoutInflater, it, false) }
-            }
-
             binding.recipeCategory.setTextOrDefault(r.category?.name)
-
-            r.photoName?.let {
-                viewModel.loadPhoto(it).observe(viewLifecycleOwner) {
-                    downloadPhotoLoadingStateHandler.handle(it)
-                }
-            } ?: {
-                binding.recipePhoto.setImageResource(0)
-            }
         }
     }
 
@@ -95,34 +69,19 @@ class RecipeInfoFragment : RecipeActivityFragment() {
     }
 
     private fun loadVideo(videoId: String) {
-
-        player?.let {
-            it.cueVideo(videoId, 0F)
-        } ?: kotlin.run {
+        player?.cueVideo(videoId, 0F) ?: kotlin.run {
             lifecycle.addObserver(binding.youtubePlayer)
             binding.youtubePlayer.initialize(object : AbstractYouTubePlayerListener() {
                 override fun onReady(youTubePlayer: YouTubePlayer) {
                     this@RecipeInfoFragment.player = youTubePlayer
                     youTubePlayer.cueVideo(videoId, 0F)
                 }
-
             })
         }
     }
 
     override fun onRecipeChanged() {
         loadData()
-    }
-
-    private fun prepareDownloadPhotoLoadingStateHandler(): LoadingStateHandler<PhotoService.DownloadedPhoto> {
-        return LoadingStateHandler(
-            requireContext(),
-            object : LoadingStateHandler.OnStateChanged<PhotoService.DownloadedPhoto> {
-                override fun onSuccess(data: PhotoService.DownloadedPhoto) {
-                    Picasso.get().load(data.file.toUri()).fit().centerCrop().into(binding.recipePhoto)
-                    binding.recipePhotoContainer.visibility = View.VISIBLE
-                }
-            })
     }
 
     override fun onPause() {

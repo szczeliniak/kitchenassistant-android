@@ -45,7 +45,7 @@ class ChooseDayForRecipeDialog : DialogFragment() {
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setView(binding.root)
-        builder.setPositiveButton(R.string.label_button_add) { _, _ -> }
+        builder.setPositiveButton(R.string.label_button_select_date) { _, _ -> }
         builder.setNegativeButton(R.string.label_button_cancel) { _, _ -> }
         return builder.create()
     }

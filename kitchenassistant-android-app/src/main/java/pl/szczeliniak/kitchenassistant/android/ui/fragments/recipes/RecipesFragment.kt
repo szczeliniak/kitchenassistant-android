@@ -8,20 +8,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentRecipesBinding
-import pl.szczeliniak.kitchenassistant.android.events.CategoriesChangedEvent
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.CategoriesResponse
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipesbycategory.RecipesByCategoryFragment
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class RecipesFragment : Fragment() {
@@ -32,9 +27,6 @@ class RecipesFragment : Fragment() {
         }
     }
 
-    @Inject
-    lateinit var eventBus: EventBus
-
     private val viewModel: RecipesFragmentViewModel by viewModels()
 
     private lateinit var binding: FragmentRecipesBinding
@@ -42,8 +34,6 @@ class RecipesFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentRecipesBinding.inflate(inflater)
-
-        binding.buttonAddRecipe.setOnClickListener { AddEditRecipeActivity.start(requireContext()) }
         return binding.root
     }
 
@@ -84,21 +74,6 @@ class RecipesFragment : Fragment() {
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             tab.text = tabs[position].tabName
         }.attach()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        eventBus.register(this)
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        eventBus.unregister(this)
-        super.onDestroy()
-    }
-
-    @Subscribe
-    fun categoriesChangedEvent(event: CategoriesChangedEvent) {
-        viewModel.reloadCategories()
     }
 
     data class CategoryTab(val categoryId: Int?, val tabName: String)

@@ -26,7 +26,7 @@ class RecipesFragmentViewModel @Inject constructor(
         reloadCategories()
     }
 
-    fun reloadCategories() {
+    private fun reloadCategories() {
         viewModelScope.launch {
             recipeService.findAllCategories()
                 .onEach { _categories.value = it }

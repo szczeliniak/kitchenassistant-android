@@ -16,21 +16,18 @@ data class RecipeResponse(
         val favorite: Boolean,
         val category: Category?,
         val ingredientGroups: List<IngredientGroup>,
-        val steps: List<Step>,
-        val tags: List<String>,
-        val photoName: String?
+        val stepGroups: List<StepGroup>,
     ) : Parcelable {
         @Parcelize
         data class Category(
             val id: Int,
-            val name: String,
-            val sequence: Int?
+            val name: String
         ) : Parcelable
 
         @Parcelize
         data class IngredientGroup(
             val id: Int,
-            val name: String,
+            val name: String?,
             val ingredients: List<Ingredient>,
         ) : Parcelable {
             @Parcelize
@@ -42,11 +39,16 @@ data class RecipeResponse(
         }
 
         @Parcelize
-        data class Step(
+        data class StepGroup(
             val id: Int,
-            val description: String,
-            val sequence: Int?,
-            val photoName: String?
-        ) : Parcelable
+            val name: String?,
+            val steps: List<Step>,
+        ) : Parcelable {
+            @Parcelize
+            data class Step(
+                val id: Int,
+                val description: String,
+            ) : Parcelable
+        }
     }
 }

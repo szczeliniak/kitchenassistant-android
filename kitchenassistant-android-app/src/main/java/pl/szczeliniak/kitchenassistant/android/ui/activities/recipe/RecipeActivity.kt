@@ -3,23 +3,15 @@ package pl.szczeliniak.kitchenassistant.android.ui.activities.recipe
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.databinding.ActivityRecipeBinding
-import pl.szczeliniak.kitchenassistant.android.events.RecipeDeletedEvent
-import pl.szczeliniak.kitchenassistant.android.events.RecipeChanged
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipeResponse
-import pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity
 import pl.szczeliniak.kitchenassistant.android.ui.adapters.FragmentPagerAdapter
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.confirmation.ConfirmationDialog
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.RecipeActivityFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipeinfo.RecipeInfoFragment
 import pl.szczeliniak.kitchenassistant.android.ui.fragments.recipeingredients.RecipeIngredientsFragment
@@ -43,15 +35,11 @@ class RecipeActivity : AppCompatActivity() {
     }
 
     @Inject
-    lateinit var eventBus: EventBus
-
-    @Inject
     lateinit var recipeActivityViewModelFactory: RecipeActivityViewModel.Factory
 
     private lateinit var binding: ActivityRecipeBinding
     private val recipeLoadingStateHandler: LoadingStateHandler<RecipeResponse.Recipe> =
         prepareRecipeLoadingStateHandler()
-    private val deleteRecipeLoadingStateHandler: LoadingStateHandler<Int> = deleteRecipeLoadingStateHandler()
     private val observers = mutableListOf<RecipeActivityFragment>()
 
     private val viewModel: RecipeActivityViewModel by viewModels {
@@ -71,7 +59,6 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(binding.root)
         initPager()
         viewModel.recipe.observe(this) { recipeLoadingStateHandler.handle(it) }
-        eventBus.register(this)
     }
 
     private fun prepareRecipeLoadingStateHandler(): LoadingStateHandler<RecipeResponse.Recipe> {
@@ -127,53 +114,6 @@ class RecipeActivity : AppCompatActivity() {
 
     fun removeChangesObserver(fragment: RecipeActivityFragment) {
         observers.remove(fragment)
-    }
-
-    override fun onDestroy() {
-        eventBus.unregister(this)
-        super.onDestroy()
-    }
-
-    private fun deleteRecipeLoadingStateHandler(): LoadingStateHandler<Int> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<Int> {
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@RecipeActivity)
-            }
-
-            override fun onFinish() {
-                binding.root.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: Int) {
-                eventBus.post(RecipeDeletedEvent())
-                finish()
-            }
-        })
-    }
-
-    @Subscribe
-    fun onRecipeSaved(event: RecipeChanged) {
-        viewModel.reload()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.activity_recipe, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.edit -> {
-                AddEditRecipeActivity.start(this, recipeId)
-            }
-
-            R.id.delete -> {
-                ConfirmationDialog.show(supportFragmentManager) {
-                    viewModel.delete(recipeId).observe(this) { deleteRecipeLoadingStateHandler.handle(it) }
-                }
-            }
-        }
-        return super.onOptionsItemSelected(item)
     }
 
 }

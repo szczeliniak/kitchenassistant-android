@@ -14,13 +14,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import pl.szczeliniak.kitchenassistant.android.databinding.FragmentDayPlansBinding
-import pl.szczeliniak.kitchenassistant.android.events.DayPlanDeletedEvent
 import pl.szczeliniak.kitchenassistant.android.events.DayPlanEditedEvent
 import pl.szczeliniak.kitchenassistant.android.listeners.EndlessScrollRecyclerViewListener
 import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity
-import pl.szczeliniak.kitchenassistant.android.ui.dialogs.updatedayplan.UpdateDayPlanDialog
 import pl.szczeliniak.kitchenassistant.android.ui.listitems.DayPlanItem
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideEmptyIcon
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -37,11 +35,11 @@ class DayPlansFragment : Fragment() {
         }
     }
 
-    private val viewModel: DayPlansFragmentViewModel by viewModels()
-    private val adapter = GroupAdapter<GroupieViewHolder>()
-
     @Inject
     lateinit var eventBus: EventBus
+
+    private val viewModel: DayPlansFragmentViewModel by viewModels()
+    private val adapter = GroupAdapter<GroupieViewHolder>()
 
     private lateinit var binding: FragmentDayPlansBinding
     private lateinit var dayPlansLoadingStateHandler: LoadingStateHandler<DayPlansResponse>
@@ -109,15 +107,9 @@ class DayPlansFragment : Fragment() {
                     } else {
                         binding.layout.hideEmptyIcon()
                         data.dayPlans.items.forEach { dayPlan ->
-                            adapter.add(DayPlanItem(requireContext(), dayPlan, {
-                                DayPlanActivity.start(requireContext(), dayPlan.id)
-                            }, {
-                                viewModel.delete(it.id).observe(viewLifecycleOwner) { r ->
-                                    deleteDayPlanLoadingStateHandler.handle(r)
-                                }
-                            }, {
-                                UpdateDayPlanDialog.show(parentFragmentManager, dayPlan.id)
-                            }))
+                            adapter.add(DayPlanItem(dayPlan) {
+                                DayPlanActivity.start(requireContext(), dayPlan.date)
+                            })
                         }
                     }
                 }
@@ -132,11 +124,6 @@ class DayPlansFragment : Fragment() {
     override fun onDestroy() {
         eventBus.unregister(this)
         super.onDestroy()
-    }
-
-    @Subscribe
-    fun onDayPlanDeleted(event: DayPlanDeletedEvent) {
-        endlessScrollRecyclerViewListener.reset()
     }
 
     @Subscribe

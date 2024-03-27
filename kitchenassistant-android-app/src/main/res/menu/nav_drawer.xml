@@ -12,15 +12,6 @@
                 android:title="@string/title_fragment_day_plans"/>
     </group>
 
-    <group>
-        <item
-                android:id="@+id/day_plans_history"
-                android:title="@string/title_activity_dayplans_history"/>
-        <item
-                android:id="@+id/categories"
-                android:title="@string/title_activity_categories"/>
-    </group>
-
     <item android:title="@string/label_nav_view_section_others">
         <menu>
             <item android:id="@+id/logout"

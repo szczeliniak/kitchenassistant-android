@@ -4,15 +4,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 class EndlessScrollRecyclerViewListener(
-    private val linearLayoutManager: LinearLayoutManager, var onLoad: (page: Int) -> Unit, var onReset: () -> Unit
+    private val linearLayoutManager: LinearLayoutManager, var onLoad: (page: Long) -> Unit, var onReset: () -> Unit
 ) : RecyclerView.OnScrollListener() {
 
     companion object {
-        private const val DEFAULT_PAGE = 1
+        private const val DEFAULT_PAGE = 1L
     }
 
-    private var page: Int = DEFAULT_PAGE
-    var maxPage: Int = DEFAULT_PAGE
+    private var page: Long = DEFAULT_PAGE
+    var maxPage: Long = DEFAULT_PAGE
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         if (dy < 1) {

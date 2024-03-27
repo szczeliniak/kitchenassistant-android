@@ -105,9 +105,4 @@ class NetworkModule {
         return retrofitBuilder.build().create(DayPlanRepository::class.java)
     }
 
-    @Provides
-    fun photoRepository(retrofitBuilder: Retrofit.Builder): PhotoRepository {
-        return retrofitBuilder.build().create(PhotoRepository::class.java)
-    }
-
 }

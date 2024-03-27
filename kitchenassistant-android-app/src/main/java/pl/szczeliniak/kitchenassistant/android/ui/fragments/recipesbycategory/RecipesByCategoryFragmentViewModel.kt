@@ -11,13 +11,11 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingState
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.RecipesResponse
 import pl.szczeliniak.kitchenassistant.android.services.DayPlanService
-import pl.szczeliniak.kitchenassistant.android.services.PhotoService
 import pl.szczeliniak.kitchenassistant.android.services.RecipeService
 
 class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
     private val recipeService: RecipeService,
     private val dayPlanService: DayPlanService,
-    private val photoService: PhotoService,
     @Assisted private val categoryId: Int?
 ) : ViewModel() {
 
@@ -40,32 +38,12 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
         loadRecipes(1, null)
     }
 
-    fun loadRecipes(page: Int, search: String?) {
+    fun loadRecipes(page: Long, search: String?) {
         viewModelScope.launch {
-            recipeService.findAll(categoryId, search, null, null, page, LIMIT)
+            recipeService.findAll(categoryId, search, page, LIMIT)
                 .onEach { _recipes.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            recipeService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
-    }
-
-    fun loadPhoto(photoName: String): LiveData<LoadingState<PhotoService.DownloadedPhoto>> {
-        val liveData = MutableLiveData<LoadingState<PhotoService.DownloadedPhoto>>()
-        viewModelScope.launch {
-            photoService.downloadPhoto(photoName)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData;
     }
 
     fun setFavorite(id: Int, isFavorite: Boolean): LiveData<LoadingState<Int>> {
@@ -81,7 +59,7 @@ class RecipesByCategoryFragmentViewModel @AssistedInject constructor(
     fun assignRecipeToDayPlan(request: AddRecipeToDayPlanRequest): LiveData<LoadingState<Int>> {
         val liveData = MutableLiveData<LoadingState<Int>>()
         viewModelScope.launch {
-            dayPlanService.assignRecipe(request)
+            dayPlanService.addRecipe(request)
                 .onEach { liveData.value = it }
                 .launchIn(viewModelScope)
         }

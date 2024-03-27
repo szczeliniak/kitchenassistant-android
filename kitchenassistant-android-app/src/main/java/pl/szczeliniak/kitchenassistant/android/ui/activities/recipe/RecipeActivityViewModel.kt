@@ -21,22 +21,12 @@ class RecipeActivityViewModel @AssistedInject constructor(
     val recipe: LiveData<LoadingState<RecipeResponse.Recipe>>
         get() = _recipe
 
-    fun reload() {
+    private fun reload() {
         viewModelScope.launch {
             recipeService.findById(recipeId)
                 .onEach { _recipe.value = it }
                 .launchIn(viewModelScope)
         }
-    }
-
-    fun delete(id: Int): LiveData<LoadingState<Int>> {
-        val liveData = MutableLiveData<LoadingState<Int>>()
-        viewModelScope.launch {
-            recipeService.delete(id)
-                .onEach { liveData.value = it }
-                .launchIn(viewModelScope)
-        }
-        return liveData
     }
 
     init {

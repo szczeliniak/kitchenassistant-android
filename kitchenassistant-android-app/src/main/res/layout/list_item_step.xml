@@ -14,20 +14,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/button_more"
+            app:layout_constraintRight_toRightOf="parent"
             android:id="@+id/step_description"
             android:layout_width="0dp"
             android:layout_height="match_parent"/>
-
-    <androidx.appcompat.widget.AppCompatImageButton
-            android:layout_gravity="center"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            style="@style/ButtonTransparentImage"
-            android:src="@drawable/icon_more"
-            android:id="@+id/button_more"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

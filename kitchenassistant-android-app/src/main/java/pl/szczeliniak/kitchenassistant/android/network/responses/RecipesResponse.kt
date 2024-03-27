@@ -12,15 +12,12 @@ data class RecipesResponse(
         val name: String,
         val author: String?,
         val favorite: Boolean,
-        val category: Category?,
-        val tags: List<String>,
-        val photoName: String?,
+        val category: Category?
     ) : Parcelable {
         @Parcelize
         data class Category(
             val id: Int,
-            val name: String,
-            val sequence: Int?
+            val name: String
         ) : Parcelable
     }
 }

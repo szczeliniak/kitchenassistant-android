@@ -24,8 +24,7 @@ android {
         resValue "string", "facebook_app_id", properties.getProperty("FACEBOOK_APP_ID")
         resValue "string", "facebook_client_token", properties.getProperty("FACEBOOK_CLIENT_TOKEN")
         resValue "string", "app_api_host", properties.getProperty("KITCHEN_ASSISTANT_API_HOST")
-        //local dev: http://10.0.2.2:8080
-        //prod: https://www.api.kitchenassistant.szczeliniak.pl
+        resValue "string", "jwt_secret", properties.getProperty("JWT_SECRET")
     }
 
     buildTypes {
@@ -66,6 +65,7 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$picasso_version"
     implementation "com.github.jkwiecien:EasyImage:$easyimage_version"
     implementation "com.github.yalantis:ucrop:$ucrop_version"
+    implementation "io.jsonwebtoken:jjwt:0.9.1"
     implementation "com.facebook.android:facebook-android-sdk:$facebook_sdk_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "com.pierfrancescosoffritti.androidyoutubeplayer:core:$androidyoutubeplayer_version"

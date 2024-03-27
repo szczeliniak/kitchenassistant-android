@@ -26,21 +26,6 @@
                 android:id="@+id/ingredient_group_name"
                 android:layout_height="wrap_content"/>
 
-        <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:id="@+id/open_edit_dialog"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/padding_margin_tiny"
-                android:backgroundTint="@color/primary"
-                android:src="@drawable/icon_edit"/>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-                android:layout_width="wrap_content"
-                android:id="@+id/open_delete_dialog"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/secondary"
-                android:src="@drawable/icon_trash"/>
-
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

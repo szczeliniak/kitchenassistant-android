@@ -43,31 +43,7 @@
                 android:exported="false">
         </activity>
         <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.addeditrecipe.AddEditRecipeActivity"
-                android:windowSoftInputMode="adjustResize"
-                android:screenOrientation="portrait"
-                android:exported="false">
-        </activity>
-        <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.categories.CategoriesActivity"
-                android:windowSoftInputMode="adjustResize"
-                android:screenOrientation="portrait"
-                android:exported="false">
-        </activity>
-        <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity"
-                android:windowSoftInputMode="adjustResize"
-                android:screenOrientation="portrait"
-                android:exported="false">
-        </activity>
-        <activity
                 android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.dayplan.DayPlanActivity"
-                android:windowSoftInputMode="adjustResize"
-                android:screenOrientation="portrait"
-                android:exported="false">
-        </activity>
-        <activity
-                android:name="pl.szczeliniak.kitchenassistant.android.ui.activities.dayplanshistory.DayPlansHistoryActivity"
                 android:windowSoftInputMode="adjustResize"
                 android:screenOrientation="portrait"
                 android:exported="false">

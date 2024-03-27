@@ -9,7 +9,10 @@ data class DayPlansResponse(
 ) {
     @Parcelize
     data class DayPlan(
-        val id: Int,
         val date: LocalDate,
-    ) : Parcelable
+        val recipes: List<Recipe>
+    ) : Parcelable {
+        @Parcelize
+        data class Recipe(val id: Int, val name: String) : Parcelable
+    }
 }

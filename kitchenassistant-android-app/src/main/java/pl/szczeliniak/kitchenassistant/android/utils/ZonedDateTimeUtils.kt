@@ -8,7 +8,7 @@ class ZonedDateTimeUtils {
 
     companion object {
 
-        private const val ZONED_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ssZ"
+        private const val ZONED_DATE_TIME_FORMAT = "yyyy-MM-DD'T'HH:mm:ssZ"
         private val ZONED_DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(ZONED_DATE_TIME_FORMAT)
 
         fun parse(dateTimeAsString: String?): ZonedDateTime? {

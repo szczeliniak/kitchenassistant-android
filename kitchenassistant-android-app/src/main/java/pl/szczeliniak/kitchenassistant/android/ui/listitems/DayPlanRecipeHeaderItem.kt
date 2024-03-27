@@ -17,12 +17,9 @@ class DayPlanRecipeHeaderItem(
 
     override fun bind(binding: ListItemHeaderDayPlanRecipeBinding, position: Int) {
         binding.recipeName.text = recipe.name
-        recipe.originalRecipeId?.let { recipeId ->
-            onClicked?.let {
-                binding.root.setOnClickListener { it(recipeId) }
-            }
+        onClicked?.let {
+            binding.root.setOnClickListener { it(recipe.originalRecipeId) }
         }
-
         onDeleteClicked?.let {
             binding.openDeleteDialog.visibility = View.VISIBLE
             binding.openDeleteDialog.setOnClickListener {
@@ -33,7 +30,6 @@ class DayPlanRecipeHeaderItem(
         } ?: run {
             binding.openDeleteDialog.visibility = View.GONE
         }
-
     }
 
     override fun getLayout(): Int {

@@ -16,8 +16,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:orientation="horizontal"
+            android:paddingVertical="@dimen/padding_margin_tiny"
             android:layout_width="wrap_content"
-            style="@style/ContentLayout"
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -27,6 +27,7 @@
                 android:id="@+id/recipe_name"
                 android:layout_gravity="center_vertical"
                 android:gravity="center"
+                android:textAllCaps="true"
                 tools:text="@string/placeholder_recipe_name"
                 style="@style/TextViewHeader"
                 android:layout_width="wrap_content"
@@ -39,6 +40,7 @@
                 android:layout_marginHorizontal="@dimen/padding_margin_tiny"
                 android:backgroundTint="@color/secondary"
                 android:src="@drawable/icon_trash"/>
+
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

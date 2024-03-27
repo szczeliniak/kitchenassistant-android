@@ -1,7 +1,6 @@
 package pl.szczeliniak.kitchenassistant.android.network.retrofit
 
 import pl.szczeliniak.kitchenassistant.android.network.requests.AddRecipeToDayPlanRequest
-import pl.szczeliniak.kitchenassistant.android.network.requests.UpdateDayPlanRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlanResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.DayPlansResponse
 import pl.szczeliniak.kitchenassistant.android.network.responses.SuccessResponse
@@ -12,31 +11,25 @@ interface DayPlanRepository {
 
     @GET("/dayplans")
     suspend fun findAll(
-        @Query("page") page: Int? = null,
+        @Query("page") page: Long? = null,
         @Query("limit") limit: Int? = null,
         @Query("since") since: LocalDate? = null,
         @Query("to") to: LocalDate? = null,
         @Query("sort") sort: Sort? = null
     ): DayPlansResponse
 
-    @GET("/dayplans/{id}")
-    suspend fun findById(@Path("id") id: Int): DayPlanResponse
+    @GET("/dayplans/{date}")
+    suspend fun findByDate(@Path("date") date: LocalDate): DayPlanResponse
 
-    @DELETE("/dayplans/{id}")
-    suspend fun delete(@Path("id") id: Int): SuccessResponse
-
-    @DELETE("/dayplans/{id}/recipes/{recipeId}")
-    suspend fun deassignRecipe(@Path("id") id: Int, @Path("recipeId") recipeId: Int): SuccessResponse
+    @DELETE("/dayplans/{date}/recipes/{recipeId}")
+    suspend fun deleteRecipe(@Path("date") date: LocalDate, @Path("recipeId") recipeId: Int): SuccessResponse
 
     @POST("/dayplans")
-    suspend fun assignRecipe(@Body request: AddRecipeToDayPlanRequest): SuccessResponse
+    suspend fun addRecipe(@Body request: AddRecipeToDayPlanRequest): SuccessResponse
 
-    @PUT("/dayplans/{id}")
-    suspend fun update(@Path("id") id: Int, @Body request: UpdateDayPlanRequest): SuccessResponse
-
-    @PUT("/dayplans/{dayPlanId}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
+    @PUT("/dayplans/{date}/recipes/{recipeId}/ingredientGroups/{ingredientGroupId}/ingredients/{ingredientId}/{isChecked}")
     suspend fun changeIngredientState(
-        @Path("dayPlanId") dayPlanId: Int,
+        @Path("date") date: LocalDate,
         @Path("recipeId") recipeId: Int,
         @Path("ingredientGroupId") ingredientGroupId: Int,
         @Path("ingredientId") ingredientId: Int,

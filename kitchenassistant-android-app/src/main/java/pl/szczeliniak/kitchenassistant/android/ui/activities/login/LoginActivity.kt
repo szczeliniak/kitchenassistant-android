@@ -18,10 +18,8 @@ import pl.szczeliniak.kitchenassistant.android.network.LoadingStateHandler
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginRequest
 import pl.szczeliniak.kitchenassistant.android.network.requests.LoginWithFacebookRequest
 import pl.szczeliniak.kitchenassistant.android.network.responses.LoginResponse
-import pl.szczeliniak.kitchenassistant.android.network.responses.RefreshTokenResponse
 import pl.szczeliniak.kitchenassistant.android.services.LocalStorageService
 import pl.szczeliniak.kitchenassistant.android.ui.activities.main.MainActivity
-import pl.szczeliniak.kitchenassistant.android.ui.activities.register.RegisterActivity
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ButtonUtils.Companion.enable
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ContextUtils.Companion.toast
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.hideProgressSpinner
@@ -42,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private val loginStateHandler: LoadingStateHandler<LoginResponse> = prepareLoginStateHandler()
-    private val refreshTokenStateHandler: LoadingStateHandler<RefreshTokenResponse> = prepareRefreshTokenStateHandler()
+    private val refreshTokenStateHandler: LoadingStateHandler<LoginResponse> = prepareLoginStateHandler()
 
     private val viewModel: LoginActivityViewModel by viewModels()
     private val facebookCallbackManager: CallbackManager = CallbackManager.Factory.create()
@@ -52,13 +50,10 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         if (localStorageService.isLoggedIn()) {
             refreshToken()
         }
-
         initLayout()
-
         checkButtonState()
     }
 
@@ -71,9 +66,6 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.buttonLogin.setOnClickListener { handleLoginButtonClick() }
-        binding.buttonRegister.setOnClickListener {
-            RegisterActivity.start(this@LoginActivity)
-        }
 
         binding.loginEmail.doOnTextChanged { _, _, _, _ ->
             if (!isEmailValid()) {
@@ -140,7 +132,7 @@ class LoginActivity : AppCompatActivity() {
             }
 
             override fun onSuccess(data: LoginResponse) {
-                localStorageService.login(data.token, data.email, data.id, data.validTo)
+                localStorageService.login(data.accessToken, data.refreshToken)
                 goToMainActivity()
             }
 
@@ -152,31 +144,7 @@ class LoginActivity : AppCompatActivity() {
                 if (exception.code() == 404 || exception.code() == 400) {
                     this@LoginActivity.toast(R.string.message_login_data_does_not_match)
                     binding.loginPassword.setText("")
-                } else {
-                    super.onHttpException(exception)
-                }
-            }
-        }
-        )
-    }
-
-    private fun prepareRefreshTokenStateHandler(): LoadingStateHandler<RefreshTokenResponse> {
-        return LoadingStateHandler(this, object : LoadingStateHandler.OnStateChanged<RefreshTokenResponse> {
-            override fun onException(th: Throwable) {
-                binding.root.hideProgressSpinner()
-            }
-
-            override fun onSuccess(data: RefreshTokenResponse) {
-                localStorageService.login(data.token, data.email, localStorageService.getId(), data.validTo)
-                goToMainActivity()
-            }
-
-            override fun onInProgress() {
-                binding.root.showProgressSpinner(this@LoginActivity)
-            }
-
-            override fun onHttpException(exception: HttpException) {
-                if (exception.code() == 403) {
+                } else if (exception.code() == 403) {
                     this@LoginActivity.toast(R.string.message_token_expired)
                     localStorageService.logout()
                     LoginManager.getInstance().logOut()
