@@ -26,6 +26,7 @@ import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion
 import pl.szczeliniak.kitchenassistant.android.ui.utils.ViewGroupUtils.Companion.showProgressSpinner
 import pl.szczeliniak.kitchenassistant.android.utils.ValidationUtils
 import retrofit2.HttpException
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -50,7 +51,8 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (localStorageService.isLoggedIn()) {
+        val refreshExpDate = localStorageService.getRefreshExpirationDate()
+        if (refreshExpDate != null && refreshExpDate.isAfter(LocalDate.now())) {
             refreshToken()
         }
         initLayout()

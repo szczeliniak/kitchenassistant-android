@@ -6,6 +6,9 @@ import android.content.SharedPreferences
 import io.jsonwebtoken.*
 import pl.szczeliniak.kitchenassistant.android.R
 import pl.szczeliniak.kitchenassistant.android.exceptions.KitchenAssistantException
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
 
 class LocalStorageService(private val context: Context) {
 
@@ -74,6 +77,14 @@ class LocalStorageService(private val context: Context) {
 
     fun getEmail(): String? {
         return openSharedPrefs().getString(EMAIL, null)
+    }
+
+    fun getRefreshExpirationDate(): LocalDate? {
+        val millis = openSharedPrefs().getLong(REFRESH_VALID_TO, 0L)
+        if (millis < 1L) {
+            return null
+        }
+        return Date(millis).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
     }
 
     private fun openSharedPrefs(): SharedPreferences {
