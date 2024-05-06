@@ -1,2 +1,2 @@
-rootProject.name = "kitchenassistant-android"
-include ':kitchenassistant-android-app'
+rootProject.name = "cookbook-android"
+include ':cookbook-android-app'
